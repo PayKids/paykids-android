@@ -21,3 +21,6 @@ dependencyResolutionManagement {
 
 rootProject.name = "PayKids"
 include(":app")
+include(":data")
+include(":domain")
+include(":presentation")
