@@ -1,12 +1,10 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.hilt)
-    alias(libs.plugins.googleKsp)
 }
 
 android {
-    namespace = "com.paykids.presentation"
+    namespace = "com.paykids.util"
     compileSdk = 34
 
     defaultConfig {
@@ -32,15 +30,12 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
-    buildFeatures{
+    buildFeatures {
         buildConfig = true
-        viewBinding = true
     }
 }
 
 dependencies {
-    implementation(project(":core:util"))
-    implementation(project(":domain"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
@@ -49,20 +44,5 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
-    // Retrofit
-    implementation(libs.retrofit2)
-    implementation(libs.converter.gson)
-
-    // LoggingInterceptor
-    implementation(libs.logging.interceptor)
-    implementation(libs.okhttp)
-
-    // ViewModel
-    implementation(libs.androidx.fragment.ktx)
-    implementation(libs.androidx.lifecycle.viewmodel.ktx)
-    implementation(libs.androidx.lifecycle.livedata.ktx)
-
-    // Hilt
-    implementation(libs.hilt)
-    ksp(libs.hilt.compiler)
+    implementation(libs.logger)
 }
