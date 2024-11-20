@@ -10,7 +10,7 @@ android {
     compileSdk = 34
 
     defaultConfig {
-        minSdk = 24
+        minSdk = 26
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -32,10 +32,14 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+    buildFeatures{
+        buildConfig = true
+        viewBinding = true
+    }
 }
 
 dependencies {
-
+    implementation(project(":core:util"))
     implementation(project(":domain"))
 
     implementation(libs.androidx.core.ktx)

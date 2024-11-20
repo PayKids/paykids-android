@@ -1,4 +1,4 @@
-package com.paykids.data
+package com.paykids.util
 
 import org.junit.Assert.assertEquals
 import org.junit.Test
