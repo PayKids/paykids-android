@@ -42,11 +42,11 @@ android {
 }
 
 dependencies {
-
     implementation(project(":data"))
     implementation(project(":domain"))
     implementation(project(":presentation"))
     implementation(project(":core:util"))
+    implementation(project(":core:navigation"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
@@ -60,4 +60,7 @@ dependencies {
     // Hilt
     implementation(libs.hilt)
     ksp(libs.hilt.compiler)
+
+    implementation(libs.androidx.navigation.fragment.ktx)
+    implementation(libs.androidx.navigation.ui.ktx)
 }

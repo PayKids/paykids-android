@@ -1,16 +1,14 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.hilt)
-    alias(libs.plugins.googleKsp)
 }
 
 android {
-    namespace = "com.paykids.presentation"
+    namespace = "com.paykids.navigation"
     compileSdk = 34
 
     defaultConfig {
-        minSdk = 26
+        minSdk = 24
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -32,16 +30,9 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
-    buildFeatures{
-        buildConfig = true
-        viewBinding = true
-    }
 }
 
 dependencies {
-    implementation(project(":core:util"))
-    implementation(project(":core:navigation"))
-    implementation(project(":domain"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
@@ -49,25 +40,4 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-
-    // Retrofit
-    implementation(libs.retrofit2)
-    implementation(libs.converter.gson)
-
-    // LoggingInterceptor
-    implementation(libs.logging.interceptor)
-    implementation(libs.okhttp)
-
-    // ViewModel
-    implementation(libs.androidx.fragment.ktx)
-    implementation(libs.androidx.lifecycle.viewmodel.ktx)
-    implementation(libs.androidx.lifecycle.livedata.ktx)
-
-    // Hilt
-    implementation(libs.hilt)
-    ksp(libs.hilt.compiler)
-
-    // Navigation
-    implementation(libs.androidx.navigation.fragment)
-    implementation(libs.androidx.fragment.ktx)
 }
