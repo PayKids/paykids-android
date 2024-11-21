@@ -40,6 +40,7 @@ android {
 
 dependencies {
     implementation(project(":core:util"))
+    implementation(project(":core:navigation"))
     implementation(project(":domain"))
 
     implementation(libs.androidx.core.ktx)
@@ -65,4 +66,8 @@ dependencies {
     // Hilt
     implementation(libs.hilt)
     ksp(libs.hilt.compiler)
+
+    // Navigation
+    implementation(libs.androidx.navigation.fragment)
+    implementation(libs.androidx.fragment.ktx)
 }
