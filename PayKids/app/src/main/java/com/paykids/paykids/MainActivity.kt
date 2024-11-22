@@ -1,39 +1,19 @@
 package com.paykids.paykids
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.paykids.navigation.FragmentNavigator
-import com.paykids.navigation.Screen
-import com.paykids.paykids.databinding.ActivityMainBinding
-import com.paykids.presentation.OneFragment
-import com.paykids.presentation.TwoFragment
+import com.paykids.presentation.view.splash.SplashActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity(), FragmentNavigator {
-    private lateinit var binding: ActivityMainBinding
-
+class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        val intent = Intent(this, SplashActivity::class.java)
+        startActivity(intent)
 
-        if (savedInstanceState == null) {
-            navigateTo(Screen.ONE) // 초기 화면 설정
-        }
-    }
-
-    override fun navigateTo(screen: Screen) {
-        val fragmentTransaction = supportFragmentManager.beginTransaction()
-
-        val fragment = when (screen) {
-            Screen.ONE -> OneFragment()
-            Screen.TWO -> TwoFragment()
-        }
-
-        fragmentTransaction.replace(R.id.fl_main, fragment)
-        fragmentTransaction.addToBackStack(null)
-        fragmentTransaction.commit()
+        finish()
     }
 }

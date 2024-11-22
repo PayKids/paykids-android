@@ -1,4 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.paykids.presentation">
+
+    <application>
+        <!-- Splash Activity -->
+        <activity android:name=".view.splash.SplashActivity" />
+
+        <!-- Sign-In Activity -->
+        <activity android:name=".view.signIn.SignInActivity" />
+
+        <!-- Home Activity -->
+        <activity android:name=".view.home.HomeActivity" />
+    </application>
 
 </manifest>

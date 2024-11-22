@@ -1,6 +1,8 @@
 package com.paykids.navigation
 
-enum class Screen {
-    ONE,
-    TWO
+import android.content.Context
+import android.content.Intent
+
+interface Screen {
+    fun createIntent(context: Context): Intent
 }
