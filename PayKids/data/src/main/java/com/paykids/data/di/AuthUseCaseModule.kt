@@ -1,6 +1,5 @@
 package com.paykids.data.di
 
-import com.paykids.data.usecase.SignInUseCaseImpl
 import com.paykids.domain.repository.SignInRepository
 import com.paykids.domain.usecase.SignInUseCase
 import dagger.Module
@@ -19,7 +18,7 @@ object AuthUseCaseModule {
     fun provideSignInUseCase(
         repository: SignInRepository
     ): SignInUseCase {
-        return SignInUseCaseImpl(repository)
+        return SignInUseCase(repository)
     }
 }
 
