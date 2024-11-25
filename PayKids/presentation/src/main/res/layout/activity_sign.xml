@@ -4,12 +4,10 @@
     android:layout_height="match_parent"
     android:background="@color/white">
 
-    <TextView
+    <FrameLayout
+        android:id="@+id/fl_sign"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:contentDescription="@null"
-        android:textSize="36sp"
-        android:src="@color/gray"
-        android:text="Sign In" />
+        android:background="@color/transparent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

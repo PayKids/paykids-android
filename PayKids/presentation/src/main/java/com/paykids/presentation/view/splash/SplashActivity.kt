@@ -5,7 +5,7 @@ import android.os.Handler
 import android.os.Looper
 import com.paykids.presentation.base.BaseActivity
 import com.paykids.presentation.databinding.ActivityStartBinding
-import com.paykids.presentation.view.signIn.SignInActivity
+import com.paykids.presentation.view.signIn.SignActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -26,7 +26,7 @@ class SplashActivity : BaseActivity<ActivityStartBinding>() {
     }
 
     private fun moveSignIn() {
-        val intent = Intent(this, SignInActivity::class.java)
+        val intent = Intent(this, SignActivity::class.java)
         startActivity(intent)
         finish()
     }
