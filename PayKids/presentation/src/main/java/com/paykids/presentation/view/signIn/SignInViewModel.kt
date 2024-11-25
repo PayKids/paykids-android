@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.paykids.domain.enums.AuthProvider
 import com.paykids.domain.model.SignInInfo
 import com.paykids.domain.repository.KakaoAuthRepository
+import com.paykids.domain.usecase.KakaoAuthUseCase
 import com.paykids.domain.usecase.SignInUseCase
 import com.paykids.presentation.utils.LoggerUtils
 import com.paykids.presentation.utils.UiState
@@ -16,38 +17,20 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SignInViewModel @Inject constructor(
-    private val kakaoAuthRepository: KakaoAuthRepository,
-    private val signInUseCase: SignInUseCase,
+    private val kakaoAuthUseCase: KakaoAuthUseCase,
 ) : ViewModel() {
 
-    private val _loginState =
-        MutableLiveData<UiState<SignInInfo>>(UiState.Loading)
+    private val _loginState = MutableLiveData<UiState<SignInInfo>>(UiState.Loading)
     val loginState: LiveData<UiState<SignInInfo>> get() = _loginState
-
-    fun signIn(idToken: String, provider: AuthProvider) {
-        _loginState.value = UiState.Loading
-
-        viewModelScope.launch {
-            try {
-                val result = signInUseCase(idToken, provider)
-                if (result.isSuccess) {
-                    _loginState.value = UiState.Success(result.getOrNull()!!)
-                } else {
-                    _loginState.value = UiState.Failure(message = "로그인 실패")
-                }
-            } catch (e: Exception) {
-                _loginState.value = UiState.Failure(message = e.message ?: "로그인 실패")
-            }
-        }
-    }
 
     fun signInWithKakao() {
         _loginState.value = UiState.Loading
 
         viewModelScope.launch {
             try {
-                val signInInfo = kakaoAuthRepository.signInWithKakao()
+                val signInInfo = kakaoAuthUseCase()
                 _loginState.value = UiState.Success(signInInfo)
+                LoggerUtils.d("로그인 성공!: $signInInfo")
             } catch (e: Exception) {
                 _loginState.value = UiState.Failure(message = e.message ?: "카카오 로그인 실패")
             }

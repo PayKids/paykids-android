@@ -16,9 +16,6 @@ import javax.inject.Inject
 class SignInProviderFragment : BaseFragment<FragmentSignProviderBinding>() {
     private val signViewModel: SignInViewModel by viewModels()
 
-    @Inject
-    lateinit var kakaoAuthRepository: KakaoAuthRepository
-
     override fun initView() {
     }
 
@@ -26,9 +23,7 @@ class SignInProviderFragment : BaseFragment<FragmentSignProviderBinding>() {
         super.initListener()
 
         binding.btnKakao.setOnClickListener {
-            lifecycleScope.launch {
-                signViewModel.signInWithKakao()
-            }
+            signViewModel.signInWithKakao()
         }
     }
 
@@ -43,9 +38,8 @@ class SignInProviderFragment : BaseFragment<FragmentSignProviderBinding>() {
                 }
 
                 is UiState.Loading -> {}
-                is UiState.Success -> {
 
-                }
+                is UiState.Success -> {}
             }
         }
     }
