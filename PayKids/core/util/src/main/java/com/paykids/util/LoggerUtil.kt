@@ -1,10 +1,5 @@
 package com.paykids.util
 
-import com.orhanobut.logger.AndroidLogAdapter
-import com.orhanobut.logger.FormatStrategy
-import com.orhanobut.logger.Logger
-import com.orhanobut.logger.PrettyFormatStrategy
-
 object LoggerUtil {
 //    private const val LOGGER_TAG = "PAYKIDS_LOGGER"
 //    private const val DEFAULT_METHOD_COUNT = 2

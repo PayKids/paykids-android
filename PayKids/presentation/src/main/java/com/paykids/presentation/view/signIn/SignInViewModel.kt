@@ -4,11 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.paykids.domain.enums.AuthProvider
 import com.paykids.domain.model.SignInInfo
-import com.paykids.domain.repository.KakaoAuthRepository
 import com.paykids.domain.usecase.KakaoAuthUseCase
-import com.paykids.domain.usecase.SignInUseCase
 import com.paykids.presentation.utils.LoggerUtils
 import com.paykids.presentation.utils.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel

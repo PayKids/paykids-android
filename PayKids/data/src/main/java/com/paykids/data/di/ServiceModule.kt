@@ -1,7 +1,6 @@
 package com.paykids.data.di
 
 import com.paykids.data.service.AuthService
-import com.paykids.data.service.KakaoAuthService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

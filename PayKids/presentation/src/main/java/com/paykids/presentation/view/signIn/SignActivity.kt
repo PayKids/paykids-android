@@ -1,8 +1,6 @@
 package com.paykids.presentation.view.signIn
 
 import android.content.Intent
-import android.os.Handler
-import android.os.Looper
 import com.paykids.presentation.R
 import com.paykids.presentation.base.BaseActivity
 import com.paykids.presentation.databinding.ActivitySignBinding
