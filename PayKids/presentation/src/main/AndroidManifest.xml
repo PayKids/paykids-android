@@ -2,12 +2,14 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.paykids.presentation">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application>
         <!-- Splash Activity -->
         <activity android:name=".view.splash.SplashActivity" />
 
         <!-- Sign-In Activity -->
-        <activity android:name=".view.signIn.SignInActivity" />
+        <activity android:name=".view.signIn.SignActivity" />
 
         <!-- Home Activity -->
         <activity android:name=".view.home.HomeActivity" />

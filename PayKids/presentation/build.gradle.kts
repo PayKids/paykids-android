@@ -58,6 +58,9 @@ dependencies {
     implementation(libs.logging.interceptor)
     implementation(libs.okhttp)
 
+    // LoggerUtils
+    implementation(libs.logger)
+
     // ViewModel
     implementation(libs.androidx.fragment.ktx)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
@@ -70,4 +73,7 @@ dependencies {
     // Navigation
     implementation(libs.androidx.navigation.fragment)
     implementation(libs.androidx.fragment.ktx)
+
+    // Kakao SDK
+    implementation(libs.v2.all)
 }
