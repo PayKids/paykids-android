@@ -6,6 +6,7 @@ import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.user.UserApiClient
 import com.paykids.domain.enums.AuthProvider
 import com.paykids.domain.model.SignInInfo
+import com.paykids.util.LoggerUtils
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import kotlin.coroutines.resume
@@ -26,15 +27,24 @@ class KakaoAuthService @Inject constructor(
     private val isKakaoTalkLoginAvailable: Boolean
         get() = client.isKakaoTalkLoginAvailable(context)
 
+    /**
+    +     * 카카오 로그인을 수행합니다.
+    +     * @throws KakaoSdkError SDK 초기화 또는 네트워크 오류 발생 시
+    +     * @throws IllegalStateException 토큰 발급 실패 시
+    +     * @return SignInInfo 로그인 성공 시 사용자 정보
+    +     */
     suspend fun signInWithKakao(): SignInInfo {
         return suspendCoroutine { continuation ->
             val callback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
                 if (error != null) {
+                    LoggerUtils.e("로그인 실패 ${error}")
                     continuation.resumeWithException(error)
                 } else if (token != null) {
                     val idToken = token.accessToken
                     val provider = AuthProvider.KAKAO
                     continuation.resume(SignInInfo(idToken, provider))
+                } else {
+                    continuation.resumeWithException(IllegalStateException("토큰 발급 실패"))
                 }
             }
 
@@ -48,7 +58,7 @@ class KakaoAuthService @Inject constructor(
 
     private fun signInSuccess(
         token: OAuthToken,
-        signInListener: (String, AuthProvider) -> Unit // 수정된 부분
+        signInListener: (String, AuthProvider) -> Unit
     ) {
         val idToken = token.accessToken
         val provider = AuthProvider.KAKAO
