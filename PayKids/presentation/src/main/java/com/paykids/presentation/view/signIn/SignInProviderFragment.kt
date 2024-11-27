@@ -1,10 +1,12 @@
 package com.paykids.presentation.view.signIn
 
+import android.content.Intent
 import androidx.fragment.app.viewModels
 import com.paykids.presentation.base.BaseFragment
 import com.paykids.presentation.databinding.FragmentSignProviderBinding
 import com.paykids.presentation.utils.LoggerUtils
 import com.paykids.presentation.utils.UiState
+import com.paykids.presentation.view.home.HomeActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -34,7 +36,9 @@ class SignInProviderFragment : BaseFragment<FragmentSignProviderBinding>() {
 
                 is UiState.Loading -> {}
 
-                is UiState.Success -> {}
+                is UiState.Success -> {
+                    (activity as SignActivity).moveHome()
+                }
             }
         }
     }
