@@ -1,7 +1,7 @@
 package com.paykids.paykids
 
 import android.app.Application
-import com.paykids.presentation.utils.LoggerUtils
+import com.paykids.util.LoggerUtils
 import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
