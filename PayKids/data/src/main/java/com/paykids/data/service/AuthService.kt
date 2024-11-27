@@ -1,7 +1,5 @@
 package com.paykids.data.service
 
-import com.paykids.domain.enums.AuthProvider
-import com.paykids.domain.model.SignInInfo
 import com.paykids.domain.repository.KakaoAuthRepository
 import javax.inject.Inject
 
