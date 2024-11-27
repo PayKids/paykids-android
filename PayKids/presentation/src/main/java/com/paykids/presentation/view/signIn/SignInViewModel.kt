@@ -5,9 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.paykids.domain.model.SignInInfo
-import com.paykids.domain.usecase.KakaoAuthUseCase
-import com.paykids.presentation.utils.LoggerUtils
+import com.paykids.domain.usecase.auth.KakaoAuthUseCase
 import com.paykids.presentation.utils.UiState
+import com.paykids.util.LoggerUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject

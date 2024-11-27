@@ -1,7 +1,9 @@
 package com.paykids.data.di
 
-import com.paykids.domain.repository.SignInRepository
-import com.paykids.domain.usecase.SignInUseCase
+import com.paykids.domain.repository.AuthRepository
+import com.paykids.domain.usecase.auth.SignInUseCase
+import com.paykids.domain.usecase.auth.SignOutUseCase
+import com.paykids.domain.usecase.auth.WithdrawalUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -16,9 +18,25 @@ object AuthUseCaseModule {
     @Provides
     @Singleton
     fun provideSignInUseCase(
-        repository: SignInRepository
+        repository: AuthRepository
     ): SignInUseCase {
         return SignInUseCase(repository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideSignOutUseCase(
+        authRepository: AuthRepository
+    ): SignOutUseCase {
+        return SignOutUseCase(authRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideWithdrawalUseCase(
+        authRepository: AuthRepository
+    ): WithdrawalUseCase {
+        return WithdrawalUseCase(authRepository)
     }
 }
 

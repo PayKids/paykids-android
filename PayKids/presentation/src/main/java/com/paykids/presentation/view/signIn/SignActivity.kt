@@ -19,10 +19,9 @@ class SignActivity : BaseActivity<ActivitySignBinding>() {
         ft.commit()
     }
 
-    private fun moveHome() {
+    fun moveHome() {
         val intent = Intent(this, HomeActivity::class.java)
         startActivity(intent)
         finish()
     }
-
 }
