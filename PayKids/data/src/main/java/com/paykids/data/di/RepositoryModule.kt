@@ -1,10 +1,8 @@
 package com.paykids.data.di
 
 import com.paykids.data.repository.AuthRepositoryImpl
-import com.paykids.data.repository.DataStoreRepositoryImpl
 import com.paykids.data.repository.KakaoAuthRepositoryImpl
 import com.paykids.domain.repository.AuthRepository
-import com.paykids.domain.repository.DataStoreRepository
 import com.paykids.domain.repository.KakaoAuthRepository
 import dagger.Binds
 import dagger.Module
