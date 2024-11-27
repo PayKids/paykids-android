@@ -11,24 +11,15 @@ class AuthRepositoryImpl @Inject constructor(
 ) : AuthRepository {
 
     override suspend fun signIn(idToken: String, provider: AuthProvider): Result<SignInInfo> {
+        if (idToken.isBlank()) {
+            return Result.failure(IllegalArgumentException("idToken이 비어있습니다"))
+        }
+
         return when (provider) {
             AuthProvider.KAKAO -> {
                 try {
                     val signInInfo = kakaoAuthRepository.signInWithKakao()
-
-                    val email = signInInfo.email ?: "example@kakao.com"
-                    val name = signInInfo.name ?: "John Doe"
-
-                    Result.success(
-                        SignInInfo(
-                            idToken = idToken,
-                            provider = AuthProvider.KAKAO,
-                            email = email,
-                            name = name,
-                            isRegister = false
-                        )
-                    )
-
+                    Result.success(signInInfo)
                 } catch (e: Exception) {
                     Result.failure(e)
                 }
