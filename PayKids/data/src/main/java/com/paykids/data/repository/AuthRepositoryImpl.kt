@@ -2,13 +2,13 @@ package com.paykids.data.repository
 
 import com.paykids.domain.enums.AuthProvider
 import com.paykids.domain.model.SignInInfo
+import com.paykids.domain.repository.AuthRepository
 import com.paykids.domain.repository.KakaoAuthRepository
-import com.paykids.domain.repository.SignInRepository
 import javax.inject.Inject
 
-class SignInRepositoryImpl @Inject constructor(
+class AuthRepositoryImpl @Inject constructor(
     private val kakaoAuthRepository: KakaoAuthRepository,
-) : SignInRepository {
+) : AuthRepository {
 
     override suspend fun signIn(idToken: String, provider: AuthProvider): Result<SignInInfo> {
         return when (provider) {
@@ -24,7 +24,8 @@ class SignInRepositoryImpl @Inject constructor(
                             idToken = idToken,
                             provider = AuthProvider.KAKAO,
                             email = email,
-                            name = name
+                            name = name,
+                            isRegister = false
                         )
                     )
 
@@ -35,5 +36,11 @@ class SignInRepositoryImpl @Inject constructor(
 
             else -> Result.failure(Exception("Unknown provider"))
         }
+    }
+
+    override suspend fun signOut(accessToken: String): Result<Boolean> {
+        kakaoAuthRepository.signOut()
+
+        return Result.success(true)
     }
 }

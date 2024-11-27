@@ -12,4 +12,8 @@ class KakaoAuthRepositoryImpl @Inject constructor(
     override suspend fun signInWithKakao(): SignInInfo {
         return kakaoAuthService.signInWithKakao()
     }
+
+    override suspend fun signOut() {
+        return kakaoAuthService.signOut()
+    }
 }
