@@ -7,4 +7,6 @@ interface AuthRepository {
     suspend fun signIn(idToken: String, provider: AuthProvider): Result<SignInInfo>
 
     suspend fun signOut(accessToken: String): Result<Boolean>
+
+    suspend fun withdraw(accessToken: String): Result<String>
 }

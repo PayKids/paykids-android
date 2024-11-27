@@ -79,4 +79,15 @@ class KakaoAuthService @Inject constructor(
             signOutListener?.invoke(error)
         }
     }
+
+    fun withdraw(withdrawListener: ((Throwable?) -> Unit)? = null) {
+        client.unlink { error ->
+            if (error != null) {
+                Log.e("KAKAO", "회원탈퇴 실패 $error")
+            } else {
+                Log.i("KAKAO", "회원탈퇴 성공")
+            }
+            withdrawListener?.invoke(error)
+        }
+    }
 }
