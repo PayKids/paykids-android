@@ -1,9 +1,11 @@
 package com.paykids.data.di
 
+import com.paykids.data.repository.AuthRepositoryImpl
+import com.paykids.data.repository.DataStoreRepositoryImpl
 import com.paykids.data.repository.KakaoAuthRepositoryImpl
-import com.paykids.data.repository.SignInRepositoryImpl
+import com.paykids.domain.repository.AuthRepository
+import com.paykids.domain.repository.DataStoreRepository
 import com.paykids.domain.repository.KakaoAuthRepository
-import com.paykids.domain.repository.SignInRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -16,7 +18,7 @@ abstract class RepositoryModule {
 
     @Binds
     @Singleton
-    abstract fun bindsSignInRepository(impl: SignInRepositoryImpl): SignInRepository
+    abstract fun bindsSignInRepository(impl: AuthRepositoryImpl): AuthRepository
 
     @Binds
     @Singleton
