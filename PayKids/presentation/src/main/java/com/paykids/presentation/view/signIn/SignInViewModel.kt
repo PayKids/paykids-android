@@ -4,8 +4,14 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.paykids.domain.enums.AuthProvider
 import com.paykids.domain.model.SignInInfo
+import com.paykids.domain.repository.AuthRepository
+import com.paykids.domain.repository.KakaoAuthRepository
 import com.paykids.domain.usecase.auth.KakaoAuthUseCase
+import com.paykids.domain.usecase.auth.SignInUseCase
+import com.paykids.domain.usecase.datastore.GetAccessTokenUseCase
+import com.paykids.domain.usecase.datastore.GetAuthProviderUseCase
 import com.paykids.presentation.utils.UiState
 import com.paykids.util.LoggerUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -14,22 +20,25 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SignInViewModel @Inject constructor(
-    private val kakaoAuthUseCase: KakaoAuthUseCase,
+    private val signInUseCase: SignInUseCase,
 ) : ViewModel() {
 
-    private val _loginState = MutableLiveData<UiState<SignInInfo>>(UiState.Loading)
+    private val _loginState = MutableLiveData<UiState<SignInInfo>>()
     val loginState: LiveData<UiState<SignInInfo>> get() = _loginState
 
     fun signInWithKakao() {
         _loginState.value = UiState.Loading
-
         viewModelScope.launch {
             try {
-                val signInInfo = kakaoAuthUseCase()
-                _loginState.value = UiState.Success(signInInfo)
-                LoggerUtils.d("로그인 성공!: $signInInfo")
+                signInUseCase.invoke("", AuthProvider.KAKAO)
+                    .onSuccess { signInInfo ->
+                        LoggerUtils.d("로그인 성공: $signInInfo")
+                        _loginState.value = UiState.Success(signInInfo)
+                    }.onFailure { e ->
+                        _loginState.value = UiState.Failure(message = e.message ?: "카카오 로그인 실패")
+                    }
             } catch (e: Exception) {
-                _loginState.value = UiState.Failure(message = e.message ?: "카카오 로그인 실패")
+                _loginState.value = UiState.Failure(message = e.message ?: "카카오 로그인 중 예외 발생")
             }
         }
     }
