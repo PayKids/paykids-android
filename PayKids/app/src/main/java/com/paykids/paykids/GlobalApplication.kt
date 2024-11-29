@@ -9,8 +9,13 @@ import dagger.hilt.android.HiltAndroidApp
 class GlobalApplication : Application() {
     override fun onCreate() {
         super.onCreate()
-//        Log.d("KeyHash", Utility.getKeyHash(this))
-        KakaoSdk.init(this, BuildConfig.KAKAO_NATIVE_KEY)
+
+        try {
+            KakaoSdk.init(this, BuildConfig.KAKAO_NATIVE_KEY)
+        } catch (e: Exception) {
+            LoggerUtils.e("Kakao SDK 초기화 실패: ${e.message}")
+        }
+
         printStartingLog()
     }
 
