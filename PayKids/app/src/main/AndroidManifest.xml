@@ -42,9 +42,13 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="com.paykids.presentation.view.signIn.SignActivity"/>
+        <activity
+            android:name="com.paykids.presentation.view.signIn.SignActivity"
+            android:exported="false" />
 
-        <activity android:name="com.paykids.presentation.view.home.HomeActivity" />
+        <activity
+            android:name="com.paykids.presentation.view.home.HomeActivity"
+            android:exported="false" />
 
     </application>
 
