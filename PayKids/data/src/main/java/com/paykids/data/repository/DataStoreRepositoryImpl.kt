@@ -26,7 +26,7 @@ class DataStoreRepositoryImpl @Inject constructor(
             }
             Result.success(true)
         } catch (e: Exception) {
-            Result.success(false)
+            Result.failure(e)
         }
     }
 
@@ -41,7 +41,7 @@ class DataStoreRepositoryImpl @Inject constructor(
             }
             Result.success(true)
         } catch (e: Exception) {
-            Result.success(false)
+            Result.failure(e)
         }
     }
 
@@ -52,7 +52,7 @@ class DataStoreRepositoryImpl @Inject constructor(
             }
             Result.success(true)
         } catch (e: Exception) {
-            Result.success(false)
+            Result.failure(e)
         }
     }
 
@@ -73,7 +73,7 @@ class DataStoreRepositoryImpl @Inject constructor(
             }
             Result.success(true)
         } catch (e: Exception) {
-            Result.success(false)
+            Result.failure(e)
         }
     }
 
@@ -94,7 +94,7 @@ class DataStoreRepositoryImpl @Inject constructor(
             }
             Result.success(true)
         } catch (e: Exception) {
-            Result.success(false)
+            Result.failure(e)
         }
     }
 

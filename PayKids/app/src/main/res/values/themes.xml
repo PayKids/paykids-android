@@ -1,9 +1,16 @@
 <resources>
     <!-- Base application theme. -->
-    <style name="Base.Theme.PayKids" parent="Theme.Material3.DayNight.NoActionBar">
+    <style name="Base.Theme.PayKids" parent="Theme.AppCompat.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
     </style>
 
     <style name="Theme.PayKids" parent="Base.Theme.PayKids" />
+
+    <style name="Theme.Start" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/white</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/paykids_logo</item>
+        <item name="windowSplashScreenAnimationDuration">1500</item>
+        <item name="postSplashScreenTheme">@style/Theme.PayKids</item>
+    </style>
 </resources>
