@@ -1,13 +1,10 @@
 package com.paykids.presentation.view.signIn
 
 import androidx.fragment.app.viewModels
-import com.paykids.domain.repository.KakaoAuthRepository
 import com.paykids.presentation.base.BaseFragment
 import com.paykids.presentation.databinding.FragmentSignProviderBinding
 import com.paykids.presentation.utils.UiState
-import com.paykids.util.LoggerUtils
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.coroutineScope
 
 @AndroidEntryPoint
 class SignInProviderFragment : BaseFragment<FragmentSignProviderBinding>() {
