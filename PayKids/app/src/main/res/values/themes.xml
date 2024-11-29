@@ -10,7 +10,7 @@
     <style name="Theme.Start" parent="Theme.SplashScreen">
         <item name="windowSplashScreenBackground">@color/white</item>
         <item name="windowSplashScreenAnimatedIcon">@drawable/paykids_logo</item>
-        <item name="windowSplashScreenAnimationDuration">3000</item>
+        <item name="windowSplashScreenAnimationDuration">1500</item>
         <item name="postSplashScreenTheme">@style/Theme.PayKids</item>
     </style>
 </resources>
