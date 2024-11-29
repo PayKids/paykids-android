@@ -13,6 +13,7 @@ class KakaoAuthRepositoryImpl @Inject constructor(
         return kakaoAuthService.signInWithKakao()
     }
 
+
     override suspend fun signOut(accessToken: String): Result<Boolean> {
         return try {
             kakaoAuthService.signOut()
