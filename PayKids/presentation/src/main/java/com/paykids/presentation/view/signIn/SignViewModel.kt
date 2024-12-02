@@ -14,9 +14,11 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SignInViewModel @Inject constructor(
+class SignViewModel @Inject constructor(
     private val signInUseCase: SignInUseCase,
 ) : ViewModel() {
+
+    var isRegister = false
 
     private val _loginState = MutableLiveData<UiState<SignInInfo>>()
     val loginState: LiveData<UiState<SignInInfo>> get() = _loginState
