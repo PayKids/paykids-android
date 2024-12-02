@@ -14,7 +14,6 @@ object CustomToast {
 
         val toast = Toast(context).apply {
             duration = Toast.LENGTH_SHORT
-            setText(msg)
         }
 
         binding.root.background =
