@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--
+        font-weight : font
+
+        400 : Normal or Regular
+        500 : Medium
+        600 : Semi Bold
+        700 : Bold
+    -->
+
+    <style name="text_bold_14px">
+        <item name="fontFamily">@font/nanumsquare_bold</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:gravity">center</item>
+        <item name="lineHeight">22sp</item>
+    </style>
+
+    <style name="button_bold_16px">
+        <item name="fontFamily">@font/nanumsquare_bold</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:gravity">center</item>
+        <item name="lineHeight">22sp</item>
+    </style>
+
+</resources>

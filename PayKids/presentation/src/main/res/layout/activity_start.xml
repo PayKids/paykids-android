@@ -9,7 +9,7 @@
         android:layout_height="match_parent"
         android:contentDescription="@null"
         android:textSize="36sp"
-        android:src="@color/gray"
+        android:src="@color/gray1"
         android:text="Splash" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
