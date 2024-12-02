@@ -13,7 +13,7 @@
 
         android:fontFamily="@font/nanumsquare_extra_bold"
         android:text="@string/text_set_nickname"
-        android:textColor="#272727"
+        android:textColor="@color/black"
         android:textSize="24sp"
 
         android:textStyle="bold"
@@ -25,12 +25,14 @@
     <EditText
         android:id="@+id/et_nick"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/edittext_height"
 
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="20dp"
         android:background="@drawable/selector_edittext_nickname"
+        android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789가-힣"
         android:fontFamily="@font/nanumsquare_regular"
         android:hint="@string/hint_set_nickname"
+        android:imeOptions="actionDone"
         android:inputType="text"
 
         android:maxLength="14"
@@ -78,15 +80,16 @@
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_done"
-        android:layout_width="0dp"
-        android:layout_height="50dp"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/button_height"
 
         android:layout_marginBottom="40dp"
         android:background="@drawable/shape_radius_50_with_stroke"
+        android:enabled="false"
         android:fontFamily="@font/nanumsquare_extra_bold"
         android:gravity="center"
         android:text="@string/text_confirm_nickname"
-        android:textColor="@color/gray2"
+        android:textColor="@drawable/selector_button_text"
         android:textSize="20sp"
 
         app:layout_constraintBottom_toBottomOf="parent"

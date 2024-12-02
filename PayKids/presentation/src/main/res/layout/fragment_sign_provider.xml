@@ -58,7 +58,7 @@
         android:layout_height="32dp"
 
         android:layout_marginStart="16dp"
-        android:scaleType="fitXY"
+        android:scaleType="fitCenter"
         android:src="@drawable/ic_logo_provider_kakao"
         android:translationZ="10dp"
 

@@ -20,12 +20,7 @@ class SignNicknameFragment(
     private val viewModel: SignViewModel by viewModels()
 
     override fun initView() {
-        binding.etNick.filters = arrayOf(InputFilter { source, _, _, _, _, _ ->
-            val ps: Pattern =
-                Pattern.compile("^[a-zA-Z0-9가-힣ㄱ-ㅎㅏ-ㅣ\\u318D\\u119E\\u11A2\\u2022\\u2025a\\u00B7\\uFE55]+$")
-            if (source == "" || ps.matcher(source).matches()) return@InputFilter source
-            ""
-        }, InputFilter.LengthFilter(14))
+        binding.etNick.filters = arrayOf(InputFilter.LengthFilter(14))
     }
 
     override fun initListener() {
@@ -42,19 +37,19 @@ class SignNicknameFragment(
                     setOnClickListener { binding.etNick.text.clear() }
                 }
 
-                if (length != 0) {
-                    binding.tvComment.apply {
+                binding.tvComment.apply {
+                    if (length != 0) {
                         text = getString(R.string.text_validate_nickname)
                         setTextColor(ContextCompat.getColor(requireContext(), R.color.blue2))
-                    }
-                } else {
-                    binding.tvComment.apply {
+                    } else {
                         text = getString(R.string.text_nickname_condition)
                         setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
                     }
                 }
 
                 binding.btnDone.apply {
+                    isEnabled = length > 0
+
                     if (length != 0) {
                         setBackgroundDrawable(
                             AppCompatResources.getDrawable(
@@ -62,7 +57,6 @@ class SignNicknameFragment(
                                 R.drawable.shape_radius_50
                             )
                         )
-
                         setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
                     } else {
                         setBackgroundDrawable(
