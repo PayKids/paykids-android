@@ -1,12 +1,10 @@
 package com.paykids.presentation.view.signIn
 
 import android.content.Intent
-import androidx.activity.viewModels
 import com.paykids.presentation.R
 import com.paykids.presentation.base.BaseActivity
 import com.paykids.presentation.databinding.ActivitySignBinding
 import com.paykids.presentation.view.home.HomeActivity
-import com.paykids.util.LoggerUtils
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
