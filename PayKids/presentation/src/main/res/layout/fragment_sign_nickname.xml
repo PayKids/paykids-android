@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="20dp">
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:fontFamily="@font/nanumsquare_extra_bold"
+        android:text="@string/text_set_nickname"
+        android:textColor="#272727"
+        android:textSize="24sp"
+
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/et_nick"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <EditText
+        android:id="@+id/et_nick"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layout_marginTop="28dp"
+        android:background="@drawable/selector_edittext_nickname"
+        android:fontFamily="@font/nanumsquare_regular"
+        android:hint="@string/hint_set_nickname"
+        android:inputType="text"
+
+        android:maxLength="14"
+        android:maxLines="1"
+        android:paddingHorizontal="0dp"
+        android:paddingBottom="8dp"
+
+        android:textColor="@color/black"
+        android:textColorHint="@color/gray3"
+
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@id/tv_comment"
+        app:layout_constraintTop_toBottomOf="@id/tv_title"
+        tools:ignore="Autofill" />
+
+    <ImageButton
+        android:id="@+id/ib_clear"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:background="@color/transparent"
+        android:contentDescription="@null"
+        android:src="@drawable/ic_cancel"
+
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/et_nick"
+        app:layout_constraintEnd_toEndOf="@id/et_nick"
+
+        app:layout_constraintTop_toTopOf="@id/et_nick" />
+
+    <TextView
+        android:id="@+id/tv_comment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="40dp"
+        android:fontFamily="@font/nanumsquare_regular"
+
+        android:text="@string/text_nickname_condition"
+        android:textColor="@color/black"
+        android:textSize="12sp"
+
+        app:layout_constraintBottom_toTopOf="@id/btn_done"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/et_nick" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_done"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+
+        android:layout_marginBottom="40dp"
+        android:background="@drawable/shape_radius_50_with_stroke"
+        android:fontFamily="@font/nanumsquare_extra_bold"
+        android:gravity="center"
+        android:text="@string/text_confirm_nickname"
+        android:textColor="@color/gray2"
+        android:textSize="20sp"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
