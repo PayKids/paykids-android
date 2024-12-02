@@ -34,16 +34,26 @@ class SignInProviderFragment : BaseFragment<FragmentSignProviderBinding>() {
                 is UiState.Loading -> {}
 
                 is UiState.Success -> {
-                    if (!signViewModel.isRegister) {
-                        val ft = parentFragmentManager.beginTransaction()
-                        ft.replace(R.id.fl_sign, SignNicknameFragment())
-                        ft.addToBackStack(null)
-                        ft.commit()
-                    } else {
-                        (activity as? SignActivity)?.moveHome()
+                    when {
+                        !signViewModel.isRegister -> {
+                            navigateToNicknameSetting()
+                        }
+
+                        else -> {
+                            (activity as? SignActivity)?.moveHome() ?: run {
+                                showToast("화면 이동 중 오류가 발생했습니다")
+                            }
+                        }
                     }
                 }
             }
         }
+    }
+
+    private fun navigateToNicknameSetting() {
+        parentFragmentManager.beginTransaction()
+            .replace(R.id.fl_sign, SignNicknameFragment())
+            .addToBackStack(null)
+            .commit()
     }
 }
