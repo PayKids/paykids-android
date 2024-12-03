@@ -10,4 +10,7 @@
     <string name="text_validate_nickname">멋진 닉네임이네요!</string>
     <string name="text_confirm_nickname">결정하기</string>
     <string name="text_nickname_condition">* 한글, 영어 최대 14자 이내 작성, 공백 입력 불가능</string>
+
+    <!-- 홈 화면 -->
+    <string name="text_tooltip_start">시작하기</string>
 </resources>
