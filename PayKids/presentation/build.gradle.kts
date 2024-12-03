@@ -71,8 +71,8 @@ dependencies {
     ksp(libs.hilt.compiler)
 
     // Navigation
-    implementation(libs.androidx.navigation.fragment)
-    implementation(libs.androidx.fragment.ktx)
+    implementation(libs.androidx.navigation.fragment.ktx)
+    implementation(libs.androidx.navigation.ui.ktx)
 
     // Kakao SDK
     implementation(libs.v2.all)
