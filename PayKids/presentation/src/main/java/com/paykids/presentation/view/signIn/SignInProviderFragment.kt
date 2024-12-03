@@ -19,9 +19,7 @@ class SignInProviderFragment : BaseFragment<FragmentSignProviderBinding>() {
 
         binding.btnKakao.setOnClickListener {
 //            signViewModel.signInWithKakao()
-            (activity as? SignActivity)?.moveHome() ?: run {
-                showToast("화면 이동 중 오류가 발생했습니다")
-            }
+            navigateToNicknameSetting()
         }
     }
 
@@ -39,10 +37,7 @@ class SignInProviderFragment : BaseFragment<FragmentSignProviderBinding>() {
                 is UiState.Success -> {
                     when {
                         !signViewModel.isRegister -> {
-//                            navigateToNicknameSetting()
-                            (activity as? SignActivity)?.moveHome() ?: run {
-                                showToast("화면 이동 중 오류가 발생했습니다")
-                            }
+                            navigateToNicknameSetting()
                         }
 
                         else -> {

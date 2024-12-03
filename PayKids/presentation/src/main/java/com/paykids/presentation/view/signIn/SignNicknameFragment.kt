@@ -57,6 +57,11 @@ class SignNicknameFragment(
                             )
                         )
                         setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+                        setOnClickListener {
+                            (activity as? SignActivity)?.moveHome() ?: run {
+                                showToast("화면 이동 중 오류가 발생했습니다")
+                            }
+                        }
                     } else {
                         setBackgroundDrawable(
                             AppCompatResources.getDrawable(
