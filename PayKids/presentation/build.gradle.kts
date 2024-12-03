@@ -76,4 +76,7 @@ dependencies {
 
     // Kakao SDK
     implementation(libs.v2.all)
+
+    // Balloon
+    implementation(libs.balloon)
 }
