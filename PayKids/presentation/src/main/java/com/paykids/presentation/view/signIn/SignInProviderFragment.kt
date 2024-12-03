@@ -36,7 +36,10 @@ class SignInProviderFragment : BaseFragment<FragmentSignProviderBinding>() {
                 is UiState.Success -> {
                     when {
                         !signViewModel.isRegister -> {
-                            navigateToNicknameSetting()
+//                            navigateToNicknameSetting()
+                            (activity as? SignActivity)?.moveHome() ?: run {
+                                showToast("화면 이동 중 오류가 발생했습니다")
+                            }
                         }
 
                         else -> {
