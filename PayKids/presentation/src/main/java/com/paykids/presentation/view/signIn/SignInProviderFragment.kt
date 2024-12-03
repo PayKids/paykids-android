@@ -18,7 +18,10 @@ class SignInProviderFragment : BaseFragment<FragmentSignProviderBinding>() {
         super.initListener()
 
         binding.btnKakao.setOnClickListener {
-            signViewModel.signInWithKakao()
+//            signViewModel.signInWithKakao()
+            (activity as? SignActivity)?.moveHome() ?: run {
+                showToast("화면 이동 중 오류가 발생했습니다")
+            }
         }
     }
 
