@@ -20,7 +20,7 @@ class SignNicknameFragment(
     private val viewModel: SignViewModel by viewModels()
 
     override fun initView() {
-        binding.etNick.filters = arrayOf(InputFilter.LengthFilter(14))
+        binding.etNick.filters = arrayOf(InputFilter.LengthFilter(8))
     }
 
     override fun initListener() {
