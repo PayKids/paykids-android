@@ -1,24 +1,14 @@
 package com.paykids.presentation.view.home
 
-import android.content.Intent
-import android.view.View
-import android.widget.TextView
 import android.widget.Toast
-import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
-import androidx.fragment.app.viewModels
 import com.paykids.presentation.R
 import com.paykids.presentation.base.BaseFragment
 import com.paykids.presentation.databinding.FragmentHomeBinding
-import com.paykids.presentation.databinding.ItemTooltipBinding
-import com.paykids.presentation.utils.UiState
-import com.paykids.presentation.view.home.HomeActivity
-import com.paykids.presentation.view.signIn.SignActivity
 import com.skydoves.balloon.ArrowPositionRules
 import com.skydoves.balloon.Balloon
 import com.skydoves.balloon.BalloonAnimation
 import com.skydoves.balloon.BalloonHighlightAnimation
-import com.skydoves.balloon.BalloonSizeSpec
 import com.skydoves.balloon.createBalloon
 import dagger.hilt.android.AndroidEntryPoint
 

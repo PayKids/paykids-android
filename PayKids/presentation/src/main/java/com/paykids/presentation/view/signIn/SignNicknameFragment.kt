@@ -11,7 +11,6 @@ import com.paykids.presentation.R
 import com.paykids.presentation.base.BaseFragment
 import com.paykids.presentation.databinding.FragmentSignNicknameBinding
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.regex.Pattern
 
 @AndroidEntryPoint
 class SignNicknameFragment(
