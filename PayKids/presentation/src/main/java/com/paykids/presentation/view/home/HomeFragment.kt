@@ -1,10 +1,13 @@
 package com.paykids.presentation.view.home
 
+import android.util.Log
 import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
 import com.paykids.presentation.R
 import com.paykids.presentation.base.BaseFragment
 import com.paykids.presentation.databinding.FragmentHomeBinding
+import com.paykids.presentation.view.quiz.QuizEntryFragment
+import com.paykids.presentation.view.signIn.SignNicknameFragment
 import com.skydoves.balloon.ArrowPositionRules
 import com.skydoves.balloon.Balloon
 import com.skydoves.balloon.BalloonAnimation
@@ -17,7 +20,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     private var isSelected = false
 
     override fun initView() {
-
     }
 
     override fun initListener() {
@@ -66,11 +68,17 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             setAutoDismissDuration(1500L)
 
             setOnBalloonClickListener {
-                Toast.makeText(context, "Balloon clicked!", Toast.LENGTH_SHORT).show()
+                navigateToQuizEntry()
             }
 
             build()
         }
     }
 
+    fun navigateToQuizEntry() {
+        parentFragmentManager.beginTransaction()
+            .replace(R.id.fl_home, QuizEntryFragment())
+            .addToBackStack(null)
+            .commit()
+    }
 }
