@@ -7,6 +7,6 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class QuizEntryFragment: BaseFragment<FragmentMypageBinding>() {
     override fun initView() {
-        
+
     }
 }

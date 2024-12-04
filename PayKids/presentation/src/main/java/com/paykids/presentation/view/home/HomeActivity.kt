@@ -10,7 +10,6 @@ import com.paykids.presentation.R
 import com.paykids.presentation.base.BaseActivity
 import com.paykids.presentation.databinding.ActivityHomeBinding
 import com.paykids.presentation.view.signIn.SignActivity
-import com.paykids.presentation.view.signIn.SignNicknameFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

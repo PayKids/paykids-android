@@ -1,13 +1,10 @@
 package com.paykids.presentation.view.home
 
-import android.util.Log
-import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
 import com.paykids.presentation.R
 import com.paykids.presentation.base.BaseFragment
 import com.paykids.presentation.databinding.FragmentHomeBinding
 import com.paykids.presentation.view.quiz.QuizEntryFragment
-import com.paykids.presentation.view.signIn.SignNicknameFragment
 import com.skydoves.balloon.ArrowPositionRules
 import com.skydoves.balloon.Balloon
 import com.skydoves.balloon.BalloonAnimation
