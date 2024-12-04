@@ -2,8 +2,8 @@
 
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white">
 
@@ -17,57 +17,63 @@
             android:layout_height="100dp"
             android:layout_margin="20dp"
             android:background="@color/gray3"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="ContentDescription" />
 
         <ImageView
             android:id="@+id/iv_stage"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:layout_marginStart="100dp"
             android:layout_marginTop="60dp"
+            android:layout_marginEnd="80dp"
             android:background="@drawable/selector_stage"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/iv_title" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_title"
+            tools:ignore="ContentDescription" />
 
         <ImageView
             android:id="@+id/iv_stage2"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:layout_marginTop="60dp"
-            android:layout_marginEnd="60dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginEnd="160dp"
             android:background="@drawable/selector_stage"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/iv_stage" />
+            app:layout_constraintTop_toBottomOf="@id/iv_stage"
+            tools:ignore="ContentDescription" />
 
         <ImageView
             android:id="@+id/iv_stage3"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:layout_marginTop="60dp"
-            android:layout_marginEnd="60dp"
+            android:layout_marginStart="100dp"
+            android:layout_marginTop="40dp"
             android:background="@drawable/selector_stage"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/iv_stage2" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_stage2"
+            tools:ignore="ContentDescription" />
 
         <ImageView
             android:id="@+id/iv_stage4"
             android:layout_width="100dp"
             android:layout_height="100dp"
+            android:layout_marginStart="160dp"
             android:layout_marginTop="60dp"
-            android:layout_marginEnd="60dp"
             android:background="@drawable/selector_stage"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/iv_stage3" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_stage3"
+            tools:ignore="ContentDescription" />
 
         <ImageView
             android:id="@+id/iv_stage5"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_marginTop="60dp"
-            android:layout_marginEnd="60dp"
+            android:layout_marginEnd="80dp"
             android:background="@drawable/selector_stage"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/iv_stage4" />
+            app:layout_constraintTop_toBottomOf="@id/iv_stage4"
+            tools:ignore="ContentDescription" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
