@@ -53,7 +53,7 @@ class SignNicknameFragment(
                         setBackgroundDrawable(
                             AppCompatResources.getDrawable(
                                 requireContext(),
-                                R.drawable.shape_radius_50
+                                R.drawable.shape_radius_60
                             )
                         )
                         setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
@@ -66,7 +66,7 @@ class SignNicknameFragment(
                         setBackgroundDrawable(
                             AppCompatResources.getDrawable(
                                 requireContext(),
-                                R.drawable.shape_radius_50_with_stroke
+                                R.drawable.shape_radius_60_with_stroke
                             )
                         )
                         setTextColor(ContextCompat.getColor(requireContext(), R.color.gray2))
