@@ -1,5 +1,6 @@
 package com.paykids.presentation.view.home
 
+import android.view.View
 import androidx.core.content.res.ResourcesCompat
 import com.paykids.presentation.R
 import com.paykids.presentation.base.BaseFragment
@@ -22,23 +23,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     override fun initListener() {
         super.initListener()
 
-        binding.ivStage.setOnClickListener {
-            if (binding.ivStage.isSelected) {
-                binding.ivStage.isSelected = false
-            } else {
-                binding.ivStage.isSelected = true
-                createTooltip().showAlignBottom(binding.ivStage)
-            }
-        }
-
-        binding.ivStage2.setOnClickListener {
-            if (binding.ivStage2.isSelected) {
-                binding.ivStage2.isSelected = false
-            } else {
-                binding.ivStage2.isSelected = true
-                createTooltip().showAlignBottom(binding.ivStage2)
-            }
-        }
+        setupStageClickListener(binding.ivStage)
+        setupStageClickListener(binding.ivStage2)
     }
 
     override fun setObserver() {
@@ -72,10 +58,19 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         }
     }
 
-    fun navigateToQuizEntry() {
+    private fun navigateToQuizEntry() {
         parentFragmentManager.beginTransaction()
             .replace(R.id.fl_home, QuizEntryFragment())
             .addToBackStack(null)
             .commit()
+    }
+
+    private fun setupStageClickListener(view: View) {
+        view.setOnClickListener {
+            view.isSelected = !view.isSelected
+            if (view.isSelected) {
+                createTooltip().showAlignBottom(view)
+            }
+        }
     }
 }
