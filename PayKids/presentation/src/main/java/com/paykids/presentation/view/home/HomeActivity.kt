@@ -39,7 +39,7 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
     private fun initNavigation() {
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.fl_home) as NavHostFragment
-        val navController = navHostFragment.findNavController()
+        navController = navHostFragment.findNavController()
         binding.navBottom.setupWithNavController(navController)
     }
 }
