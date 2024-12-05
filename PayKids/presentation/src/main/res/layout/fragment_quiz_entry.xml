@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/tv_stage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="260dp"
+        android:background="@drawable/shape_radius_100"
+        android:fontFamily="@font/nanumsquare_bold"
+
+        android:padding="8dp"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="섹션 1, 스테이지 1" />
+
+    <TextView
+        android:id="@+id/tv_stage_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/nanumsquare_extra_bold"
+        android:gravity="center"
+        android:textColor="@color/black"
+
+        android:textSize="22sp"
+        app:layout_constraintTop_toBottomOf="@id/tv_stage"
+
+        tools:text="화폐의 단위에 대해 알아보아요." />
+
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_study"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/button_height"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="52dp"
+
+        android:background="@drawable/shape_radius_60"
+        android:backgroundTint="@color/blue1"
+        android:fontFamily="@font/nanumsquare_bold"
+        android:gravity="center"
+        android:text="@string/text_btn_study"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+
+        app:layout_constraintTop_toBottomOf="@id/tv_stage_name" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_quiz"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/button_height"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="12dp"
+
+        android:background="@drawable/shape_radius_60"
+        android:backgroundTint="@color/blue2"
+        android:fontFamily="@font/nanumsquare_bold"
+        android:gravity="center"
+        android:text="@string/text_btn_quiz"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+
+        app:layout_constraintTop_toBottomOf="@id/btn_study" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_review"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/button_height"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="12dp"
+
+        android:background="@drawable/shape_radius_60"
+        android:backgroundTint="@color/blue3"
+        android:fontFamily="@font/nanumsquare_bold"
+        android:gravity="center"
+        android:text="@string/text_btn_review"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+
+        app:layout_constraintTop_toBottomOf="@id/btn_quiz" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

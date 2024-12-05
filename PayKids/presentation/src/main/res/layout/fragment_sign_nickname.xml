@@ -84,7 +84,7 @@
         android:layout_height="@dimen/button_height"
 
         android:layout_marginBottom="40dp"
-        android:background="@drawable/shape_radius_50_with_stroke"
+        android:background="@drawable/shape_radius_60_with_stroke"
         android:enabled="false"
         android:fontFamily="@font/nanumsquare_extra_bold"
         android:gravity="center"

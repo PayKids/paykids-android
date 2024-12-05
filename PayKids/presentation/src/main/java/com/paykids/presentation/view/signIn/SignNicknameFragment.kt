@@ -11,7 +11,6 @@ import com.paykids.presentation.R
 import com.paykids.presentation.base.BaseFragment
 import com.paykids.presentation.databinding.FragmentSignNicknameBinding
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.regex.Pattern
 
 @AndroidEntryPoint
 class SignNicknameFragment(
@@ -20,7 +19,7 @@ class SignNicknameFragment(
     private val viewModel: SignViewModel by viewModels()
 
     override fun initView() {
-        binding.etNick.filters = arrayOf(InputFilter.LengthFilter(14))
+        binding.etNick.filters = arrayOf(InputFilter.LengthFilter(8))
     }
 
     override fun initListener() {
@@ -54,15 +53,20 @@ class SignNicknameFragment(
                         setBackgroundDrawable(
                             AppCompatResources.getDrawable(
                                 requireContext(),
-                                R.drawable.shape_radius_50
+                                R.drawable.shape_radius_60
                             )
                         )
                         setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+                        setOnClickListener {
+                            (activity as? SignActivity)?.moveHome() ?: run {
+                                showToast("화면 이동 중 오류가 발생했습니다")
+                            }
+                        }
                     } else {
                         setBackgroundDrawable(
                             AppCompatResources.getDrawable(
                                 requireContext(),
-                                R.drawable.shape_radius_50_with_stroke
+                                R.drawable.shape_radius_60_with_stroke
                             )
                         )
                         setTextColor(ContextCompat.getColor(requireContext(), R.color.gray2))

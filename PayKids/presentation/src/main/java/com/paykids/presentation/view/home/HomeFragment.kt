@@ -1,16 +1,21 @@
 package com.paykids.presentation.view.home
 
-import android.content.Intent
-import androidx.fragment.app.viewModels
+import android.view.View
+import androidx.core.content.res.ResourcesCompat
+import com.paykids.presentation.R
 import com.paykids.presentation.base.BaseFragment
 import com.paykids.presentation.databinding.FragmentHomeBinding
-import com.paykids.presentation.utils.UiState
-import com.paykids.presentation.view.signIn.SignActivity
+import com.paykids.presentation.view.quiz.QuizEntryFragment
+import com.skydoves.balloon.ArrowPositionRules
+import com.skydoves.balloon.Balloon
+import com.skydoves.balloon.BalloonAnimation
+import com.skydoves.balloon.BalloonHighlightAnimation
+import com.skydoves.balloon.createBalloon
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class HomeFragment : BaseFragment<FragmentHomeBinding>() {
-    private val homeViewModel: HomeViewModel by viewModels()
+    private var isSelected = false
 
     override fun initView() {
     }
@@ -18,59 +23,53 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     override fun initListener() {
         super.initListener()
 
-        binding.btnLogout.setOnClickListener {
-            homeViewModel.signOut()
-        }
-
-        binding.btnWithdrawal.setOnClickListener{
-            homeViewModel.withdraw()
-        }
+        setupStageClickListener(binding.ivStage)
+        setupStageClickListener(binding.ivStage2)
     }
 
     override fun setObserver() {
         super.setObserver()
+    }
 
-        homeViewModel.signOutState.observe(viewLifecycleOwner) {
-            when (it) {
-                is UiState.Failure -> {
-                    showToast(it.message)
-                }
+    private fun createTooltip(): Balloon {
+        return createBalloon(context = requireContext()) {
+            setHeight(72)
+            setWidthRatio(0.8f)
+            setText(getString(R.string.text_tooltip_start))
+            setTextSize(14f)
+            setTextColorResource(R.color.white)
+            setTextTypeface(ResourcesCompat.getFont(requireContext(), R.font.nanumsquare_bold)!!)
+            setArrowPositionRules(ArrowPositionRules.ALIGN_ANCHOR)
+            setArrowSize(15)
+            setArrowPosition(0.5f)  // 화살표 위치
+            setPaddingHorizontal(20)
+            setCornerRadius(5f)
+            setBackgroundColorResource(R.color.black)
+            setBalloonAnimation(BalloonAnimation.FADE)
+            setBalloonHighlightAnimation(BalloonHighlightAnimation.SHAKE)
+            setLifecycleOwner(viewLifecycleOwner)
+            setAutoDismissDuration(1500L)
 
-                is UiState.Loading -> {}
-
-                is UiState.Success -> {
-                    (activity as HomeActivity).moveSign()
-                }
+            setOnBalloonClickListener {
+                navigateToQuizEntry()
             }
+
+            build()
         }
+    }
 
-        homeViewModel.withdrawState.observe(viewLifecycleOwner) {
-            when (it) {
-                is UiState.Loading -> {}
-                is UiState.Failure -> {
-                    showToast("회원 탈퇴 실패")
-                }
+    private fun navigateToQuizEntry() {
+        parentFragmentManager.beginTransaction()
+            .replace(R.id.fl_home, QuizEntryFragment())
+            .addToBackStack(null)
+            .commit()
+    }
 
-                is UiState.Success -> {
-                    homeViewModel.clearData()
-                }
-            }
-        }
-
-        homeViewModel.clearState.observe(viewLifecycleOwner)
-        {
-            when (it) {
-                is UiState.Loading -> {}
-                is UiState.Failure -> {
-                    showToast("회원 정보 삭제 실패")
-                }
-
-                is UiState.Success -> {
-                    requireActivity().apply {
-                        startActivity(Intent(this, SignActivity::class.java))
-                        finish()
-                    }
-                }
+    private fun setupStageClickListener(view: View) {
+        view.setOnClickListener {
+            view.isSelected = !view.isSelected
+            if (view.isSelected) {
+                createTooltip().showAlignBottom(view)
             }
         }
     }

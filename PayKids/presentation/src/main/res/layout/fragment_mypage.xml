@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <TextView
+        android:id="@+id/tv_mypage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:fontFamily="@font/nanumsquare_bold"
+        android:includeFontPadding="false"
+        android:text="@string/text_my_page"
+        android:textSize="32sp"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/iv_profile"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/shape_round_gray3"
+
+        android:contentDescription="@string/content_description_profile"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_mypage" />
+
+    <TextView
+        android:id="@+id/tv_nickname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:fontFamily="@font/nanumsquare_bold"
+        android:includeFontPadding="false"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iv_profile"
+        tools:text="nickname" />
+
+    <View
+        android:id="@+id/view_my_info"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginTop="48dp"
+        android:background="@drawable/border_black"
+
+        app:layout_constraintTop_toBottomOf="@id/tv_nickname" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="@string/text_my_info"
+        android:textSize="16sp"
+
+        app:layout_constraintBottom_toBottomOf="@id/view_my_info"
+        app:layout_constraintStart_toStartOf="@id/view_my_info"
+        app:layout_constraintTop_toTopOf="@id/view_my_info" />
+
+    <View
+        android:id="@+id/view_policy"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginTop="4dp"
+
+        android:background="@drawable/border_black"
+        app:layout_constraintTop_toBottomOf="@id/view_my_info" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="@string/text_policy"
+        android:textSize="16sp"
+
+        app:layout_constraintBottom_toBottomOf="@id/view_policy"
+        app:layout_constraintStart_toStartOf="@id/view_policy"
+        app:layout_constraintTop_toTopOf="@id/view_policy" />
+
+    <View
+        android:id="@+id/view_app_version"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginTop="4dp"
+
+        android:background="@drawable/border_black"
+        app:layout_constraintTop_toBottomOf="@id/view_policy" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="@string/text_app_version"
+        android:textSize="16sp"
+
+        app:layout_constraintBottom_toBottomOf="@id/view_app_version"
+        app:layout_constraintStart_toStartOf="@id/view_app_version"
+        app:layout_constraintTop_toTopOf="@id/view_app_version" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_logout"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginTop="4dp"
+
+        android:background="@drawable/border_black"
+        app:layout_constraintTop_toBottomOf="@id/view_app_version" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="@string/text_logout"
+        android:textColor="@color/red"
+        android:textSize="16sp"
+
+        app:layout_constraintBottom_toBottomOf="@id/btn_logout"
+        app:layout_constraintStart_toStartOf="@id/btn_logout"
+        app:layout_constraintTop_toTopOf="@id/btn_logout" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_withdrawal"
+        android:layout_width="240dp"
+        android:layout_height="48dp"
+        android:background="@color/blue2"
+        android:contentDescription="@null"
+        android:gravity="center"
+        android:text="회원 탈퇴"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn_logout" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

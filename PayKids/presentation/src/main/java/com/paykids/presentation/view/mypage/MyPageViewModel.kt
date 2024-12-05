@@ -1,4 +1,4 @@
-package com.paykids.presentation.view.home
+package com.paykids.presentation.view.mypage
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(
+class MyPageViewModel @Inject constructor(
     private val signOutUseCase: SignOutUseCase,
     private val withdrawalUseCase: WithdrawalUseCase,
     private val clearUserDataUseCase: ClearUserDataUseCase,

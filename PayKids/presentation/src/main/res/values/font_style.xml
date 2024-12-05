@@ -9,10 +9,10 @@
         700 : Bold
     -->
 
-    <style name="text_bold_14px">
+    <style name="text_bold_12px">
         <item name="fontFamily">@font/nanumsquare_bold</item>
         <item name="android:includeFontPadding">false</item>
-        <item name="android:textSize">14sp</item>
+        <item name="android:textSize">12sp</item>
         <item name="android:gravity">center</item>
         <item name="lineHeight">22sp</item>
     </style>

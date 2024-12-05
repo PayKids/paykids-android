@@ -9,5 +9,21 @@
     <string name="hint_set_nickname">닉네임을 입력해주세요</string>
     <string name="text_validate_nickname">멋진 닉네임이네요!</string>
     <string name="text_confirm_nickname">결정하기</string>
-    <string name="text_nickname_condition">* 한글, 영어 최대 14자 이내 작성, 공백 입력 불가능</string>
+    <string name="text_nickname_condition">* 한글, 영어 최대 8자 이내 작성, 공백 입력 불가능</string>
+
+    <!-- 홈 화면 -->
+    <string name="text_tooltip_start">시작하기</string>
+
+    <!-- 퀴즈 진입 화면 -->
+    <string name="text_btn_study">학습하기</string>
+    <string name="text_btn_quiz">퀴즈 풀기</string>
+    <string name="text_btn_review">오답노트 풀기</string>
+
+    <!-- 마이 페이지 -->
+    <string name="content_description_profile">프로필 이미지</string>
+    <string name="text_my_page">마이 페이지</string>
+    <string name="text_my_info">내 정보</string>
+    <string name="text_policy">약관 및 정책</string>
+    <string name="text_app_version">앱 버전</string>
+    <string name="text_logout">로그아웃</string>
 </resources>
