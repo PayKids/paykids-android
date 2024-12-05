@@ -81,7 +81,7 @@
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_done"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/sign_button_height"
+        android:layout_height="@dimen/button_height"
 
         android:layout_marginBottom="40dp"
         android:background="@drawable/shape_radius_60_with_stroke"
