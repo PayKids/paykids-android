@@ -42,13 +42,13 @@
         android:layout_marginTop="24dp"
         android:fontFamily="@font/nanumsquare_extra_bold"
         android:includeFontPadding="false"
+        android:text="nickname"
         android:textColor="@color/black"
         android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="parent"
 
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/iv_profile"
-        tools:text="nickname" />
+        app:layout_constraintTop_toBottomOf="@id/iv_profile" />
 
     <View
         android:id="@+id/view_my_info"
@@ -159,7 +159,7 @@
         app:layout_constraintStart_toStartOf="@id/view_app_version"
         app:layout_constraintTop_toTopOf="@id/view_app_version" />
 
-    <androidx.appcompat.widget.AppCompatButton
+    <View
         android:id="@+id/btn_logout"
         android:layout_width="match_parent"
         android:layout_height="72dp"
