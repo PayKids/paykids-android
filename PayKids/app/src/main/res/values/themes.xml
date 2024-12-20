@@ -8,10 +8,10 @@
     <style name="Theme.PayKids" parent="Base.Theme.PayKids" />
 
     <style name="Theme.Start" parent="Theme.SplashScreen">
-        <item name="windowSplashScreenBackground">@color/blue2</item>
-        <item name="android:windowBackground">@drawable/gradient_splash</item>
-        <item name="windowSplashScreenAnimatedIcon">@drawable/paykids_logo_white</item>
-        <item name="windowSplashScreenAnimationDuration">1000</item>
+        <item name="windowSplashScreenBackground">@color/blue1</item>
+<!--        <item name="android:windowBackground">@drawable/gradient_splash</item>-->
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_logo</item>
+        <item name="windowSplashScreenAnimationDuration">3000</item>
         <item name="postSplashScreenTheme">@style/Theme.PayKids</item>
     </style>
 </resources>
