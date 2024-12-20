@@ -3,16 +3,16 @@
     <item
         android:id="@+id/diaryFragment"
         android:enabled="true"
-        android:icon="@null"
-        android:title="용돈일기" />
+        android:icon="@drawable/ic_diary"
+        android:title="@string/text_diary_menu" />
     <item
         android:id="@+id/homeFragment"
         android:enabled="true"
-        android:icon="@null"
-        android:title="홈" />
+        android:icon="@drawable/ic_home"
+        android:title="@string/text_home_menu" />
     <item
         android:id="@+id/myPageFragment"
         android:enabled="true"
-        android:icon="@null"
-        android:title="마이페이지" />
+        android:icon="@drawable/ic_mypage"
+        android:title="@string/text_mypage_menu" />
 </menu>
