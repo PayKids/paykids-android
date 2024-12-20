@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_quiz_enter">
 
     <TextView
         android:id="@+id/tv_stage"
@@ -11,10 +12,11 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="260dp"
         android:background="@drawable/shape_radius_100"
-        android:fontFamily="@font/nanumsquare_bold"
+        android:fontFamily="@font/nanumsquare_extra_bold"
 
         android:padding="8dp"
-        android:textSize="14sp"
+        android:textColor="@color/gray8"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
 
         app:layout_constraintStart_toStartOf="parent"
@@ -25,12 +27,12 @@
         android:id="@+id/tv_stage_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="20dp"
         android:fontFamily="@font/nanumsquare_extra_bold"
         android:gravity="center"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
 
-        android:textSize="22sp"
+        android:textSize="24sp"
         app:layout_constraintTop_toBottomOf="@id/tv_stage"
 
         tools:text="화폐의 단위에 대해 알아보아요." />
@@ -41,15 +43,15 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/button_height"
         android:layout_marginHorizontal="20dp"
-        android:layout_marginTop="52dp"
+        android:layout_marginTop="56dp"
 
         android:background="@drawable/shape_radius_60"
-        android:backgroundTint="@color/blue1"
-        android:fontFamily="@font/nanumsquare_bold"
+        android:backgroundTint="@color/white"
+        android:fontFamily="@font/nanumsquare_extra_bold"
         android:gravity="center"
         android:text="@string/text_btn_study"
-        android:textColor="@color/white"
-        android:textSize="18sp"
+        android:textColor="@color/blue1"
+        android:textSize="20sp"
 
         app:layout_constraintTop_toBottomOf="@id/tv_stage_name" />
 
@@ -61,12 +63,12 @@
         android:layout_marginTop="12dp"
 
         android:background="@drawable/shape_radius_60"
-        android:backgroundTint="@color/blue2"
-        android:fontFamily="@font/nanumsquare_bold"
+        android:backgroundTint="@color/blue1"
+        android:fontFamily="@font/nanumsquare_extra_bold"
         android:gravity="center"
         android:text="@string/text_btn_quiz"
         android:textColor="@color/white"
-        android:textSize="18sp"
+        android:textSize="20sp"
 
         app:layout_constraintTop_toBottomOf="@id/btn_study" />
 
@@ -78,12 +80,12 @@
         android:layout_marginTop="12dp"
 
         android:background="@drawable/shape_radius_60"
-        android:backgroundTint="@color/blue3"
-        android:fontFamily="@font/nanumsquare_bold"
+        android:backgroundTint="@color/white"
+        android:fontFamily="@font/nanumsquare_extra_bold"
         android:gravity="center"
         android:text="@string/text_btn_review"
-        android:textColor="@color/white"
-        android:textSize="18sp"
+        android:textColor="@color/blue1"
+        android:textSize="20sp"
 
         app:layout_constraintTop_toBottomOf="@id/btn_quiz" />
 
