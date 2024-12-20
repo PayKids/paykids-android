@@ -23,7 +23,14 @@
     <string name="content_description_profile">프로필 이미지</string>
     <string name="text_my_page">마이 페이지</string>
     <string name="text_my_info">내 정보</string>
+    <string name="text_modify_my_info">수정하기</string>
     <string name="text_policy">약관 및 정책</string>
     <string name="text_app_version">앱 버전</string>
     <string name="text_logout">로그아웃</string>
+
+    <!-- 바텀 내비게이션 메뉴 -->
+    <string name="text_diary_menu">용돈일기</string>
+    <string name="text_home_menu">홈</string>
+    <string name="text_mypage_menu">마이</string>
+
 </resources>

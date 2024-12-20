@@ -22,10 +22,6 @@ class MyPageFragment : BaseFragment<FragmentMypageBinding>() {
         binding.btnLogout.setOnClickListener {
             homeViewModel.signOut()
         }
-
-        binding.btnWithdrawal.setOnClickListener{
-            homeViewModel.withdraw()
-        }
     }
 
     override fun setObserver() {

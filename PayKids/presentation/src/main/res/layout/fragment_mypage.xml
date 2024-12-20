@@ -1,20 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
+    android:background="@color/gray5">
 
     <TextView
         android:id="@+id/tv_mypage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
-        android:fontFamily="@font/nanumsquare_bold"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/header_height"
+        android:background="@color/white"
+        android:fontFamily="@font/nanumsquare_extra_bold"
+        android:gravity="center"
         android:includeFontPadding="false"
+
         android:text="@string/text_my_page"
-        android:textSize="32sp"
+        android:textColor="@color/black"
+        android:textSize="@dimen/text_size_header"
 
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -22,10 +24,10 @@
 
     <ImageView
         android:id="@+id/iv_profile"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:layout_marginTop="40dp"
-        android:background="@drawable/shape_round_gray3"
+        android:layout_width="160dp"
+        android:layout_height="160dp"
+        android:layout_marginTop="120dp"
+        android:background="@drawable/shape_round_profile"
 
         android:contentDescription="@string/content_description_profile"
         app:layout_constraintEnd_toEndOf="parent"
@@ -36,89 +38,141 @@
         android:id="@+id/tv_nickname"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:fontFamily="@font/nanumsquare_bold"
+        android:layout_marginTop="24dp"
+        android:fontFamily="@font/nanumsquare_extra_bold"
         android:includeFontPadding="false"
+        android:text="nickname"
+        android:textColor="@color/black"
         android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="parent"
 
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/iv_profile"
-        tools:text="nickname" />
+        app:layout_constraintTop_toBottomOf="@id/iv_profile" />
 
     <View
         android:id="@+id/view_my_info"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_marginTop="48dp"
-        android:background="@drawable/border_black"
+        android:layout_height="72dp"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="72dp"
+        android:background="@drawable/border_radius_top"
 
         app:layout_constraintTop_toBottomOf="@id/tv_nickname" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="20dp"
+        android:fontFamily="@font/nanumsquare_extra_bold"
         android:text="@string/text_my_info"
+        android:textColor="@color/black"
         android:textSize="16sp"
 
         app:layout_constraintBottom_toBottomOf="@id/view_my_info"
         app:layout_constraintStart_toStartOf="@id/view_my_info"
         app:layout_constraintTop_toTopOf="@id/view_my_info" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="40dp"
+        android:fontFamily="@font/nanumsquare_bold"
+
+        android:text="@string/text_modify_my_info"
+        android:textColor="@color/gray7"
+        android:textSize="14sp"
+
+        app:layout_constraintBottom_toBottomOf="@id/view_my_info"
+        app:layout_constraintEnd_toEndOf="@id/view_my_info"
+        app:layout_constraintTop_toTopOf="@id/view_my_info" />
+
+    <ImageView
+        android:id="@+id/iv_modify"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+
+        android:contentDescription="@null"
+        android:src="@drawable/ic_right"
+
+        app:layout_constraintBottom_toBottomOf="@id/view_my_info"
+        app:layout_constraintEnd_toEndOf="@id/view_my_info"
+        app:layout_constraintTop_toTopOf="@id/view_my_info" />
+
     <View
         android:id="@+id/view_policy"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_marginTop="4dp"
+        android:layout_height="72dp"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="1dp"
 
-        android:background="@drawable/border_black"
+        android:background="@drawable/border_radius_top"
         app:layout_constraintTop_toBottomOf="@id/view_my_info" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="20dp"
+        android:fontFamily="@font/nanumsquare_extra_bold"
         android:text="@string/text_policy"
+        android:textColor="@color/black"
         android:textSize="16sp"
 
         app:layout_constraintBottom_toBottomOf="@id/view_policy"
         app:layout_constraintStart_toStartOf="@id/view_policy"
         app:layout_constraintTop_toTopOf="@id/view_policy" />
 
+    <ImageView
+        android:id="@+id/iv_policy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+
+        android:contentDescription="@null"
+        android:src="@drawable/ic_right"
+
+        app:layout_constraintBottom_toBottomOf="@id/view_policy"
+        app:layout_constraintEnd_toEndOf="@id/view_policy"
+        app:layout_constraintTop_toTopOf="@id/view_policy" />
+
     <View
         android:id="@+id/view_app_version"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_marginTop="4dp"
+        android:layout_height="72dp"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="1dp"
 
-        android:background="@drawable/border_black"
+        android:background="@drawable/border_radius_top"
         app:layout_constraintTop_toBottomOf="@id/view_policy" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="20dp"
+        android:fontFamily="@font/nanumsquare_extra_bold"
         android:text="@string/text_app_version"
+        android:textColor="@color/black"
         android:textSize="16sp"
 
         app:layout_constraintBottom_toBottomOf="@id/view_app_version"
         app:layout_constraintStart_toStartOf="@id/view_app_version"
         app:layout_constraintTop_toTopOf="@id/view_app_version" />
 
-    <androidx.appcompat.widget.AppCompatButton
+    <View
         android:id="@+id/btn_logout"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_marginTop="4dp"
+        android:layout_height="72dp"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="1dp"
 
-        android:background="@drawable/border_black"
+        android:background="@drawable/border_radius_bottom"
         app:layout_constraintTop_toBottomOf="@id/view_app_version" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="20dp"
+        android:fontFamily="@font/nanumsquare_extra_bold"
         android:text="@string/text_logout"
         android:textColor="@color/red"
         android:textSize="16sp"
@@ -126,20 +180,6 @@
         app:layout_constraintBottom_toBottomOf="@id/btn_logout"
         app:layout_constraintStart_toStartOf="@id/btn_logout"
         app:layout_constraintTop_toTopOf="@id/btn_logout" />
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btn_withdrawal"
-        android:layout_width="240dp"
-        android:layout_height="48dp"
-        android:background="@color/blue2"
-        android:contentDescription="@null"
-        android:gravity="center"
-        android:text="회원 탈퇴"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btn_logout" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
