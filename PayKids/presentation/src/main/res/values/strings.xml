@@ -27,6 +27,9 @@
     <string name="text_policy">약관 및 정책</string>
     <string name="text_app_version">앱 버전</string>
     <string name="text_logout">로그아웃</string>
+    <string name="text_withdrawal">회원 탈퇴</string>
+    <string name="text_nickname">별명</string>
+    <string name="text_email">이메일</string>
 
     <!-- 바텀 내비게이션 메뉴 -->
     <string name="text_diary_menu">용돈일기</string>
