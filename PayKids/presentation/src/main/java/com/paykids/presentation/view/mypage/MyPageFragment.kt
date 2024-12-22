@@ -1,33 +1,53 @@
 package com.paykids.presentation.view.mypage
 
-import android.content.Intent
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import com.paykids.presentation.R
 import com.paykids.presentation.base.BaseFragment
+import com.paykids.presentation.custom.ConfirmDialogInterface
+import com.paykids.presentation.custom.MyPageDialog
 import com.paykids.presentation.databinding.FragmentMypageBinding
 import com.paykids.presentation.utils.UiState
 import com.paykids.presentation.view.home.HomeActivity
-import com.paykids.presentation.view.signIn.SignActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MyPageFragment : BaseFragment<FragmentMypageBinding>() {
-    private val homeViewModel: MyPageViewModel by viewModels()
+class MyPageFragment : BaseFragment<FragmentMypageBinding>(), ConfirmDialogInterface {
+    private val myPageViewModel: MyPageViewModel by viewModels()
 
     override fun initView() {
     }
 
     override fun initListener() {
         super.initListener()
+        val navController = findNavController()
+
+
+        binding.ivModify.setOnClickListener {
+            navController.navigate(R.id.modifyInfoFragment)
+        }
+
+        binding.ivPolicy.setOnClickListener {
+            navController.navigate(R.id.policyFragment)
+        }
 
         binding.btnLogout.setOnClickListener {
-            homeViewModel.signOut()
+            val dialog =
+                MyPageDialog(
+                    this,
+                    R.string.dialog_signout_title,
+                    R.string.dialog_signout_message,
+                    R.string.dialog_signout_confirm
+                )
+            dialog.isCancelable = false
+            dialog.show(parentFragmentManager, "SignOutDialog")
         }
     }
 
     override fun setObserver() {
         super.setObserver()
 
-        homeViewModel.signOutState.observe(viewLifecycleOwner) {
+        myPageViewModel.signOutState.observe(viewLifecycleOwner) {
             when (it) {
                 is UiState.Failure -> {
                     showToast(it.message)
@@ -40,35 +60,9 @@ class MyPageFragment : BaseFragment<FragmentMypageBinding>() {
                 }
             }
         }
+    }
 
-        homeViewModel.withdrawState.observe(viewLifecycleOwner) {
-            when (it) {
-                is UiState.Loading -> {}
-                is UiState.Failure -> {
-                    showToast("회원 탈퇴 실패")
-                }
-
-                is UiState.Success -> {
-                    homeViewModel.clearData()
-                }
-            }
-        }
-
-        homeViewModel.clearState.observe(viewLifecycleOwner)
-        {
-            when (it) {
-                is UiState.Loading -> {}
-                is UiState.Failure -> {
-                    showToast("회원 정보 삭제 실패")
-                }
-
-                is UiState.Success -> {
-                    requireActivity().apply {
-                        startActivity(Intent(this, SignActivity::class.java))
-                        finish()
-                    }
-                }
-            }
-        }
+    override fun onYesButtonClick() {
+        myPageViewModel.signOut()
     }
 }

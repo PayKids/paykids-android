@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray5">
+
+    <TextView
+        android:id="@+id/tv_policy"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/header_height"
+        android:background="@color/white"
+        android:fontFamily="@font/nanumsquare_extra_bold"
+        android:gravity="center"
+        android:includeFontPadding="false"
+
+        android:text="@string/text_policy"
+        android:textColor="@color/black"
+        android:textSize="@dimen/text_size_header"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/ib_back"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:background="@color/transparent"
+        android:contentDescription="@null"
+        android:src="@drawable/ic_left_blue"
+
+        app:layout_constraintBottom_toBottomOf="@id/tv_policy"
+        app:layout_constraintStart_toStartOf="@id/tv_policy"
+        app:layout_constraintTop_toTopOf="@id/tv_policy"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+
+        android:layout_marginTop="40dp"
+        android:fontFamily="@font/nanumsquare_bold"
+        android:text="@string/text_require_consent"
+        android:textColor="@color/gray8"
+        android:textSize="16sp"
+
+        app:layout_constraintStart_toStartOf="@id/tv_policy"
+        app:layout_constraintTop_toBottomOf="@id/tv_policy" />
+
+
+    <View
+        android:id="@+id/view_terms_of_use"
+        android:layout_width="match_parent"
+        android:layout_height="72dp"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="88dp"
+        android:background="@drawable/shape_radius_top_12"
+
+        app:layout_constraintTop_toBottomOf="@id/tv_policy" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:fontFamily="@font/nanumsquare_bold"
+        android:text="@string/text_terms_of_use"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+
+        app:layout_constraintBottom_toBottomOf="@id/view_terms_of_use"
+        app:layout_constraintStart_toStartOf="@id/view_terms_of_use"
+        app:layout_constraintTop_toTopOf="@id/view_terms_of_use" />
+
+    <ImageView
+        android:id="@+id/iv_terms_of_use"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginEnd="20dp"
+
+        android:clickable="true"
+        android:contentDescription="@null"
+        android:focusable="true"
+        android:src="@drawable/ic_right"
+
+        app:layout_constraintBottom_toBottomOf="@id/view_terms_of_use"
+        app:layout_constraintEnd_toEndOf="@id/view_terms_of_use"
+        app:layout_constraintTop_toTopOf="@id/view_terms_of_use" />
+
+    <View
+        android:id="@+id/view_policy"
+        android:layout_width="match_parent"
+        android:layout_height="72dp"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="1dp"
+
+        android:background="@color/white"
+        app:layout_constraintTop_toBottomOf="@id/view_terms_of_use" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:fontFamily="@font/nanumsquare_bold"
+        android:text="@string/text_policy"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+
+        app:layout_constraintBottom_toBottomOf="@id/view_policy"
+        app:layout_constraintStart_toStartOf="@id/view_policy"
+        app:layout_constraintTop_toTopOf="@id/view_policy" />
+
+    <ImageView
+        android:id="@+id/iv_policy"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginEnd="20dp"
+
+        android:clickable="true"
+        android:contentDescription="@null"
+        android:focusable="true"
+        android:src="@drawable/ic_right"
+
+        app:layout_constraintBottom_toBottomOf="@id/view_policy"
+        app:layout_constraintEnd_toEndOf="@id/view_policy"
+        app:layout_constraintTop_toTopOf="@id/view_policy" />
+
+    <View
+        android:id="@+id/view_license"
+        android:layout_width="match_parent"
+        android:layout_height="72dp"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="1dp"
+
+        android:background="@drawable/shape_radius_bottom_12"
+        app:layout_constraintTop_toBottomOf="@id/view_policy" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:fontFamily="@font/nanumsquare_bold"
+        android:text="@string/text_license"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+
+        app:layout_constraintBottom_toBottomOf="@id/view_license"
+        app:layout_constraintStart_toStartOf="@id/view_license"
+        app:layout_constraintTop_toTopOf="@id/view_license" />
+
+    <ImageView
+        android:id="@+id/iv_license"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginEnd="20dp"
+
+        android:clickable="true"
+        android:contentDescription="@null"
+        android:focusable="true"
+        android:src="@drawable/ic_right"
+
+        app:layout_constraintBottom_toBottomOf="@id/view_license"
+        app:layout_constraintEnd_toEndOf="@id/view_license"
+        app:layout_constraintTop_toTopOf="@id/view_license" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
