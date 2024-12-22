@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/gray5">
@@ -26,13 +27,18 @@
         android:id="@+id/iv_profile"
         android:layout_width="160dp"
         android:layout_height="160dp"
-        android:layout_marginTop="120dp"
-        android:background="@drawable/shape_round_profile"
+        android:layout_marginTop="100dp"
 
+        android:background="@drawable/round_image"
+        android:clipToOutline="true"
         android:contentDescription="@string/content_description_profile"
+        android:scaleType="fitXY"
+        android:src="@drawable/img_dice"
+
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_mypage" />
+        app:layout_constraintTop_toBottomOf="@id/tv_mypage"
+        tools:ignore="NewApi,UnusedAttribute" />
 
     <TextView
         android:id="@+id/tv_nickname"
@@ -75,7 +81,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="40dp"
+        android:layout_marginEnd="52dp"
         android:fontFamily="@font/nanumsquare_bold"
 
         android:text="@string/text_modify_my_info"
@@ -88,8 +94,8 @@
 
     <ImageView
         android:id="@+id/iv_modify"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
         android:layout_marginEnd="20dp"
 
         android:contentDescription="@null"
@@ -106,7 +112,7 @@
         android:layout_marginHorizontal="20dp"
         android:layout_marginTop="1dp"
 
-        android:background="@drawable/shape_radius_top_12"
+        android:background="@color/white"
         app:layout_constraintTop_toBottomOf="@id/view_my_info" />
 
     <TextView
@@ -124,8 +130,8 @@
 
     <ImageView
         android:id="@+id/iv_policy"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
         android:layout_marginEnd="20dp"
 
         android:contentDescription="@null"
@@ -142,7 +148,7 @@
         android:layout_marginHorizontal="20dp"
         android:layout_marginTop="1dp"
 
-        android:background="@drawable/shape_radius_top_12"
+        android:background="@color/white"
         app:layout_constraintTop_toBottomOf="@id/view_policy" />
 
     <TextView
