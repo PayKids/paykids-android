@@ -76,11 +76,13 @@
 
     <ImageView
         android:id="@+id/iv_terms_of_use"
-        android:layout_width="16dp"
-        android:layout_height="16dp"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
         android:layout_marginEnd="20dp"
 
+        android:clickable="true"
         android:contentDescription="@null"
+        android:focusable="true"
         android:src="@drawable/ic_right"
 
         app:layout_constraintBottom_toBottomOf="@id/view_terms_of_use"
@@ -112,11 +114,13 @@
 
     <ImageView
         android:id="@+id/iv_policy"
-        android:layout_width="16dp"
-        android:layout_height="16dp"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
         android:layout_marginEnd="20dp"
 
+        android:clickable="true"
         android:contentDescription="@null"
+        android:focusable="true"
         android:src="@drawable/ic_right"
 
         app:layout_constraintBottom_toBottomOf="@id/view_policy"
@@ -148,11 +152,13 @@
 
     <ImageView
         android:id="@+id/iv_license"
-        android:layout_width="16dp"
-        android:layout_height="16dp"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
         android:layout_marginEnd="20dp"
 
+        android:clickable="true"
         android:contentDescription="@null"
+        android:focusable="true"
         android:src="@drawable/ic_right"
 
         app:layout_constraintBottom_toBottomOf="@id/view_license"
