@@ -10,14 +10,28 @@
         android:name="com.paykids.presentation.view.diary.DiaryFragment"
         android:label="fragment_diary"
         tools:layout="@layout/fragment_diary" />
+
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.paykids.presentation.view.home.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" />
+
     <fragment
         android:id="@+id/myPageFragment"
         android:name="com.paykids.presentation.view.mypage.MyPageFragment"
         android:label="fragment_myPage"
         tools:layout="@layout/fragment_mypage" />
+
+    <fragment
+        android:id="@+id/modifyInfoFragment"
+        android:name="com.paykids.presentation.view.mypage.ModifyInfoFragment"
+        android:label="fragment_modifyInfo"
+        tools:layout="@layout/fragment_modify_info" />
+
+    <fragment
+        android:id="@+id/policyFragment"
+        android:name="com.paykids.presentation.view.mypage.PolicyFragment"
+        android:label="fragment_policy"
+        tools:layout="@layout/fragment_policy" />
 </navigation>
