@@ -26,9 +26,10 @@
     <ImageButton
         android:layout_width="48dp"
         android:layout_height="48dp"
+        android:layout_marginStart="12dp"
         android:background="@color/transparent"
         android:contentDescription="@null"
-        android:src="@drawable/ic_left"
+        android:src="@drawable/ic_left_blue"
 
         app:layout_constraintBottom_toBottomOf="@id/tv_mypage"
         app:layout_constraintStart_toStartOf="@id/tv_mypage"
@@ -175,6 +176,7 @@
         tools:text="hbj0209@kakao.com" />
 
     <TextView
+        android:id="@+id/tv_withdraw"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="32dp"
@@ -182,7 +184,7 @@
         android:fontFamily="@font/nanumsquare_extra_bold"
         android:text="@string/text_withdrawal"
         android:textColor="@color/red"
-        android:textSize="16sp"
+        android:textSize="18sp"
 
         app:layout_constraintBottom_toBottomOf="@id/view_my_info"
         app:layout_constraintEnd_toEndOf="@id/view_my_info"
