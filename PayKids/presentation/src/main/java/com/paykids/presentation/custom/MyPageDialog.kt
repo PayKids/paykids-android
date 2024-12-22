@@ -11,7 +11,9 @@ import com.paykids.presentation.databinding.DialogMypageBinding
 
 class MyPageDialog(
     confirmDialogInterface: ConfirmDialogInterface,
-    private var title: Int, private var message: Int,
+    private var title: Int,
+    private var message: Int,
+    private var confirmMessage: Int,
 ) : DialogFragment() {
 
     private var _binding: DialogMypageBinding? = null
@@ -36,12 +38,13 @@ class MyPageDialog(
 
         binding.tvTitle.text = getString(title)
         binding.tvMessage.text = getString(message)
+        binding.btnYes.text = getString(confirmMessage)
 
         binding.btnNo.setOnClickListener {
             dismiss()
         }
 
-        binding.btnWithdraw.setOnClickListener {
+        binding.btnYes.setOnClickListener {
             this.confirmDialogInterface?.onYesButtonClick()
             dismiss()
         }
@@ -62,8 +65,4 @@ class MyPageDialog(
         super.onDestroyView()
         _binding = null
     }
-}
-
-interface ConfirmDialogInterface {
-    fun onYesButtonClick()
 }

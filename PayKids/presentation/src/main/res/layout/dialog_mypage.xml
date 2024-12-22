@@ -53,13 +53,13 @@
             tools:ignore="ButtonStyle" />
 
         <Button
-            android:id="@+id/btn_withdraw"
+            android:id="@+id/btn_yes"
             android:layout_width="0dp"
             android:layout_height="48dp"
             android:layout_weight="1"
             android:background="@drawable/shape_mypage_fill_btn"
             android:fontFamily="@font/nanumsquare_extra_bold"
-            android:text="@string/text_withdrawal"
+            tools:text="@string/text_withdrawal"
             android:textColor="@color/white"
             android:textSize="16sp"
             tools:ignore="ButtonStyle" />

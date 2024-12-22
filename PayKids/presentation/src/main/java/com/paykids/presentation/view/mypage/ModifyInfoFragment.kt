@@ -39,7 +39,8 @@ class ModifyInfoFragment : BaseFragment<FragmentModifyInfoBinding>(), ConfirmDia
                 MyPageDialog(
                     this,
                     R.string.dialog_withdraw_title,
-                    R.string.dialog_withdraw_message
+                    R.string.dialog_withdraw_message,
+                    R.string.dialog_withdraw_confirm
                 )
             dialog.isCancelable = false
             dialog.show(parentFragmentManager, "WithdrawDialog")
