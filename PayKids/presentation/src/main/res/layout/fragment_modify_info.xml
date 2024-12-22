@@ -129,28 +129,38 @@
         app:layout_constraintStart_toStartOf="@id/tv_modify_nickname"
         app:layout_constraintTop_toBottomOf="@+id/tv_modify_nickname" />
 
-    <EditText
-        android:id="@+id/et_modify_nickname"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_nickname"
         android:layout_width="0dp"
-        android:layout_height="52dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="36dp"
         android:layout_marginEnd="24dp"
 
-        android:background="@drawable/border_radius_10"
-        android:fontFamily="@font/nanumsquare_bold"
-        android:gravity="center"
-        android:includeFontPadding="false"
-        android:inputType="text"
-        android:maxLength="8"
-        android:textColor="@color/black"
-        android:textSize="16sp"
+        app:counterEnabled="true"
+        app:counterMaxLength="8"
+        app:errorEnabled="true"
 
         app:layout_constraintBottom_toBottomOf="@id/tv_modify_nickname"
         app:layout_constraintEnd_toEndOf="@id/view_my_info"
         app:layout_constraintStart_toEndOf="@id/tv_modify_nickname"
-        app:layout_constraintTop_toTopOf="@id/tv_modify_nickname"
-        tools:ignore="Autofill,LabelFor"
-        tools:text="수정된 닉네임" />
+        app:layout_constraintTop_toTopOf="@id/tv_modify_nickname">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_modify_nickname"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:background="@drawable/border_radius_10"
+
+            android:fontFamily="@font/nanumsquare_bold"
+            android:gravity="center"
+            android:importantForAutofill="no"
+            android:includeFontPadding="false"
+            android:inputType="text"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            tools:text="수정된 닉네임" />
+
+    </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
         android:id="@+id/tv_email"
@@ -173,7 +183,7 @@
         tools:ignore="Autofill,LabelFor"
         tools:text="hbj0209@kakao.com" />
 
-    <TextView
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/tv_withdraw"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
