@@ -2,16 +2,18 @@ package com.paykids.presentation.view.mypage
 
 import android.content.Intent
 import androidx.fragment.app.viewModels
+import com.paykids.presentation.R
 import com.paykids.presentation.base.BaseFragment
 import com.paykids.presentation.databinding.FragmentMypageBinding
 import com.paykids.presentation.utils.UiState
 import com.paykids.presentation.view.home.HomeActivity
+import com.paykids.presentation.view.quiz.QuizEntryFragment
 import com.paykids.presentation.view.signIn.SignActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MyPageFragment : BaseFragment<FragmentMypageBinding>() {
-    private val homeViewModel: MyPageViewModel by viewModels()
+    private val myPageViewModel: MyPageViewModel by viewModels()
 
     override fun initView() {
     }
@@ -19,15 +21,29 @@ class MyPageFragment : BaseFragment<FragmentMypageBinding>() {
     override fun initListener() {
         super.initListener()
 
+        binding.ivModify.setOnClickListener {
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fl_home, ModifyInfoFragment())
+                .addToBackStack(null)
+                .commit()
+        }
+
+        binding.ivPolicy.setOnClickListener {
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fl_home, PolicyFragment())
+                .addToBackStack(null)
+                .commit()
+        }
+
         binding.btnLogout.setOnClickListener {
-            homeViewModel.signOut()
+            myPageViewModel.signOut()
         }
     }
 
     override fun setObserver() {
         super.setObserver()
 
-        homeViewModel.signOutState.observe(viewLifecycleOwner) {
+        myPageViewModel.signOutState.observe(viewLifecycleOwner) {
             when (it) {
                 is UiState.Failure -> {
                     showToast(it.message)
@@ -37,36 +53,6 @@ class MyPageFragment : BaseFragment<FragmentMypageBinding>() {
 
                 is UiState.Success -> {
                     (activity as HomeActivity).moveSign()
-                }
-            }
-        }
-
-        homeViewModel.withdrawState.observe(viewLifecycleOwner) {
-            when (it) {
-                is UiState.Loading -> {}
-                is UiState.Failure -> {
-                    showToast("회원 탈퇴 실패")
-                }
-
-                is UiState.Success -> {
-                    homeViewModel.clearData()
-                }
-            }
-        }
-
-        homeViewModel.clearState.observe(viewLifecycleOwner)
-        {
-            when (it) {
-                is UiState.Loading -> {}
-                is UiState.Failure -> {
-                    showToast("회원 정보 삭제 실패")
-                }
-
-                is UiState.Success -> {
-                    requireActivity().apply {
-                        startActivity(Intent(this, SignActivity::class.java))
-                        finish()
-                    }
                 }
             }
         }
