@@ -1,12 +1,14 @@
 package com.paykids.presentation.view.mypage
 
+import android.app.Activity
 import android.content.Intent
+import android.net.Uri
+import android.provider.MediaStore
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.viewModels
 import com.paykids.presentation.base.BaseFragment
 import com.paykids.presentation.databinding.FragmentModifyInfoBinding
-import com.paykids.presentation.databinding.FragmentMypageBinding
 import com.paykids.presentation.utils.UiState
-import com.paykids.presentation.view.home.HomeActivity
 import com.paykids.presentation.view.signIn.SignActivity
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -22,6 +24,10 @@ class ModifyInfoFragment : BaseFragment<FragmentModifyInfoBinding>() {
 
         binding.ibBack.setOnClickListener {
             parentFragmentManager.popBackStack()
+        }
+
+        binding.ivModifyImage.setOnClickListener {
+            openGallery()
         }
 
         binding.tvWithdraw.setOnClickListener {
@@ -61,5 +67,20 @@ class ModifyInfoFragment : BaseFragment<FragmentModifyInfoBinding>() {
                 }
             }
         }
+    }
+
+    private val galleryLauncher =
+        this.registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val selectedImageUri: Uri? = result.data?.data
+                selectedImageUri?.let {
+                    binding.ivProfile.setImageURI(it)
+                }
+            }
+        }
+
+    private fun openGallery() {
+        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        galleryLauncher.launch(intent)
     }
 }
