@@ -55,7 +55,7 @@
         android:layout_height="72dp"
         android:layout_marginHorizontal="20dp"
         android:layout_marginTop="72dp"
-        android:background="@drawable/border_radius_top"
+        android:background="@drawable/shape_radius_top_12"
 
         app:layout_constraintTop_toBottomOf="@id/tv_nickname" />
 
@@ -106,7 +106,7 @@
         android:layout_marginHorizontal="20dp"
         android:layout_marginTop="1dp"
 
-        android:background="@drawable/border_radius_top"
+        android:background="@drawable/shape_radius_top_12"
         app:layout_constraintTop_toBottomOf="@id/view_my_info" />
 
     <TextView
@@ -142,7 +142,7 @@
         android:layout_marginHorizontal="20dp"
         android:layout_marginTop="1dp"
 
-        android:background="@drawable/border_radius_top"
+        android:background="@drawable/shape_radius_top_12"
         app:layout_constraintTop_toBottomOf="@id/view_policy" />
 
     <TextView
@@ -165,7 +165,7 @@
         android:layout_marginHorizontal="20dp"
         android:layout_marginTop="1dp"
 
-        android:background="@drawable/border_radius_bottom"
+        android:background="@drawable/shape_radius_bottom_12"
         app:layout_constraintTop_toBottomOf="@id/view_app_version" />
 
     <TextView
