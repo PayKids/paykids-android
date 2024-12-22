@@ -24,9 +24,9 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
+        android:id="@+id/ib_back"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:layout_marginStart="12dp"
         android:background="@color/transparent"
         android:contentDescription="@null"
         android:src="@drawable/ic_left_blue"
@@ -61,9 +61,7 @@
         android:src="@drawable/ic_add_photo"
 
         app:layout_constraintBottom_toBottomOf="@id/iv_profile"
-        app:layout_constraintEnd_toEndOf="@id/iv_profile"
-        app:layout_constraintMarginBottom="8dp"
-        app:layout_constraintMarginEnd="8dp" />
+        app:layout_constraintEnd_toEndOf="@id/iv_profile" />
 
     <TextView
         android:id="@+id/tv_nickname"

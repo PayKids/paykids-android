@@ -20,6 +20,10 @@ class ModifyInfoFragment : BaseFragment<FragmentModifyInfoBinding>() {
     override fun initListener() {
         super.initListener()
 
+        binding.ibBack.setOnClickListener {
+            parentFragmentManager.popBackStack()
+        }
+
         binding.tvWithdraw.setOnClickListener {
             myPageViewModel.withdraw()
         }
