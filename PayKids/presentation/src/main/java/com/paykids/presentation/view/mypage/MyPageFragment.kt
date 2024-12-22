@@ -4,13 +4,15 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.paykids.presentation.R
 import com.paykids.presentation.base.BaseFragment
+import com.paykids.presentation.custom.ConfirmDialogInterface
+import com.paykids.presentation.custom.MyPageDialog
 import com.paykids.presentation.databinding.FragmentMypageBinding
 import com.paykids.presentation.utils.UiState
 import com.paykids.presentation.view.home.HomeActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MyPageFragment : BaseFragment<FragmentMypageBinding>() {
+class MyPageFragment : BaseFragment<FragmentMypageBinding>(), ConfirmDialogInterface {
     private val myPageViewModel: MyPageViewModel by viewModels()
 
     override fun initView() {
@@ -30,7 +32,15 @@ class MyPageFragment : BaseFragment<FragmentMypageBinding>() {
         }
 
         binding.btnLogout.setOnClickListener {
-            myPageViewModel.signOut()
+            val dialog =
+                MyPageDialog(
+                    this,
+                    R.string.dialog_signout_title,
+                    R.string.dialog_signout_message,
+                    R.string.dialog_signout_confirm
+                )
+            dialog.isCancelable = false
+            dialog.show(parentFragmentManager, "SignOutDialog")
         }
     }
 
@@ -50,5 +60,9 @@ class MyPageFragment : BaseFragment<FragmentMypageBinding>() {
                 }
             }
         }
+    }
+
+    override fun onYesButtonClick() {
+        myPageViewModel.signOut()
     }
 }
