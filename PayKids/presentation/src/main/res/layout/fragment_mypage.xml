@@ -23,21 +23,21 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/iv_profile"
         android:layout_width="160dp"
         android:layout_height="160dp"
         android:layout_marginTop="100dp"
 
         android:background="@drawable/round_image"
-        android:clipToOutline="true"
         android:contentDescription="@string/content_description_profile"
         android:scaleType="fitXY"
         android:src="@drawable/img_dice"
-
         app:layout_constraintEnd_toEndOf="parent"
+
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_mypage"
+        app:shapeAppearanceOverlay="@style/CircleImageView"
         tools:ignore="NewApi,UnusedAttribute" />
 
     <TextView
