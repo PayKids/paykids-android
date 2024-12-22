@@ -6,14 +6,18 @@ import android.net.Uri
 import android.provider.MediaStore
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.viewModels
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.paykids.presentation.R
 import com.paykids.presentation.base.BaseFragment
+import com.paykids.presentation.custom.ConfirmDialogInterface
+import com.paykids.presentation.custom.MyPageDialog
 import com.paykids.presentation.databinding.FragmentModifyInfoBinding
 import com.paykids.presentation.utils.UiState
 import com.paykids.presentation.view.signIn.SignActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class ModifyInfoFragment : BaseFragment<FragmentModifyInfoBinding>() {
+class ModifyInfoFragment : BaseFragment<FragmentModifyInfoBinding>(), ConfirmDialogInterface {
     private val myPageViewModel: MyPageViewModel by viewModels()
 
     override fun initView() {
@@ -31,7 +35,14 @@ class ModifyInfoFragment : BaseFragment<FragmentModifyInfoBinding>() {
         }
 
         binding.tvWithdraw.setOnClickListener {
-            myPageViewModel.withdraw()
+            val dialog =
+                MyPageDialog(
+                    this,
+                    R.string.dialog_withdraw_title,
+                    R.string.dialog_withdraw_message
+                )
+            dialog.isCancelable = false
+            dialog.show(parentFragmentManager, "WithdrawDialog")
         }
     }
 
@@ -82,5 +93,9 @@ class ModifyInfoFragment : BaseFragment<FragmentModifyInfoBinding>() {
     private fun openGallery() {
         val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         galleryLauncher.launch(intent)
+    }
+
+    override fun onYesButtonClick() {
+        myPageViewModel.withdraw()
     }
 }
