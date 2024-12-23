@@ -12,6 +12,12 @@
         tools:layout="@layout/fragment_diary" />
 
     <fragment
+        android:id="@+id/analysisConsumeFragment"
+        android:name="com.paykids.presentation.view.diary.AnalysisConsumeFragment"
+        android:label="fragment_analysis_cosume"
+        tools:layout="@layout/fragment_analysis_consume" />
+
+    <fragment
         android:id="@+id/homeFragment"
         android:name="com.paykids.presentation.view.home.HomeFragment"
         android:label="fragment_home"
