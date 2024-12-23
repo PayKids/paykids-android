@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cl_dialog"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/shape_radius_dialog"
+    android:minWidth="300dp"
+    android:paddingHorizontal="20dp"
+    android:paddingVertical="28dp">
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/nanumsquare_extra_bold"
+        android:gravity="center"
+
+        android:textColor="@color/black"
+        android:textSize="20sp"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/cl_dialog"
+        tools:text="용돈 기입하기" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_switch"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginHorizontal="8dp"
+        android:layout_marginTop="28dp"
+        app:layout_constraintTop_toBottomOf="@id/tv_title"
+        tools:context=".ToggleBtActivity">
+
+        <LinearLayout
+            android:id="@+id/ll_switch"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/switch_bg_outline"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/tv_consume"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/switch_bg_select"
+                android:fontFamily="@font/nanumsquare_extra_bold"
+                android:gravity="center"
+                android:text="소비"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                tools:ignore="RtlSymmetry" />
+
+            <TextView
+                android:id="@+id/tv_income"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:fontFamily="@font/nanumsquare_extra_bold"
+                android:gravity="center"
+                android:text="수입"
+                android:textColor="@color/gray7"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/tv_date"
+        style="@style/body1_EB"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
+        android:fontFamily="@font/nanumsquare_extra_bold"
+        android:text="날짜"
+        android:textColor="@color/black"
+
+        app:layout_constraintStart_toStartOf="@id/cl_switch"
+        app:layout_constraintTop_toBottomOf="@id/cl_switch" />
+
+    <View
+        android:id="@+id/view_date_picker"
+        android:layout_width="0dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/shape_consumption_dialog"
+
+        app:layout_constraintEnd_toEndOf="@id/cl_switch"
+        app:layout_constraintStart_toStartOf="@id/cl_switch"
+        app:layout_constraintTop_toBottomOf="@id/tv_date" />
+
+    <TextView
+        android:id="@+id/tv_add_amount"
+        style="@style/body1_EB"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:fontFamily="@font/nanumsquare_extra_bold"
+        android:text="금액 입력하기"
+        android:textColor="@color/black"
+
+        app:layout_constraintStart_toStartOf="@id/tv_date"
+        app:layout_constraintTop_toBottomOf="@id/view_date_picker" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/et_add_amount"
+        android:layout_width="0dp"
+        android:layout_height="52dp"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/shape_consumption_dialog"
+
+        android:fontFamily="@font/nanumsquare_bold"
+        android:gravity="center_vertical"
+        android:hint="금액을 입력하세요"
+        android:paddingStart="16dp"
+        android:textColorHint="@color/gray7"
+        android:textSize="18sp"
+
+        app:layout_constraintEnd_toEndOf="@id/view_date_picker"
+        app:layout_constraintStart_toStartOf="@id/view_date_picker"
+        app:layout_constraintTop_toBottomOf="@id/tv_add_amount" />
+
+    <TextView
+        android:id="@+id/tv_memo"
+        style="@style/body1_EB"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:fontFamily="@font/nanumsquare_extra_bold"
+        android:text="메모"
+        android:textColor="@color/black"
+
+        app:layout_constraintStart_toStartOf="@id/tv_date"
+        app:layout_constraintTop_toBottomOf="@id/et_add_amount" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/et_memo"
+        android:layout_width="0dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/shape_consumption_dialog"
+        android:fontFamily="@font/nanumsquare_bold"
+        android:gravity="top"
+        android:hint="메모를 입력하세요"
+
+        android:inputType="text"
+        android:maxLength="50"
+        android:maxLines="2"
+        android:paddingStart="16dp"
+        android:paddingTop="16dp"
+        android:textColorHint="@color/gray7"
+        android:textSize="18sp"
+
+        app:layout_constraintEnd_toEndOf="@id/view_date_picker"
+        app:layout_constraintStart_toStartOf="@id/view_date_picker"
+        app:layout_constraintTop_toBottomOf="@id/tv_memo" />
+
+    <TextView
+        android:id="@+id/tv_category"
+        style="@style/body1_EB"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:fontFamily="@font/nanumsquare_extra_bold"
+        android:text="카테고리 선택하기"
+        android:textColor="@color/black"
+
+        app:layout_constraintStart_toStartOf="@id/tv_date"
+        app:layout_constraintTop_toBottomOf="@id/et_memo" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_category"
+        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+        android:layout_width="0dp"
+        android:layout_height="52dp"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/shape_consumption_dialog"
+
+        app:layout_constraintEnd_toEndOf="@id/view_date_picker"
+        app:layout_constraintStart_toStartOf="@id/view_date_picker"
+        app:layout_constraintTop_toBottomOf="@id/tv_category">
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/btn_submit"
+        android:layout_width="136dp"
+        android:layout_height="52dp"
+        android:layout_marginTop="28dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/shape_consumption_dialog"
+
+        android:backgroundTint="@color/gray6"
+        android:fontFamily="@font/nanumsquare_extra_bold"
+        android:text="완료"
+        android:textSize="16sp"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/til_category" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
