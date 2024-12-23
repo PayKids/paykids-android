@@ -187,10 +187,9 @@
         android:layout_width="0dp"
         android:layout_height="52dp"
         android:layout_marginTop="12dp"
-        android:background="@drawable/shape_consumption_dialog"
+        android:background="@color/transparent"
         android:entries="@array/category_array"
         android:gravity="center_vertical"
-        android:popupTheme="@style/CustomSpinnerStyle"
 
         app:layout_constraintEnd_toEndOf="@id/view_date_picker"
         app:layout_constraintStart_toStartOf="@id/view_date_picker"
@@ -205,9 +204,9 @@
         android:background="@drawable/shape_consumption_dialog"
 
         android:backgroundTint="@color/gray6"
-        android:textColor="@color/black"
         android:fontFamily="@font/nanumsquare_extra_bold"
         android:text="@string/dialog_text_submit"
+        android:textColor="@color/black"
         android:textSize="16sp"
 
         app:layout_constraintBottom_toBottomOf="parent"
