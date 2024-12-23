@@ -15,15 +15,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/nanumsquare_extra_bold"
+
         android:gravity="center"
-
+        android:text="@string/dialog_add_title"
         android:textColor="@color/black"
-        android:textSize="20sp"
 
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/cl_dialog"
-        tools:text="용돈 기입하기" />
+        app:layout_constraintTop_toTopOf="@id/cl_dialog" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_switch"
@@ -53,7 +53,7 @@
                 android:background="@drawable/switch_bg_select"
                 android:fontFamily="@font/nanumsquare_extra_bold"
                 android:gravity="center"
-                android:text="소비"
+                android:text="@string/dialog_switch_consum"
                 android:textColor="@color/black"
                 android:textSize="16sp"
                 tools:ignore="RtlSymmetry" />
@@ -65,7 +65,7 @@
                 android:layout_weight="1"
                 android:fontFamily="@font/nanumsquare_extra_bold"
                 android:gravity="center"
-                android:text="수입"
+                android:text="@string/dialog_switch_income"
                 android:textColor="@color/gray7"
                 android:textSize="16sp" />
 
@@ -80,7 +80,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="28dp"
         android:fontFamily="@font/nanumsquare_extra_bold"
-        android:text="날짜"
+        android:text="@string/dialog_text_date"
         android:textColor="@color/black"
 
         app:layout_constraintStart_toStartOf="@id/cl_switch"
@@ -104,13 +104,13 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:fontFamily="@font/nanumsquare_extra_bold"
-        android:text="금액 입력하기"
+        android:text="@string/dialog_text_add_amount"
         android:textColor="@color/black"
 
         app:layout_constraintStart_toStartOf="@id/tv_date"
         app:layout_constraintTop_toBottomOf="@id/view_date_picker" />
 
-    <com.google.android.material.textfield.TextInputEditText
+    <EditText
         android:id="@+id/et_add_amount"
         android:layout_width="0dp"
         android:layout_height="52dp"
@@ -119,14 +119,16 @@
 
         android:fontFamily="@font/nanumsquare_bold"
         android:gravity="center_vertical"
-        android:hint="금액을 입력하세요"
+        android:hint="@string/dialog_hint_add_amount"
         android:paddingStart="16dp"
+        android:textColor="@color/black"
         android:textColorHint="@color/gray7"
         android:textSize="18sp"
 
         app:layout_constraintEnd_toEndOf="@id/view_date_picker"
         app:layout_constraintStart_toStartOf="@id/view_date_picker"
-        app:layout_constraintTop_toBottomOf="@id/tv_add_amount" />
+        app:layout_constraintTop_toBottomOf="@id/tv_add_amount"
+        tools:ignore="Autofill,TextFields" />
 
     <TextView
         android:id="@+id/tv_memo"
@@ -135,33 +137,37 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:fontFamily="@font/nanumsquare_extra_bold"
-        android:text="메모"
+        android:text="@string/dialog_text_memo"
         android:textColor="@color/black"
 
         app:layout_constraintStart_toStartOf="@id/tv_date"
         app:layout_constraintTop_toBottomOf="@id/et_add_amount" />
 
-    <com.google.android.material.textfield.TextInputEditText
+    <EditText
         android:id="@+id/et_memo"
         android:layout_width="0dp"
-        android:layout_height="80dp"
+        android:layout_height="100dp"
         android:layout_marginTop="12dp"
         android:background="@drawable/shape_consumption_dialog"
         android:fontFamily="@font/nanumsquare_bold"
         android:gravity="top"
-        android:hint="메모를 입력하세요"
+        android:hint="@string/dialog_hint_memo"
 
-        android:inputType="text"
+        android:inputType="textMultiLine"
+        android:lineSpacingExtra="8dp"
         android:maxLength="50"
-        android:maxLines="2"
-        android:paddingStart="16dp"
-        android:paddingTop="16dp"
+        android:maxLines="3"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="16dp"
+        android:scrollHorizontally="false"
+        android:textColor="@color/black"
         android:textColorHint="@color/gray7"
-        android:textSize="18sp"
+        android:textSize="16sp"
 
         app:layout_constraintEnd_toEndOf="@id/view_date_picker"
         app:layout_constraintStart_toStartOf="@id/view_date_picker"
-        app:layout_constraintTop_toBottomOf="@id/tv_memo" />
+        app:layout_constraintTop_toBottomOf="@id/tv_memo"
+        tools:ignore="Autofill" />
 
     <TextView
         android:id="@+id/tv_category"
@@ -170,42 +176,43 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:fontFamily="@font/nanumsquare_extra_bold"
-        android:text="카테고리 선택하기"
+        android:text="@string/dialog_text_category"
         android:textColor="@color/black"
 
         app:layout_constraintStart_toStartOf="@id/tv_date"
         app:layout_constraintTop_toBottomOf="@id/et_memo" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/til_category"
-        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+    <Spinner
+        android:id="@+id/spinner_category"
         android:layout_width="0dp"
         android:layout_height="52dp"
         android:layout_marginTop="12dp"
         android:background="@drawable/shape_consumption_dialog"
+        android:entries="@array/category_array"
+        android:gravity="center_vertical"
+        android:popupTheme="@style/CustomSpinnerStyle"
 
         app:layout_constraintEnd_toEndOf="@id/view_date_picker"
         app:layout_constraintStart_toStartOf="@id/view_date_picker"
-        app:layout_constraintTop_toBottomOf="@id/tv_category">
-
-    </com.google.android.material.textfield.TextInputLayout>
+        app:layout_constraintTop_toBottomOf="@id/tv_category" />
 
     <Button
         android:id="@+id/btn_submit"
         android:layout_width="136dp"
         android:layout_height="52dp"
         android:layout_marginTop="28dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="4dp"
         android:background="@drawable/shape_consumption_dialog"
 
         android:backgroundTint="@color/gray6"
+        android:textColor="@color/black"
         android:fontFamily="@font/nanumsquare_extra_bold"
-        android:text="완료"
+        android:text="@string/dialog_text_submit"
         android:textSize="16sp"
 
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/til_category" />
+        app:layout_constraintTop_toBottomOf="@id/spinner_category" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
