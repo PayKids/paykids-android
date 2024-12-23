@@ -21,7 +21,6 @@ class MyPageFragment : BaseFragment<FragmentMypageBinding>(), ConfirmDialogInter
         super.initListener()
         val navController = findNavController()
 
-
         binding.ivModify.setOnClickListener {
             navController.navigate(R.id.modifyInfoFragment)
         }
