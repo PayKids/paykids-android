@@ -1,4 +1,4 @@
-package com.paykids.presentation.custom
+package com.paykids.presentation.view.diary
 
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -6,9 +6,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import androidx.fragment.app.DialogFragment
+import com.paykids.presentation.R
+import com.paykids.presentation.custom.ConfirmDialogInterface
 import com.paykids.presentation.databinding.DialogDiaryBinding
-import com.paykids.presentation.databinding.DialogMypageBinding
 
 class DiaryDialog(confirmDialogInterface: ConfirmDialogInterface) : DialogFragment() {
 
@@ -30,6 +32,11 @@ class DiaryDialog(confirmDialogInterface: ConfirmDialogInterface) : DialogFragme
 
         // 레이아웃 배경을 투명하게 해줌
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        val spinner = binding.spinnerCategory
+        val items = resources.getStringArray(R.array.category_array)
+        val adapter = CustomSpinnerAdapter(requireContext(), items)
+        spinner.adapter = adapter
 
         binding.btnSubmit.setOnClickListener {
             this.confirmDialogInterface?.onYesButtonClick()
