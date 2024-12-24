@@ -1,11 +1,11 @@
 package com.paykids.presentation.view.diary
 
 import com.paykids.presentation.base.BaseFragment
-import com.paykids.presentation.databinding.FragmentAnalysisConsumeLocationBinding
+import com.paykids.presentation.databinding.FragmentAnalysisCategoryConsumeBinding
 
-class AnalysisConsumeLocationFragment : BaseFragment<FragmentAnalysisConsumeLocationBinding>() {
+class AnalysisCategoryConsumeFragment : BaseFragment<FragmentAnalysisCategoryConsumeBinding>() {
     override fun initView() {
-        val args = AnalysisConsumeLocationFragmentArgs.fromBundle(requireArguments())
+        val args = AnalysisCategoryConsumeFragmentArgs.fromBundle(requireArguments())
         val place = args.consumptionPlace
         val amount = args.consumeAmount
         val formattedText = "${place}에서 ${amount}원 소비 중"
