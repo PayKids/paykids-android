@@ -17,7 +17,7 @@
         android:label="fragment_analysis_cosume"
         tools:layout="@layout/fragment_analysis_consume">
         <action
-            android:id="@+id/action_analysisConsumeFragment_to_analysisConsumeLocationFragment"
+            android:id="@+id/action_analysisConsumeFragment_to_analysisCategoryConsumeFragment"
             app:destination="@id/analysisCategoryConsumeFragment">
         </action>
     </fragment>

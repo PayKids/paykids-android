@@ -61,11 +61,11 @@
     <string name="dialog_text_submit">완료</string>
 
     <string-array name="category_array">
-        <item>카테고리 1</item>
-        <item>카테고리 2</item>
-        <item>카테고리 3</item>
-        <item>카테고리 4</item>
-        <item>카테고리 5</item>
+        <item>식비</item>
+        <item>교통비</item>
+        <item>밥</item>
+        <item>보드게임</item>
+        <item>방탈출</item>
     </string-array>
 
     <!-- 소비 상세 내역 페이지 -->
