@@ -1,27 +1,39 @@
 package com.paykids.presentation.view.diary
 
+import ConsumeCategoryAdapter
+import android.annotation.SuppressLint
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.paykids.presentation.base.BaseFragment
 import com.paykids.presentation.databinding.FragmentAnalysisConsumeBinding
 
 class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisConsumeBinding>() {
 
-    private val items = listOf("편의점", "편", "의점", "편의점편", "편의점편의")
+    private val items = mutableListOf("편의점", "편", "의점", "편의점편", "편의점편의")
+    private lateinit var adapter: ConsumeCategoryAdapter
+    private var isDeleteMode = false
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun initView() {
-        val adapter = ConsumptionAdapter(items)
-        binding.rvDetailConsume.apply {
-            layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
-            this.adapter = adapter
+        adapter = ConsumeCategoryAdapter { newCategory ->
+            addCategory(newCategory)
         }
+        adapter.setInitialList(items.map { ConsumeCategoryAdapter.CategoryItem.Normal(it) })
+
+        binding.rvDetailConsume.layoutManager = LinearLayoutManager(requireContext())
+        binding.rvDetailConsume.adapter = adapter
+
 
         updateDeleteButtonVisibility(items)
     }
 
     override fun initListener() {
         super.initListener()
+
+        binding.btnAddCategory.setOnClickListener {
+            adapter.addCategoryInput()
+            binding.rvDetailConsume.smoothScrollToPosition(adapter.itemCount - 1)
+        }
     }
 
     private fun updateDeleteButtonVisibility(items: List<String>) {
@@ -31,5 +43,19 @@ class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisConsumeBinding>() {
             binding.flDelete.visibility = View.VISIBLE
         }
     }
+
+    private fun addCategory(newCategory: String) {
+        // 새 카테고리 추가
+        items.add(newCategory)
+
+        // 어댑터에 새로운 항목 추가
+        val currentList = adapter.currentList.toMutableList()
+        currentList.add(currentList.size - 1, ConsumeCategoryAdapter.CategoryItem.Normal(newCategory))
+        adapter.submitList(currentList)
+
+        // 삭제 버튼 가시성 업데이트
+        updateDeleteButtonVisibility(items)
+    }
+
 
 }

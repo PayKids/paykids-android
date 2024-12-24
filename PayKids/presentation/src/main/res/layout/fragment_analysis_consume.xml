@@ -120,7 +120,7 @@
 
     <FrameLayout
         android:id="@+id/fl_delete"
-        android:layout_width="76dp"
+        android:layout_width="108dp"
         android:layout_height="32dp"
         android:layout_marginTop="24dp"
         app:layout_constraintEnd_toEndOf="@id/cl_switch"
@@ -133,7 +133,7 @@
             android:background="@drawable/shape_radius_delete_category"
             android:fontFamily="@font/nanumsquare_bold"
             android:gravity="center"
-            android:text="삭제하기"
+            android:text="@string/text_delete_category"
             android:textColor="@color/white"
             android:textSize="16sp" />
 
@@ -144,10 +144,10 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="12dp"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/fl_delete"
-        app:layout_constraintBottom_toBottomOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/fl_delete">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -158,6 +158,7 @@
                 android:id="@+id/rv_detail_consume"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                tools:itemCount="5"
                 tools:listitem="@layout/item_analysis_consumption" />
 
             <Button
@@ -167,7 +168,7 @@
                 android:layout_marginTop="12dp"
                 android:background="@drawable/shape_radius_add_category"
                 android:fontFamily="@font/nanumsquare_extra_bold"
-                android:text="+ 추가하기"
+                android:text="@string/text_add_category"
                 android:textColor="@color/gray7"
                 android:textSize="18sp" />
         </LinearLayout>
