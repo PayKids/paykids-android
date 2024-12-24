@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.hilt)
     alias(libs.plugins.googleKsp)
+    id("androidx.navigation.safeargs")
 }
 
 android {

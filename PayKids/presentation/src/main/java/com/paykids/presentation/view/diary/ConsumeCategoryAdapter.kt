@@ -1,3 +1,5 @@
+package com.paykids.presentation.view.diary
+
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,10 +10,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.paykids.presentation.R
 import com.paykids.presentation.databinding.ItemAnalysisConsumptionBinding
 import com.paykids.presentation.databinding.ItemEtcCategoryBinding
-import com.paykids.util.LoggerUtils
 
 class ConsumeCategoryAdapter(
-    private val onCategoryAdded: (String) -> Unit
+    private val onCategoryAdded: (String) -> Unit,
+    private val onItemClick: (String, String) -> Unit
 ) : ListAdapter<ConsumeCategoryAdapter.CategoryItem, RecyclerView.ViewHolder>(CategoryDiffCallback()) {
 
     private var isAddingCategory = false
@@ -51,11 +53,8 @@ class ConsumeCategoryAdapter(
             }
 
             else -> NormalViewHolder(
-                ItemAnalysisConsumptionBinding.inflate(
-                    inflater,
-                    parent,
-                    false
-                )
+                ItemAnalysisConsumptionBinding.inflate(inflater, parent, false),
+                onItemClick
             )
         }
     }
@@ -69,14 +68,14 @@ class ConsumeCategoryAdapter(
                     isSelected = item.isSelected,
                     onSelectionChanged = { isSelected ->
                         item.isSelected = isSelected
-                    }
+                    },
                 )
             }
 
             is CategoryItem.Add -> {
                 (holder as AddCategoryViewHolder).apply {
                     reset()
-//                    bind()
+                    bind()
                 }
             }
 
@@ -189,7 +188,10 @@ class ConsumeCategoryAdapter(
         }
     }
 
-    class NormalViewHolder(private val binding: ItemAnalysisConsumptionBinding) :
+    class NormalViewHolder(
+        private val binding: ItemAnalysisConsumptionBinding,
+        private val onItemClick: (String, String) -> Unit
+    ) :
         RecyclerView.ViewHolder(binding.root) {
         private var isChecked = false
 
@@ -224,6 +226,12 @@ class ConsumeCategoryAdapter(
                     frameCheckboxPercent.visibility = View.VISIBLE
                     tvPercent.visibility = View.VISIBLE
                     checkboxCategory.visibility = View.GONE
+                }
+
+                itemView.setOnClickListener {
+                    val category = tvComsumptionPlace.text.toString()
+                    val amount = tvConsumeAmount.text.toString()
+                    onItemClick(category, amount)
                 }
             }
         }

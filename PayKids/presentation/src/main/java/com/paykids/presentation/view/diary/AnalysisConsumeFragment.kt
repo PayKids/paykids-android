@@ -1,8 +1,8 @@
 package com.paykids.presentation.view.diary
 
-import ConsumeCategoryAdapter
 import android.annotation.SuppressLint
 import android.view.View
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.paykids.presentation.base.BaseFragment
 import com.paykids.presentation.databinding.FragmentAnalysisConsumeBinding
@@ -15,9 +15,14 @@ class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisConsumeBinding>() {
 
     @SuppressLint("NotifyDataSetChanged")
     override fun initView() {
-        adapter = ConsumeCategoryAdapter { newCategory ->
-            addCategory(newCategory)
-        }
+        adapter = ConsumeCategoryAdapter(
+            onCategoryAdded = { newCategory ->
+                addCategory(newCategory)
+            },
+            onItemClick = { place, amount ->
+                navigateToAnalysisConsumeLocationFragment(place, amount)
+            }
+        )
         adapter.setInitialList(items.map { ConsumeCategoryAdapter.CategoryItem.Normal(it) })
 
         binding.rvDetailConsume.layoutManager = LinearLayoutManager(requireContext())
@@ -54,7 +59,10 @@ class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisConsumeBinding>() {
 
         // 어댑터에 새로운 항목 추가
         val currentList = adapter.currentList.toMutableList()
-        currentList.add(currentList.size - 1, ConsumeCategoryAdapter.CategoryItem.Normal(newCategory))
+        currentList.add(
+            currentList.size - 1,
+            ConsumeCategoryAdapter.CategoryItem.Normal(newCategory)
+        )
         adapter.submitList(currentList)
 
         // 삭제 버튼 가시성 업데이트
@@ -81,4 +89,9 @@ class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisConsumeBinding>() {
         }
     }
 
+    private fun navigateToAnalysisConsumeLocationFragment(place: String, amount: String) {
+        val action = AnalysisConsumeFragmentDirections
+            .actionAnalysisConsumeFragmentToAnalysisConsumeLocationFragment(place, amount)
+        findNavController().navigate(action)
+    }
 }
