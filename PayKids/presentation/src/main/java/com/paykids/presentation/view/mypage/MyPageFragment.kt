@@ -5,7 +5,6 @@ import androidx.navigation.fragment.findNavController
 import com.paykids.presentation.R
 import com.paykids.presentation.base.BaseFragment
 import com.paykids.presentation.custom.ConfirmDialogInterface
-import com.paykids.presentation.custom.MyPageDialog
 import com.paykids.presentation.databinding.FragmentMypageBinding
 import com.paykids.presentation.utils.UiState
 import com.paykids.presentation.view.home.HomeActivity
@@ -21,7 +20,6 @@ class MyPageFragment : BaseFragment<FragmentMypageBinding>(), ConfirmDialogInter
     override fun initListener() {
         super.initListener()
         val navController = findNavController()
-
 
         binding.ivModify.setOnClickListener {
             navController.navigate(R.id.modifyInfoFragment)

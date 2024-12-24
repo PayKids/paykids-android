@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray5"
+    android:padding="8dp">
+
+    <ImageButton
+        android:id="@+id/ib_back"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:background="@color/transparent"
+        android:src="@drawable/ic_left_blue"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="ContentDescription" />
+
+    <TextView
+        android:id="@+id/tv_consume_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:fontFamily="@font/nanumsquare_extra_bold"
+        android:layout_marginStart="12dp"
+        android:text="편의점에서 150,000원 사용 중"
+        android:textColor="@color/black"
+        android:textSize="22sp"
+
+        app:layout_constraintStart_toStartOf="@id/ib_back"
+        app:layout_constraintTop_toBottomOf="@id/ib_back" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:padding="12dp"
+
+        app:layout_constraintTop_toBottomOf="@id/tv_consume_info"
+        tools:listitem="@layout/item_detail_consumption" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

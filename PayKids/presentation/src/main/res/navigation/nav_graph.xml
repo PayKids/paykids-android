@@ -12,6 +12,30 @@
         tools:layout="@layout/fragment_diary" />
 
     <fragment
+        android:id="@+id/analysisConsumeFragment"
+        android:name="com.paykids.presentation.view.diary.AnalysisConsumeFragment"
+        android:label="fragment_analysis_cosume"
+        tools:layout="@layout/fragment_analysis_consume">
+        <action
+            android:id="@+id/action_analysisConsumeFragment_to_analysisCategoryConsumeFragment"
+            app:destination="@id/analysisCategoryConsumeFragment">
+        </action>
+    </fragment>
+
+    <fragment
+        android:id="@+id/analysisCategoryConsumeFragment"
+        android:name="com.paykids.presentation.view.diary.AnalysisCategoryConsumeFragment"
+        android:label="fragment_analysis_category_consume"
+        tools:layout="@layout/fragment_analysis_category_consume">
+        <argument
+            android:name="consumptionPlace"
+            app:argType="string" />
+        <argument
+            android:name="consumeAmount"
+            app:argType="string" />
+    </fragment>
+
+    <fragment
         android:id="@+id/homeFragment"
         android:name="com.paykids.presentation.view.home.HomeFragment"
         android:label="fragment_home"
