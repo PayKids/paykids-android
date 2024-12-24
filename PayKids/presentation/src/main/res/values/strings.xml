@@ -68,4 +68,8 @@
         <item>카테고리 5</item>
     </string-array>
 
+    <!-- 소비 상세 내역 페이지 -->
+    <string name="text_delete_category">카테고리 삭제</string>
+    <string name="text_add_category">+ 추가하기</string>
+
 </resources>

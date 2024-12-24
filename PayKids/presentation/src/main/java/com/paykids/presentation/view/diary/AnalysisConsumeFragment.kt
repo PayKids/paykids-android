@@ -30,6 +30,10 @@ class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisConsumeBinding>() {
     override fun initListener() {
         super.initListener()
 
+        binding.tvDelete.setOnClickListener {
+            toggleDeleteMode()
+        }
+
         binding.btnAddCategory.setOnClickListener {
             adapter.addCategoryInput()
             binding.rvDetailConsume.smoothScrollToPosition(adapter.itemCount - 1)
@@ -57,5 +61,24 @@ class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisConsumeBinding>() {
         updateDeleteButtonVisibility(items)
     }
 
+    private fun deleteSelectedItems() {
+        val deletedItems = adapter.deleteSelectedItems()
+        items.removeAll { it in deletedItems }
+        updateDeleteButtonVisibility(items)
+    }
+
+    private fun toggleDeleteMode() {
+        isDeleteMode = !isDeleteMode
+        adapter.toggleDeleteMode(isDeleteMode)
+
+        if (isDeleteMode) {
+            binding.tvDelete.text = "삭제"
+            binding.btnAddCategory.isEnabled = false
+        } else {
+            binding.tvDelete.text = "카테고리 삭제"
+            binding.btnAddCategory.isEnabled = true
+            deleteSelectedItems()
+        }
+    }
 
 }
