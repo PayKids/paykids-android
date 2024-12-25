@@ -32,6 +32,10 @@ class ModifyInfoFragment : BaseFragment<FragmentModifyInfoBinding>(), ConfirmDia
             openGallery()
         }
 
+        binding.btnConfirm.setOnClickListener {
+
+        }
+
         binding.tvWithdraw.setOnClickListener {
             val dialog =
                 MyPageDialog(
