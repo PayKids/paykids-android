@@ -1,5 +1,7 @@
 package com.paykids.presentation.view.quiz
 
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
 import com.paykids.presentation.R
 import com.paykids.presentation.base.BaseFragment
 import com.paykids.presentation.custom.ConfirmDialogInterface
@@ -17,9 +19,10 @@ class QuizEntryFragment : BaseFragment<FragmentQuizEntryBinding>(), ConfirmDialo
 
     override fun initListener() {
         super.initListener()
+        val navController = findNavController()
 
         binding.btnStudy.setOnClickListener {
-
+            navController.navigate(R.id.studyFragment)
         }
 
         binding.btnQuiz.setOnClickListener { }
@@ -41,8 +44,7 @@ class QuizEntryFragment : BaseFragment<FragmentQuizEntryBinding>(), ConfirmDialo
                     )
                 dialog.isCancelable = false
                 dialog.show(parentFragmentManager, "AllClearDialog")
-            }
-            else {
+            } else {
                 // 문제를 한번이라도 풀고 틀린 문제가 하나라도 있는 경우 오답노트 페이지로 이동
 
             }

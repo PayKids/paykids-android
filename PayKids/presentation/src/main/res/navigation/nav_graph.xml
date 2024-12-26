@@ -48,7 +48,17 @@
         android:id="@+id/quizEntryFragment"
         android:name="com.paykids.presentation.view.quiz.QuizEntryFragment"
         android:label="fragment_quiz_entry"
-        tools:layout="@layout/fragment_quiz_entry" />
+        tools:layout="@layout/fragment_quiz_entry">
+        <action
+            android:id="@+id/action_quizEntryFragment_to_studyFragment"
+            app:destination="@id/studyFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/studyFragment"
+        android:name="com.paykids.presentation.view.quiz.StudyFragment"
+        android:label="fragment_study"
+        tools:layout="@layout/fragment_study" />
 
     <fragment
         android:id="@+id/myPageFragment"
