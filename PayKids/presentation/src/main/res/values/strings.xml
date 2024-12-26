@@ -39,6 +39,12 @@
     <string name="text_home_menu">홈</string>
     <string name="text_mypage_menu">마이</string>
 
+    <!-- 퀴즈 오답 노트 다이얼로그 -->
+    <string name="dialog_incorrect_nothing">틀린 문제가 없어요!\n퀴즈를 풀어보아요</string>
+    <string name="dialog_all_correct">모든 문제를 맞혔어요!\n복습을 해볼까요?</string>
+    <string name="dialog_enter_quiz">퀴즈 풀기</string>
+    <string name="dialog_exit">닫기</string>
+
     <!-- 마이페이지 다이얼로그 -->
     <string name="dialog_signout_title">로그아웃할까요?</string>
     <string name="dialog_signout_message">나중에 다시 로그인하려면 본인인증부터 시작해야 해요</string>
