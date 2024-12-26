@@ -19,6 +19,11 @@
     <string name="text_btn_quiz">퀴즈 풀기</string>
     <string name="text_btn_review">오답노트 풀기</string>
 
+    <!-- 학습하기 화면 -->
+    <string name="text_study_title">학습하기</string>
+    <string name="hint_chat">내용을 입력하세요</string>
+    <string name="text_chatgpt">ChatGPT</string>
+
     <!-- 마이 페이지 -->
     <string name="content_description_profile">프로필 이미지</string>
     <string name="text_my_page">마이 페이지</string>

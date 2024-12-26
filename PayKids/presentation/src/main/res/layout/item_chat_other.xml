@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="start"
+    android:orientation="vertical"
+    android:paddingVertical="8dp">
+
+    <TextView
+        android:id="@+id/tv_chat_other_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:fontFamily="@font/nanumsquare_extra_bold"
+        android:text="@string/text_chatgpt"
+        android:textColor="@color/blue1"
+        android:textSize="14sp"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/messageText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/shape_chat_other_bg"
+
+        android:fontFamily="@font/nanumsquare_extra_bold"
+        android:includeFontPadding="false"
+        android:padding="12dp"
+        android:textColor="@color/white"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_chat_other_name"
+        tools:text="돈이란 무엇인가요?\n\n어린이 여러분 돈이란 무엇일까요?\n돈이 뭐냐면 사고 싶은 걸 살 수 있는 거랍니다" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
