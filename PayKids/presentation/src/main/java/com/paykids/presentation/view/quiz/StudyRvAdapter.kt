@@ -3,7 +3,6 @@ package com.paykids.presentation.view.quiz
 import android.content.Context
 import android.util.DisplayMetrics
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
@@ -12,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.paykids.domain.model.ChatItem
 import com.paykids.presentation.databinding.ItemChatMyBinding
 import com.paykids.presentation.databinding.ItemChatOtherBinding
-import com.paykids.presentation.view.OnRvItemClickListener
 
 class StudyRvAdapter : ListAdapter<ChatItem, RecyclerView.ViewHolder>(chatDiffCallback) {
 
