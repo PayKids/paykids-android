@@ -14,14 +14,15 @@
         android:background="@drawable/shape_radius_100"
         android:fontFamily="@font/nanumsquare_extra_bold"
 
-        android:padding="8dp"
+        android:paddingVertical="8dp"
+        android:paddingHorizontal="16dp"
         android:textColor="@color/gray8"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
 
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="섹션 1, 스테이지 1" />
+        tools:text="스테이지 1" />
 
     <TextView
         android:id="@+id/tv_stage_name"
@@ -35,7 +36,7 @@
         android:textSize="24sp"
         app:layout_constraintTop_toBottomOf="@id/tv_stage"
 
-        tools:text="화폐의 단위에 대해 알아보아요." />
+        tools:text="화폐의 단위에 대해 알아보아요" />
 
 
     <androidx.appcompat.widget.AppCompatButton
