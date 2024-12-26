@@ -2,10 +2,10 @@ package com.paykids.presentation.view.home
 
 import android.view.View
 import androidx.core.content.res.ResourcesCompat
+import androidx.navigation.fragment.findNavController
 import com.paykids.presentation.R
 import com.paykids.presentation.base.BaseFragment
 import com.paykids.presentation.databinding.FragmentHomeBinding
-import com.paykids.presentation.view.quiz.QuizEntryFragment
 import com.skydoves.balloon.ArrowPositionRules
 import com.skydoves.balloon.Balloon
 import com.skydoves.balloon.BalloonAnimation
@@ -59,10 +59,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     }
 
     private fun navigateToQuizEntry() {
-        parentFragmentManager.beginTransaction()
-            .replace(R.id.fl_home, QuizEntryFragment())
-            .addToBackStack(null)
-            .commit()
+        val navController = findNavController()
+        navController.navigate(R.id.quizEntryFragment)
     }
 
     private fun setupStageClickListener(view: View) {
