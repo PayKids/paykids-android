@@ -51,7 +51,9 @@
         tools:layout="@layout/fragment_quiz_entry">
         <action
             android:id="@+id/action_quizEntryFragment_to_studyFragment"
-            app:destination="@id/studyFragment" />
+            app:destination="@id/studyFragment"
+            app:popUpTo="@id/quizEntryFragment"
+            app:popUpToInclusive="false" />
     </fragment>
 
     <fragment

@@ -84,7 +84,10 @@
 
             android:layout_marginTop="20dp"
             android:background="@drawable/shape_radius_send_chat"
+            android:bufferType="spannable"
+            android:freezesText="true"
             android:hint="@string/hint_chat"
+            android:imeOptions="actionSend"
 
             android:importantForAutofill="no"
             android:inputType="textMultiLine"
@@ -102,13 +105,15 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:text="안녕하세요\n안녕하세요\n안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요" />
 
-        <ImageView
+        <ImageButton
             android:id="@+id/ib_send"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:layout_marginEnd="14dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginEnd="12dp"
             android:background="@color/transparent"
             android:contentDescription="@null"
+            android:scaleType="fitXY"
+            android:padding="12dp"
             android:src="@drawable/ic_send"
 
             app:layout_constraintBottom_toBottomOf="@id/et_send_chat"

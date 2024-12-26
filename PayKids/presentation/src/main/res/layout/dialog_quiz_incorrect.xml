@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -15,11 +16,12 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/nanumsquare_extra_bold"
         android:gravity="center"
-        android:lineHeight="24sp"
-
+        android:lineSpacingExtra="6sp"
         android:minHeight="50dp"
+
         android:textColor="@color/black"
         android:textSize="18sp"
+        app:lineHeight="24sp"
         tools:text="@string/dialog_incorrect_nothing" />
 
     <LinearLayout
@@ -48,10 +50,10 @@
             android:layout_weight="1"
             android:background="@drawable/shape_mypage_outline_btn"
             android:fontFamily="@font/nanumsquare_extra_bold"
+            android:text="@string/dialog_exit"
             android:textColor="@color/black"
             android:textSize="16sp"
-            tools:ignore="ButtonStyle"
-            tools:text="@string/dialog_exit" />
+            tools:ignore="ButtonStyle" />
 
     </LinearLayout>
 
