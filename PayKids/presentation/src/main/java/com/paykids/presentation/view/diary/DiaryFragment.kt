@@ -35,9 +35,12 @@ class DiaryFragment : BaseFragment<FragmentDiaryBinding>(), ConfirmDialogInterfa
         binding.vpCalendarMonth.adapter = calendarAdapter
         binding.vpCalendarMonth.setCurrentItem(Int.MAX_VALUE / 2, false)
         binding.vpCalendarMonth.offscreenPageLimit = 1
+        // viewPager 스크롤 막기
+        binding.vpCalendarMonth.getChildAt(0).setOnTouchListener { _, _ -> true }
 
-        val currentMonth = SimpleDateFormat("MM", Locale.ENGLISH).format(Date())
-        binding.tvMonth.text = currentMonth
+        val currentMonth = SimpleDateFormat("M", Locale.KOREAN).format(Date())
+        val formattedMonth = "${currentMonth}월"
+        binding.tvMonth.text = formattedMonth
     }
 
     override fun initListener() {
@@ -61,6 +64,16 @@ class DiaryFragment : BaseFragment<FragmentDiaryBinding>(), ConfirmDialogInterfa
                 updateCurrentMonthText(position)
             }
         })
+
+        binding.ibLeft.setOnClickListener {
+            val currentPos = binding.vpCalendarMonth.currentItem
+            binding.vpCalendarMonth.setCurrentItem(currentPos - 1, false)
+        }
+
+        binding.ibRight.setOnClickListener {
+            val currentPos = binding.vpCalendarMonth.currentItem
+            binding.vpCalendarMonth.setCurrentItem(currentPos + 1, false)
+        }
     }
 
     override fun onYesButtonClick() {
@@ -72,7 +85,8 @@ class DiaryFragment : BaseFragment<FragmentDiaryBinding>(), ConfirmDialogInterfa
             add(Calendar.MONTH, position - (Int.MAX_VALUE / 2))
         }
         val currentMonth = SimpleDateFormat("MM", Locale.ENGLISH).format(calendar.time)
-        binding.tvMonth.text = currentMonth
+        val formattedMonth = "${currentMonth}월"
+        binding.tvMonth.text = formattedMonth
     }
 
 }

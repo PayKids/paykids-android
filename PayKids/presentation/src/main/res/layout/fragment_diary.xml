@@ -29,13 +29,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/nanumsquare_extra_bold"
-            tools:text="12월"
             android:textColor="@color/black"
             android:textSize="18sp"
-
             app:layout_constraintBottom_toBottomOf="@id/ib_left"
+
             app:layout_constraintStart_toEndOf="@+id/ib_left"
-            app:layout_constraintTop_toTopOf="@id/ib_left" />
+            app:layout_constraintTop_toTopOf="@id/ib_left"
+            tools:text="O월" />
 
         <ImageButton
             android:id="@+id/ib_right"
@@ -136,16 +136,16 @@
             app:layout_constraintTop_toTopOf="@+id/iv_consumption_status" />
 
         <LinearLayout
-            android:paddingVertical="4dp"
             android:id="@+id/ll_week_container"
             android:layout_width="match_parent"
             android:layout_height="30dp"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="8dp"
-
             android:background="@color/white"
+
             android:gravity="center"
             android:orientation="horizontal"
+            android:paddingVertical="4dp"
             app:layout_constraintBottom_toTopOf="@id/vp_calendar_month"
             app:layout_constraintTop_toBottomOf="@id/iv_consumption_status">
 
@@ -220,6 +220,7 @@
             android:layout_width="match_parent"
             android:layout_height="360dp"
             android:background="@color/white"
+
             app:layout_constraintTop_toBottomOf="@id/ll_week_container" />
 
         <TextView
