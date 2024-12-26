@@ -60,6 +60,16 @@
     <string name="dialog_withdraw_confirm">회원 탈퇴</string>
     <string name="dialog_cancel">취소</string>
 
+    <!-- 용돈 일기 페이지 -->
+    <string name="text_detail_consume">상세 소비내역</string>
+    <string name="text_week_sunday">일</string>
+    <string name="text_week_monday">월</string>
+    <string name="text_week_tuesday">화</string>
+    <string name="text_week_wednesday">수</string>
+    <string name="text_week_thursday">목</string>
+    <string name="text_week_friday">금</string>
+    <string name="text_week_saturday">토</string>
+
     <!-- 용돈 기입 다이얼로그 -->
     <string name="dialog_add_title">용돈 기입하기</string>
     <string name="dialog_switch_consum">소비</string>

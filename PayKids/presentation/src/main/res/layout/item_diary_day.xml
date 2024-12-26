@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cl_select_diary_day"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/iv_diary_check"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginTop="4dp"
+        android:background="@drawable/shape_bg_day"
+        android:contentDescription="@null"
+        android:visibility="visible"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_day"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:fontFamily="@font/nanumsquare_extra_bold"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+
+        app:layout_constraintBottom_toBottomOf="@id/iv_diary_check"
+        app:layout_constraintEnd_toEndOf="@id/iv_diary_check"
+        app:layout_constraintStart_toStartOf="@id/iv_diary_check"
+        app:layout_constraintTop_toTopOf="@id/iv_diary_check"
+        tools:text="1" />
+
+    <TextView
+        android:id="@+id/tv_income"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+
+        android:text="+50,000"
+        android:fontFamily="@font/nanumsquare_extra_bold"
+        android:textSize="11sp"
+        android:textColor="@color/blue1"
+        android:includeFontPadding="false"
+
+        app:layout_constraintEnd_toEndOf="@id/tv_day"
+        app:layout_constraintStart_toStartOf="@id/tv_day"
+        app:layout_constraintTop_toBottomOf="@id/iv_diary_check" />
+
+    <TextView
+        android:id="@+id/tv_consume"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:text="-30,000"
+        android:textColor="@color/red"
+        android:fontFamily="@font/nanumsquare_extra_bold"
+        android:textSize="11sp"
+        android:includeFontPadding="false"
+
+        app:layout_constraintEnd_toEndOf="@id/tv_day"
+        app:layout_constraintStart_toStartOf="@id/tv_day"
+        app:layout_constraintTop_toBottomOf="@id/tv_income" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

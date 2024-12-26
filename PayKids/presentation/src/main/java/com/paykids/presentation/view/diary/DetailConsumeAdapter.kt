@@ -1,12 +1,13 @@
 package com.paykids.presentation.view.diary
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.paykids.domain.model.DetailConsume
 import com.paykids.presentation.databinding.ItemDetailConsumptionBinding
 
-class DetailConsumeAdapter(private val items: ArrayList<DetailConsume>) :
+class DetailConsumeAdapter(private var items: List<DetailConsume>) :
     RecyclerView.Adapter<DetailConsumeAdapter.ViewHolder>() {
 
     interface OnItemClickListener {
@@ -40,5 +41,11 @@ class DetailConsumeAdapter(private val items: ArrayList<DetailConsume>) :
 
     override fun getItemCount(): Int {
         return items.size
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun submitList(newItems: List<DetailConsume>) {
+        items = newItems
+        notifyDataSetChanged()
     }
 }
