@@ -6,9 +6,10 @@ import androidx.lifecycle.ViewModel
 import com.paykids.domain.model.ChatItem
 import com.paykids.presentation.utils.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
 @HiltViewModel
-class StudyViewModel : ViewModel() {
+class StudyViewModel @Inject constructor() : ViewModel() {
 
     private val _uiState = MutableLiveData<UiState<List<ChatItem>>>(UiState.Loading)
     val uiState: LiveData<UiState<List<ChatItem>>> = _uiState

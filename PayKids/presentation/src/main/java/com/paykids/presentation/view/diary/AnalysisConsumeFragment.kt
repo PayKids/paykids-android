@@ -91,7 +91,7 @@ class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisConsumeBinding>() {
 
     private fun navigateToAnalysisConsumeLocationFragment(place: String, amount: String) {
         val action = AnalysisConsumeFragmentDirections
-            .actionAnalysisConsumeFragmentToAnalysisConsumeLocationFragment(place, amount)
+            .actionAnalysisConsumeFragmentToAnalysisCategoryConsumeFragment(place, amount)
         findNavController().navigate(action)
     }
 }

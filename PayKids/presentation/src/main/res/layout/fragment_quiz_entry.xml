@@ -11,32 +11,32 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="260dp"
-        android:background="@drawable/shape_radius_100"
+        android:background="@drawable/shape_radius_stage"
         android:fontFamily="@font/nanumsquare_extra_bold"
 
-        android:paddingVertical="8dp"
         android:paddingHorizontal="16dp"
+        android:paddingVertical="8dp"
+        android:text="스테이지 1"
         android:textColor="@color/gray8"
         android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
 
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="스테이지 1" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tv_stage_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
+
         android:fontFamily="@font/nanumsquare_extra_bold"
         android:gravity="center"
+        android:text="화폐의 단위에 대해 알아보아요"
         android:textColor="@color/white"
-
         android:textSize="24sp"
-        app:layout_constraintTop_toBottomOf="@id/tv_stage"
 
-        tools:text="화폐의 단위에 대해 알아보아요" />
+        app:layout_constraintTop_toBottomOf="@id/tv_stage" />
 
 
     <androidx.appcompat.widget.AppCompatButton

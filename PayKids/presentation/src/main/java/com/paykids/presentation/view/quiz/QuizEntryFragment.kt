@@ -18,7 +18,9 @@ class QuizEntryFragment : BaseFragment<FragmentQuizEntryBinding>(), ConfirmDialo
     override fun initListener() {
         super.initListener()
 
-        binding.btnStudy.setOnClickListener { }
+        binding.btnStudy.setOnClickListener {
+
+        }
 
         binding.btnQuiz.setOnClickListener { }
 

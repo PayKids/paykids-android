@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/gray3">
+    android:background="@color/gray5">
 
     <Toolbar
         android:id="@+id/tb_chat"
@@ -37,14 +37,33 @@
             android:src="@drawable/ic_left_blue" />
     </Toolbar>
 
+    <TextView
+        android:id="@+id/tv_stage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/shape_radius_stage"
+
+        android:fontFamily="@font/nanumsquare_extra_bold"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="6dp"
+        android:text="스테이지 1"
+        android:textColor="@color/gray7"
+        android:textSize="16sp"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tb_chat" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_chat"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-
+        android:layout_marginTop="4dp"
         android:paddingHorizontal="20dp"
+
         app:layout_constraintBottom_toTopOf="@id/fl_chat_input"
-        app:layout_constraintTop_toBottomOf="@id/tb_chat"
+        app:layout_constraintTop_toBottomOf="@id/tv_stage"
         tools:listitem="@layout/item_chat_my" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
