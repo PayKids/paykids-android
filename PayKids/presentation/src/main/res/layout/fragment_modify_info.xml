@@ -69,13 +69,13 @@
         android:layout_marginTop="24dp"
         android:fontFamily="@font/nanumsquare_extra_bold"
         android:includeFontPadding="false"
-        android:text="nickname"
         android:textColor="@color/black"
         android:textSize="24sp"
-
         app:layout_constraintEnd_toEndOf="parent"
+
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/iv_profile" />
+        app:layout_constraintTop_toBottomOf="@id/iv_profile"
+        tools:text="nickname" />
 
     <View
         android:id="@+id/view_my_info"
@@ -128,38 +128,48 @@
         app:layout_constraintStart_toStartOf="@id/tv_modify_nickname"
         app:layout_constraintTop_toBottomOf="@+id/tv_modify_nickname" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/til_nickname"
+    <EditText
+        android:id="@+id/et_modify_nickname"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="36dp"
-        android:layout_marginEnd="24dp"
+        android:layout_height="52dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/border_radius_10"
+        android:fontFamily="@font/nanumsquare_bold"
+        android:gravity="center"
 
-        app:counterEnabled="true"
-        app:counterMaxLength="8"
-        app:errorEnabled="true"
+        android:importantForAutofill="no"
+        android:includeFontPadding="false"
+        android:inputType="text"
+        android:maxLength="8"
+        android:maxLines="1"
+        android:textColor="@color/black"
+        android:textSize="16sp"
 
         app:layout_constraintBottom_toBottomOf="@id/tv_modify_nickname"
-        app:layout_constraintEnd_toEndOf="@id/view_my_info"
-        app:layout_constraintStart_toEndOf="@id/tv_modify_nickname"
-        app:layout_constraintTop_toTopOf="@id/tv_modify_nickname">
+        app:layout_constraintEnd_toStartOf="@id/btn_confirm"
+        app:layout_constraintStart_toStartOf="@id/tv_email"
+        app:layout_constraintTop_toTopOf="@id/tv_modify_nickname"
+        tools:ignore="LabelFor"
+        tools:text="수정된 닉네임" />
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/et_modify_nickname"
-            android:layout_width="match_parent"
-            android:layout_height="52dp"
-            android:background="@drawable/border_radius_10"
+    <Button
+        android:id="@+id/btn_confirm"
+        android:layout_width="wrap_content"
+        android:layout_height="52dp"
+        android:layout_marginEnd="24dp"
+        android:background="@drawable/border_radius_10"
+        android:backgroundTint="@color/blue2"
 
-            android:fontFamily="@font/nanumsquare_bold"
-            android:gravity="center"
-            android:importantForAutofill="no"
-            android:includeFontPadding="false"
-            android:inputType="text"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            tools:text="수정된 닉네임" />
+        android:fontFamily="@font/nanumsquare_extra_bold"
+        android:gravity="center"
+        android:includeFontPadding="false"
+        android:text="@string/text_confirm"
+        android:textColor="@color/white"
+        android:textSize="16sp"
 
-    </com.google.android.material.textfield.TextInputLayout>
+        app:layout_constraintBottom_toBottomOf="@id/tv_modify_nickname"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tv_modify_nickname" />
 
     <TextView
         android:id="@+id/tv_email"
@@ -172,15 +182,15 @@
         android:fontFamily="@font/nanumsquare_bold"
         android:gravity="center"
         android:includeFontPadding="false"
+        android:text="hbj0209@kakao.com"
         android:textColor="@color/black"
         android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="@id/tv_email_text"
 
+        app:layout_constraintBottom_toBottomOf="@id/tv_email_text"
         app:layout_constraintEnd_toEndOf="@id/view_my_info"
         app:layout_constraintStart_toEndOf="@id/tv_email_text"
         app:layout_constraintTop_toTopOf="@id/tv_email_text"
-        tools:ignore="Autofill,LabelFor"
-        tools:text="hbj0209@kakao.com" />
+        tools:ignore="Autofill,LabelFor" />
 
     <TextView
         android:id="@+id/tv_withdraw"
