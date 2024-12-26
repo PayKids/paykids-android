@@ -7,27 +7,30 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.paykids.domain.model.DiaryInfo
+import com.paykids.domain.model.DayInfo
 import com.paykids.presentation.R
 import com.paykids.presentation.databinding.ItemDiaryDayBinding
 import com.paykids.presentation.view.OnRvItemClickListener
 
-class DiaryDayCalendarAdapter() :
-    ListAdapter<Pair<String, DiaryInfo?>, DiaryDayCalendarAdapter.DateViewHolder>(diaryDiffUtil) {
+class DiaryDayCalendarAdapter :
+    ListAdapter<Pair<String, DayInfo?>, DiaryDayCalendarAdapter.DateViewHolder>(diaryDiffUtil) {
 
     companion object {
-        private val diaryDiffUtil = object : DiffUtil.ItemCallback<Pair<String, DiaryInfo?>>() {
+        private val diaryDiffUtil = object : DiffUtil.ItemCallback<Pair<String, DayInfo?>>() {
             override fun areItemsTheSame(
-                oldItem: Pair<String, DiaryInfo?>,
-                newItem: Pair<String, DiaryInfo?>
-            ): Boolean =
-                oldItem.second?.diaryId == newItem.second?.diaryId
+                oldItem: Pair<String, DayInfo?>,
+                newItem: Pair<String, DayInfo?>
+            ): Boolean {
+                return oldItem.first == newItem.first
+            }
 
             override fun areContentsTheSame(
-                oldItem: Pair<String, DiaryInfo?>,
-                newItem: Pair<String, DiaryInfo?>
-            ): Boolean =
-                oldItem == newItem
+                oldItem: Pair<String, DayInfo?>,
+                newItem: Pair<String, DayInfo?>
+            ): Boolean {
+                // DayInfo를 비교하는 부분 (null 체크 포함)
+                return oldItem.second == newItem.second
+            }
         }
     }
 
@@ -38,25 +41,31 @@ class DiaryDayCalendarAdapter() :
     }
 
     override fun onBindViewHolder(holder: DateViewHolder, position: Int) {
-        when (getItem(position).first) {
-            "previous" -> holder.clear()
-            "next" -> {}
-            else -> holder.bind(getItem(position))
+        val dateAndConsume = getItem(position)
+        if (dateAndConsume.first != "previous" && dateAndConsume.first != "next") {
+            holder.bind(dateAndConsume)
+        } else {
+            holder.clear()
         }
     }
 
     inner class DateViewHolder(val binding: ItemDiaryDayBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(diaryInfo: Pair<String, DiaryInfo?>) {
-            binding.tvDay.text = diaryInfo.first
-            binding.tvDay.setTextColor(ContextCompat.getColor(itemView.context, R.color.black))
+        fun bind(dateAndConsume: Pair<String, DayInfo?>) {
+            val date = dateAndConsume.first
+            val detailConsume = dateAndConsume.second
+
+            binding.tvDay.text = date
+            binding.tvIncome.text = detailConsume?.income.toString() ?: "0"
+            binding.tvConsume.text = detailConsume?.consume.toString() ?: "0"
+
+            binding.tvDay.setTextColor(ContextCompat.getColor(itemView.context, R.color.white))
             binding.root.isClickable = true
             binding.root.visibility = View.VISIBLE
 
-
             itemView.setOnClickListener {
-                rvItemClickListener.onClick(diaryInfo.second!!.diaryId)
+                rvItemClickListener.onClick(date.toInt())
             }
         }
 
@@ -72,4 +81,5 @@ class DiaryDayCalendarAdapter() :
     fun setRvItemClickListener(rvItemClickListener: OnRvItemClickListener<Int>) {
         this.rvItemClickListener = rvItemClickListener
     }
+
 }

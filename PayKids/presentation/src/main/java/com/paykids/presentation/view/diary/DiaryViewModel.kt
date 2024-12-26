@@ -3,8 +3,8 @@ package com.paykids.presentation.view.diary
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.paykids.domain.model.DayInfo
 import com.paykids.domain.model.DetailConsume
-import com.paykids.domain.model.DiaryInfo
 import com.paykids.domain.usecase.datastore.GetAccessTokenUseCase
 import com.paykids.presentation.utils.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,8 +15,8 @@ class DiaryViewModel @Inject constructor(
     private val getAccessTokenUseCase: GetAccessTokenUseCase
 ) : ViewModel() {
 
-    private val _diaryState = MutableLiveData<UiState<List<DiaryInfo>>>(UiState.Loading)
-    val diaryState: LiveData<UiState<List<DiaryInfo>>> get() = _diaryState
+    private val _diaryState = MutableLiveData<UiState<List<DayInfo>>>(UiState.Loading)
+    val diaryState: LiveData<UiState<List<DayInfo>>> get() = _diaryState
 
     private val _selectedDateDetails = MutableLiveData<List<DetailConsume>>()
     val selectedDateDetails: LiveData<List<DetailConsume>> get() = _selectedDateDetails

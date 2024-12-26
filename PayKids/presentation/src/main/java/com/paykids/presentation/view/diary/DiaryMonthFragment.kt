@@ -3,7 +3,7 @@ package com.paykids.presentation.view.diary
 import android.os.Bundle
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
-import com.paykids.domain.model.DiaryInfo
+import com.paykids.domain.model.DayInfo
 import com.paykids.presentation.base.BaseFragment
 import com.paykids.presentation.databinding.FragmentDiaryMonthBinding
 import com.paykids.presentation.utils.UiState
@@ -18,6 +18,8 @@ class DiaryMonthFragment : BaseFragment<FragmentDiaryMonthBinding>() {
     private val viewModel: DiaryViewModel by viewModels()
     private lateinit var dayAdapter: DiaryDayCalendarAdapter
     private lateinit var date: Date
+
+    private var dateClickListener: OnRvItemClickListener<String>? = null
 
     companion object {
         private const val ARG_DATE = "date"
@@ -35,25 +37,31 @@ class DiaryMonthFragment : BaseFragment<FragmentDiaryMonthBinding>() {
         date = arguments?.getLong(ARG_DATE)?.let { Date(it) } ?: Date()
 
         val daysInMonth = getDaysInMonth(date)
+        val initialList =
+            daysInMonth.map { day -> Pair(day, null as DayInfo?) } // 초기 상태로 DayInfo는 null로 설정
         dayAdapter = DiaryDayCalendarAdapter().apply {
             setRvItemClickListener(object : OnRvItemClickListener<Int> {
-                override fun onClick(item: Int) {
-                    val clickedDate =
-                        "${date.year}-${date.month}-${item.toString().padStart(2, '0')}"
-                    viewModel.fetchDetailsForDate(clickedDate)
+                override fun onClick(day: Int) {
+                    val clickedDate = getDateStringForDay(day) // 선택된 날짜를 문자열 형식으로 변환
+                    dateClickListener?.onClick(clickedDate)
                 }
             })
         }
-        dayAdapter.submitList(
-            matchDiaryEntriesWithDays(
-                List<DiaryInfo?>(daysInMonth.size) { null },
-                daysInMonth
-            )
-        )
+        dayAdapter.submitList(initialList)
 
         binding.rvCalendarDays.layoutManager = GridLayoutManager(requireContext(), 7)
         binding.rvCalendarDays.adapter = dayAdapter
         binding.rvCalendarDays.itemAnimator = null
+    }
+
+    private fun getDateStringForDay(day: Int): String {
+        val calendar = Calendar.getInstance().apply {
+            time = date
+            set(Calendar.DAY_OF_MONTH, day)
+        }
+        return "${calendar.get(Calendar.YEAR)}-${
+            (calendar.get(Calendar.MONTH) + 1).toString().padStart(2, '0')
+        }-${day.toString().padStart(2, '0')}"
     }
 
     private fun getDaysInMonth(date: Date): List<String> {
@@ -75,28 +83,8 @@ class DiaryMonthFragment : BaseFragment<FragmentDiaryMonthBinding>() {
         return daysInMonth
     }
 
-    private fun matchDiaryEntriesWithDays(
-        diaryInfos: List<DiaryInfo?>,
-        days: List<String>
-    ): List<Pair<String, DiaryInfo?>> {
-        val result = mutableListOf<Pair<String, DiaryInfo?>>()
-        val datePattern = """\d{4}-\d{2}-(\d{2})""".toRegex()
-
-        for (day in days) {
-            if (day == "previous" || day == "next") {
-                result.add(day to null)
-            } else {
-                val dayWithLeadingZero = day.padStart(2, '0')
-                val matchedDiaryInfo = diaryInfos.find { diaryInfo ->
-                    val entryDate = diaryInfo?.diaryEntryDate
-                    entryDate?.let { datePattern.find(it)?.groupValues?.get(1) == dayWithLeadingZero }
-                        ?: false
-                }
-                result.add(day to matchedDiaryInfo)
-            }
-        }
-
-        return result
+    fun setDateClickListener(listener: OnRvItemClickListener<String>) {
+        dateClickListener = listener
     }
 
     override fun setObserver() {
@@ -110,12 +98,10 @@ class DiaryMonthFragment : BaseFragment<FragmentDiaryMonthBinding>() {
                 }
 
                 is UiState.Success -> {
-                    dayAdapter.submitList(
-                        matchDiaryEntriesWithDays(
-                            state.data,
-                            getDaysInMonth(date)
-                        )
-                    )
+//                    dayAdapter.submitList(
+//                        state.data,
+//                        getDaysInMonth(date)
+//                    )
                 }
             }
         }

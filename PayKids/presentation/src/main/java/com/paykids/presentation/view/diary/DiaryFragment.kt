@@ -1,5 +1,6 @@
 package com.paykids.presentation.view.diary
 
+import android.annotation.SuppressLint
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -9,10 +10,10 @@ import com.paykids.presentation.R
 import com.paykids.presentation.base.BaseFragment
 import com.paykids.presentation.custom.ConfirmDialogInterface
 import com.paykids.presentation.databinding.FragmentDiaryBinding
+import com.paykids.presentation.view.OnRvItemClickListener
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
 import java.util.Calendar
-import java.util.Date
 import java.util.Locale
 
 @AndroidEntryPoint
@@ -35,12 +36,18 @@ class DiaryFragment : BaseFragment<FragmentDiaryBinding>(), ConfirmDialogInterfa
         binding.vpCalendarMonth.adapter = calendarAdapter
         binding.vpCalendarMonth.setCurrentItem(Int.MAX_VALUE / 2, false)
         binding.vpCalendarMonth.offscreenPageLimit = 1
+
         // viewPager 스크롤 막기
         binding.vpCalendarMonth.getChildAt(0).setOnTouchListener { _, _ -> true }
 
-        val currentMonth = SimpleDateFormat("M", Locale.KOREAN).format(Date())
-        val formattedMonth = "${currentMonth}월"
-        binding.tvMonth.text = formattedMonth
+        updateCurrentMonthText(binding.vpCalendarMonth.currentItem)
+
+        calendarAdapter.setFragmentDateClickListener(object : OnRvItemClickListener<String> {
+            override fun onClick(date: String) {
+                // 선택된 날짜에 대해 소비 내역을 가져옵니다.
+                viewModel.fetchDetailsForDate(date)
+            }
+        })
     }
 
     override fun initListener() {
@@ -80,13 +87,15 @@ class DiaryFragment : BaseFragment<FragmentDiaryBinding>(), ConfirmDialogInterfa
 
     }
 
+    @SuppressLint("SetTextI18n")
     private fun updateCurrentMonthText(position: Int) {
         val calendar = Calendar.getInstance().apply {
             add(Calendar.MONTH, position - (Int.MAX_VALUE / 2))
         }
-        val currentMonth = SimpleDateFormat("MM", Locale.ENGLISH).format(calendar.time)
-        val formattedMonth = "${currentMonth}월"
-        binding.tvMonth.text = formattedMonth
+        val selectedDate = SimpleDateFormat("yyyy-MM", Locale.KOREAN).format(calendar.time)
+        binding.tvMonth.text = "${calendar.get(Calendar.MONTH) + 1}월"
+
+        viewModel.fetchDetailsForDate(selectedDate)
     }
 
 }
