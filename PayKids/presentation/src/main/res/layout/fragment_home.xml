@@ -11,70 +11,65 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+        <!-- 배경 이미지 -->
         <ImageView
-            android:id="@+id/iv_title"
+            android:id="@+id/iv_background"
             android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:layout_marginHorizontal="20dp"
-            android:layout_marginTop="24dp"
-            android:background="@color/gray3"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/bg_home"
             app:layout_constraintTop_toTopOf="parent"
             tools:ignore="ContentDescription" />
 
-        <ImageView
-            android:id="@+id/iv_stage"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_marginTop="60dp"
-            android:layout_marginEnd="80dp"
-            android:background="@drawable/selector_stage"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/iv_title"
-            tools:ignore="ContentDescription" />
+        <!-- 콘텐츠 -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
-            android:id="@+id/iv_stage2"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_marginTop="40dp"
-            android:layout_marginEnd="160dp"
-            android:background="@drawable/selector_stage"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/iv_stage"
-            tools:ignore="ContentDescription" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_box"
+                android:layout_width="0dp"
+                android:layout_height="93.8dp"
+                android:background="@drawable/shape_home_box"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginHorizontal="23.1dp"
+                android:layout_marginTop="16.1dp"
+                tools:ignore="MissingConstraints">
 
-        <ImageView
-            android:id="@+id/iv_stage3"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_marginStart="100dp"
-            android:layout_marginTop="40dp"
-            android:background="@drawable/selector_stage"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/iv_stage2"
-            tools:ignore="ContentDescription" />
+                <TextView
+                    android:id="@+id/tv_stage_number"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    tools:text="스테이지 1"
+                    android:fontFamily="@font/nanumsquare_bold"
+                    android:textSize="12sp"
+                    android:textColor="@color/blue1"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginHorizontal="19dp"
+                    android:layout_marginTop="22dp" />
 
-        <ImageView
-            android:id="@+id/iv_stage4"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_marginStart="160dp"
-            android:layout_marginTop="60dp"
-            android:background="@drawable/selector_stage"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/iv_stage3"
-            tools:ignore="ContentDescription" />
+                <TextView
+                    android:id="@+id/tv_stage_title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    tools:text="돈이란 무엇일까요?"
+                    android:fontFamily="@font/nanumsquare_bold"
+                    android:textSize="18sp"
+                    android:textColor="@color/black"
+                    app:layout_constraintTop_toBottomOf="@id/tv_stage_number"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginHorizontal="19dp"
+                    android:layout_marginTop="7dp" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <ImageView
-            android:id="@+id/iv_stage5"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_marginTop="60dp"
-            android:layout_marginEnd="80dp"
-            android:background="@drawable/selector_stage"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/iv_stage4"
-            tools:ignore="ContentDescription" />
 
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
