@@ -1,6 +1,7 @@
 package com.paykids.presentation.view.diary
 
 import android.annotation.SuppressLint
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -11,6 +12,7 @@ import com.paykids.presentation.base.BaseFragment
 import com.paykids.presentation.custom.ConfirmDialogInterface
 import com.paykids.presentation.databinding.FragmentDiaryBinding
 import com.paykids.presentation.view.OnRvItemClickListener
+import com.paykids.util.LoggerUtils
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -18,14 +20,15 @@ import java.util.Locale
 
 @AndroidEntryPoint
 class DiaryFragment : BaseFragment<FragmentDiaryBinding>(), ConfirmDialogInterface {
-    private val viewModel: DiaryViewModel by viewModels()
+    private val viewModel: DiaryViewModel by activityViewModels()
     private lateinit var calendarAdapter: DiaryMonthCalendarStateAdapter
+    private lateinit var detailAdapter: DetailConsumeAdapter
 
     override fun initView() {
-        val adapter = DetailConsumeAdapter(emptyList())
+        detailAdapter = DetailConsumeAdapter()
         binding.rvDetailConsume.apply {
             layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
-            this.adapter = adapter
+            this.adapter = detailAdapter
         }
 
         viewModel.selectedDateDetails.observe(viewLifecycleOwner) { details ->
@@ -41,13 +44,6 @@ class DiaryFragment : BaseFragment<FragmentDiaryBinding>(), ConfirmDialogInterfa
         binding.vpCalendarMonth.getChildAt(0).setOnTouchListener { _, _ -> true }
 
         updateCurrentMonthText(binding.vpCalendarMonth.currentItem)
-
-        calendarAdapter.setFragmentDateClickListener(object : OnRvItemClickListener<String> {
-            override fun onClick(date: String) {
-                // 선택된 날짜에 대해 소비 내역을 가져옵니다.
-                viewModel.fetchDetailsForDate(date)
-            }
-        })
     }
 
     override fun initListener() {
@@ -80,6 +76,14 @@ class DiaryFragment : BaseFragment<FragmentDiaryBinding>(), ConfirmDialogInterfa
         binding.ibRight.setOnClickListener {
             val currentPos = binding.vpCalendarMonth.currentItem
             binding.vpCalendarMonth.setCurrentItem(currentPos + 1, false)
+        }
+    }
+
+    override fun setObserver() {
+        super.setObserver()
+
+        viewModel.selectedDateDetails.observe(viewLifecycleOwner) { details ->
+            detailAdapter.submitList(details)
         }
     }
 

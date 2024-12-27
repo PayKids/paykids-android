@@ -1,6 +1,7 @@
 package com.paykids.presentation.view.diary
 
 import android.os.Bundle
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import com.paykids.domain.model.DayInfo
@@ -15,7 +16,7 @@ import java.util.Date
 
 @AndroidEntryPoint
 class DiaryMonthFragment : BaseFragment<FragmentDiaryMonthBinding>() {
-    private val viewModel: DiaryViewModel by viewModels()
+    private val viewModel: DiaryViewModel by activityViewModels()
     private lateinit var dayAdapter: DiaryDayCalendarAdapter
     private lateinit var date: Date
 
@@ -41,9 +42,11 @@ class DiaryMonthFragment : BaseFragment<FragmentDiaryMonthBinding>() {
             daysInMonth.map { day -> Pair(day, null as DayInfo?) } // 초기 상태로 DayInfo는 null로 설정
         dayAdapter = DiaryDayCalendarAdapter().apply {
             setRvItemClickListener(object : OnRvItemClickListener<Int> {
-                override fun onClick(day: Int) {
-                    val clickedDate = getDateStringForDay(day) // 선택된 날짜를 문자열 형식으로 변환
+                override fun onClick(item: Int) {
+                    val clickedDate = getDateStringForDay(item)
                     dateClickListener?.onClick(clickedDate)
+                    viewModel.fetchDetailsForDate(clickedDate)
+                    LoggerUtils.d(clickedDate)
                 }
             })
         }
@@ -81,29 +84,5 @@ class DiaryMonthFragment : BaseFragment<FragmentDiaryMonthBinding>() {
         }
 
         return daysInMonth
-    }
-
-    fun setDateClickListener(listener: OnRvItemClickListener<String>) {
-        dateClickListener = listener
-    }
-
-    override fun setObserver() {
-        super.setObserver()
-
-        viewModel.diaryState.observe(viewLifecycleOwner) { state ->
-            when (state) {
-                is UiState.Loading -> {}
-                is UiState.Failure -> {
-                    LoggerUtils.e(state.message)
-                }
-
-                is UiState.Success -> {
-//                    dayAdapter.submitList(
-//                        state.data,
-//                        getDaysInMonth(date)
-//                    )
-                }
-            }
-        }
     }
 }

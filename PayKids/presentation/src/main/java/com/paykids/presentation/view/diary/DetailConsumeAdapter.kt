@@ -7,8 +7,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.paykids.domain.model.DetailConsume
 import com.paykids.presentation.databinding.ItemDetailConsumptionBinding
 
-class DetailConsumeAdapter(private var items: List<DetailConsume>) :
-    RecyclerView.Adapter<DetailConsumeAdapter.ViewHolder>() {
+class DetailConsumeAdapter : RecyclerView.Adapter<DetailConsumeAdapter.ViewHolder>() {
+
+    private val items = mutableListOf<DetailConsume>()
 
     interface OnItemClickListener {
         fun onItemClick()
@@ -18,34 +19,30 @@ class DetailConsumeAdapter(private var items: List<DetailConsume>) :
 
     inner class ViewHolder(val binding: ItemDetailConsumptionBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        init {
-            binding.root.setOnClickListener {
-                itemClickListener?.onItemClick()
-            }
+
+        fun bind(item: DetailConsume) {
+            binding.tvComsumptionPlace.text = item.place
+            binding.tvConsumeAmount.text = "${item.amount}원"
+            binding.tvMemo.text = item.memo
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view =
-            ItemDetailConsumptionBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return ViewHolder(view)
+        val inflater = LayoutInflater.from(parent.context)
+        val binding = ItemDetailConsumptionBinding.inflate(inflater, parent, false)
+        return ViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.binding.apply {
-            tvComsumptionPlace.text = items[position].place
-            tvConsumeAmount.text = items[position].amount.toString()
-            tvMemo.text = items[position].memo
-        }
+        holder.bind(items[position])
     }
 
-    override fun getItemCount(): Int {
-        return items.size
-    }
+    override fun getItemCount() = items.size
 
     @SuppressLint("NotifyDataSetChanged")
     fun submitList(newItems: List<DetailConsume>) {
-        items = newItems
+        items.clear()
+        items.addAll(newItems)
         notifyDataSetChanged()
     }
 }

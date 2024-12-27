@@ -28,7 +28,6 @@ class DiaryDayCalendarAdapter :
                 oldItem: Pair<String, DayInfo?>,
                 newItem: Pair<String, DayInfo?>
             ): Boolean {
-                // DayInfo를 비교하는 부분 (null 체크 포함)
                 return oldItem.second == newItem.second
             }
         }
