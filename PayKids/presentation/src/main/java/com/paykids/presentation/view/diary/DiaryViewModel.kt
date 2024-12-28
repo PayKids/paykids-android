@@ -8,6 +8,7 @@ import com.paykids.domain.model.DetailConsume
 import com.paykids.domain.usecase.datastore.GetAccessTokenUseCase
 import com.paykids.presentation.utils.Constants
 import com.paykids.presentation.utils.UiState
+import com.paykids.util.LoggerUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -25,19 +26,21 @@ class DiaryViewModel @Inject constructor(
     fun fetchDetailsForDate(date: String) {
         val dummyData = when (date) {
             "2024-12-25" -> listOf(
-                DetailConsume("편의점", 5000, "크리스마스 기념 구매"),
-                DetailConsume("카페", 4500, "크리스마스 커피")
+                DetailConsume("2024-12-25", "편의점", 5000, "크리스마스 기념 구매"),
+                DetailConsume("2024-12-25", "카페", 4500, "크리스마스 커피")
             )
 
             "2024-12-28" -> listOf(
-                DetailConsume("방탈출", 28000, "필름바이스티브"),
-                DetailConsume("보드게임", 8000, "버건디의 성")
+                DetailConsume("2024-12-28", "방탈출", 28000, "필름바이스티브"),
+                DetailConsume("2024-12-28", "보드게임", 8000, "버건디의 성")
             )
 
-            else -> listOf(
-                DetailConsume("슈퍼마켓", 1500, "일반 구매"),
-                DetailConsume("서점", 2500, "책 구매")
+            "2024-12-20" -> listOf(
+                DetailConsume("2024-12-20", "서점", 22200, "일반 구매"),
+                DetailConsume("2024-12-20", "서점", 25000, "책 구매")
             )
+
+            else -> emptyList()
         }
 
         _selectedDateDetails.value = dummyData
@@ -63,18 +66,17 @@ class DiaryViewModel @Inject constructor(
             ?.sumOf { it.consume } ?: 0
     }
 
-//    fun fetchData(year: Int, month: Int) {
-//        _diaryState.value = UiState.Loading
-//
-//        viewModelScope.launch {
-//            val accessToken = getAccessTokenUseCase.invoke().getOrNull().orEmpty()
-//
-//            getMonthlyDiaryUseCase(accessToken, year, month)
-//                .onSuccess {
-//                    _diaryState.value = UiState.Success(it)
-//                }.onFailure { e ->
-//                    _diaryState.value = UiState.Failure(message = e.message.toString())
-//                }
-//        }
-//    }
+    fun getMostConsumedCategoryForMonth(yearMonth: String): Pair<String, Int>? {
+        fetchDetailsForDate("2024-12-25")
+        val detailsForMonth =
+            _selectedDateDetails.value?.filter { it.date.startsWith(yearMonth) } ?: emptyList()
+
+        LoggerUtils.d(detailsForMonth.toString())
+
+        val categoryTotalMap = detailsForMonth.groupingBy { it.place }
+            .fold(0) { total, detail -> total + detail.amount }
+
+        return categoryTotalMap.maxByOrNull { it.value }?.toPair()
+    }
+
 }

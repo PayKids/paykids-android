@@ -21,11 +21,12 @@ class DetailConsumeAdapter : RecyclerView.Adapter<DetailConsumeAdapter.ViewHolde
     inner class ViewHolder(val binding: ItemDetailConsumptionBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
+        @SuppressLint("SetTextI18n")
         fun bind(item: DetailConsume) {
             val formattedAmount = Constants.formatAmount(item.amount)
 
             binding.tvComsumptionPlace.text = item.place
-            binding.tvConsumeAmount.text = "${formattedAmount}원"
+            binding.tvConsumeAmount.text = "-${formattedAmount}원"
             binding.tvMemo.text = item.memo
         }
     }

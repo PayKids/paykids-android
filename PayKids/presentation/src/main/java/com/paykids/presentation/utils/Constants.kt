@@ -22,7 +22,7 @@ object Constants {
     }
 
     fun formatAmount(amount: Int): String {
-        val formatter = DecimalFormat("-#,###")
+        val formatter = DecimalFormat("#,###")
         return formatter.format(amount)
     }
 }

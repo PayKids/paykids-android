@@ -67,7 +67,7 @@
             style="@style/heading3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="28dp"
             android:fontFamily="@font/nanumsquare_extra_bold"
             android:textColor="@color/black"
@@ -85,7 +85,7 @@
             android:background="@drawable/shape_consumption_status"
 
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/tv_month_consumption"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_month_consumption"
             tools:ignore="ContentDescription" />
 
@@ -106,19 +106,20 @@
             tools:text="12월 달 편의점에서 소비를 많이 했어요" />
 
         <TextView
+            android:id="@+id/tv_most_consume_category_amount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
 
             android:fontFamily="@font/nanumsquare_extra_bold"
-            android:text="16,300"
             android:textColor="@color/black"
             android:textSize="20sp"
 
             app:layout_constraintBottom_toBottomOf="@+id/iv_consumption_status"
             app:layout_constraintEnd_toStartOf="@+id/tv_consuming"
             app:layout_constraintStart_toEndOf="@+id/tv_consumption_most"
-            app:layout_constraintTop_toTopOf="@+id/iv_consumption_status" />
+            app:layout_constraintTop_toTopOf="@+id/iv_consumption_status"
+            tools:text="16,300" />
 
         <TextView
             android:id="@+id/tv_consuming"

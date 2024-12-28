@@ -65,7 +65,6 @@ class DiaryFragment : BaseFragment<FragmentDiaryBinding>(), ConfirmDialogInterfa
             updateCurrentMonthText(binding.vpCalendarMonth.currentItem)
         }
         updateSelectDayText(today)
-        fetchDetailsForDate(today)
     }
 
     override fun initListener() {
@@ -126,33 +125,20 @@ class DiaryFragment : BaseFragment<FragmentDiaryBinding>(), ConfirmDialogInterfa
         val totalConsume = viewModel.getMonthConsumption(yearMonth)
         binding.tvMonthConsumption.text = "${Constants.formatAmount(totalConsume)}원 사용 중"
 
-        fetchMostConsume(yearMonth)
         viewModel.fetchDetailsForDate(yearMonth)
+        getMostConsumedCategoryForMonth(yearMonth)
     }
 
-    private fun fetchMostConsume(day: String) {
-        val formattedDate = formatDateToKorean(day)
-        val month = formattedDate.split("-")[1] + "월"
-        val place = "편의점"
-        val mostConsumeText = getString(R.string.text_month_most_consume, month, place)
-
-        val spannableText = SpannableString(mostConsumeText)
-        val startIndex = mostConsumeText.indexOf(place)
-        if (startIndex != -1) {
-            spannableText.setSpan(
-                ForegroundColorSpan(ContextCompat.getColor(requireContext(), R.color.blue1)),
-                startIndex,
-                startIndex + place.length,
-                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-            )
+    private fun getMostConsumedCategoryForMonth(yearMonth: String) {
+        val mostConsumedCategory = viewModel.getMostConsumedCategoryForMonth(yearMonth)
+        mostConsumedCategory?.let { (place, totalAmount) ->
+            val month = yearMonth.split("-")[1] + "월"
+            binding.tvConsumptionMost.text =
+                getString(R.string.text_month_most_consume, month, place)
+            binding.tvMostConsumeCategoryAmount.text = Constants.formatAmount(totalAmount)
         }
-
-        binding.tvConsumptionMost.text = spannableText
     }
 
-    private fun fetchDetailsForDate(date: String) {
-        viewModel.fetchDetailsForDate(date)
-    }
 
     private fun getToday(): String {
         val today = Calendar.getInstance().run {
