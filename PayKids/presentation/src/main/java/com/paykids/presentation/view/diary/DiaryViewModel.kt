@@ -67,6 +67,7 @@ class DiaryViewModel @Inject constructor(
     }
 
     fun getMostConsumedCategoryForMonth(yearMonth: String): Pair<String, Int>? {
+        // 일단 25일 소비로 화면 갱신
         fetchDetailsForDate("2024-12-25")
         val detailsForMonth =
             _selectedDateDetails.value?.filter { it.date.startsWith(yearMonth) } ?: emptyList()

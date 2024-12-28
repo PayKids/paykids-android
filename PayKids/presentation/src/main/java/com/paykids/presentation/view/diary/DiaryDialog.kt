@@ -16,6 +16,7 @@ class DiaryDialog(confirmDialogInterface: ConfirmDialogInterface) : DialogFragme
     private var _binding: DialogDiaryBinding? = null
     private val binding get() = _binding!!
     private var confirmDialogInterface: ConfirmDialogInterface? = null
+    private var isConsumeSelected = true
 
     init {
         this.confirmDialogInterface = confirmDialogInterface
@@ -37,6 +38,10 @@ class DiaryDialog(confirmDialogInterface: ConfirmDialogInterface) : DialogFragme
         val adapter = CustomSpinnerAdapter(requireContext(), items)
         spinner.adapter = adapter
 
+        binding.clSwitch.setOnClickListener {
+            toggleSwitch()
+        }
+
         binding.btnSubmit.setOnClickListener {
             this.confirmDialogInterface?.onYesButtonClick()
             dismiss()
@@ -52,6 +57,26 @@ class DiaryDialog(confirmDialogInterface: ConfirmDialogInterface) : DialogFragme
             (requireContext().resources.displayMetrics.widthPixels * 0.9).toInt(),
             ViewGroup.LayoutParams.WRAP_CONTENT
         )
+    }
+
+    private fun toggleSwitch() {
+        isConsumeSelected = !isConsumeSelected
+
+        if (isConsumeSelected) {
+            // 소비가 선택된 경우
+            binding.tvConsume.setBackgroundResource(R.drawable.switch_bg_select)
+            binding.tvConsume.setTextColor(requireContext().getColor(R.color.black))
+
+            binding.tvIncome.setBackgroundResource(R.color.transparent)
+            binding.tvIncome.setTextColor(requireContext().getColor(R.color.gray7))
+        } else {
+            // 수입이 선택된 경우
+            binding.tvIncome.setBackgroundResource(R.drawable.switch_bg_select)
+            binding.tvIncome.setTextColor(requireContext().getColor(R.color.black))
+
+            binding.tvConsume.setBackgroundResource(R.color.transparent)
+            binding.tvConsume.setTextColor(requireContext().getColor(R.color.gray7))
+        }
     }
 
     override fun onDestroyView() {
