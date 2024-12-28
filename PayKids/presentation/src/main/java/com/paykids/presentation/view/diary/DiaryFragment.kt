@@ -35,7 +35,7 @@ class DiaryFragment : BaseFragment<FragmentDiaryBinding>(), ConfirmDialogInterfa
     private var currentMonth: Int = 0
 
     override fun initView() {
-        detailAdapter = DetailConsumeAdapter()
+        detailAdapter = DetailConsumeAdapter(this)
         binding.rvDetailConsume.apply {
             layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
             this.adapter = detailAdapter
@@ -76,7 +76,7 @@ class DiaryFragment : BaseFragment<FragmentDiaryBinding>(), ConfirmDialogInterfa
         }
 
         binding.ibAddPocketMoney.setOnClickListener {
-            val dialog = DiaryDialog(this)
+            val dialog = DiaryDialog()
             dialog.isCancelable = true
             dialog.show(parentFragmentManager, "AddPocketMoneyDialog")
         }

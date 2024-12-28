@@ -37,7 +37,7 @@
         android:id="@+id/tv_income"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="2dp"
 
         android:fontFamily="@font/nanumsquare_extra_bold"
         android:includeFontPadding="false"
@@ -53,6 +53,7 @@
         android:id="@+id/tv_consume"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
 
         android:fontFamily="@font/nanumsquare_extra_bold"
         android:includeFontPadding="false"

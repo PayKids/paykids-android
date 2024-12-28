@@ -1,22 +1,21 @@
 package com.paykids.presentation.view.diary
 
 import android.annotation.SuppressLint
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.paykids.domain.model.DetailConsume
+import com.paykids.presentation.custom.ConfirmDialogInterface
 import com.paykids.presentation.databinding.ItemDetailConsumptionBinding
 import com.paykids.presentation.utils.Constants
 
-class DetailConsumeAdapter : RecyclerView.Adapter<DetailConsumeAdapter.ViewHolder>() {
+class DetailConsumeAdapter(private val fragment: Fragment) :
+    RecyclerView.Adapter<DetailConsumeAdapter.ViewHolder>(), ConfirmDialogInterface {
 
     private val items = mutableListOf<DetailConsume>()
-
-    interface OnItemClickListener {
-        fun onItemClick()
-    }
-
-    var itemClickListener: OnItemClickListener? = null
 
     inner class ViewHolder(val binding: ItemDetailConsumptionBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -28,6 +27,18 @@ class DetailConsumeAdapter : RecyclerView.Adapter<DetailConsumeAdapter.ViewHolde
             binding.tvComsumptionPlace.text = item.place
             binding.tvConsumeAmount.text = "-${formattedAmount}원"
             binding.tvMemo.text = item.memo
+
+            itemView.setOnClickListener {
+                val dialog = DiaryDialog().apply {
+                    arguments = Bundle().apply {
+                        putString("place", item.place)
+                        putString("amount", formattedAmount)
+                        putString("memo", item.memo)
+                    }
+                }
+                dialog.isCancelable = true
+                dialog.show(fragment.parentFragmentManager, "ModifyDiaryDialog")
+            }
         }
     }
 
@@ -48,5 +59,9 @@ class DetailConsumeAdapter : RecyclerView.Adapter<DetailConsumeAdapter.ViewHolde
         items.clear()
         items.addAll(newItems)
         notifyDataSetChanged()
+    }
+
+    override fun onYesButtonClick() {
+        TODO("Not yet implemented")
     }
 }
