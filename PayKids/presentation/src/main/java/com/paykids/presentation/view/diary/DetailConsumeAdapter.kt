@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.paykids.domain.model.DetailConsume
 import com.paykids.presentation.databinding.ItemDetailConsumptionBinding
+import com.paykids.presentation.utils.Constants
 
 class DetailConsumeAdapter : RecyclerView.Adapter<DetailConsumeAdapter.ViewHolder>() {
 
@@ -21,8 +22,10 @@ class DetailConsumeAdapter : RecyclerView.Adapter<DetailConsumeAdapter.ViewHolde
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(item: DetailConsume) {
+            val formattedAmount = Constants.formatAmount(item.amount)
+
             binding.tvComsumptionPlace.text = item.place
-            binding.tvConsumeAmount.text = "${item.amount}원"
+            binding.tvConsumeAmount.text = "${formattedAmount}원"
             binding.tvMemo.text = item.memo
         }
     }

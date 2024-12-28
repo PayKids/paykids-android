@@ -59,8 +59,14 @@ class DiaryDayCalendarAdapter :
             val day = date.split("-").lastOrNull() ?: ""
 
             binding.tvDay.text = day
-            binding.tvIncome.text = detailConsume?.income?.toString() ?: ""
-            binding.tvConsume.text = detailConsume?.consume?.toString() ?: ""
+            binding.tvIncome.text = when {
+                detailConsume?.income == null || detailConsume.income == 0 -> ""
+                else -> "+${detailConsume.income}"
+            }
+            binding.tvConsume.text = when {
+                detailConsume?.consume == null || detailConsume.consume == 0 -> ""
+                else -> "-${detailConsume.consume}"
+            }
             binding.root.isClickable = true
             binding.root.visibility = View.VISIBLE
 
@@ -78,6 +84,8 @@ class DiaryDayCalendarAdapter :
 
         fun clear() {
             binding.tvDay.text = ""
+            binding.tvIncome.text = ""
+            binding.tvConsume.text = ""
             binding.root.isClickable = false
             binding.root.visibility = View.GONE
         }

@@ -1,5 +1,6 @@
 package com.paykids.presentation.utils
 
+import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -18,5 +19,10 @@ object Constants {
         } catch (e: Exception) {
             dateString // 파싱 실패 시 원본 반환
         }
+    }
+
+    fun formatAmount(amount: Int): String {
+        val formatter = DecimalFormat("-#,###")
+        return formatter.format(amount)
     }
 }

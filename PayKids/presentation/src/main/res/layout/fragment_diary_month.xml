@@ -9,7 +9,7 @@
         android:id="@+id/rv_calendar_days"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginHorizontal="4dp"
+        android:layout_marginHorizontal="0dp"
         android:clipToPadding="false"
 
         tools:itemCount="6"

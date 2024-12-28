@@ -39,6 +39,8 @@ class DiaryMonthFragment : BaseFragment<FragmentDiaryMonthBinding>() {
         val daysInMonth = getDaysInMonth(date)
         val initialList =
             daysInMonth.map { day -> Pair(day, null as DayInfo?) }
+        viewModel.fetchDayInfo()
+        viewModel.getDayInfoForMonth("12")
 
         dayAdapter = DiaryDayCalendarAdapter().apply {
             setRvItemClickListener(object : OnRvItemClickListener<Int> {
@@ -50,6 +52,10 @@ class DiaryMonthFragment : BaseFragment<FragmentDiaryMonthBinding>() {
             })
         }
         dayAdapter.submitList(initialList)
+
+        viewModel.dayInfoList.observe(viewLifecycleOwner) { details ->
+            updateDayDetails(details)
+        }
 
         binding.rvCalendarDays.layoutManager = GridLayoutManager(requireContext(), 7)
         binding.rvCalendarDays.adapter = dayAdapter
@@ -91,5 +97,13 @@ class DiaryMonthFragment : BaseFragment<FragmentDiaryMonthBinding>() {
 
     fun setOnDateClickListener(listener: OnRvItemClickListener<String>) {
         onDateClickListener = listener
+    }
+
+    private fun updateDayDetails(details: List<DayInfo>) {
+        val updatedList = dayAdapter.currentList.map { pair ->
+            val updatedInfo = details.find { it.date == pair.first }
+            pair.copy(second = updatedInfo)
+        }
+        dayAdapter.submitList(updatedList)
     }
 }

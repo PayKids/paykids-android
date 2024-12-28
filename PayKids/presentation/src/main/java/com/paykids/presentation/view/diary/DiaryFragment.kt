@@ -1,16 +1,23 @@
 package com.paykids.presentation.view.diary
 
 import android.annotation.SuppressLint
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.style.ForegroundColorSpan
+import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
+import com.paykids.domain.model.DayInfo
 import com.paykids.presentation.R
 import com.paykids.presentation.base.BaseFragment
 import com.paykids.presentation.custom.ConfirmDialogInterface
 import com.paykids.presentation.databinding.FragmentDiaryBinding
+import com.paykids.presentation.utils.Constants
 import com.paykids.presentation.utils.Constants.formatDateToKorean
 import com.paykids.presentation.view.OnRvItemClickListener
 import com.paykids.util.LoggerUtils
@@ -25,6 +32,8 @@ class DiaryFragment : BaseFragment<FragmentDiaryBinding>(), ConfirmDialogInterfa
     private lateinit var calendarAdapter: DiaryMonthCalendarStateAdapter
     private lateinit var detailAdapter: DetailConsumeAdapter
 
+    private var currentMonth: Int = 0
+
     override fun initView() {
         detailAdapter = DetailConsumeAdapter()
         binding.rvDetailConsume.apply {
@@ -33,7 +42,7 @@ class DiaryFragment : BaseFragment<FragmentDiaryBinding>(), ConfirmDialogInterfa
         }
 
         viewModel.selectedDateDetails.observe(viewLifecycleOwner) { details ->
-            (binding.rvDetailConsume.adapter as DetailConsumeAdapter).submitList(details)
+            detailAdapter.submitList(details)
         }
 
         calendarAdapter = DiaryMonthCalendarStateAdapter(
@@ -51,7 +60,12 @@ class DiaryFragment : BaseFragment<FragmentDiaryBinding>(), ConfirmDialogInterfa
         // viewPager 스크롤 막기
         binding.vpCalendarMonth.getChildAt(0).setOnTouchListener { _, _ -> true }
 
-        updateCurrentMonthText(binding.vpCalendarMonth.currentItem)
+        val today = getToday()
+        binding.vpCalendarMonth.post {
+            updateCurrentMonthText(binding.vpCalendarMonth.currentItem)
+        }
+        updateSelectDayText(today)
+        fetchDetailsForDate(today)
     }
 
     override fun initListener() {
@@ -78,11 +92,13 @@ class DiaryFragment : BaseFragment<FragmentDiaryBinding>(), ConfirmDialogInterfa
 
         binding.ibLeft.setOnClickListener {
             val currentPos = binding.vpCalendarMonth.currentItem
+            currentMonth -= 1
             binding.vpCalendarMonth.setCurrentItem(currentPos - 1, false)
         }
 
         binding.ibRight.setOnClickListener {
             val currentPos = binding.vpCalendarMonth.currentItem
+            currentMonth += 1
             binding.vpCalendarMonth.setCurrentItem(currentPos + 1, false)
         }
     }
@@ -104,10 +120,48 @@ class DiaryFragment : BaseFragment<FragmentDiaryBinding>(), ConfirmDialogInterfa
         val calendar = Calendar.getInstance().apply {
             add(Calendar.MONTH, position - (Int.MAX_VALUE / 2))
         }
-        val selectedDate = SimpleDateFormat("yyyy-MM", Locale.KOREAN).format(calendar.time)
+        val yearMonth = SimpleDateFormat("yyyy-MM", Locale.KOREAN).format(calendar.time)
         binding.tvMonth.text = "${calendar.get(Calendar.MONTH) + 1}월"
 
-        viewModel.fetchDetailsForDate(selectedDate)
+        val totalConsume = viewModel.getMonthConsumption(yearMonth)
+        binding.tvMonthConsumption.text = "${Constants.formatAmount(totalConsume)}원 사용 중"
+
+        fetchMostConsume(yearMonth)
+        viewModel.fetchDetailsForDate(yearMonth)
+    }
+
+    private fun fetchMostConsume(day: String) {
+        val formattedDate = formatDateToKorean(day)
+        val month = formattedDate.split("-")[1] + "월"
+        val place = "편의점"
+        val mostConsumeText = getString(R.string.text_month_most_consume, month, place)
+
+        val spannableText = SpannableString(mostConsumeText)
+        val startIndex = mostConsumeText.indexOf(place)
+        if (startIndex != -1) {
+            spannableText.setSpan(
+                ForegroundColorSpan(ContextCompat.getColor(requireContext(), R.color.blue1)),
+                startIndex,
+                startIndex + place.length,
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
+        }
+
+        binding.tvConsumptionMost.text = spannableText
+    }
+
+    private fun fetchDetailsForDate(date: String) {
+        viewModel.fetchDetailsForDate(date)
+    }
+
+    private fun getToday(): String {
+        val today = Calendar.getInstance().run {
+            val year = get(Calendar.YEAR)
+            val month = (get(Calendar.MONTH) + 1).toString().padStart(2, '0')
+            val day = get(Calendar.DAY_OF_MONTH).toString().padStart(2, '0')
+            "$year-$month-$day"
+        }
+        return today
     }
 
     private fun updateSelectDayText(day: String) {

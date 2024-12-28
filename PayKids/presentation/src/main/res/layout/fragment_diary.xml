@@ -35,7 +35,7 @@
 
             app:layout_constraintStart_toEndOf="@+id/ib_left"
             app:layout_constraintTop_toTopOf="@id/ib_left"
-            tools:text="O월" />
+            tools:text="12월" />
 
         <ImageButton
             android:id="@+id/ib_right"
@@ -69,13 +69,12 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
             android:layout_marginTop="28dp"
-
             android:fontFamily="@font/nanumsquare_extra_bold"
-            android:text="150,000원 사용 중"
             android:textColor="@color/black"
 
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/ib_left" />
+            app:layout_constraintTop_toBottomOf="@id/ib_left"
+            tools:text="150,000원 사용 중" />
 
         <ImageView
             android:id="@+id/iv_consumption_status"
@@ -95,25 +94,26 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:fontFamily="@font/nanumsquare_bold"
 
+            android:fontFamily="@font/nanumsquare_bold"
             android:gravity="start"
-            android:text="12월 달 편의점에서 소비를 많이 했어요"
             android:textColor="@color/black"
             android:textSize="12sp"
 
             app:layout_constraintBottom_toBottomOf="@+id/iv_consumption_status"
             app:layout_constraintStart_toStartOf="@+id/iv_consumption_status"
-            app:layout_constraintTop_toTopOf="@+id/iv_consumption_status" />
+            app:layout_constraintTop_toTopOf="@+id/iv_consumption_status"
+            tools:text="12월 달 편의점에서 소비를 많이 했어요" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/nanumsquare_extra_bold"
+            android:layout_marginStart="4dp"
 
+            android:fontFamily="@font/nanumsquare_extra_bold"
             android:text="16,300"
             android:textColor="@color/black"
-            android:textSize="18sp"
+            android:textSize="20sp"
 
             app:layout_constraintBottom_toBottomOf="@+id/iv_consumption_status"
             app:layout_constraintEnd_toStartOf="@+id/tv_consuming"
@@ -124,10 +124,10 @@
             android:id="@+id/tv_consuming"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
+            android:layout_marginEnd="18dp"
 
             android:fontFamily="@font/nanumsquare_bold"
-            android:text="소비 중"
+            android:text="@string/text_consuming"
             android:textColor="@color/black"
             android:textSize="12sp"
 
@@ -244,11 +244,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            android:text="12월 14일"
             android:textColor="@color/gray8"
-
             app:layout_constraintStart_toStartOf="@+id/tv_detail_consumption"
-            app:layout_constraintTop_toBottomOf="@id/tv_detail_consumption" />
+
+            app:layout_constraintTop_toBottomOf="@id/tv_detail_consumption"
+            tools:text="12월 14일" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_detail_consume"
