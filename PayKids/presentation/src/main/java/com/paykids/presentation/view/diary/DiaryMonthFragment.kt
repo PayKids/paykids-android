@@ -20,7 +20,7 @@ class DiaryMonthFragment : BaseFragment<FragmentDiaryMonthBinding>() {
     private lateinit var dayAdapter: DiaryDayCalendarAdapter
     private lateinit var date: Date
 
-    private var dateClickListener: OnRvItemClickListener<String>? = null
+    private var onDateClickListener: OnRvItemClickListener<String>? = null
 
     companion object {
         private const val ARG_DATE = "date"
@@ -36,17 +36,16 @@ class DiaryMonthFragment : BaseFragment<FragmentDiaryMonthBinding>() {
 
     override fun initView() {
         date = arguments?.getLong(ARG_DATE)?.let { Date(it) } ?: Date()
-
         val daysInMonth = getDaysInMonth(date)
         val initialList =
-            daysInMonth.map { day -> Pair(day, null as DayInfo?) } // 초기 상태로 DayInfo는 null로 설정
+            daysInMonth.map { day -> Pair(day, null as DayInfo?) }
+
         dayAdapter = DiaryDayCalendarAdapter().apply {
             setRvItemClickListener(object : OnRvItemClickListener<Int> {
                 override fun onClick(item: Int) {
                     val clickedDate = getDateStringForDay(item)
-                    dateClickListener?.onClick(clickedDate)
+                    onDateClickListener?.onClick(clickedDate)
                     viewModel.fetchDetailsForDate(clickedDate)
-                    LoggerUtils.d(clickedDate)
                 }
             })
         }
@@ -71,6 +70,9 @@ class DiaryMonthFragment : BaseFragment<FragmentDiaryMonthBinding>() {
         val calendar = Calendar.getInstance().apply { time = date }
         val daysInMonth = mutableListOf<String>()
 
+        val year = calendar.get(Calendar.YEAR)
+        val month = (calendar.get(Calendar.MONTH) + 1).toString().padStart(2, '0')
+
         calendar.set(Calendar.DAY_OF_MONTH, 1)
         val firstDayOfWeek = calendar.get(Calendar.DAY_OF_WEEK) - 1
 
@@ -80,9 +82,14 @@ class DiaryMonthFragment : BaseFragment<FragmentDiaryMonthBinding>() {
 
         val maxDay = calendar.getActualMaximum(Calendar.DAY_OF_MONTH)
         for (i in 1..maxDay) {
-            daysInMonth.add(i.toString())
+            val day = i.toString().padStart(2, '0')
+            daysInMonth.add("$year-$month-$day")
         }
 
         return daysInMonth
+    }
+
+    fun setOnDateClickListener(listener: OnRvItemClickListener<String>) {
+        onDateClickListener = listener
     }
 }

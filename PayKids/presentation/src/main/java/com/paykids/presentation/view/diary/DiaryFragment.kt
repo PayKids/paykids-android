@@ -11,6 +11,7 @@ import com.paykids.presentation.R
 import com.paykids.presentation.base.BaseFragment
 import com.paykids.presentation.custom.ConfirmDialogInterface
 import com.paykids.presentation.databinding.FragmentDiaryBinding
+import com.paykids.presentation.utils.Constants.formatDateToKorean
 import com.paykids.presentation.view.OnRvItemClickListener
 import com.paykids.util.LoggerUtils
 import dagger.hilt.android.AndroidEntryPoint
@@ -35,7 +36,14 @@ class DiaryFragment : BaseFragment<FragmentDiaryBinding>(), ConfirmDialogInterfa
             (binding.rvDetailConsume.adapter as DetailConsumeAdapter).submitList(details)
         }
 
-        calendarAdapter = DiaryMonthCalendarStateAdapter(requireActivity())
+        calendarAdapter = DiaryMonthCalendarStateAdapter(
+            requireActivity(),
+            object : OnRvItemClickListener<String> {
+                override fun onClick(item: String) {
+                    updateSelectDayText(item)
+                }
+            })
+
         binding.vpCalendarMonth.adapter = calendarAdapter
         binding.vpCalendarMonth.setCurrentItem(Int.MAX_VALUE / 2, false)
         binding.vpCalendarMonth.offscreenPageLimit = 1
@@ -102,4 +110,8 @@ class DiaryFragment : BaseFragment<FragmentDiaryBinding>(), ConfirmDialogInterfa
         viewModel.fetchDetailsForDate(selectedDate)
     }
 
+    private fun updateSelectDayText(day: String) {
+        val formattedDate = formatDateToKorean(day)
+        binding.tvSelectDay.text = formattedDate
+    }
 }
