@@ -10,6 +10,9 @@ import androidx.fragment.app.DialogFragment
 import com.paykids.presentation.R
 import com.paykids.presentation.custom.ConfirmDialogInterface
 import com.paykids.presentation.databinding.DialogDiaryBinding
+import java.time.LocalDate
+import java.time.format.TextStyle
+import java.util.Locale
 
 class DiaryDialog(confirmDialogInterface: ConfirmDialogInterface) : DialogFragment() {
 
@@ -17,6 +20,7 @@ class DiaryDialog(confirmDialogInterface: ConfirmDialogInterface) : DialogFragme
     private val binding get() = _binding!!
     private var confirmDialogInterface: ConfirmDialogInterface? = null
     private var isConsumeSelected = true
+    private var currentDate: LocalDate = LocalDate.now()
 
     init {
         this.confirmDialogInterface = confirmDialogInterface
@@ -37,6 +41,8 @@ class DiaryDialog(confirmDialogInterface: ConfirmDialogInterface) : DialogFragme
         val items = resources.getStringArray(R.array.category_array)
         val adapter = CustomSpinnerAdapter(requireContext(), items)
         spinner.adapter = adapter
+
+        setupListeners()
 
         binding.clSwitch.setOnClickListener {
             toggleSwitch()
@@ -76,6 +82,45 @@ class DiaryDialog(confirmDialogInterface: ConfirmDialogInterface) : DialogFragme
 
             binding.tvConsume.setBackgroundResource(R.color.transparent)
             binding.tvConsume.setTextColor(requireContext().getColor(R.color.gray7))
+        }
+    }
+
+    private fun updateDateDisplay() {
+        val year = "${currentDate.year}년"
+        val month = "${currentDate.monthValue}월"
+        val day = "${currentDate.dayOfMonth}일"
+
+        binding.tvYear.text = year
+        binding.tvMonth.text = month
+        binding.tvDay.text = day
+    }
+
+    private fun setupListeners() {
+        binding.ivYearUp.setOnClickListener {
+            currentDate = currentDate.plusYears(1) // 연도를 1년 증가
+            updateDateDisplay()
+        }
+        binding.ivYearDown.setOnClickListener {
+            currentDate = currentDate.minusYears(1) // 연도를 1년 감소
+            updateDateDisplay()
+        }
+
+        binding.ivMonthUp.setOnClickListener {
+            currentDate = currentDate.plusMonths(1) // 월을 1개월 증가
+            updateDateDisplay()
+        }
+        binding.ivMonthDown.setOnClickListener {
+            currentDate = currentDate.minusMonths(1) // 월을 1개월 감소
+            updateDateDisplay()
+        }
+
+        binding.ivDayUp.setOnClickListener {
+            currentDate = currentDate.plusDays(1) // 일을 1일 증가
+            updateDateDisplay()
+        }
+        binding.ivDayDown.setOnClickListener {
+            currentDate = currentDate.minusDays(1) // 일을 1일 감소
+            updateDateDisplay()
         }
     }
 
