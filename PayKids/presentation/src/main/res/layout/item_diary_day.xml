@@ -43,11 +43,12 @@
         android:includeFontPadding="false"
         android:textColor="@color/blue1"
         android:textSize="11sp"
+        android:maxLength="6"
 
         app:layout_constraintEnd_toEndOf="@id/tv_day"
         app:layout_constraintStart_toStartOf="@id/tv_day"
         app:layout_constraintTop_toBottomOf="@id/iv_diary_check"
-        tools:text="+50,000" />
+        tools:text="50,000" />
 
     <TextView
         android:id="@+id/tv_consume"
@@ -59,11 +60,12 @@
         android:includeFontPadding="false"
         android:textColor="@color/red"
         android:textSize="11sp"
+        android:maxLength="6"
 
         app:layout_constraintEnd_toEndOf="@id/tv_day"
         app:layout_constraintStart_toStartOf="@id/tv_day"
         app:layout_constraintTop_toBottomOf="@id/tv_income"
-        tools:text="-30,000" />
+        tools:text="30,000" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
