@@ -89,7 +89,7 @@
     <View
         android:id="@+id/view_date_picker"
         android:layout_width="0dp"
-        android:layout_height="80dp"
+        android:layout_height="88dp"
         android:layout_marginTop="12dp"
         android:background="@drawable/shape_consumption_dialog"
 
@@ -98,11 +98,137 @@
         app:layout_constraintTop_toBottomOf="@id/tv_date" />
 
     <TextView
+        android:id="@+id/tv_year"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_date_picker_bg"
+        android:fontFamily="@font/nanumsquare_extra_bold"
+        android:paddingHorizontal="12dp"
+
+        android:paddingVertical="6dp"
+        android:text="2024년"
+        android:textColor="@color/gray1"
+        android:textSize="18sp"
+
+        app:layout_constraintBottom_toBottomOf="@id/view_date_picker"
+        app:layout_constraintEnd_toStartOf="@id/tv_month"
+        app:layout_constraintStart_toStartOf="@id/view_date_picker"
+        app:layout_constraintTop_toTopOf="@id/view_date_picker" />
+
+    <ImageView
+        android:id="@+id/iv_year_up"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginBottom="2dp"
+        android:contentDescription="@null"
+        android:src="@drawable/ic_up"
+
+        app:layout_constraintBottom_toTopOf="@id/tv_year"
+        app:layout_constraintEnd_toEndOf="@id/tv_year"
+        app:layout_constraintStart_toStartOf="@id/tv_year" />
+
+    <ImageView
+        android:id="@+id/iv_year_down"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="2dp"
+        android:contentDescription="@null"
+        android:src="@drawable/ic_down"
+
+        app:layout_constraintEnd_toEndOf="@id/tv_year"
+        app:layout_constraintStart_toStartOf="@id/tv_year"
+        app:layout_constraintTop_toBottomOf="@id/tv_year" />
+
+    <TextView
+        android:id="@+id/tv_month"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_date_picker_bg"
+        android:fontFamily="@font/nanumsquare_extra_bold"
+        android:paddingHorizontal="16dp"
+
+        android:paddingVertical="6dp"
+        android:text="12월"
+        android:textColor="@color/gray1"
+        android:textSize="18sp"
+
+        app:layout_constraintBottom_toBottomOf="@id/view_date_picker"
+        app:layout_constraintEnd_toStartOf="@id/tv_day"
+        app:layout_constraintStart_toEndOf="@id/tv_year"
+        app:layout_constraintTop_toTopOf="@id/view_date_picker" />
+
+    <ImageView
+        android:id="@+id/iv_month_up"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginBottom="2dp"
+        android:contentDescription="@null"
+        android:src="@drawable/ic_up"
+
+        app:layout_constraintBottom_toTopOf="@id/tv_month"
+        app:layout_constraintEnd_toEndOf="@id/tv_month"
+        app:layout_constraintStart_toStartOf="@id/tv_month" />
+
+    <ImageView
+        android:id="@+id/iv_month_down"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="2dp"
+        android:contentDescription="@null"
+        android:src="@drawable/ic_down"
+
+        app:layout_constraintEnd_toEndOf="@id/tv_month"
+        app:layout_constraintStart_toStartOf="@id/tv_month"
+        app:layout_constraintTop_toBottomOf="@id/tv_month" />
+
+    <TextView
+        android:id="@+id/tv_day"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_date_picker_bg"
+        android:fontFamily="@font/nanumsquare_extra_bold"
+        android:paddingHorizontal="16dp"
+
+        android:paddingVertical="6dp"
+        android:text="28일"
+        android:textColor="@color/gray1"
+        android:textSize="18sp"
+
+        app:layout_constraintBottom_toBottomOf="@id/view_date_picker"
+        app:layout_constraintEnd_toEndOf="@id/view_date_picker"
+        app:layout_constraintStart_toEndOf="@id/tv_month"
+        app:layout_constraintTop_toTopOf="@id/view_date_picker" />
+
+    <ImageView
+        android:id="@+id/iv_day_up"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginBottom="2dp"
+        android:contentDescription="@null"
+        android:src="@drawable/ic_up"
+
+        app:layout_constraintBottom_toTopOf="@id/tv_day"
+        app:layout_constraintEnd_toEndOf="@id/tv_day"
+        app:layout_constraintStart_toStartOf="@id/tv_day" />
+
+    <ImageView
+        android:id="@+id/iv_day_down"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="2dp"
+        android:contentDescription="@null"
+        android:src="@drawable/ic_down"
+
+        app:layout_constraintEnd_toEndOf="@id/tv_day"
+        app:layout_constraintStart_toStartOf="@id/tv_day"
+        app:layout_constraintTop_toBottomOf="@id/tv_day" />
+
+    <TextView
         android:id="@+id/tv_add_amount"
         style="@style/body1_EB"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="20dp"
         android:fontFamily="@font/nanumsquare_extra_bold"
         android:text="@string/dialog_text_add_amount"
         android:textColor="@color/black"

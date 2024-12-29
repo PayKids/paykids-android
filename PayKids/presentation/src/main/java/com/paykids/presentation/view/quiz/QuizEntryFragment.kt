@@ -1,6 +1,5 @@
 package com.paykids.presentation.view.quiz
 
-import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.paykids.presentation.R
 import com.paykids.presentation.base.BaseFragment

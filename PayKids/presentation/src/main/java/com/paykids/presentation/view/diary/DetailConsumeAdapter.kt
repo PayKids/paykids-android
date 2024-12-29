@@ -1,44 +1,67 @@
 package com.paykids.presentation.view.diary
 
+import android.annotation.SuppressLint
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.paykids.domain.model.DetailConsume
+import com.paykids.presentation.custom.ConfirmDialogInterface
 import com.paykids.presentation.databinding.ItemDetailConsumptionBinding
+import com.paykids.presentation.utils.Constants
 
-class DetailConsumeAdapter(private val items: ArrayList<DetailConsume>) :
-    RecyclerView.Adapter<DetailConsumeAdapter.ViewHolder>() {
+class DetailConsumeAdapter(private val fragment: Fragment) :
+    RecyclerView.Adapter<DetailConsumeAdapter.ViewHolder>(), ConfirmDialogInterface {
 
-    interface OnItemClickListener {
-        fun onItemClick()
-    }
-
-    var itemClickListener: OnItemClickListener? = null
+    private val items = mutableListOf<DetailConsume>()
 
     inner class ViewHolder(val binding: ItemDetailConsumptionBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        init {
-            binding.root.setOnClickListener {
-                itemClickListener?.onItemClick()
+
+        @SuppressLint("SetTextI18n")
+        fun bind(item: DetailConsume) {
+            val formattedAmount = Constants.formatAmount(item.amount)
+
+            binding.tvComsumptionPlace.text = item.place
+            binding.tvConsumeAmount.text = "-${formattedAmount}원"
+            binding.tvMemo.text = item.memo
+
+            itemView.setOnClickListener {
+                val dialog = DiaryDialog().apply {
+                    arguments = Bundle().apply {
+                        putString("place", item.place)
+                        putString("amount", formattedAmount)
+                        putString("memo", item.memo)
+                    }
+                }
+                dialog.isCancelable = true
+                dialog.show(fragment.parentFragmentManager, "ModifyDiaryDialog")
             }
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view =
-            ItemDetailConsumptionBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return ViewHolder(view)
+        val inflater = LayoutInflater.from(parent.context)
+        val binding = ItemDetailConsumptionBinding.inflate(inflater, parent, false)
+        return ViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.binding.apply {
-            tvComsumptionPlace.text = items[position].place
-            tvConsumeAmount.text = items[position].amount.toString()
-            tvMemo.text = items[position].memo
-        }
+        holder.bind(items[position])
     }
 
-    override fun getItemCount(): Int {
-        return items.size
+    override fun getItemCount() = items.size
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun submitList(newItems: List<DetailConsume>) {
+        items.clear()
+        items.addAll(newItems)
+        notifyDataSetChanged()
+    }
+
+    override fun onYesButtonClick() {
+        TODO("Not yet implemented")
     }
 }

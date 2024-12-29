@@ -60,6 +60,19 @@
     <string name="dialog_withdraw_confirm">회원 탈퇴</string>
     <string name="dialog_cancel">취소</string>
 
+    <!-- 용돈 일기 페이지 -->
+    <string name="text_month_total_consume">%s원 사용 중</string>
+    <string name="text_month_most_consume">%s 달 %s에서 소비를 많이 했어요</string>
+    <string name="text_consuming">소비 중</string>
+    <string name="text_detail_consume">상세 소비내역</string>
+    <string name="text_week_sunday">일</string>
+    <string name="text_week_monday">월</string>
+    <string name="text_week_tuesday">화</string>
+    <string name="text_week_wednesday">수</string>
+    <string name="text_week_thursday">목</string>
+    <string name="text_week_friday">금</string>
+    <string name="text_week_saturday">토</string>
+
     <!-- 용돈 기입 다이얼로그 -->
     <string name="dialog_add_title">용돈 기입하기</string>
     <string name="dialog_switch_consum">소비</string>
@@ -73,9 +86,9 @@
     <string name="dialog_text_submit">완료</string>
 
     <string-array name="category_array">
-        <item>식비</item>
-        <item>교통비</item>
-        <item>밥</item>
+        <item>편의점</item>
+        <item>카페</item>
+        <item>서점</item>
         <item>보드게임</item>
         <item>방탈출</item>
     </string-array>
