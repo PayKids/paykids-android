@@ -33,7 +33,7 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
-    buildFeatures{
+    buildFeatures {
         buildConfig = true
         viewBinding = true
     }
@@ -74,6 +74,8 @@ dependencies {
     // Navigation
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
+    implementation("androidx.navigation:navigation-fragment-ktx:2.8.4")
+    implementation("androidx.navigation:navigation-ui-ktx:2.8.4")
 
     // Kakao SDK
     implementation(libs.v2.all)
