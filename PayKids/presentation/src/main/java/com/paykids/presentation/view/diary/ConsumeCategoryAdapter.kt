@@ -11,6 +11,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.paykids.presentation.R
 import com.paykids.presentation.databinding.ItemAnalysisConsumptionBinding
 import com.paykids.presentation.databinding.ItemEtcCategoryBinding
+import com.paykids.presentation.utils.Constants
+import com.paykids.util.LoggerUtils
 
 class ConsumeCategoryAdapter(
     private val onCategoryAdded: (String) -> Unit,
@@ -64,7 +66,7 @@ class ConsumeCategoryAdapter(
         when (val item = getItem(position)) {
             is CategoryItem.Normal -> {
                 (holder as NormalViewHolder).bind(
-                    data = item.name,
+                    category = item.name,
                     amount = item.amount,
                     percent = item.percent,
                     isDeleteMode = isDeleteMode,
@@ -199,8 +201,9 @@ class ConsumeCategoryAdapter(
         RecyclerView.ViewHolder(binding.root) {
         private var isChecked = false
 
+        @SuppressLint("SetTextI18n")
         fun bind(
-            data: String,
+            category: String,
             amount: String,
             percent: String,
             isDeleteMode: Boolean,
@@ -210,11 +213,11 @@ class ConsumeCategoryAdapter(
             with(binding) {
                 // 카테고리 이름 설정
                 tvComsumptionCategory.visibility = View.VISIBLE
-                tvComsumptionCategory.text = data
+                tvComsumptionCategory.text = category
 
                 // 소비 금액 설정
                 tvConsumeAmount.visibility = if (isDeleteMode) View.GONE else View.VISIBLE
-                tvConsumeAmount.text = amount
+                tvConsumeAmount.text = "-${Constants.formatAmount(amount.toInt())}"
 
                 // 퍼센트 설정
                 tvPercent.visibility = if (isDeleteMode) View.GONE else View.VISIBLE
@@ -245,9 +248,7 @@ class ConsumeCategoryAdapter(
                 }
 
                 itemView.setOnClickListener {
-                    val category = tvComsumptionCategory.text.toString()
-                    val selectAmount = tvConsumeAmount.text.toString()
-                    onItemClick(category, selectAmount)
+                    onItemClick(category, amount)
                 }
             }
         }

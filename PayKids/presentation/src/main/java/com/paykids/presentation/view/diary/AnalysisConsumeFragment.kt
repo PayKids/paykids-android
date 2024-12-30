@@ -26,8 +26,8 @@ class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisConsumeBinding>() {
             onCategoryAdded = { newCategory ->
                 addCategory(newCategory)
             },
-            onItemClick = { place, amount ->
-                navigateToAnalysisConsumeLocationFragment(place, amount)
+            onItemClick = { category, amount ->
+                navigateToAnalysisConsumeLocationFragment(category, amount)
             }
         )
         fetchData()
@@ -69,7 +69,7 @@ class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisConsumeBinding>() {
                 .map {
                     ConsumeCategoryAdapter.CategoryItem.Normal(
                         name = it.categoryName,
-                        amount = "-${Constants.formatAmount(it.totalAmount)}",
+                        amount = it.totalAmount.toString(),
                         percent = "${it.percentage}%"
                     )
                 }
@@ -122,9 +122,9 @@ class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisConsumeBinding>() {
         }
     }
 
-    private fun navigateToAnalysisConsumeLocationFragment(place: String, amount: String) {
+    private fun navigateToAnalysisConsumeLocationFragment(category: String, amount: String) {
         val action = AnalysisConsumeFragmentDirections
-            .actionAnalysisConsumeFragmentToAnalysisCategoryConsumeFragment(place, amount)
+            .actionAnalysisConsumeFragmentToAnalysisCategoryConsumeFragment(category, amount)
         findNavController().navigate(action)
     }
 }

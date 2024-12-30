@@ -103,4 +103,10 @@ class DiaryViewModel @Inject constructor(
         return categoryTotalMap.maxByOrNull { it.value }?.toPair()
     }
 
+    fun getConsumptionByCategory(category: String): List<Triple<String, Int, String>> {
+        return _monthlyAllInfo.value
+            ?.filter { it.category == category }
+            ?.map { Triple(it.date, it.amount, it.memo) }
+            ?: emptyList()
+    }
 }
