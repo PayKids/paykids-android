@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.paykids.domain.model.DetailConsume
 import com.paykids.presentation.custom.ConfirmDialogInterface
@@ -24,14 +23,14 @@ class DetailConsumeAdapter(private val fragment: Fragment) :
         fun bind(item: DetailConsume) {
             val formattedAmount = Constants.formatAmount(item.amount)
 
-            binding.tvComsumptionPlace.text = item.place
+            binding.tvComsumptionPlace.text = item.category
             binding.tvConsumeAmount.text = "-${formattedAmount}원"
             binding.tvMemo.text = item.memo
 
             itemView.setOnClickListener {
                 val dialog = DiaryDialog().apply {
                     arguments = Bundle().apply {
-                        putString("place", item.place)
+                        putString("place", item.category)
                         putString("amount", formattedAmount)
                         putString("memo", item.memo)
                     }
