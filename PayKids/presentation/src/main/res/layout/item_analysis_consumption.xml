@@ -9,7 +9,7 @@
     android:padding="14dp">
 
     <TextView
-        android:id="@+id/tv_comsumption_place"
+        android:id="@+id/tv_comsumption_category"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -45,15 +45,15 @@
 
         android:layout_marginStart="12dp"
         android:fontFamily="@font/nanumsquare_extra_bold"
-        android:text="-1,800"
         android:textColor="@color/black"
         android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@id/tv_comsumption_category"
 
-        app:layout_constraintBottom_toBottomOf="@id/tv_comsumption_place"
         app:layout_constraintEnd_toStartOf="@id/frame_checkbox_percent"
         app:layout_constraintHorizontal_bias="0.1"
-        app:layout_constraintStart_toEndOf="@id/tv_comsumption_place"
-        app:layout_constraintTop_toTopOf="@id/tv_comsumption_place" />
+        app:layout_constraintStart_toEndOf="@id/tv_comsumption_category"
+        app:layout_constraintTop_toTopOf="@id/tv_comsumption_category"
+        tools:text="-1,800" />
 
     <FrameLayout
         android:id="@+id/frame_checkbox_percent"
@@ -69,17 +69,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/nanumsquare_extra_bold"
-            android:text="50%"
             android:textColor="@color/gray1"
             android:textSize="18sp"
-            android:visibility="visible" />
+            android:visibility="visible"
+            tools:text="50%" />
 
         <ImageView
             android:id="@+id/checkbox_category"
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:background="@drawable/ic_checkbox_unchecked"
-            android:visibility="gone" />
+            android:visibility="gone"
+            tools:ignore="ContentDescription" />
 
     </FrameLayout>
 

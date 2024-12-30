@@ -2,18 +2,25 @@ package com.paykids.presentation.view.diary
 
 import android.annotation.SuppressLint
 import android.view.View
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.paykids.presentation.base.BaseFragment
 import com.paykids.presentation.databinding.FragmentAnalysisConsumeBinding
+import com.paykids.presentation.utils.Constants
+import com.paykids.util.LoggerUtils
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisConsumeBinding>() {
+    private val viewModel: DiaryViewModel by activityViewModels()
 
     private val items = mutableListOf("편의점", "편", "의점", "편의점편", "편의점편의")
     private lateinit var adapter: ConsumeCategoryAdapter
     private var isDeleteMode = false
+    private var currentMonth: String? = null
 
-    @SuppressLint("NotifyDataSetChanged")
+    @SuppressLint("SetTextI18n")
     override fun initView() {
         adapter = ConsumeCategoryAdapter(
             onCategoryAdded = { newCategory ->
@@ -23,11 +30,10 @@ class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisConsumeBinding>() {
                 navigateToAnalysisConsumeLocationFragment(place, amount)
             }
         )
-        adapter.setInitialList(items.map { ConsumeCategoryAdapter.CategoryItem.Normal(it) })
+        fetchData()
 
         binding.rvDetailConsume.layoutManager = LinearLayoutManager(requireContext())
         binding.rvDetailConsume.adapter = adapter
-
 
         updateDeleteButtonVisibility(items)
     }
@@ -42,6 +48,33 @@ class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisConsumeBinding>() {
         binding.btnAddCategory.setOnClickListener {
             adapter.addCategoryInput()
             binding.rvDetailConsume.smoothScrollToPosition(adapter.itemCount - 1)
+        }
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun fetchData() {
+        currentMonth = arguments?.getString("currentMonth")
+        currentMonth?.let {
+            val month = it.split("-")[1].toInt()
+            binding.tvMonth.text = "${month}월"
+        }
+
+        val totalConsume = viewModel.getMonthConsumption(currentMonth!!)
+        binding.tvMonthConsumption.text = "${Constants.formatAmount(totalConsume)}원 사용 중"
+
+        val categoryPercentages = viewModel.getMonthlyCostCategory()
+        if (::adapter.isInitialized) {
+            val sortedCategories = categoryPercentages
+                .sortedByDescending { it.percentage }
+                .map {
+                    ConsumeCategoryAdapter.CategoryItem.Normal(
+                        name = it.categoryName,
+                        amount = "-${Constants.formatAmount(it.totalAmount)}",
+                        percent = "${it.percentage}%"
+                    )
+                }
+
+            adapter.submitList(sortedCategories)
         }
     }
 
@@ -61,7 +94,7 @@ class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisConsumeBinding>() {
         val currentList = adapter.currentList.toMutableList()
         currentList.add(
             currentList.size - 1,
-            ConsumeCategoryAdapter.CategoryItem.Normal(newCategory)
+            ConsumeCategoryAdapter.CategoryItem.Normal(newCategory, false, "0", "0")
         )
         adapter.submitList(currentList)
 

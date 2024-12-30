@@ -24,13 +24,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/nanumsquare_extra_bold"
-        android:text="12월"
         android:textColor="@color/black"
         android:textSize="18sp"
-
         app:layout_constraintBottom_toBottomOf="@id/ib_left"
+
         app:layout_constraintStart_toEndOf="@+id/ib_left"
-        app:layout_constraintTop_toTopOf="@id/ib_left" />
+        app:layout_constraintTop_toTopOf="@id/ib_left"
+        tools:text="12월" />
 
     <ImageButton
         android:id="@+id/ib_right"
@@ -97,15 +97,15 @@
         style="@style/heading3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="36dp"
 
         android:fontFamily="@font/nanumsquare_extra_bold"
-        android:text="150,000원 사용 중"
         android:textColor="@color/black"
-
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/cl_switch" />
+
+        app:layout_constraintTop_toBottomOf="@id/cl_switch"
+        tools:text="150,000원 사용 중" />
 
     <View
         android:id="@+id/view_analysis_consume"

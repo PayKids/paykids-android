@@ -1,5 +1,6 @@
 package com.paykids.presentation.view.diary
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -64,6 +65,8 @@ class ConsumeCategoryAdapter(
             is CategoryItem.Normal -> {
                 (holder as NormalViewHolder).bind(
                     data = item.name,
+                    amount = item.amount,
+                    percent = item.percent,
                     isDeleteMode = isDeleteMode,
                     isSelected = item.isSelected,
                     onSelectionChanged = { isSelected ->
@@ -86,6 +89,7 @@ class ConsumeCategoryAdapter(
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun toggleDeleteMode(deleteMode: Boolean) {
         isDeleteMode = deleteMode
         notifyDataSetChanged()
@@ -126,7 +130,7 @@ class ConsumeCategoryAdapter(
             val currentList = currentList.toMutableList()
             val addIndex = currentList.indexOfFirst { it is CategoryItem.Add }
             if (addIndex != -1) {
-                currentList[addIndex] = CategoryItem.Normal(category)
+                currentList[addIndex] = CategoryItem.Normal(category, false, "0", "0")
                 lastAddedPosition = addIndex
                 notifyItemChanged(addIndex)
             } else {
@@ -135,7 +139,7 @@ class ConsumeCategoryAdapter(
                 } else {
                     currentList.size - 1 // Etc 항목 바로 앞
                 }
-                currentList.add(insertPosition, CategoryItem.Normal(category))
+                currentList.add(insertPosition, CategoryItem.Normal(category, false, "0", "0"))
                 lastAddedPosition = insertPosition
                 notifyItemInserted(insertPosition)
             }
@@ -152,7 +156,7 @@ class ConsumeCategoryAdapter(
         fun bind() {
             with(binding) {
                 // 초기 상태에서는 TextView만 보이게 설정
-                tvComsumptionPlace.visibility = View.GONE
+                tvComsumptionCategory.visibility = View.GONE
                 editCategoryName.apply {
                     visibility = View.VISIBLE
                     setText("")
@@ -166,10 +170,10 @@ class ConsumeCategoryAdapter(
                         if (input.isNotEmpty()) {
                             onCategoryConfirmed(input)
                             // 입력 완료 후 TextView로 변경
-                            tvComsumptionPlace.text = input
+                            tvComsumptionCategory.text = input
                             // EditText를 숨기고 TextView만 보이도록 설정
                             editCategoryName.visibility = View.GONE
-                            tvComsumptionPlace.visibility = View.VISIBLE
+                            tvComsumptionCategory.visibility = View.VISIBLE
                         }
                         true
                     } else {
@@ -181,7 +185,7 @@ class ConsumeCategoryAdapter(
 
         fun reset() {
             with(binding) {
-                tvComsumptionPlace.visibility = View.GONE
+                tvComsumptionCategory.visibility = View.GONE
                 editCategoryName.visibility = View.VISIBLE
                 editCategoryName.setText("")
             }
@@ -197,13 +201,25 @@ class ConsumeCategoryAdapter(
 
         fun bind(
             data: String,
+            amount: String,
+            percent: String,
             isDeleteMode: Boolean,
             isSelected: Boolean,
             onSelectionChanged: (Boolean) -> Unit
         ) {
             with(binding) {
-                tvComsumptionPlace.visibility = View.VISIBLE
-                tvComsumptionPlace.text = data
+                // 카테고리 이름 설정
+                tvComsumptionCategory.visibility = View.VISIBLE
+                tvComsumptionCategory.text = data
+
+                // 소비 금액 설정
+                tvConsumeAmount.visibility = if (isDeleteMode) View.GONE else View.VISIBLE
+                tvConsumeAmount.text = amount
+
+                // 퍼센트 설정
+                tvPercent.visibility = if (isDeleteMode) View.GONE else View.VISIBLE
+                tvPercent.text = percent
+
                 editCategoryName.visibility = View.GONE
 
                 if (isDeleteMode) {
@@ -229,9 +245,9 @@ class ConsumeCategoryAdapter(
                 }
 
                 itemView.setOnClickListener {
-                    val category = tvComsumptionPlace.text.toString()
-                    val amount = tvConsumeAmount.text.toString()
-                    onItemClick(category, amount)
+                    val category = tvComsumptionCategory.text.toString()
+                    val selectAmount = tvConsumeAmount.text.toString()
+                    onItemClick(category, selectAmount)
                 }
             }
         }
@@ -241,11 +257,16 @@ class ConsumeCategoryAdapter(
         RecyclerView.ViewHolder(binding.root)
 
     sealed class CategoryItem {
-        data class Normal(val name: String, var isSelected: Boolean = false) : CategoryItem()
+        data class Normal(
+            val name: String,
+            var isSelected: Boolean = false,
+            val amount: String,
+            val percent: String
+        ) : CategoryItem()
+
         data object Etc : CategoryItem()
         data object Add : CategoryItem()
     }
-
 
     class CategoryDiffCallback : DiffUtil.ItemCallback<CategoryItem>() {
         override fun areItemsTheSame(oldItem: CategoryItem, newItem: CategoryItem): Boolean {

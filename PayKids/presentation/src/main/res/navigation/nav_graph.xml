@@ -16,6 +16,9 @@
         android:name="com.paykids.presentation.view.diary.AnalysisConsumeFragment"
         android:label="fragment_analysis_cosume"
         tools:layout="@layout/fragment_analysis_consume">
+        <argument
+            android:name="currentMonth"
+            app:argType="string" />
         <action
             android:id="@+id/action_analysisConsumeFragment_to_analysisCategoryConsumeFragment"
             app:destination="@id/analysisCategoryConsumeFragment" />
