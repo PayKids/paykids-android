@@ -12,7 +12,6 @@ import com.paykids.presentation.R
 import com.paykids.presentation.databinding.ItemAnalysisConsumptionBinding
 import com.paykids.presentation.databinding.ItemEtcCategoryBinding
 import com.paykids.presentation.utils.Constants
-import com.paykids.util.LoggerUtils
 
 class ConsumeCategoryAdapter(
     private val onCategoryAdded: (String) -> Unit,

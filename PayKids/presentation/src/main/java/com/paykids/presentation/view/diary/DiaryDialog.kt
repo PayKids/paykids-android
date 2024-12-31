@@ -11,8 +11,6 @@ import com.paykids.presentation.R
 import com.paykids.presentation.custom.ConfirmDialogInterface
 import com.paykids.presentation.databinding.DialogDiaryBinding
 import java.time.LocalDate
-import java.time.format.TextStyle
-import java.util.Locale
 
 class DiaryDialog : DialogFragment() {
 

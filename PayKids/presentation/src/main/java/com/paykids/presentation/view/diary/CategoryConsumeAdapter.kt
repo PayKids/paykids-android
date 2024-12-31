@@ -1,17 +1,13 @@
 package com.paykids.presentation.view.diary
 
 import android.annotation.SuppressLint
-import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
-import com.paykids.domain.model.DetailConsume
 import com.paykids.presentation.custom.ConfirmDialogInterface
 import com.paykids.presentation.databinding.ItemCategoryConsumptionBinding
-import com.paykids.presentation.databinding.ItemDetailConsumptionBinding
 import com.paykids.presentation.utils.Constants
-import com.paykids.util.LoggerUtils
 import java.text.SimpleDateFormat
 import java.util.Locale
 

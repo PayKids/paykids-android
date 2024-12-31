@@ -11,7 +11,6 @@ import com.paykids.domain.model.DayInfo
 import com.paykids.presentation.R
 import com.paykids.presentation.databinding.ItemDiaryDayBinding
 import com.paykids.presentation.view.OnRvItemClickListener
-import com.paykids.util.LoggerUtils
 import java.util.Calendar
 
 class DiaryDayCalendarAdapter :
