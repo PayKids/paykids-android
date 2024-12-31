@@ -25,6 +25,12 @@ class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisConsumeBinding>() {
 
     @SuppressLint("SetTextI18n")
     override fun initView() {
+        currentMonth = arguments?.getString("currentMonth")
+        currentMonth.let {
+            val month = it!!.split("-")[1].toInt()
+            binding.tvMonth.text = "${month}월"
+        }
+
         adapter = ConsumeCategoryAdapter(
             onCategoryAdded = { newCategory ->
                 addCategory(newCategory)
@@ -33,7 +39,7 @@ class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisConsumeBinding>() {
                 navigateToAnalysisConsumeLocationFragment(category, amount)
             }
         )
-        fetchData()
+        fetchData(currentMonth!!)
 
         binding.rvDetailConsume.layoutManager = LinearLayoutManager(requireContext())
         binding.rvDetailConsume.adapter = adapter
@@ -43,6 +49,16 @@ class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisConsumeBinding>() {
 
     override fun initListener() {
         super.initListener()
+
+        binding.ibLeft.setOnClickListener {
+            currentMonth = changeMonth(currentMonth, -1)
+            fetchData(currentMonth!!)
+        }
+
+        binding.ibRight.setOnClickListener {
+            currentMonth = changeMonth(currentMonth, 1)
+            fetchData(currentMonth!!)
+        }
 
         binding.tvDelete.setOnClickListener {
             toggleDeleteMode()
@@ -55,14 +71,8 @@ class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisConsumeBinding>() {
     }
 
     @SuppressLint("SetTextI18n")
-    private fun fetchData() {
-        currentMonth = arguments?.getString("currentMonth")
-        currentMonth?.let {
-            val month = it.split("-")[1].toInt()
-            binding.tvMonth.text = "${month}월"
-        }
-
-        val totalConsume = viewModel.getMonthConsumption(currentMonth!!)
+    private fun fetchData(currentMonth: String) {
+        val totalConsume = viewModel.getMonthConsumption(currentMonth)
         binding.tvMonthConsumption.text = "${Constants.formatAmount(totalConsume)}원 사용 중"
 
         val categoryPercentages = viewModel.getMonthlyCostCategory()
@@ -142,6 +152,25 @@ class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisConsumeBinding>() {
             binding.btnAddCategory.isEnabled = true
             deleteSelectedItems()
         }
+    }
+
+    @SuppressLint("DefaultLocale")
+    private fun changeMonth(currentMonth: String?, increment: Int): String {
+        val yearMonth = currentMonth?.split("-") ?: return ""
+        var year = yearMonth[0].toInt()
+        var month = yearMonth[1].toInt()
+
+        month += increment
+
+        if (month > 12) {
+            month = 1
+            year += 1
+        } else if (month < 1) {
+            month = 12
+            year -= 1
+        }
+
+        return String.format("%04d-%02d", year, month)
     }
 
     private fun navigateToAnalysisConsumeLocationFragment(category: String, amount: String) {
