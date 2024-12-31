@@ -23,7 +23,7 @@ class DetailConsumeAdapter(private val fragment: Fragment) :
         fun bind(item: DetailConsume) {
             val formattedAmount = Constants.formatAmount(item.amount)
 
-            binding.tvComsumptionPlace.text = item.category
+            binding.tvConsumptionCategory.text = item.category
             binding.tvConsumeAmount.text = "-${formattedAmount}원"
             binding.tvMemo.text = item.memo
 

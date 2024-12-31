@@ -157,7 +157,7 @@ class ConsumeCategoryAdapter(
         fun bind() {
             with(binding) {
                 // 초기 상태에서는 TextView만 보이게 설정
-                tvComsumptionCategory.visibility = View.GONE
+                tvConsumptionCategory.visibility = View.GONE
                 editCategoryName.apply {
                     visibility = View.VISIBLE
                     setText("")
@@ -171,10 +171,10 @@ class ConsumeCategoryAdapter(
                         if (input.isNotEmpty()) {
                             onCategoryConfirmed(input)
                             // 입력 완료 후 TextView로 변경
-                            tvComsumptionCategory.text = input
+                            tvConsumptionCategory.text = input
                             // EditText를 숨기고 TextView만 보이도록 설정
                             editCategoryName.visibility = View.GONE
-                            tvComsumptionCategory.visibility = View.VISIBLE
+                            tvConsumptionCategory.visibility = View.VISIBLE
                         }
                         true
                     } else {
@@ -186,7 +186,7 @@ class ConsumeCategoryAdapter(
 
         fun reset() {
             with(binding) {
-                tvComsumptionCategory.visibility = View.GONE
+                tvConsumptionCategory.visibility = View.GONE
                 editCategoryName.visibility = View.VISIBLE
                 editCategoryName.setText("")
             }
@@ -211,8 +211,8 @@ class ConsumeCategoryAdapter(
         ) {
             with(binding) {
                 // 카테고리 이름 설정
-                tvComsumptionCategory.visibility = View.VISIBLE
-                tvComsumptionCategory.text = category
+                tvConsumptionCategory.visibility = View.VISIBLE
+                tvConsumptionCategory.text = category
 
                 // 소비 금액 설정
                 tvConsumeAmount.visibility = if (isDeleteMode) View.GONE else View.VISIBLE
