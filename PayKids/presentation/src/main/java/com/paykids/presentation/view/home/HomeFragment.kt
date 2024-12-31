@@ -61,14 +61,54 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             .commit()
     }
 
-    private fun setupStageClickListener(view: View) {
+    private fun setupStageClickListener(view: View, stageData: StageData) {
         view.setOnClickListener {
             view.isSelected = !view.isSelected
             if (view.isSelected) {
                 createTooltip().showAlignBottom(view, 0, -50)
+                // cl_box의 텍스트 업데이트
+                binding.tvStageNumber.text = "스테이지 ${stageData.number}"
+                binding.tvStageTitle.text = stageData.title
             }
         }
     }
+
+    // 1. 데이터 클래스 정의
+    data class StageData(
+        val number: Int,
+        val title: String,
+        val imageResId: Int
+    )
+
+    // 2. 더미 데이터 생성
+    private val stageDataList = listOf(
+        StageData(1, "돈이란 무엇일까요?", R.drawable.ic_home_pig_lock),
+        StageData(2, "저축의 중요성", R.drawable.ic_home_coin_lock),
+        StageData(3, "합리적 소비란?", R.drawable.ic_home_card_lock),
+        StageData(4, "???", R.drawable.ic_home_acount_lock),
+        StageData(5, "???", R.drawable.ic_home_moneybag_lock),
+        StageData(6, "돈이란 무엇일까요?", R.drawable.ic_home_pig_lock),
+        StageData(7, "저축의 중요성", R.drawable.ic_home_coin_lock),
+        StageData(8, "합리적 소비란?", R.drawable.ic_home_card_lock),
+        StageData(9, "???", R.drawable.ic_home_acount_lock),
+        StageData(10, "???", R.drawable.ic_home_moneybag_lock),
+        StageData(11, "돈이란 무엇일까요?", R.drawable.ic_home_pig_lock),
+        StageData(12, "저축의 중요성", R.drawable.ic_home_coin_lock),
+        StageData(13, "합리적 소비란?", R.drawable.ic_home_card_lock),
+        StageData(14, "???", R.drawable.ic_home_acount_lock),
+        StageData(15, "???", R.drawable.ic_home_moneybag_lock),
+        StageData(16, "돈이란 무엇일까요?", R.drawable.ic_home_pig_lock),
+        StageData(17, "저축의 중요성", R.drawable.ic_home_coin_lock),
+        StageData(18, "합리적 소비란?", R.drawable.ic_home_card_lock),
+        StageData(19, "???", R.drawable.ic_home_acount_lock),
+        StageData(20, "???", R.drawable.ic_home_moneybag_lock),
+        StageData(21, "돈이란 무엇일까요?", R.drawable.ic_home_pig_lock),
+        StageData(22, "저축의 중요성", R.drawable.ic_home_coin_lock),
+        StageData(23, "합리적 소비란?", R.drawable.ic_home_card_lock),
+        StageData(24, "???", R.drawable.ic_home_acount_lock),
+        StageData(25, "???", R.drawable.ic_home_moneybag_lock),
+        StageData(26, "???", R.drawable.ic_home_moneybag_lock),
+    )
 
     private fun createStages() {
         val stageOffsets = listOf(62, 35, 90, 154, 206, 233) // 각 Stage의 수평 오프셋
@@ -79,9 +119,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
         var previousViewId: Int? = null // 이전 View의 ID 저장
 
-        for (i in 0 until totalStages) {
-            val frameLayout = createStageFrame(imageViewSize) // FrameLayout 생성
-            val horizontalOffset = calculateHorizontalOffset(i, stageOffsets) // 수평 오프셋 계산
+        // 3. 데이터 리스트 기반으로 스테이지 생성
+        stageDataList.forEachIndexed { index, stageData ->
+            val frameLayout = createStageFrame(imageViewSize, stageData) // FrameLayout 생성
+            val horizontalOffset = calculateHorizontalOffset(index, stageOffsets) // 수평 오프셋 계산
 
             addStageToLayout(
                 frameLayout,
@@ -89,26 +130,26 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                 horizontalOffset,
                 initialTopMargin,
                 verticalSpacing,
-                i
+                index
             )
 
             previousViewId = frameLayout.id // 이전 View ID 업데이트
         }
     }
 
-    private fun createStageFrame(imageViewSize: Int): FrameLayout {
+    private fun createStageFrame(imageViewSize: Int, stageData: StageData): FrameLayout {
         val frameLayout = FrameLayout(requireContext()).apply {
             id = View.generateViewId()
             layoutParams = ConstraintLayout.LayoutParams(imageViewSize, imageViewSize)
         }
 
         val borderView = createBorderView(imageViewSize)
-        val imageView = createImageView()
+        val imageView = createImageView(stageData.imageResId)
 
         frameLayout.addView(borderView)
         frameLayout.addView(imageView)
 
-        setupStageClickListener(frameLayout) // 클릭 리스너 추가
+        setupStageClickListener(frameLayout, stageData) // 클릭 리스너 추가
         return frameLayout
     }
 
@@ -123,13 +164,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         }
     }
 
-    private fun createImageView(): ImageView {
+    private fun createImageView(imageResId: Int): ImageView {
         return ImageView(requireContext()).apply {
             id = View.generateViewId()
             layoutParams = FrameLayout.LayoutParams(55.dp, 55.dp).apply {
                 gravity = Gravity.CENTER
             }
-            setImageResource(R.drawable.ic_home_pig_lock)
+            setImageResource(imageResId)
         }
     }
 
