@@ -8,6 +8,7 @@ import android.widget.ImageView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.ContextCompat
+import androidx.navigation.fragment.findNavController
 import com.paykids.presentation.R
 import com.paykids.presentation.base.BaseFragment
 import com.paykids.presentation.databinding.FragmentHomeBinding
@@ -55,10 +56,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     }
 
     private fun navigateToQuizEntry() {
-        parentFragmentManager.beginTransaction()
-            .replace(R.id.fl_home, QuizEntryFragment())
-            .addToBackStack(null)
-            .commit()
+        val navController = findNavController ()
+        navController.navigate(R. id.quizEntryFragment)
     }
 
     private fun setupStageClickListener(view: View, stageData: StageData) {
