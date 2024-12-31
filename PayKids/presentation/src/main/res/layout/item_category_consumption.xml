@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="68dp"
+    android:layout_marginBottom="8dp"
+    android:background="@drawable/shape_consumption_status"
+    android:padding="14dp">
+
+    <TextView
+        android:id="@+id/tv_consume_date"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+
+        android:fontFamily="@font/nanumsquare_extra_bold"
+        android:textColor="@color/blue1"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_max="120dp"
+        app:layout_constraintWidth_min="80dp"
+        tools:text="11/11" />
+
+    <TextView
+        android:id="@+id/tv_consume_amount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_marginStart="12dp"
+        android:fontFamily="@font/nanumsquare_extra_bold"
+        android:textAlignment="textEnd"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+
+        app:layout_constraintBottom_toBottomOf="@id/tv_consume_date"
+        app:layout_constraintEnd_toStartOf="@id/tv_memo"
+        app:layout_constraintHorizontal_bias="0.1"
+        app:layout_constraintStart_toEndOf="@id/tv_consume_date"
+        app:layout_constraintTop_toTopOf="@id/tv_consume_date"
+        tools:text="-1,800" />
+
+    <TextView
+        android:id="@+id/tv_memo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:ellipsize="end"
+
+        android:fontFamily="@font/nanumsquare_extra_bold"
+        android:maxWidth="160dp"
+        android:maxLength="14"
+        android:maxLines="1"
+        android:textColor="@color/gray1"
+        android:textSize="16sp"
+        android:visibility="visible"
+
+        app:layout_constraintBottom_toBottomOf="@id/tv_consume_date"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tv_consume_date"
+        tools:text="메모메모" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

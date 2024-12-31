@@ -1,4 +1,4 @@
-package com.paykids.presentation.custom
+package com.paykids.presentation.view.mypage
 
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
+import com.paykids.presentation.custom.ConfirmDialogInterface
 import com.paykids.presentation.databinding.DialogMypageBinding
 
 class MyPageDialog(

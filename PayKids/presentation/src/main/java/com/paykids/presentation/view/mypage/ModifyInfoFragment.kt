@@ -6,11 +6,9 @@ import android.net.Uri
 import android.provider.MediaStore
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.viewModels
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.paykids.presentation.R
 import com.paykids.presentation.base.BaseFragment
 import com.paykids.presentation.custom.ConfirmDialogInterface
-import com.paykids.presentation.custom.MyPageDialog
 import com.paykids.presentation.databinding.FragmentModifyInfoBinding
 import com.paykids.presentation.utils.UiState
 import com.paykids.presentation.view.signIn.SignActivity
@@ -32,6 +30,10 @@ class ModifyInfoFragment : BaseFragment<FragmentModifyInfoBinding>(), ConfirmDia
 
         binding.ivModifyImage.setOnClickListener {
             openGallery()
+        }
+
+        binding.btnConfirm.setOnClickListener {
+
         }
 
         binding.tvWithdraw.setOnClickListener {
