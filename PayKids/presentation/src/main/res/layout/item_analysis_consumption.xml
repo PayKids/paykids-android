@@ -9,7 +9,7 @@
     android:padding="14dp">
 
     <TextView
-        android:id="@+id/tv_comsumption_category"
+        android:id="@+id/tv_consumption_category"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -47,12 +47,12 @@
         android:fontFamily="@font/nanumsquare_extra_bold"
         android:textColor="@color/black"
         android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="@id/tv_comsumption_category"
+        app:layout_constraintBottom_toBottomOf="@id/tv_consumption_category"
 
         app:layout_constraintEnd_toStartOf="@id/frame_checkbox_percent"
         app:layout_constraintHorizontal_bias="0.1"
-        app:layout_constraintStart_toEndOf="@id/tv_comsumption_category"
-        app:layout_constraintTop_toTopOf="@id/tv_comsumption_category"
+        app:layout_constraintStart_toEndOf="@id/tv_consumption_category"
+        app:layout_constraintTop_toTopOf="@id/tv_consumption_category"
         tools:text="-1,800" />
 
     <FrameLayout
