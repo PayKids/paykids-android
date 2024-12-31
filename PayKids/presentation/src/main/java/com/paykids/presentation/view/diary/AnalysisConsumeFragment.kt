@@ -52,11 +52,13 @@ class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisConsumeBinding>() {
         binding.ibLeft.setOnClickListener {
             currentMonth = changeMonth(currentMonth, -1)
             fetchData(currentMonth!!)
+            updateMonthDisplay()
         }
 
         binding.ibRight.setOnClickListener {
             currentMonth = changeMonth(currentMonth, 1)
             fetchData(currentMonth!!)
+            updateMonthDisplay()
         }
 
         binding.tvDelete.setOnClickListener {
@@ -170,6 +172,14 @@ class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisConsumeBinding>() {
         }
 
         return String.format("%04d-%02d", year, month)
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun updateMonthDisplay() {
+        currentMonth?.let {
+            val month = it.split("-")[1].toInt()
+            binding.tvMonth.text = "${month}월"
+        }
     }
 
     private fun navigateToAnalysisConsumeLocationFragment(category: String, amount: String) {
