@@ -66,6 +66,13 @@
         tools:layout="@layout/fragment_study" />
 
     <fragment
+        android:id="@+id/quizEntryFragment"
+        android:name="com.paykids.presentation.view.quiz.QuizEntryFragment"
+        android:label="fragment_quiz_entry"
+        tools:layout="@layout/fragment_quiz_entry">
+    </fragment>
+
+    <fragment
         android:id="@+id/myPageFragment"
         android:name="com.paykids.presentation.view.mypage.MyPageFragment"
         android:label="fragment_myPage"
