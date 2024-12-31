@@ -1,18 +1,12 @@
 package com.paykids.presentation.view.diary
 
 import android.annotation.SuppressLint
-import android.text.SpannableString
-import android.text.Spanned
-import android.text.style.ForegroundColorSpan
-import android.view.View
-import androidx.core.content.ContextCompat
+import android.os.Bundle
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
-import com.paykids.domain.model.DayInfo
 import com.paykids.presentation.R
 import com.paykids.presentation.base.BaseFragment
 import com.paykids.presentation.custom.ConfirmDialogInterface
@@ -20,7 +14,6 @@ import com.paykids.presentation.databinding.FragmentDiaryBinding
 import com.paykids.presentation.utils.Constants
 import com.paykids.presentation.utils.Constants.formatDateToKorean
 import com.paykids.presentation.view.OnRvItemClickListener
-import com.paykids.util.LoggerUtils
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -32,9 +25,11 @@ class DiaryFragment : BaseFragment<FragmentDiaryBinding>(), ConfirmDialogInterfa
     private lateinit var calendarAdapter: DiaryMonthCalendarStateAdapter
     private lateinit var detailAdapter: DetailConsumeAdapter
 
-    private var currentMonth: Int = 0
+    private var currentMonth = 0
 
     override fun initView() {
+        viewModel.fetchMonthlyData()
+
         detailAdapter = DetailConsumeAdapter(this)
         binding.rvDetailConsume.apply {
             layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
@@ -72,7 +67,16 @@ class DiaryFragment : BaseFragment<FragmentDiaryBinding>(), ConfirmDialogInterfa
         val navController = findNavController()
 
         binding.ivConsumptionStatus.setOnClickListener {
-            navController.navigate(R.id.analysisConsumeFragment)
+            val calendar = Calendar.getInstance().apply {
+                add(Calendar.MONTH, binding.vpCalendarMonth.currentItem - (Int.MAX_VALUE / 2))
+            }
+            val currentMonth = SimpleDateFormat("yyyy-MM", Locale.KOREAN).format(calendar.time)
+
+            val bundle = Bundle().apply {
+                putString("currentMonth", currentMonth)
+            }
+
+            navController.navigate(R.id.analysisConsumeFragment, bundle)
         }
 
         binding.ibAddPocketMoney.setOnClickListener {
@@ -138,7 +142,6 @@ class DiaryFragment : BaseFragment<FragmentDiaryBinding>(), ConfirmDialogInterfa
             binding.tvMostConsumeCategoryAmount.text = Constants.formatAmount(totalAmount)
         }
     }
-
 
     private fun getToday(): String {
         val today = Calendar.getInstance().run {

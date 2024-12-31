@@ -3,12 +3,10 @@ package com.paykids.presentation.view.diary
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.paykids.domain.model.CategoryInfo
 import com.paykids.domain.model.DayInfo
 import com.paykids.domain.model.DetailConsume
 import com.paykids.domain.usecase.datastore.GetAccessTokenUseCase
-import com.paykids.presentation.utils.Constants
-import com.paykids.presentation.utils.UiState
-import com.paykids.util.LoggerUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -17,10 +15,21 @@ class DiaryViewModel @Inject constructor(
     private val getAccessTokenUseCase: GetAccessTokenUseCase
 ) : ViewModel() {
 
-    private val _diaryState = MutableLiveData<UiState<List<DayInfo>>>(UiState.Loading)
-    val diaryState: LiveData<UiState<List<DayInfo>>> get() = _diaryState
+    private val _monthlyAllInfo = MutableLiveData<List<DetailConsume>>(emptyList())
+    val monthlyAllInfo: LiveData<List<DetailConsume>> get() = _monthlyAllInfo
 
-    private val _selectedDateDetails = MutableLiveData<List<DetailConsume>>()
+    fun fetchMonthlyData() {
+        _monthlyAllInfo.value = listOf(
+            DetailConsume("2024-12-25", "편의점", 5000, "크리스마스 기념 구매"),
+            DetailConsume("2024-12-25", "카페", 4500, "크리스마스 커피"),
+            DetailConsume("2024-12-28", "방탈출", 28000, "필름바이스티브"),
+            DetailConsume("2024-12-28", "보드게임", 8000, "버건디의 성"),
+            DetailConsume("2024-12-20", "서점", 22200, "일반 구매"),
+            DetailConsume("2024-12-20", "서점", 25000, "책 구매")
+        )
+    }
+
+    private val _selectedDateDetails = MutableLiveData<List<DetailConsume>>(emptyList())
     val selectedDateDetails: LiveData<List<DetailConsume>> get() = _selectedDateDetails
 
     fun fetchDetailsForDate(date: String) {
@@ -62,22 +71,42 @@ class DiaryViewModel @Inject constructor(
     }
 
     fun getMonthConsumption(yearMonth: String): Int {
-        return _dayInfoList.value?.filter { it.date.startsWith(yearMonth) }
-            ?.sumOf { it.consume } ?: 0
+        return _monthlyAllInfo.value?.filter { it.date.startsWith(yearMonth) }
+            ?.sumOf { it.amount } ?: 0
+    }
+
+    fun getMonthlyCostCategory(): List<CategoryInfo> {
+        val monthlyData = _monthlyAllInfo.value ?: emptyList()
+
+        // 총 지출 금액 계산
+        val totalAmount = monthlyData.sumOf { it.amount }
+
+        // 카테고리별 데이터 그룹화 및 합계 계산
+        return monthlyData
+            .groupBy { it.category }
+            .map { (category, details) ->
+                val categorySum = details.sumOf { it.amount }
+                val percentage = if (totalAmount > 0) (categorySum * 100) / totalAmount else 0
+                CategoryInfo(category, categorySum, percentage)
+            }
     }
 
     fun getMostConsumedCategoryForMonth(yearMonth: String): Pair<String, Int>? {
-        // 일단 25일 소비로 화면 갱신
-        fetchDetailsForDate("2024-12-25")
+        fetchMonthlyData()
+
         val detailsForMonth =
-            _selectedDateDetails.value?.filter { it.date.startsWith(yearMonth) } ?: emptyList()
+            _monthlyAllInfo.value?.filter { it.date.startsWith(yearMonth) } ?: emptyList()
 
-        LoggerUtils.d(detailsForMonth.toString())
-
-        val categoryTotalMap = detailsForMonth.groupingBy { it.place }
+        val categoryTotalMap = detailsForMonth.groupingBy { it.category }
             .fold(0) { total, detail -> total + detail.amount }
 
         return categoryTotalMap.maxByOrNull { it.value }?.toPair()
     }
 
+    fun getConsumptionByCategory(category: String): List<Triple<String, Int, String>> {
+        return _monthlyAllInfo.value
+            ?.filter { it.category == category }
+            ?.map { Triple(it.date, it.amount, it.memo) }
+            ?: emptyList()
+    }
 }
