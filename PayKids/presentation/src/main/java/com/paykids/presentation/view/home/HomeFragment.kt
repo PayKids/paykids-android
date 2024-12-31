@@ -66,21 +66,22 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             view.isSelected = !view.isSelected
             if (view.isSelected) {
                 createTooltip().showAlignBottom(view, 0, -50)
-                // cl_box의 텍스트 업데이트
+
                 binding.tvStageNumber.text = "스테이지 ${stageData.number}"
                 binding.tvStageTitle.text = stageData.title
+                binding.clBox.visibility = View.VISIBLE
             }
         }
     }
 
-    // 1. 데이터 클래스 정의
+    // 데이터 클래스 정의
     data class StageData(
         val number: Int,
         val title: String,
         val imageResId: Int
     )
 
-    // 2. 더미 데이터 생성
+    // 더미 데이터 생성
     private val stageDataList = listOf(
         StageData(1, "돈이란 무엇일까요?", R.drawable.ic_home_pig_lock),
         StageData(2, "저축의 중요성", R.drawable.ic_home_coin_lock),
@@ -119,7 +120,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
         var previousViewId: Int? = null // 이전 View의 ID 저장
 
-        // 3. 데이터 리스트 기반으로 스테이지 생성
+        // 데이터 리스트 기반으로 스테이지 생성
         stageDataList.forEachIndexed { index, stageData ->
             val frameLayout = createStageFrame(imageViewSize, stageData) // FrameLayout 생성
             val horizontalOffset = calculateHorizontalOffset(index, stageOffsets) // 수평 오프셋 계산

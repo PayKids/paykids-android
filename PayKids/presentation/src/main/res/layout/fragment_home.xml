@@ -1,75 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <!-- ScrollView -->
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
 
-        <!-- 배경 이미지 -->
-        <ImageView
-            android:id="@+id/iv_background"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:adjustViewBounds="true"
-            android:scaleType="centerCrop"
-            android:src="@drawable/bg_home"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:ignore="ContentDescription" />
-
-        <!-- 콘텐츠 -->
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/cl_content"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent">
+            android:layout_height="wrap_content">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/cl_box"
-                android:layout_width="0dp"
-                android:layout_height="93.8dp"
-                android:background="@drawable/shape_home_box"
+            <!-- 배경 이미지 -->
+            <ImageView
+                android:id="@+id/iv_background"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:scaleType="centerCrop"
+                android:src="@drawable/bg_home"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginHorizontal="23.1dp"
-                android:layout_marginTop="16.1dp"
-                tools:ignore="MissingConstraints">
+                tools:ignore="ContentDescription" />
 
-                <TextView
-                    android:id="@+id/tv_stage_number"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    tools:text="스테이지 1"
-                    android:fontFamily="@font/nanumsquare_extra_bold"
-                    android:textSize="12sp"
-                    android:textColor="@color/blue1"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    android:layout_marginHorizontal="19dp"
-                    android:layout_marginTop="22dp" />
+            <!-- 스테이지 삽입 부분 -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent">
 
-                <TextView
-                    android:id="@+id/tv_stage_title"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    tools:text="돈이란 무엇일까요?"
-                    android:fontFamily="@font/nanumsquare_extra_bold"
-                    android:textSize="18sp"
-                    android:textColor="@color/black"
-                    app:layout_constraintTop_toBottomOf="@id/tv_stage_number"
-                    app:layout_constraintStart_toStartOf="parent"
-                    android:layout_marginHorizontal="19dp"
-                    android:layout_marginTop="7dp" />
             </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-
         </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+    <!-- 상단 고정된 박스 -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_box"
+        android:layout_width="0dp"
+        android:layout_height="93.8dp"
+        android:background="@drawable/shape_home_box"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginHorizontal="23.1dp"
+        android:layout_marginTop="16.1dp"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/tv_stage_number"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            tools:text="스테이지 1"
+            android:fontFamily="@font/nanumsquare_extra_bold"
+            android:textSize="12sp"
+            android:textColor="@color/blue1"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginHorizontal="19dp"
+            android:layout_marginTop="22dp" />
+
+        <TextView
+            android:id="@+id/tv_stage_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            tools:text="돈이란 무엇일까요?"
+            android:fontFamily="@font/nanumsquare_extra_bold"
+            android:textSize="18sp"
+            android:textColor="@color/black"
+            app:layout_constraintTop_toBottomOf="@id/tv_stage_number"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginHorizontal="19dp"
+            android:layout_marginTop="7dp" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-</ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
