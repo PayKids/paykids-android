@@ -41,7 +41,9 @@ class DiaryViewModel @Inject constructor(
     val selectedDateDetails: LiveData<List<DetailConsume>> get() = _selectedDateDetails
 
     fun fetchDetailsForDate(date: String) {
-        val detailsForDate = _monthlyAllInfo.value?.filterIsInstance<DetailConsume>()?.filter { it.date == date } ?: emptyList()
+        val detailsForDate =
+            _monthlyAllInfo.value?.filterIsInstance<DetailConsume>()?.filter { it.date == date }
+                ?: emptyList()
         _selectedDateDetails.value = detailsForDate
     }
 
@@ -76,12 +78,15 @@ class DiaryViewModel @Inject constructor(
     }
 
     fun getMonthConsumption(yearMonth: String): Int {
-        return _monthlyAllInfo.value?.filter { it.date.startsWith(yearMonth) }
-            ?.sumOf { it.amount } ?: 0
+        return _monthlyAllInfo.value?.filterIsInstance<DetailConsume>()
+            ?.filter { it.date.startsWith(yearMonth) } // 해당 년월에 해당하는 항목 필터링
+            ?.sumOf { it.amount }
+            ?: 0 // null일 경우 0 반환
     }
 
-    fun getMonthlyCostCategory(): List<CategoryInfo> {
-        val monthlyData = _monthlyAllInfo.value ?: emptyList()
+    fun getMonthlyCostCategory(yearMonth: String): List<CategoryInfo> {
+        val monthlyData = _monthlyAllInfo.value?.filterIsInstance<DetailConsume>()
+            ?.filter { it.date.startsWith(yearMonth) } ?: emptyList()
 
         // 총 지출 금액 계산
         val totalAmount = monthlyData.sumOf { it.amount }
@@ -100,7 +105,8 @@ class DiaryViewModel @Inject constructor(
         fetchMonthlyData()
 
         val detailsForMonth =
-            _monthlyAllInfo.value?.filter { it.date.startsWith(yearMonth) } ?: emptyList()
+            _monthlyAllInfo.value?.filterIsInstance<DetailConsume>()
+                ?.filter { it.date.startsWith(yearMonth) } ?: emptyList()
 
         val categoryTotalMap = detailsForMonth.groupingBy { it.category }
             .fold(0) { total, detail -> total + detail.amount }
@@ -110,8 +116,10 @@ class DiaryViewModel @Inject constructor(
 
     fun getConsumptionByCategory(category: String): List<Triple<String, Int, String>> {
         return _monthlyAllInfo.value
-            ?.filter { it.category == category }
+            ?.filterIsInstance<DetailConsume>()
+            ?.filter { it.category == category } // 카테고리별 필터링
             ?.map { Triple(it.date, it.amount, it.memo) }
             ?: emptyList()
     }
+
 }

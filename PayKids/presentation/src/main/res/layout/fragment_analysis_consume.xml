@@ -26,8 +26,8 @@
         android:fontFamily="@font/nanumsquare_extra_bold"
         android:textColor="@color/black"
         android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="@id/ib_left"
 
+        app:layout_constraintBottom_toBottomOf="@id/ib_left"
         app:layout_constraintStart_toEndOf="@+id/ib_left"
         app:layout_constraintTop_toTopOf="@id/ib_left"
         tools:text="12월" />

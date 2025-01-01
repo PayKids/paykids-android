@@ -76,7 +76,7 @@ class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisConsumeBinding>() {
         val totalConsume = viewModel.getMonthConsumption(currentMonth)
         binding.tvMonthConsumption.text = "${Constants.formatAmount(totalConsume)}원 사용 중"
 
-        val categoryPercentages = viewModel.getMonthlyCostCategory()
+        val categoryPercentages = viewModel.getMonthlyCostCategory(currentMonth)
         if (::adapter.isInitialized) {
             val sortedCategories = categoryPercentages
                 .sortedByDescending { it.percentage }

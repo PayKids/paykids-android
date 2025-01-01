@@ -27,6 +27,7 @@ class DiaryFragment : BaseFragment<FragmentDiaryBinding>(), ConfirmDialogInterfa
 
     private var currentMonth = 0
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun initView() {
         viewModel.fetchMonthlyData()
 
