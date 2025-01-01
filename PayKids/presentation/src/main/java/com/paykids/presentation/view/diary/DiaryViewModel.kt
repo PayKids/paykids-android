@@ -41,26 +41,8 @@ class DiaryViewModel @Inject constructor(
     val selectedDateDetails: LiveData<List<DetailConsume>> get() = _selectedDateDetails
 
     fun fetchDetailsForDate(date: String) {
-        val dummyData = when (date) {
-            "2024-12-25" -> listOf(
-                DetailConsume("2024-12-25", "편의점", 5000, "크리스마스 기념 구매"),
-                DetailConsume("2024-12-25", "카페", 4500, "크리스마스 커피")
-            )
-
-            "2024-12-28" -> listOf(
-                DetailConsume("2024-12-28", "방탈출", 28000, "필름바이스티브"),
-                DetailConsume("2024-12-28", "보드게임", 8000, "버건디의 성")
-            )
-
-            "2024-12-20" -> listOf(
-                DetailConsume("2024-12-20", "서점", 22200, "일반 구매"),
-                DetailConsume("2024-12-20", "서점", 25000, "책 구매")
-            )
-
-            else -> emptyList()
-        }
-
-        _selectedDateDetails.value = dummyData
+        val detailsForDate = _monthlyAllInfo.value?.filterIsInstance<DetailConsume>()?.filter { it.date == date } ?: emptyList()
+        _selectedDateDetails.value = detailsForDate
     }
 
     private val _dayInfoList = MutableLiveData<List<DayInfo>>()
