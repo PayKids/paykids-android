@@ -6,6 +6,8 @@ import androidx.lifecycle.ViewModel
 import com.paykids.domain.model.CategoryInfo
 import com.paykids.domain.model.DayInfo
 import com.paykids.domain.model.DetailConsume
+import com.paykids.domain.model.DetailIncome
+import com.paykids.domain.model.DetailTransaction
 import com.paykids.domain.usecase.datastore.GetAccessTokenUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -15,8 +17,8 @@ class DiaryViewModel @Inject constructor(
     private val getAccessTokenUseCase: GetAccessTokenUseCase
 ) : ViewModel() {
 
-    private val _monthlyAllInfo = MutableLiveData<List<DetailConsume>>(emptyList())
-    val monthlyAllInfo: LiveData<List<DetailConsume>> get() = _monthlyAllInfo
+    private val _monthlyAllInfo = MutableLiveData<List<DetailTransaction>>(emptyList())
+    val monthlyAllInfo: LiveData<List<DetailTransaction>> get() = _monthlyAllInfo
 
     fun fetchMonthlyData() {
         _monthlyAllInfo.value = listOf(
@@ -25,7 +27,13 @@ class DiaryViewModel @Inject constructor(
             DetailConsume("2024-12-28", "방탈출", 28000, "필름바이스티브"),
             DetailConsume("2024-12-28", "보드게임", 8000, "버건디의 성"),
             DetailConsume("2024-12-20", "서점", 22200, "일반 구매"),
-            DetailConsume("2024-12-20", "서점", 25000, "책 구매")
+            DetailConsume("2024-12-20", "서점", 25000, "책 구매"),
+            DetailConsume("2025-01-01", "방탈출", 18000, "어린왕자"),
+            DetailConsume("2025-01-01", "보드게임", 10000, "커피러쉬"),
+            DetailConsume("2025-01-02", "서점", 12500, "책 구매"),
+            DetailIncome("2024-12-10", "용돈", 100000, "12월 용돈"),
+            DetailIncome("2025-01-01", "용돈", 12500, "1월 용돈"),
+            DetailIncome("2025-01-02", "기타", 99500, "길을 가다가 주웠다!")
         )
     }
 

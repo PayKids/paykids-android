@@ -38,6 +38,7 @@ class DiaryMonthFragment : BaseFragment<FragmentDiaryMonthBinding>() {
             daysInMonth.map { day -> Pair(day, null as DayInfo?) }
         viewModel.fetchDayInfo()
         viewModel.getDayInfoForMonth("12")
+        viewModel.getDayInfoForMonth("1")
 
         dayAdapter = DiaryDayCalendarAdapter().apply {
             setRvItemClickListener(object : OnRvItemClickListener<Int> {
