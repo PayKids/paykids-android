@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/bg_quiz_default"
+        tools:ignore="ContentDescription" />
+
+    <Toolbar
+        android:id="@+id/tb_quiz"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@color/white"
+        android:contentInsetStart="0dp"
+
+        android:elevation="4dp"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/tv_quiz_progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+
+            android:fontFamily="@font/nanumsquare_extra_bold"
+            tools:text="1/7"
+            android:textColor="@color/black"
+            android:textSize="18sp" />
+
+        <ImageButton
+            android:id="@+id/ib_back"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+
+            android:layout_marginStart="4dp"
+            android:background="@color/transparent"
+            android:contentDescription="@null"
+            android:src="@drawable/ic_left_black" />
+    </Toolbar>
+
+    <TextView
+        android:id="@+id/tv_question"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="10,000원 권 지폐에는\n어떤 인물이 그려져 있을까요?"
+        android:gravity="center_horizontal"
+        android:textSize="22sp"
+        android:fontFamily="@font/nanumsquare_extra_bold"
+        app:layout_constraintTop_toBottomOf="@id/tb_quiz"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="118dp"/>
+
+    <GridLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:rowCount="2"
+        android:columnCount="2"
+        android:layout_gravity="center"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="86dp">
+
+        <!-- 첫 번째 답안 -->
+        <include layout="@layout/item_answer_box"
+            android:layout_width="166dp"
+            android:layout_height="196dp"
+            android:layout_marginEnd="1dp" />
+
+        <!-- 두 번째 답안 -->
+        <include layout="@layout/item_answer_box"
+            android:layout_width="166dp"
+            android:layout_height="196dp"
+            android:layout_marginStart="1dp"/>
+
+        <!-- 세 번째 답안 -->
+        <include layout="@layout/item_answer_box"
+            android:layout_width="166dp"
+            android:layout_height="196dp"
+            android:layout_marginTop="-1dp"/>
+
+        <!-- 네 번째 답안 -->
+        <include layout="@layout/item_answer_box"
+            android:layout_width="166dp"
+            android:layout_height="196dp"
+            android:layout_marginStart="1dp"
+            android:layout_marginTop="-1dp"/>
+    </GridLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
