@@ -90,13 +90,16 @@ class StudyRvAdapter : ListAdapter<ChatItem, RecyclerView.ViewHolder>(chatDiffCa
         }
 
         private fun setMaxWidth(textView: TextView, context: Context) {
-            val displayMetrics = DisplayMetrics()
             val windowManager =
-                context.getSystemService(Context.WINDOW_SERVICE) as android.view.WindowManager
-            windowManager.defaultDisplay.getMetrics(displayMetrics)
-            val screenWidth = displayMetrics.widthPixels
-            val maxWidth = (screenWidth * 0.5).toInt()
-            textView.maxWidth = maxWidth
+                context.getSystemService(Context.WINDOW_SERVICE) as? android.view.WindowManager
+            windowManager?.let {
+                val displayMetrics = DisplayMetrics()
+                it.defaultDisplay.getMetrics(displayMetrics)
+                val screenWidth = displayMetrics.widthPixels
+                val maxWidth =
+                    (screenWidth * if (itemViewType == VIEW_TYPE_MY_MESSAGE) 0.7 else 0.5).toInt()
+                textView.maxWidth = maxWidth
+            }
         }
 
         companion object {
