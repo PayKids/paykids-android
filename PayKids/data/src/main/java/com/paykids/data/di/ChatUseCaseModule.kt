@@ -1,10 +1,6 @@
 package com.paykids.data.di
 
-import com.paykids.domain.repository.AuthRepository
 import com.paykids.domain.repository.ChatRepository
-import com.paykids.domain.usecase.auth.SignInUseCase
-import com.paykids.domain.usecase.auth.SignOutUseCase
-import com.paykids.domain.usecase.auth.WithdrawalUseCase
 import com.paykids.domain.usecase.chat.SendChatUseCase
 import dagger.Module
 import dagger.Provides
