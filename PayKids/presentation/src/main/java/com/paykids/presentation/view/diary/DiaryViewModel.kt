@@ -67,11 +67,26 @@ class DiaryViewModel @Inject constructor(
     val dayInfoList: LiveData<List<DayInfo>> get() = _dayInfoList
 
     fun fetchDayInfo() {
-        _dayInfoList.value = listOf(
-            DayInfo("2024-12-18", 200000, 4000),
-            DayInfo("2024-12-25", 0, 9500),
-            DayInfo("2024-12-28", 0, 36000)
-        )
+        val dayInfos = _monthlyAllInfo.value?.let { monthlyAllInfo ->
+            // _monthlyAllInfo.value가 null이 아니면 그 값을 사용하여 처리
+            monthlyAllInfo.map { detail ->
+                val date = detail.date
+
+                // 해당 날짜의 DetailIncome 합산
+                val totalIncomeAmount = monthlyAllInfo.filterIsInstance<DetailIncome>()
+                    .filter { it.date == date }
+                    .sumOf { it.amount }
+
+                // 해당 날짜의 DetailConsume 합산
+                val totalConsumeAmount = monthlyAllInfo.filterIsInstance<DetailConsume>()
+                    .filter { it.date == date }
+                    .sumOf { it.amount }
+
+                DayInfo(date, totalIncomeAmount, totalConsumeAmount)
+            }.distinctBy { it.date } // 중복 날짜 제거
+        } ?: emptyList()
+
+        _dayInfoList.value = dayInfos
     }
 
     fun getDayInfoForMonth(yearMonth: String): List<DayInfo> {
