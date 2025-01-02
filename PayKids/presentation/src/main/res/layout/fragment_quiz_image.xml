@@ -51,13 +51,15 @@
         tools:text="10,000원 권 지폐에는\n어떤 인물이 그려져 있을까요?"
         android:gravity="center_horizontal"
         android:textSize="22sp"
+        android:textColor="@color/black"
         android:fontFamily="@font/nanumsquare_extra_bold"
-        app:layout_constraintTop_toBottomOf="@id/tb_quiz"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="118dp"/>
+        app:layout_constraintBottom_toTopOf="@id/gl_answer"
+        android:layout_marginBottom="80dp"/>
 
     <GridLayout
+        android:id="@+id/gl_answer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:rowCount="2"
