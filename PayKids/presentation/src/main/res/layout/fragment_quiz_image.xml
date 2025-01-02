@@ -66,28 +66,28 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="86dp">
+        android:layout_marginBottom="81.5dp">
 
         <!-- 첫 번째 답안 -->
         <include layout="@layout/item_answer_box"
             android:id="@+id/answer_first"
             android:layout_width="166dp"
             android:layout_height="196dp"
-            android:layout_marginEnd="1dp" />
+            android:layout_marginEnd="5dp" />
 
         <!-- 두 번째 답안 -->
         <include layout="@layout/item_answer_box"
             android:id="@+id/answer_second"
             android:layout_width="166dp"
             android:layout_height="196dp"
-            android:layout_marginStart="1dp"/>
+            android:layout_marginStart="5dp"/>
 
         <!-- 세 번째 답안 -->
         <include layout="@layout/item_answer_box"
             android:id="@+id/answer_third"
             android:layout_width="166dp"
             android:layout_height="196dp"
-            android:layout_marginTop="-1dp"/>
+            android:layout_marginTop="5dp"/>
 
         <!-- 네 번째 답안 -->
         <include layout="@layout/item_answer_box"
@@ -95,7 +95,7 @@
             android:layout_width="166dp"
             android:layout_height="196dp"
             android:layout_marginStart="1dp"
-            android:layout_marginTop="-1dp"/>
+            android:layout_marginTop="5dp"/>
     </GridLayout>
 
 

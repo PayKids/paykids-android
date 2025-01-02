@@ -4,7 +4,7 @@
     android:layout_width="166dp"
     android:layout_height="196dp"
     android:orientation="vertical"
-    android:background="@drawable/img_quiz_image_box"
+    android:background="@drawable/shape_quiz_box_default"
     android:gravity="center">
 
     <!-- 이미지 -->
