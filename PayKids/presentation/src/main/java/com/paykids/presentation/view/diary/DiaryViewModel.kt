@@ -9,6 +9,7 @@ import com.paykids.domain.model.DetailConsume
 import com.paykids.domain.model.DetailIncome
 import com.paykids.domain.model.DetailTransaction
 import com.paykids.domain.usecase.datastore.GetAccessTokenUseCase
+import com.paykids.util.LoggerUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -42,7 +43,7 @@ class DiaryViewModel @Inject constructor(
 
     fun fetchDetailsForDate(date: String) {
         val detailsForDate =
-            _monthlyAllInfo.value?.filterIsInstance<DetailConsume>()?.filter { it.date == date }
+            monthlyAllInfo.value?.filterIsInstance<DetailConsume>()?.filter { it.date == date }
                 ?: emptyList()
         _selectedDateDetails.value = detailsForDate
     }
@@ -51,7 +52,7 @@ class DiaryViewModel @Inject constructor(
     val dayInfoList: LiveData<List<DayInfo>> get() = _dayInfoList
 
     fun fetchDayInfo() {
-        val dayInfos = _monthlyAllInfo.value?.let { monthlyAllInfo ->
+        val dayInfos = monthlyAllInfo.value?.let { monthlyAllInfo ->
             // _monthlyAllInfo.value가 null이 아니면 그 값을 사용하여 처리
             monthlyAllInfo.map { detail ->
                 val date = detail.date
@@ -74,18 +75,18 @@ class DiaryViewModel @Inject constructor(
     }
 
     fun getDayInfoForMonth(yearMonth: String): List<DayInfo> {
-        return _dayInfoList.value?.filter { it.date.startsWith(yearMonth) } ?: emptyList()
+        return dayInfoList.value?.filter { it.date.startsWith(yearMonth) } ?: emptyList()
     }
 
     fun getMonthConsumption(yearMonth: String): Int {
-        return _monthlyAllInfo.value?.filterIsInstance<DetailConsume>()
+        return monthlyAllInfo.value?.filterIsInstance<DetailConsume>()
             ?.filter { it.date.startsWith(yearMonth) } // 해당 년월에 해당하는 항목 필터링
             ?.sumOf { it.amount }
             ?: 0 // null일 경우 0 반환
     }
 
     fun getMonthlyCostCategory(yearMonth: String): List<CategoryInfo> {
-        val monthlyData = _monthlyAllInfo.value?.filterIsInstance<DetailConsume>()
+        val monthlyData = monthlyAllInfo.value?.filterIsInstance<DetailConsume>()
             ?.filter { it.date.startsWith(yearMonth) } ?: emptyList()
 
         // 총 지출 금액 계산
@@ -105,7 +106,7 @@ class DiaryViewModel @Inject constructor(
         fetchMonthlyData()
 
         val detailsForMonth =
-            _monthlyAllInfo.value?.filterIsInstance<DetailConsume>()
+            monthlyAllInfo.value?.filterIsInstance<DetailConsume>()
                 ?.filter { it.date.startsWith(yearMonth) } ?: emptyList()
 
         val categoryTotalMap = detailsForMonth.groupingBy { it.category }
@@ -115,11 +116,19 @@ class DiaryViewModel @Inject constructor(
     }
 
     fun getConsumptionByCategory(category: String): List<Triple<String, Int, String>> {
-        return _monthlyAllInfo.value
+        return monthlyAllInfo.value
             ?.filterIsInstance<DetailConsume>()
             ?.filter { it.category == category } // 카테고리별 필터링
             ?.map { Triple(it.date, it.amount, it.memo) }
             ?: emptyList()
+    }
+
+    fun addTransaction(transaction: DetailTransaction) {
+        val updatedList = _monthlyAllInfo.value.orEmpty() + transaction
+        _monthlyAllInfo.value = updatedList
+
+        fetchDetailsForDate(transaction.date)
+        fetchDayInfo()
     }
 
 }

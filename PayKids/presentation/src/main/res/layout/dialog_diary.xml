@@ -19,8 +19,8 @@
         android:gravity="center"
         android:text="@string/dialog_add_title"
         android:textColor="@color/black"
-
         android:textSize="20sp"
+
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/cl_dialog" />
@@ -88,7 +88,7 @@
 
     <View
         android:id="@+id/view_date_picker"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="88dp"
         android:layout_marginTop="12dp"
         android:background="@drawable/shape_consumption_dialog"
@@ -106,14 +106,14 @@
         android:paddingHorizontal="12dp"
 
         android:paddingVertical="6dp"
-        android:text="2024년"
         android:textColor="@color/gray1"
         android:textSize="18sp"
 
         app:layout_constraintBottom_toBottomOf="@id/view_date_picker"
         app:layout_constraintEnd_toStartOf="@id/tv_month"
         app:layout_constraintStart_toStartOf="@id/view_date_picker"
-        app:layout_constraintTop_toTopOf="@id/view_date_picker" />
+        app:layout_constraintTop_toTopOf="@id/view_date_picker"
+        tools:text="2024년" />
 
     <ImageView
         android:id="@+id/iv_year_up"
@@ -148,14 +148,14 @@
         android:paddingHorizontal="16dp"
 
         android:paddingVertical="6dp"
-        android:text="12월"
         android:textColor="@color/gray1"
         android:textSize="18sp"
 
         app:layout_constraintBottom_toBottomOf="@id/view_date_picker"
         app:layout_constraintEnd_toStartOf="@id/tv_day"
         app:layout_constraintStart_toEndOf="@id/tv_year"
-        app:layout_constraintTop_toTopOf="@id/view_date_picker" />
+        app:layout_constraintTop_toTopOf="@id/view_date_picker"
+        tools:text="12월" />
 
     <ImageView
         android:id="@+id/iv_month_up"
@@ -190,14 +190,14 @@
         android:paddingHorizontal="16dp"
 
         android:paddingVertical="6dp"
-        android:text="28일"
         android:textColor="@color/gray1"
         android:textSize="18sp"
 
         app:layout_constraintBottom_toBottomOf="@id/view_date_picker"
         app:layout_constraintEnd_toEndOf="@id/view_date_picker"
         app:layout_constraintStart_toEndOf="@id/tv_month"
-        app:layout_constraintTop_toTopOf="@id/view_date_picker" />
+        app:layout_constraintTop_toTopOf="@id/view_date_picker"
+        tools:text="28일" />
 
     <ImageView
         android:id="@+id/iv_day_up"

@@ -1,5 +1,6 @@
 package com.paykids.presentation.view.diary
 
+import android.annotation.SuppressLint
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -7,13 +8,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.activityViewModels
+import com.paykids.domain.model.DetailConsume
+import com.paykids.domain.model.DetailIncome
 import com.paykids.presentation.R
 import com.paykids.presentation.custom.ConfirmDialogInterface
 import com.paykids.presentation.databinding.DialogDiaryBinding
+import com.paykids.util.LoggerUtils
 import java.time.LocalDate
 
-class DiaryDialog : DialogFragment() {
-
+class DiaryDialog : DialogFragment(), ConfirmDialogInterface {
     private var _binding: DialogDiaryBinding? = null
     private val binding get() = _binding!!
     private var confirmDialogInterface: ConfirmDialogInterface? = null
@@ -50,6 +54,7 @@ class DiaryDialog : DialogFragment() {
         }
 
         setupListeners()
+        updateDateDisplay()
 
         binding.clSwitch.setOnClickListener {
             toggleSwitch()
@@ -102,6 +107,7 @@ class DiaryDialog : DialogFragment() {
         binding.tvDay.text = day
     }
 
+    @SuppressLint("DefaultLocale")
     private fun setupListeners() {
         binding.ivYearUp.setOnClickListener {
             currentDate = currentDate.plusYears(1)
@@ -125,6 +131,7 @@ class DiaryDialog : DialogFragment() {
             currentDate = currentDate.plusDays(1)
             updateDateDisplay()
         }
+
         binding.ivDayDown.setOnClickListener {
             currentDate = currentDate.minusDays(1)
             updateDateDisplay()
@@ -135,4 +142,9 @@ class DiaryDialog : DialogFragment() {
         super.onDestroyView()
         _binding = null
     }
+
+    override fun onYesButtonClick() {
+        LoggerUtils.d("Button Click")
+    }
+
 }
