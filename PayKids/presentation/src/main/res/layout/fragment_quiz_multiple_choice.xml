@@ -134,7 +134,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginBottom="149.5dp"
-        android:layout_marginHorizontal="7.5dp">
+        android:layout_marginHorizontal="15.5dp">
 
 
         <!-- 첫 번째 답안 -->
