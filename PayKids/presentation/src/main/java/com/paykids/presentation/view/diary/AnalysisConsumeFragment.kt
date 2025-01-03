@@ -50,6 +50,10 @@ class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisConsumeBinding>() {
     override fun initListener() {
         super.initListener()
 
+        binding.ibBack.setOnClickListener {
+            parentFragmentManager.popBackStack()
+        }
+
         binding.ibLeft.setOnClickListener {
             currentMonth = changeMonth(currentMonth, -1)
             fetchData(currentMonth!!)

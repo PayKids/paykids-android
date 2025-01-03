@@ -8,6 +8,19 @@
     android:padding="12dp">
 
     <ImageButton
+        android:id="@+id/ib_back"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="4dp"
+        android:background="@color/transparent"
+        android:src="@drawable/ic_left_blue"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="ContentDescription" />
+
+    <ImageButton
         android:id="@+id/ib_left"
         android:layout_width="48dp"
         android:layout_height="48dp"
@@ -15,8 +28,8 @@
         android:background="@color/transparent"
         android:src="@drawable/ic_left_round"
 
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/tv_month"
+        app:layout_constraintTop_toTopOf="@+id/ib_back"
         tools:ignore="ContentDescription" />
 
     <TextView
@@ -28,7 +41,7 @@
         android:textSize="18sp"
 
         app:layout_constraintBottom_toBottomOf="@id/ib_left"
-        app:layout_constraintStart_toEndOf="@+id/ib_left"
+        app:layout_constraintEnd_toStartOf="@+id/ib_right"
         app:layout_constraintTop_toTopOf="@id/ib_left"
         tools:text="12월" />
 
@@ -40,7 +53,7 @@
         android:src="@drawable/ic_right_round"
 
         app:layout_constraintBottom_toBottomOf="@+id/ib_left"
-        app:layout_constraintStart_toEndOf="@+id/tv_month"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/ib_left"
         tools:ignore="ContentDescription" />
 
@@ -119,10 +132,10 @@
         app:layout_constraintTop_toBottomOf="@id/tv_month_consumption">
 
         <com.paykids.presentation.custom.CategoryProgressView
-            android:layout_marginHorizontal="1dp"
             android:id="@+id/categoryProgressView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="1dp" />
     </LinearLayout>
 
     <FrameLayout
