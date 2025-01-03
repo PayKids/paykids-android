@@ -1,6 +1,7 @@
 package com.paykids.presentation.view.home
 
 import android.content.Intent
+import android.view.View
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
@@ -21,10 +22,6 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
         initNavigation()
     }
 
-    override fun setObserver() {
-        super.setObserver()
-    }
-
     fun moveSign() {
         val intent = Intent(this, SignActivity::class.java)
         startActivity(intent)
@@ -41,5 +38,9 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
             supportFragmentManager.findFragmentById(R.id.fl_home) as NavHostFragment
         navController = navHostFragment.findNavController()
         binding.navBottom.setupWithNavController(navController)
+    }
+
+    fun setBottomNavigationVisibility(visible: Boolean) {
+        binding.navBottom.visibility = if (visible) View.VISIBLE else View.GONE
     }
 }
