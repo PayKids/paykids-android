@@ -21,6 +21,10 @@ class QuizEntryFragment : BaseFragment<FragmentQuizEntryBinding>(), ConfirmDialo
         super.initListener()
         val navController = findNavController()
 
+        binding.ibBack.setOnClickListener {
+            parentFragmentManager.popBackStack()
+        }
+
         binding.btnStudy.setOnClickListener {
             navController.navigate(R.id.studyFragment)
         }
