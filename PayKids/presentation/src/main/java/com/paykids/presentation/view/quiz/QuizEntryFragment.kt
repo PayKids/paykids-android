@@ -5,6 +5,7 @@ import com.paykids.presentation.R
 import com.paykids.presentation.base.BaseFragment
 import com.paykids.presentation.custom.ConfirmDialogInterface
 import com.paykids.presentation.databinding.FragmentQuizEntryBinding
+import com.paykids.presentation.view.home.HomeActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -19,6 +20,10 @@ class QuizEntryFragment : BaseFragment<FragmentQuizEntryBinding>(), ConfirmDialo
     override fun initListener() {
         super.initListener()
         val navController = findNavController()
+
+        binding.ibBack.setOnClickListener {
+            parentFragmentManager.popBackStack()
+        }
 
         binding.btnStudy.setOnClickListener {
             navController.navigate(R.id.studyFragment)
@@ -53,5 +58,15 @@ class QuizEntryFragment : BaseFragment<FragmentQuizEntryBinding>(), ConfirmDialo
 
     override fun onYesButtonClick() {
         // 퀴즈 풀기 페이지로 이동
+    }
+
+    override fun onResume() {
+        super.onResume()
+        (requireActivity() as? HomeActivity)?.setBottomNavigationVisibility(false)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        (requireActivity() as? HomeActivity)?.setBottomNavigationVisibility(true)
     }
 }

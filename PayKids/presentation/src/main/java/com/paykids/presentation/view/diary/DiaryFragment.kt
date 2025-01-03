@@ -1,21 +1,36 @@
 package com.paykids.presentation.view.diary
 
 import android.annotation.SuppressLint
+import android.app.Dialog
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.SurfaceControl
+import android.view.Window
+import android.view.WindowManager
+import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
+import com.paykids.domain.model.DetailConsume
+import com.paykids.domain.model.DetailTransaction
 import com.paykids.presentation.R
 import com.paykids.presentation.base.BaseFragment
 import com.paykids.presentation.custom.ConfirmDialogInterface
+import com.paykids.presentation.databinding.DialogDiaryBinding
 import com.paykids.presentation.databinding.FragmentDiaryBinding
 import com.paykids.presentation.utils.Constants
 import com.paykids.presentation.utils.Constants.formatDateToKorean
 import com.paykids.presentation.view.OnRvItemClickListener
+import com.paykids.util.LoggerUtils
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.selects.select
 import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import java.util.Calendar
 import java.util.Locale
 
@@ -27,6 +42,7 @@ class DiaryFragment : BaseFragment<FragmentDiaryBinding>(), ConfirmDialogInterfa
 
     private var currentMonth = 0
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun initView() {
         viewModel.fetchMonthlyData()
 
@@ -80,9 +96,7 @@ class DiaryFragment : BaseFragment<FragmentDiaryBinding>(), ConfirmDialogInterfa
         }
 
         binding.ibAddPocketMoney.setOnClickListener {
-            val dialog = DiaryDialog()
-            dialog.isCancelable = true
-            dialog.show(parentFragmentManager, "AddPocketMoneyDialog")
+            showAddPocketMoneyDialog("2025-01-01")
         }
 
         binding.vpCalendarMonth.registerOnPageChangeCallback(object :
@@ -111,6 +125,10 @@ class DiaryFragment : BaseFragment<FragmentDiaryBinding>(), ConfirmDialogInterfa
 
         viewModel.selectedDateDetails.observe(viewLifecycleOwner) { details ->
             detailAdapter.submitList(details)
+        }
+
+        viewModel.monthlyAllInfo.observe(viewLifecycleOwner) { transactions ->
+            updateUI(transactions)
         }
     }
 
@@ -156,5 +174,90 @@ class DiaryFragment : BaseFragment<FragmentDiaryBinding>(), ConfirmDialogInterfa
     private fun updateSelectDayText(day: String) {
         val formattedDate = formatDateToKorean(day)
         binding.tvSelectDay.text = formattedDate
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun showAddPocketMoneyDialog(today: String) {
+        val dialog = Dialog(requireContext())
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+
+        val binding = DialogDiaryBinding.inflate(LayoutInflater.from(requireContext()))
+        dialog.setContentView(binding.root)
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        val width = (resources.displayMetrics.widthPixels * 0.9).toInt()
+        dialog.window?.setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT)
+
+        val dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+        var selectedDate = LocalDate.parse(today, dateFormatter)
+        val currentYear = selectedDate.year
+        val currentMonth = selectedDate.monthValue
+        val currentDay = selectedDate.dayOfMonth
+        binding.tvYear.text = "${currentYear}년"
+        binding.tvMonth.text = "${currentMonth}월"
+        binding.tvDay.text = "${currentDay}일"
+
+        val items = resources.getStringArray(R.array.category_array)
+        val adapter = CustomSpinnerAdapter(requireContext(), items)
+        binding.spinnerCategory.adapter = adapter
+
+        binding.ivYearUp.setOnClickListener {
+            selectedDate = selectedDate.plusYears(1)
+            binding.tvYear.text = "${selectedDate.year}년"
+        }
+
+        binding.ivYearDown.setOnClickListener {
+            selectedDate = selectedDate.minusYears(1)
+            binding.tvYear.text = "${selectedDate.year}년"
+        }
+
+        binding.ivMonthUp.setOnClickListener {
+            selectedDate = selectedDate.plusMonths(1)
+            binding.tvMonth.text = "${selectedDate.monthValue}월"
+        }
+
+        binding.ivMonthDown.setOnClickListener {
+            selectedDate = selectedDate.minusMonths(1)
+            binding.tvMonth.text = "${selectedDate.monthValue}월"
+        }
+
+        binding.ivDayUp.setOnClickListener {
+            selectedDate = selectedDate.plusDays(1)
+            binding.tvDay.text = "${selectedDate.dayOfMonth}일"
+        }
+
+        binding.ivDayDown.setOnClickListener {
+            selectedDate = selectedDate.minusDays(1)
+            binding.tvDay.text = "${selectedDate.dayOfMonth}일"
+        }
+
+        binding.etAddAmount.setText("")
+        binding.etMemo.setText("")
+
+        binding.btnSubmit.setOnClickListener {
+            val amount = binding.etAddAmount.text.toString().toIntOrNull() ?: 0
+            val memo = binding.etMemo.text.toString()
+            val category = binding.spinnerCategory.selectedItem.toString()
+            val formattedDate = selectedDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+
+            if (amount <= 0) {
+                showToast("금액을 입력해주세요")
+            } else {
+                val detailConsume = DetailConsume(formattedDate, category, amount, memo)
+                viewModel.addTransaction(detailConsume)
+
+                viewModel.fetchMonthlyData()
+                dialog.dismiss()
+            }
+        }
+
+        dialog.show()
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun updateUI(transactions: List<DetailTransaction>) {
+        detailAdapter.submitList(transactions.filterIsInstance<DetailConsume>())
+
+        val totalConsume = transactions.filterIsInstance<DetailConsume>().sumOf { it.amount }
+        binding.tvMonthConsumption.text = "${Constants.formatAmount(totalConsume)}원 사용 중"
     }
 }

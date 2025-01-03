@@ -1,0 +1,15 @@
+package com.paykids.data.service
+
+import com.paykids.data.model.ChatResponseDTO
+import retrofit2.Response
+import retrofit2.http.GET
+import retrofit2.http.Query
+
+interface ChatService {
+
+    @GET("/gpt/chat")
+    suspend fun sendChat(
+//        @Header("Authorization") accessToken: String,
+        @Query("prompt") prompt: String
+    ):  Response<ChatResponseDTO>
+}

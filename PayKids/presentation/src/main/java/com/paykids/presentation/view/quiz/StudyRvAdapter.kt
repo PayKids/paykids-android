@@ -1,10 +1,12 @@
 package com.paykids.presentation.view.quiz
 
 import android.content.Context
+import android.os.Build
 import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -45,6 +47,7 @@ class StudyRvAdapter : ListAdapter<ChatItem, RecyclerView.ViewHolder>(chatDiffCa
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.R)
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             is MyChatViewHolder -> holder.bind(getItem(position))
@@ -84,19 +87,23 @@ class StudyRvAdapter : ListAdapter<ChatItem, RecyclerView.ViewHolder>(chatDiffCa
     class OtherChatViewHolder private constructor(val binding: ItemChatOtherBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
+        @RequiresApi(Build.VERSION_CODES.R)
         fun bind(item: ChatItem) {
             binding.messageText.text = item.content
             setMaxWidth(binding.messageText, itemView.context)
         }
 
+        @RequiresApi(Build.VERSION_CODES.R)
         private fun setMaxWidth(textView: TextView, context: Context) {
-            val displayMetrics = DisplayMetrics()
             val windowManager =
-                context.getSystemService(Context.WINDOW_SERVICE) as android.view.WindowManager
-            windowManager.defaultDisplay.getMetrics(displayMetrics)
-            val screenWidth = displayMetrics.widthPixels
-            val maxWidth = (screenWidth * 0.5).toInt()
-            textView.maxWidth = maxWidth
+                context.getSystemService(Context.WINDOW_SERVICE) as? android.view.WindowManager
+            windowManager?.let {
+                val windowMetrics = it.currentWindowMetrics
+                val bounds = windowMetrics.bounds
+                val screenWidth = bounds.width()
+                val maxWidth = (screenWidth * if (itemViewType == VIEW_TYPE_MY_MESSAGE) 0.7 else 0.5).toInt()
+                textView.maxWidth = maxWidth
+            }
         }
 
         companion object {

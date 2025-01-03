@@ -5,6 +5,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.paykids.domain.model.ChatItem
 import com.paykids.presentation.base.BaseFragment
 import com.paykids.presentation.databinding.FragmentStudyBinding
+import com.paykids.presentation.utils.UiState
+import com.paykids.presentation.view.home.HomeActivity
+import com.paykids.util.LoggerUtils
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -24,19 +27,22 @@ class StudyFragment : BaseFragment<FragmentStudyBinding>() {
         }
 
         binding.ibSend.setOnClickListener {
-            if (binding.etSendChat.text.isNotEmpty()) {
-                val processedItems = processChatItems(
-                    listOf(
-                        ChatItem(
-                            chatId = studyAdapter.getLastChatId() + 1,
-                            content = binding.etSendChat.text.toString(),
-                            isMine = true
-                        )
-                    )
+            val chatContent = binding.etSendChat.text.toString()
+            if (chatContent.isNotEmpty()) {
+                val userChat = ChatItem(
+                    chatId = studyAdapter.getLastChatId() + 1,
+                    content = chatContent,
+                    isMine = true
                 )
 
-//                submitCustom(processedItems)
-//                viewModel.sendQuestion(binding.etSendChat.text.toString())
+                val updatedList = studyAdapter.currentList.toMutableList().apply {
+                    add(userChat)
+                }
+                studyAdapter.submitList(updatedList)
+                binding.rvChat.scrollToPosition(updatedList.size - 1)
+
+                viewModel.sendQuestion(chatContent)
+
                 binding.etSendChat.text.clear()
             } else {
                 showToast("작성된 내용이 없어요")
@@ -58,7 +64,7 @@ class StudyFragment : BaseFragment<FragmentStudyBinding>() {
         var lastOtherMessageIndex = -1
 
         dataList.forEachIndexed { index, item ->
-            processedList.add(ChatItem(chatId = item.chatId, content = "", isMine = false))
+            processedList.add(item)
 
             if (!item.isMine) {
                 lastOtherMessageIndex = index
@@ -68,5 +74,43 @@ class StudyFragment : BaseFragment<FragmentStudyBinding>() {
         }
 
         return processedList
+    }
+
+    override fun setObserver() {
+        super.setObserver()
+
+        viewModel.resState.observe(viewLifecycleOwner) {
+            when (it) {
+                is UiState.Loading -> {}
+                is UiState.Failure -> {
+                    showToast("앗, 답변을 준비하는데 실패했어요.\n다시 한번 시도해 볼까요?")
+                    LoggerUtils.e(it.message)
+                }
+
+                is UiState.Success -> {
+                    val gptResponse = ChatItem(
+                        chatId = studyAdapter.getLastChatId() + 1,
+                        content = it.data,
+                        isMine = false
+                    )
+
+                    val updatedList = studyAdapter.currentList.toMutableList().apply {
+                        add(gptResponse)
+                    }
+                    studyAdapter.submitList(updatedList)
+                    binding.rvChat.scrollToPosition(updatedList.size - 1)
+                }
+            }
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        (requireActivity() as? HomeActivity)?.setBottomNavigationVisibility(false)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        (requireActivity() as? HomeActivity)?.setBottomNavigationVisibility(true)
     }
 }

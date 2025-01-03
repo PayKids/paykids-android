@@ -11,6 +11,7 @@ import com.paykids.presentation.R
 import com.paykids.presentation.base.BaseFragment
 import com.paykids.presentation.databinding.FragmentAnalysisConsumeBinding
 import com.paykids.presentation.utils.Constants
+import com.paykids.presentation.view.home.HomeActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -49,6 +50,10 @@ class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisConsumeBinding>() {
     override fun initListener() {
         super.initListener()
 
+        binding.ibBack.setOnClickListener {
+            parentFragmentManager.popBackStack()
+        }
+
         binding.ibLeft.setOnClickListener {
             currentMonth = changeMonth(currentMonth, -1)
             fetchData(currentMonth!!)
@@ -76,7 +81,7 @@ class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisConsumeBinding>() {
         val totalConsume = viewModel.getMonthConsumption(currentMonth)
         binding.tvMonthConsumption.text = "${Constants.formatAmount(totalConsume)}원 사용 중"
 
-        val categoryPercentages = viewModel.getMonthlyCostCategory()
+        val categoryPercentages = viewModel.getMonthlyCostCategory(currentMonth)
         if (::adapter.isInitialized) {
             val sortedCategories = categoryPercentages
                 .sortedByDescending { it.percentage }
@@ -186,5 +191,15 @@ class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisConsumeBinding>() {
         val action = AnalysisConsumeFragmentDirections
             .actionAnalysisConsumeFragmentToAnalysisCategoryConsumeFragment(category, amount)
         findNavController().navigate(action)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        (requireActivity() as? HomeActivity)?.setBottomNavigationVisibility(false)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        (requireActivity() as? HomeActivity)?.setBottomNavigationVisibility(true)
     }
 }

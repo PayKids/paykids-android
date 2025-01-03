@@ -43,7 +43,7 @@
         android:includeFontPadding="false"
         android:textColor="@color/blue1"
         android:textSize="11sp"
-        android:maxLength="6"
+        android:maxLength="7"
 
         app:layout_constraintEnd_toEndOf="@id/tv_day"
         app:layout_constraintStart_toStartOf="@id/tv_day"

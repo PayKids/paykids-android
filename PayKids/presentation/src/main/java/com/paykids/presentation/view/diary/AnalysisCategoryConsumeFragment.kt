@@ -10,6 +10,7 @@ import com.paykids.presentation.R
 import com.paykids.presentation.base.BaseFragment
 import com.paykids.presentation.databinding.FragmentAnalysisCategoryConsumeBinding
 import com.paykids.presentation.utils.Constants
+import com.paykids.presentation.view.home.HomeActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -66,6 +67,16 @@ class AnalysisCategoryConsumeFragment : BaseFragment<FragmentAnalysisCategoryCon
             Triple(it.first, it.second, it.third)
         }
         adapter.submitList(formattedDetails)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        (requireActivity() as? HomeActivity)?.setBottomNavigationVisibility(false)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        (requireActivity() as? HomeActivity)?.setBottomNavigationVisibility(true)
     }
 
 }
