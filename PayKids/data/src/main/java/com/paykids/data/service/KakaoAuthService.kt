@@ -40,7 +40,8 @@ class KakaoAuthService @Inject constructor(
                     LoggerUtils.e("로그인 실패 ${error}")
                     continuation.resumeWithException(error)
                 } else if (token != null) {
-                    val idToken = token.accessToken
+//                    val idToken = token.accessToken
+                    val idToken = token.idToken!!
                     val provider = AuthProvider.KAKAO
                     continuation.resume(SignInInfo(idToken, provider))
                 } else {
