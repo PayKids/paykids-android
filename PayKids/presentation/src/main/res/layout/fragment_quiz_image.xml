@@ -70,7 +70,7 @@
         app:layout_constraintEnd_toEndOf="@id/gl_answer"
         app:layout_constraintBottom_toTopOf="@id/gl_answer"
         android:layout_marginBottom="18dp"
-        android:layout_marginHorizontal="9dp">
+        android:layout_marginHorizontal="4.5dp">
 
         <ImageView
             android:layout_width="wrap_content"
@@ -102,7 +102,7 @@
         app:layout_constraintEnd_toEndOf="@id/gl_answer"
         app:layout_constraintBottom_toTopOf="@id/gl_answer"
         android:layout_marginBottom="18dp"
-        android:layout_marginHorizontal="9dp">
+        android:layout_marginHorizontal="4.5dp">
 
         <ImageView
             android:layout_width="wrap_content"
