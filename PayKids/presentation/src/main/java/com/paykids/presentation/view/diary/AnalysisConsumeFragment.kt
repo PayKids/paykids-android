@@ -11,6 +11,7 @@ import com.paykids.presentation.R
 import com.paykids.presentation.base.BaseFragment
 import com.paykids.presentation.databinding.FragmentAnalysisConsumeBinding
 import com.paykids.presentation.utils.Constants
+import com.paykids.presentation.view.home.HomeActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -186,5 +187,15 @@ class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisConsumeBinding>() {
         val action = AnalysisConsumeFragmentDirections
             .actionAnalysisConsumeFragmentToAnalysisCategoryConsumeFragment(category, amount)
         findNavController().navigate(action)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        (requireActivity() as? HomeActivity)?.setBottomNavigationVisibility(false)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        (requireActivity() as? HomeActivity)?.setBottomNavigationVisibility(true)
     }
 }
