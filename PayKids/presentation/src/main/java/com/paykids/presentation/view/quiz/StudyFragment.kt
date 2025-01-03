@@ -6,6 +6,7 @@ import com.paykids.domain.model.ChatItem
 import com.paykids.presentation.base.BaseFragment
 import com.paykids.presentation.databinding.FragmentStudyBinding
 import com.paykids.presentation.utils.UiState
+import com.paykids.presentation.view.home.HomeActivity
 import com.paykids.util.LoggerUtils
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -101,5 +102,15 @@ class StudyFragment : BaseFragment<FragmentStudyBinding>() {
                 }
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        (requireActivity() as? HomeActivity)?.setBottomNavigationVisibility(false)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        (requireActivity() as? HomeActivity)?.setBottomNavigationVisibility(true)
     }
 }
