@@ -56,7 +56,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@id/gl_answer"
-        android:layout_marginBottom="130dp"/>
+        android:layout_marginBottom="125.5dp"/>
 
     <LinearLayout
         android:id="@+id/ll_correct_answer"
@@ -69,7 +69,7 @@
         app:layout_constraintStart_toStartOf="@id/gl_answer"
         app:layout_constraintEnd_toEndOf="@id/gl_answer"
         app:layout_constraintBottom_toTopOf="@id/gl_answer"
-        android:layout_marginBottom="18dp"
+        android:layout_marginBottom="13.5dp"
         android:layout_marginHorizontal="4.5dp">
 
         <ImageView
@@ -102,7 +102,7 @@
         app:layout_constraintStart_toStartOf="@id/gl_answer"
         app:layout_constraintEnd_toEndOf="@id/gl_answer"
         app:layout_constraintBottom_toTopOf="@id/gl_answer"
-        android:layout_marginBottom="18dp"
+        android:layout_marginBottom="13.5dp"
         android:layout_marginHorizontal="4.5dp">
 
         <ImageView
