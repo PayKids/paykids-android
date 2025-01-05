@@ -87,7 +87,6 @@ class SignNicknameFragment: BaseFragment<FragmentSignNicknameBinding>() {
                 is UiState.Loading -> {}
 
                 is UiState.Success -> {
-                    LoggerUtils.d(it.data.toString())
                     (activity as? SignActivity)?.moveHome() ?: run {
                         showToast("화면 이동 중 오류가 발생했습니다")
                     }
