@@ -1,6 +1,5 @@
 package com.paykids.domain.usecase.auth
 
-import com.paykids.domain.repository.AuthRepository
 import com.paykids.domain.repository.KakaoAuthRepository
 import javax.inject.Inject
 

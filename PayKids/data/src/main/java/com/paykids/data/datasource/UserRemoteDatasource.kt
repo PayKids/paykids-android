@@ -1,10 +1,7 @@
 package com.paykids.data.datasource
 
-import com.kakao.sdk.user.model.User
 import com.paykids.data.model.BaseResponse
-import com.paykids.data.model.ChatResponseDTO
 import com.paykids.data.model.UserInfoResponseDTO
-import com.paykids.data.model.UserTokenResponseDTO
 
 interface UserRemoteDatasource {
     suspend fun getUserInfo(accessToken: String): Result<BaseResponse<UserInfoResponseDTO>>

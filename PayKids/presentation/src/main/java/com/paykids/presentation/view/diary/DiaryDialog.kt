@@ -8,9 +8,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.activityViewModels
-import com.paykids.domain.model.DetailConsume
-import com.paykids.domain.model.DetailIncome
 import com.paykids.presentation.R
 import com.paykids.presentation.custom.ConfirmDialogInterface
 import com.paykids.presentation.databinding.DialogDiaryBinding

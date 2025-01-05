@@ -5,7 +5,6 @@ import com.paykids.presentation.R
 import com.paykids.presentation.base.BaseFragment
 import com.paykids.presentation.databinding.FragmentSignProviderBinding
 import com.paykids.presentation.utils.UiState
-import com.paykids.presentation.view.home.HomeFragment
 import com.paykids.util.LoggerUtils
 import dagger.hilt.android.AndroidEntryPoint
 

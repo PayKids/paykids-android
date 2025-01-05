@@ -6,7 +6,6 @@ import com.paykids.data.datasource.UserRemoteDatasource
 import com.paykids.data.datasourceImpl.AuthRemoteDatasourceImpl
 import com.paykids.data.datasourceImpl.ChatRemoteDatasourceImpl
 import com.paykids.data.datasourceImpl.UserRemoteDatasourceImpl
-import com.paykids.data.repository.UserRepositoryImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
