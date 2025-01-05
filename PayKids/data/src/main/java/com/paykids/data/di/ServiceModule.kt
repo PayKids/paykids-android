@@ -1,6 +1,7 @@
 package com.paykids.data.di
 
 import com.paykids.data.service.AuthService
+import com.paykids.data.service.UserService
 import com.paykids.data.service.ChatService
 import dagger.Module
 import dagger.Provides
@@ -12,6 +13,11 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object ServiceModule {
+
+    @Provides
+    @Singleton
+    fun providesUserService(retrofit: Retrofit): UserService =
+        retrofit.create(UserService::class.java)
 
     @Provides
     @Singleton

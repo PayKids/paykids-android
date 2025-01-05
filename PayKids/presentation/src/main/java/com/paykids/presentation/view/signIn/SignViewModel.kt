@@ -4,8 +4,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.kakao.sdk.user.model.User
 import com.paykids.domain.enums.AuthProvider
 import com.paykids.domain.model.SignInInfo
+import com.paykids.domain.model.UserSignInInfo
+import com.paykids.domain.usecase.auth.KakaoAuthUseCase
 import com.paykids.domain.usecase.auth.SignInUseCase
 import com.paykids.presentation.utils.UiState
 import com.paykids.util.LoggerUtils
@@ -15,28 +18,72 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SignViewModel @Inject constructor(
-    private val signInUseCase: SignInUseCase,
+    private val kakaoAuthUseCase: KakaoAuthUseCase,
+    private val signInUseCase: SignInUseCase
 ) : ViewModel() {
 
     var isRegister = false
 
-    private val _loginState = MutableLiveData<UiState<SignInInfo>>()
-    val loginState: LiveData<UiState<SignInInfo>> get() = _loginState
+    private val _kakaoLoginState = MutableLiveData<UiState<SignInInfo>>()
+    val kakaoLoginState: LiveData<UiState<SignInInfo>> get() = _kakaoLoginState
 
     fun signInWithKakao() {
-        _loginState.value = UiState.Loading
+        _kakaoLoginState.value = UiState.Loading
         viewModelScope.launch {
             try {
-                signInUseCase.invoke("", AuthProvider.KAKAO)
+                kakaoAuthUseCase.invoke()
                     .onSuccess { signInInfo ->
                         LoggerUtils.d("로그인 성공: $signInInfo")
-                        _loginState.value = UiState.Success(signInInfo)
+                        _kakaoLoginState.value = UiState.Success(signInInfo)
                     }.onFailure { e ->
-                        _loginState.value = UiState.Failure(message = e.message ?: "카카오 로그인 실패")
+                        _kakaoLoginState.value = UiState.Failure(message = e.message ?: "카카오 로그인 실패")
                     }
             } catch (e: Exception) {
-                _loginState.value = UiState.Failure(message = e.message ?: "카카오 로그인 중 예외 발생")
+                _kakaoLoginState.value = UiState.Failure(message = e.message ?: "카카오 로그인 중 예외 발생")
             }
         }
     }
+
+    private val _loginState = MutableLiveData<UiState<UserSignInInfo>>()
+    val loginState: LiveData<UiState<UserSignInInfo>> get() = _loginState
+
+    fun signIn(idToken: String) {
+        _loginState.value = UiState.Loading
+        viewModelScope.launch {
+            try {
+                signInUseCase.invoke(idToken)
+                    .onSuccess { userSignInInfo ->
+                        LoggerUtils.d("로그인 성공: $userSignInInfo")
+                        _loginState.value = UiState.Success(userSignInInfo)
+                    }.onFailure { e ->
+                        _loginState.value = UiState.Failure(message = e.message ?: "페이키즈 로그인 실패")
+                    }
+            } catch (e: Exception) {
+                _loginState.value = UiState.Failure(message = e.message ?: "페이키즈 로그인 중 예외 발생")
+            }
+        }
+    }
+
+    private val _saveState = MutableLiveData<UiState<Boolean>>(UiState.Loading)
+    val saveState: LiveData<UiState<Boolean>> get() = _saveState
+
+//    fun saveSignInInfo(info: SignInInfo){
+//        _saveState.value = UiState.Loading
+//
+//        viewModelScope.launch {
+//            try {
+//                saveSignInInfoUseCase(info.)
+//                    .onSuccess {
+//                        _saveState.value = UiState.Success(info.second.isRegistered)
+//                    }
+//                    .onFailure { e ->
+//                        LoggerUtils.e("Sign-in failed: ${e.message}")
+//                        _saveState.value = UiState.Failure(message = e.message.toString())
+//                    }
+//            } catch (e: Exception) {
+//                LoggerUtils.e("Sign-in exception: ${e.message}")
+//                _saveState.value = UiState.Failure(message = e.message.toString())
+//            }
+//        }
+//    }
 }
