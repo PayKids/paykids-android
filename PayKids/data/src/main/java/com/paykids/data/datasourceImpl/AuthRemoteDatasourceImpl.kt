@@ -12,19 +12,20 @@ import javax.inject.Inject
 class AuthRemoteDatasourceImpl @Inject constructor(
     private val authService: AuthService
 ) : AuthRemoteDatasource {
-    override suspend fun getAccessToken(idToken: String): Result<BaseResponse<UserTokenResponseDTO>> {
-        return try {
-            val response = authService.getAccessToken(idToken)
-            if (response.isSuccessful) {
-                val chatResponse = response.body()
 
-                if (chatResponse != null) {
-                    Result.success(chatResponse)
+    override suspend fun signIn(idToken: String): Result<BaseResponse<UserTokenResponseDTO>> {
+        return try {
+            val response = authService.signIn(idToken)
+            if (response.isSuccessful) {
+                val res = response.body()
+
+                if (res != null) {
+                    Result.success(res)
                 } else {
-                    Result.failure(Exception("getAccessToken failed: response body is null"))
+                    Result.failure(Exception("paykids Signin failed: response body is null"))
                 }
             } else {
-                Result.failure(Exception("getAccessToken failed: ${response.message()}"))
+                Result.failure(Exception("paykids Signin failed: ${response.message()}"))
             }
         } catch (e: Exception) {
             Result.failure(e)

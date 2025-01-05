@@ -1,8 +1,10 @@
 package com.paykids.data.di
 
 import com.paykids.domain.repository.AuthRepository
+import com.paykids.domain.repository.DataStoreRepository
 import com.paykids.domain.repository.KakaoAuthRepository
 import com.paykids.domain.usecase.auth.KakaoAuthUseCase
+import com.paykids.domain.usecase.auth.SaveSignInInfoUseCase
 import com.paykids.domain.usecase.auth.SignInUseCase
 import com.paykids.domain.usecase.auth.SignOutUseCase
 import com.paykids.domain.usecase.auth.WithdrawalUseCase
@@ -19,26 +21,11 @@ object AuthUseCaseModule {
 
     @Provides
     @Singleton
-    fun provideSignInUseCase(
-        repository: KakaoAuthRepository
-    ): KakaoAuthUseCase {
-        return KakaoAuthUseCase(repository)
+    fun provideSaveSignInInfoUseCase(
+        repository: DataStoreRepository
+    ): SaveSignInInfoUseCase {
+        return SaveSignInInfoUseCase(repository)
     }
 
-    @Provides
-    @Singleton
-    fun provideSignOutUseCase(
-        authRepository: AuthRepository
-    ): SignOutUseCase {
-        return SignOutUseCase(authRepository)
-    }
-
-    @Provides
-    @Singleton
-    fun provideWithdrawalUseCase(
-        authRepository: AuthRepository
-    ): WithdrawalUseCase {
-        return WithdrawalUseCase(authRepository)
-    }
 }
 

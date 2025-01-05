@@ -9,6 +9,7 @@ import com.paykids.domain.enums.AuthProvider
 import com.paykids.domain.model.SignInInfo
 import com.paykids.domain.model.UserSignInInfo
 import com.paykids.domain.usecase.auth.KakaoAuthUseCase
+import com.paykids.domain.usecase.auth.SaveSignInInfoUseCase
 import com.paykids.domain.usecase.auth.SignInUseCase
 import com.paykids.presentation.utils.UiState
 import com.paykids.util.LoggerUtils
@@ -19,10 +20,9 @@ import javax.inject.Inject
 @HiltViewModel
 class SignViewModel @Inject constructor(
     private val kakaoAuthUseCase: KakaoAuthUseCase,
-    private val signInUseCase: SignInUseCase
+    private val signInUseCase: SignInUseCase,
+    private val saveSignInInfoUseCase: SaveSignInInfoUseCase
 ) : ViewModel() {
-
-    var isRegister = false
 
     private val _kakaoLoginState = MutableLiveData<UiState<SignInInfo>>()
     val kakaoLoginState: LiveData<UiState<SignInInfo>> get() = _kakaoLoginState
@@ -33,7 +33,6 @@ class SignViewModel @Inject constructor(
             try {
                 kakaoAuthUseCase.invoke()
                     .onSuccess { signInInfo ->
-                        LoggerUtils.d("로그인 성공: $signInInfo")
                         _kakaoLoginState.value = UiState.Success(signInInfo)
                     }.onFailure { e ->
                         _kakaoLoginState.value = UiState.Failure(message = e.message ?: "카카오 로그인 실패")
@@ -53,7 +52,6 @@ class SignViewModel @Inject constructor(
             try {
                 signInUseCase.invoke(idToken)
                     .onSuccess { userSignInInfo ->
-                        LoggerUtils.d("로그인 성공: $userSignInInfo")
                         _loginState.value = UiState.Success(userSignInInfo)
                     }.onFailure { e ->
                         _loginState.value = UiState.Failure(message = e.message ?: "페이키즈 로그인 실패")
@@ -67,23 +65,23 @@ class SignViewModel @Inject constructor(
     private val _saveState = MutableLiveData<UiState<Boolean>>(UiState.Loading)
     val saveState: LiveData<UiState<Boolean>> get() = _saveState
 
-//    fun saveSignInInfo(info: SignInInfo){
-//        _saveState.value = UiState.Loading
-//
-//        viewModelScope.launch {
-//            try {
-//                saveSignInInfoUseCase(info.)
-//                    .onSuccess {
-//                        _saveState.value = UiState.Success(info.second.isRegistered)
-//                    }
-//                    .onFailure { e ->
-//                        LoggerUtils.e("Sign-in failed: ${e.message}")
-//                        _saveState.value = UiState.Failure(message = e.message.toString())
-//                    }
-//            } catch (e: Exception) {
-//                LoggerUtils.e("Sign-in exception: ${e.message}")
-//                _saveState.value = UiState.Failure(message = e.message.toString())
-//            }
-//        }
-//    }
+    fun saveSignInInfo(info: UserSignInInfo){
+        _saveState.value = UiState.Loading
+
+        viewModelScope.launch {
+            try {
+                saveSignInInfoUseCase(info.accessToken, info.refreshToken)
+                    .onSuccess {
+                        _saveState.value = UiState.Success(info.isRegistered)
+                    }
+                    .onFailure { e ->
+                        LoggerUtils.e("Sign-in failed: ${e.message}")
+                        _saveState.value = UiState.Failure(message = e.message.toString())
+                    }
+            } catch (e: Exception) {
+                LoggerUtils.e("Sign-in exception: ${e.message}")
+                _saveState.value = UiState.Failure(message = e.message.toString())
+            }
+        }
+    }
 }

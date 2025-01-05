@@ -2,6 +2,8 @@ package com.paykids.data.di
 
 import com.paykids.domain.repository.KakaoAuthRepository
 import com.paykids.domain.usecase.auth.KakaoAuthUseCase
+import com.paykids.domain.usecase.auth.SignOutUseCase
+import com.paykids.domain.usecase.auth.WithdrawalUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -14,10 +16,26 @@ object KakaoAuthUseCaseModule {
 
     @Provides
     @Singleton
-    fun provideKakaoAuthUseCase(
-        kakaoAuthRepository: KakaoAuthRepository
+    fun provideSignInUseCase(
+        repository: KakaoAuthRepository
     ): KakaoAuthUseCase {
-        return KakaoAuthUseCase(kakaoAuthRepository)
+        return KakaoAuthUseCase(repository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideSignOutUseCase(
+        kakaoAuthRepository: KakaoAuthRepository
+    ): SignOutUseCase {
+        return SignOutUseCase(kakaoAuthRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideWithdrawalUseCase(
+        kakaoAuthRepository: KakaoAuthRepository
+    ): WithdrawalUseCase {
+        return WithdrawalUseCase(kakaoAuthRepository)
     }
 }
 
