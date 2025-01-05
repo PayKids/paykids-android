@@ -5,7 +5,7 @@ import android.util.Log
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.user.UserApiClient
 import com.paykids.domain.enums.AuthProvider
-import com.paykids.domain.model.SignInInfo
+import com.paykids.domain.model.auth.SignInInfo
 import com.paykids.util.LoggerUtils
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject

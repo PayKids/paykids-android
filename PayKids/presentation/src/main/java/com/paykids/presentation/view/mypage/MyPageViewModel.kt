@@ -4,10 +4,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.paykids.domain.model.user.UserInfo
 import com.paykids.domain.usecase.auth.SignOutUseCase
 import com.paykids.domain.usecase.auth.WithdrawalUseCase
 import com.paykids.domain.usecase.datastore.ClearUserDataUseCase
 import com.paykids.domain.usecase.datastore.GetAccessTokenUseCase
+import com.paykids.domain.usecase.user.GetUserInfoUseCase
 import com.paykids.presentation.utils.UiState
 import com.paykids.util.LoggerUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,11 +18,30 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MyPageViewModel @Inject constructor(
+    private val getUserInfoUseCase: GetUserInfoUseCase,
     private val signOutUseCase: SignOutUseCase,
     private val withdrawalUseCase: WithdrawalUseCase,
     private val clearUserDataUseCase: ClearUserDataUseCase,
     private val getAccessTokenUseCase: GetAccessTokenUseCase
 ) : ViewModel() {
+
+    private val _userInfoState = MutableLiveData<UiState<UserInfo>>(UiState.Loading)
+    val userInfoState: LiveData<UiState<UserInfo>> get() = _userInfoState
+
+    fun getUserInfo() {
+        _userInfoState.value = UiState.Loading
+
+        viewModelScope.launch {
+            getUserInfoUseCase.invoke(getAccessTokenUseCase.invoke().getOrNull().toString())
+                .onSuccess {
+                    _userInfoState.value =
+                        UiState.Success(UserInfo(it.nickname, it.email, it.profileImageURL))
+                }
+                .onFailure {
+                    _userInfoState.value = UiState.Failure(message = "유저 정보 불러오기 실패")
+                }
+        }
+    }
 
     private var _signOutState = MutableLiveData<UiState<Unit>>(UiState.Loading)
     val signOutState: LiveData<UiState<Unit>> get() = _signOutState

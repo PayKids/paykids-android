@@ -1,7 +1,7 @@
 package com.paykids.data.mapper
 
 import com.paykids.data.model.UserTokenResponseDTO
-import com.paykids.domain.model.UserSignInInfo
+import com.paykids.domain.model.auth.UserSignInInfo
 
 object SignMapper {
 

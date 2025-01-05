@@ -4,10 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kakao.sdk.user.model.User
-import com.paykids.domain.enums.AuthProvider
-import com.paykids.domain.model.SignInInfo
-import com.paykids.domain.model.UserSignInInfo
+import com.paykids.domain.model.auth.SignInInfo
+import com.paykids.domain.model.auth.UserSignInInfo
 import com.paykids.domain.usecase.auth.KakaoAuthUseCase
 import com.paykids.domain.usecase.auth.SaveSignInInfoUseCase
 import com.paykids.domain.usecase.auth.SignInUseCase
