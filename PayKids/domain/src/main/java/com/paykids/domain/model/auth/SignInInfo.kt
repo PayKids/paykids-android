@@ -1,4 +1,4 @@
-package com.paykids.domain.model
+package com.paykids.domain.model.auth
 
 import com.paykids.domain.enums.AuthProvider
 

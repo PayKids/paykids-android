@@ -1,6 +1,4 @@
-package com.paykids.domain.model
-
-import com.paykids.domain.enums.AuthProvider
+package com.paykids.domain.model.auth
 
 data class UserSignInInfo(
     val accessToken: String,
