@@ -10,12 +10,12 @@ import com.paykids.domain.usecase.auth.SignInUseCase
 import com.paykids.domain.usecase.auth.SignOutUseCase
 import com.paykids.domain.usecase.auth.WithdrawalUseCase
 import com.paykids.domain.usecase.user.GetUserInfoUseCase
+import com.paykids.domain.usecase.user.SaveNicknameUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
-
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -29,5 +29,12 @@ object UserUseCaseModule {
         return GetUserInfoUseCase(repository)
     }
 
+    @Provides
+    @Singleton
+    fun provideSaveNicknameUseCase(
+        repository: UserRepository
+    ): SaveNicknameUseCase {
+        return SaveNicknameUseCase(repository)
+    }
 }
 

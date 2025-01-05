@@ -9,6 +9,8 @@ import com.paykids.domain.model.auth.UserSignInInfo
 import com.paykids.domain.usecase.auth.KakaoAuthUseCase
 import com.paykids.domain.usecase.auth.SaveSignInInfoUseCase
 import com.paykids.domain.usecase.auth.SignInUseCase
+import com.paykids.domain.usecase.datastore.GetAccessTokenUseCase
+import com.paykids.domain.usecase.user.SaveNicknameUseCase
 import com.paykids.presentation.utils.UiState
 import com.paykids.util.LoggerUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -19,7 +21,9 @@ import javax.inject.Inject
 class SignViewModel @Inject constructor(
     private val kakaoAuthUseCase: KakaoAuthUseCase,
     private val signInUseCase: SignInUseCase,
-    private val saveSignInInfoUseCase: SaveSignInInfoUseCase
+    private val saveSignInInfoUseCase: SaveSignInInfoUseCase,
+    private val saveNicknameUseCase: SaveNicknameUseCase,
+    private val getAccessTokenUseCase: GetAccessTokenUseCase
 ) : ViewModel() {
 
     private val _kakaoLoginState = MutableLiveData<UiState<SignInInfo>>()
@@ -33,7 +37,8 @@ class SignViewModel @Inject constructor(
                     .onSuccess { signInInfo ->
                         _kakaoLoginState.value = UiState.Success(signInInfo)
                     }.onFailure { e ->
-                        _kakaoLoginState.value = UiState.Failure(message = e.message ?: "카카오 로그인 실패")
+                        _kakaoLoginState.value =
+                            UiState.Failure(message = e.message ?: "카카오 로그인 실패")
                     }
             } catch (e: Exception) {
                 _kakaoLoginState.value = UiState.Failure(message = e.message ?: "카카오 로그인 중 예외 발생")
@@ -63,7 +68,7 @@ class SignViewModel @Inject constructor(
     private val _saveState = MutableLiveData<UiState<Boolean>>(UiState.Loading)
     val saveState: LiveData<UiState<Boolean>> get() = _saveState
 
-    fun saveSignInInfo(info: UserSignInInfo){
+    fun saveSignInInfo(info: UserSignInInfo) {
         _saveState.value = UiState.Loading
 
         viewModelScope.launch {
@@ -79,6 +84,24 @@ class SignViewModel @Inject constructor(
             } catch (e: Exception) {
                 LoggerUtils.e("Sign-in exception: ${e.message}")
                 _saveState.value = UiState.Failure(message = e.message.toString())
+            }
+        }
+    }
+
+    private val _nickState = MutableLiveData<UiState<Unit>>(UiState.Loading)
+    val nickState: LiveData<UiState<Unit>> get() = _nickState
+
+    fun saveNickname(nickname: String) {
+        _nickState.value = UiState.Loading
+
+        viewModelScope.launch {
+            saveNicknameUseCase(
+                getAccessTokenUseCase.invoke().getOrNull().orEmpty(),
+                nickname
+            ).onSuccess {
+                _nickState.value = UiState.Success(Unit)
+            }.onFailure { e ->
+                _nickState.value = UiState.Failure(message = e.message.toString())
             }
         }
     }

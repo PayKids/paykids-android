@@ -8,7 +8,7 @@ interface UserRepository {
 
     suspend fun changeProfileImage(accessToken: String): Result<String>
 
-    suspend fun saveNickname(accessToken: String): Result<String>
+    suspend fun saveNickname(accessToken: String, nickname: String): Result<String>
 
-    suspend fun changeNickname(accessToken: String): Result<String>
+    suspend fun changeNickname(accessToken: String, newNickname: String): Result<String>
 }

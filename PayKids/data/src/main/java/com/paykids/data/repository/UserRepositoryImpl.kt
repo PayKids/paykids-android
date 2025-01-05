@@ -29,11 +29,22 @@ class UserRepositoryImpl @Inject constructor(
         TODO("Not yet implemented")
     }
 
-    override suspend fun saveNickname(accessToken: String): Result<String> {
-        TODO("Not yet implemented")
+    override suspend fun saveNickname(accessToken: String, nickname: String): Result<String> {
+        val result = userDatasource.saveNickname(accessToken, nickname)
+
+        return if (result.isSuccess) {
+            val res = result.getOrNull()
+            if (res != null) {
+                Result.success(res.data)
+            } else {
+                Result.failure(Exception("save Nickname Failed: response body is null"))
+            }
+        } else {
+            Result.failure(result.exceptionOrNull() ?: Exception("Unknown error"))
+        }
     }
 
-    override suspend fun changeNickname(accessToken: String): Result<String> {
+    override suspend fun changeNickname(accessToken: String, newNickname: String): Result<String> {
         TODO("Not yet implemented")
     }
 

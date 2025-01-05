@@ -11,7 +11,7 @@ interface UserRemoteDatasource {
 
     suspend fun changeProfileImage(accessToken: String): Result<BaseResponse<String>>
 
-    suspend fun saveNickname(accessToken: String): Result<BaseResponse<String>>
+    suspend fun saveNickname(accessToken: String, nickname: String): Result<BaseResponse<String>>
 
-    suspend fun changeNickname(accessToken: String): Result<BaseResponse<String>>
+    suspend fun changeNickname(accessToken: String, newNickname: String): Result<BaseResponse<String>>
 }
