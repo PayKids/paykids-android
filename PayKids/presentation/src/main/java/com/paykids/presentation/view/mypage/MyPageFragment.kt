@@ -8,6 +8,7 @@ import com.paykids.presentation.custom.ConfirmDialogInterface
 import com.paykids.presentation.databinding.FragmentMypageBinding
 import com.paykids.presentation.utils.UiState
 import com.paykids.presentation.view.home.HomeActivity
+import com.paykids.util.LoggerUtils
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -15,6 +16,7 @@ class MyPageFragment : BaseFragment<FragmentMypageBinding>(), ConfirmDialogInter
     private val myPageViewModel: MyPageViewModel by viewModels()
 
     override fun initView() {
+        myPageViewModel.getUserInfo()
     }
 
     override fun initListener() {
@@ -44,6 +46,20 @@ class MyPageFragment : BaseFragment<FragmentMypageBinding>(), ConfirmDialogInter
 
     override fun setObserver() {
         super.setObserver()
+
+        myPageViewModel.userInfoState.observe(viewLifecycleOwner) {
+            when (it) {
+                is UiState.Failure -> {
+                    showToast(it.message)
+                }
+
+                is UiState.Loading -> {}
+
+                is UiState.Success -> {
+                    LoggerUtils.d(it.data.toString())
+                }
+            }
+        }
 
         myPageViewModel.signOutState.observe(viewLifecycleOwner) {
             when (it) {

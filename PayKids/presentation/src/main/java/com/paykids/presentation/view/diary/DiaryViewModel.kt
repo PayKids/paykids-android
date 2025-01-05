@@ -9,7 +9,6 @@ import com.paykids.domain.model.DetailConsume
 import com.paykids.domain.model.DetailIncome
 import com.paykids.domain.model.DetailTransaction
 import com.paykids.domain.usecase.datastore.GetAccessTokenUseCase
-import com.paykids.util.LoggerUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 

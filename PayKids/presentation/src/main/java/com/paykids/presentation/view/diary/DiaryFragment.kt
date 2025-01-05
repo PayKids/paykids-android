@@ -6,10 +6,8 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.SurfaceControl
 import android.view.Window
 import android.view.WindowManager
-import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -25,9 +23,7 @@ import com.paykids.presentation.databinding.FragmentDiaryBinding
 import com.paykids.presentation.utils.Constants
 import com.paykids.presentation.utils.Constants.formatDateToKorean
 import com.paykids.presentation.view.OnRvItemClickListener
-import com.paykids.util.LoggerUtils
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.selects.select
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter

@@ -10,12 +10,12 @@ import androidx.fragment.app.viewModels
 import com.paykids.presentation.R
 import com.paykids.presentation.base.BaseFragment
 import com.paykids.presentation.databinding.FragmentSignNicknameBinding
+import com.paykids.presentation.utils.UiState
+import com.paykids.util.LoggerUtils
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class SignNicknameFragment(
-    private val isSignUp: Boolean = true
-) : BaseFragment<FragmentSignNicknameBinding>() {
+class SignNicknameFragment: BaseFragment<FragmentSignNicknameBinding>() {
     private val viewModel: SignViewModel by viewModels()
 
     override fun initView() {
@@ -58,9 +58,7 @@ class SignNicknameFragment(
                         )
                         setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
                         setOnClickListener {
-                            (activity as? SignActivity)?.moveHome() ?: run {
-                                showToast("화면 이동 중 오류가 발생했습니다")
-                            }
+                            viewModel.saveNickname(binding.etNick.text.toString())
                         }
                     } else {
                         setBackgroundDrawable(
@@ -74,5 +72,27 @@ class SignNicknameFragment(
                 }
             }
         })
+    }
+
+    override fun setObserver() {
+        super.setObserver()
+
+        viewModel.nickState.observe(viewLifecycleOwner) {
+            when (it) {
+                is UiState.Failure -> {
+                    showToast(it.message)
+                    LoggerUtils.e("로그인 정보 저장 실패: ${it.message}")
+                }
+
+                is UiState.Loading -> {}
+
+                is UiState.Success -> {
+                    (activity as? SignActivity)?.moveHome() ?: run {
+                        showToast("화면 이동 중 오류가 발생했습니다")
+                    }
+                }
+            }
+
+        }
     }
 }

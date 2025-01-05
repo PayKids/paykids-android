@@ -1,12 +1,7 @@
 package com.paykids.domain.repository
 
-import com.paykids.domain.enums.AuthProvider
-import com.paykids.domain.model.SignInInfo
+import com.paykids.domain.model.auth.UserSignInInfo
 
 interface AuthRepository {
-    suspend fun signIn(idToken: String, provider: AuthProvider): Result<SignInInfo>
-
-    suspend fun signOut(accessToken: String): Result<Boolean>
-
-    suspend fun withdraw(accessToken: String): Result<String>
+    suspend fun signIn(idToken: String): Result<UserSignInInfo>
 }

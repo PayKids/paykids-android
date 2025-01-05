@@ -1,50 +1,28 @@
 package com.paykids.data.repository
 
-import com.paykids.domain.enums.AuthProvider
-import com.paykids.domain.model.SignInInfo
+import com.paykids.data.datasource.AuthRemoteDatasource
+import com.paykids.data.mapper.SignMapper
+import com.paykids.domain.model.auth.UserSignInInfo
 import com.paykids.domain.repository.AuthRepository
-import com.paykids.domain.repository.KakaoAuthRepository
 import javax.inject.Inject
 
 class AuthRepositoryImpl @Inject constructor(
-    private val kakaoAuthRepository: KakaoAuthRepository,
+    private val authRemoteDatasource: AuthRemoteDatasource,
 ) : AuthRepository {
 
+    override suspend fun signIn(idToken: String): Result<UserSignInInfo> {
+        val result = authRemoteDatasource.signIn(idToken)
 
-    override suspend fun signIn(idToken: String, provider: AuthProvider): Result<SignInInfo> {
-//        if (idToken.isBlank()) {
-//            return Result.failure(IllegalArgumentException("idToken이 비어있습니다"))
-//        }
-
-        return when (provider) {
-            AuthProvider.KAKAO -> {
-                try {
-                    val signInInfo = kakaoAuthRepository.signInWithKakao()
-                    Result.success(signInInfo)
-                } catch (e: Exception) {
-                    Result.failure(e)
-                }
+        return if (result.isSuccess) {
+            val res = result.getOrNull()
+            if (res != null) {
+                val data = res.data
+                Result.success(SignMapper.mapperToResponseEntity(data))
+            } else {
+                Result.failure(Exception("Sign In Failed: response body is null"))
             }
-
-            else -> Result.failure(Exception("Unknown provider"))
-        }
-    }
-
-    override suspend fun signOut(accessToken: String): Result<Boolean> {
-        return try {
-            kakaoAuthRepository.signOut(accessToken)
-            Result.success(true)
-        } catch (e: Exception) {
-            Result.failure(e)
-        }
-    }
-
-    override suspend fun withdraw(accessToken: String): Result<String> {
-        return try {
-            val res = kakaoAuthRepository.withdraw(accessToken)
-            res
-        } catch (e: Exception) {
-            Result.failure(e)
+        } else {
+            Result.failure(result.exceptionOrNull() ?: Exception("Unknown error"))
         }
     }
 }
