@@ -10,7 +10,6 @@ import com.paykids.domain.usecase.auth.KakaoAuthUseCase
 import com.paykids.domain.usecase.auth.SaveSignInInfoUseCase
 import com.paykids.domain.usecase.auth.SignInUseCase
 import com.paykids.domain.usecase.datastore.GetAccessTokenUseCase
-import com.paykids.domain.usecase.user.ChangeNicknameUseCase
 import com.paykids.domain.usecase.user.SaveNicknameUseCase
 import com.paykids.presentation.utils.UiState
 import com.paykids.util.LoggerUtils

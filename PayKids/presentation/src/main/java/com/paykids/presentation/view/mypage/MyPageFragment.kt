@@ -10,7 +10,6 @@ import com.paykids.presentation.custom.ConfirmDialogInterface
 import com.paykids.presentation.databinding.FragmentMypageBinding
 import com.paykids.presentation.utils.UiState
 import com.paykids.presentation.view.home.HomeActivity
-import com.paykids.util.LoggerUtils
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
