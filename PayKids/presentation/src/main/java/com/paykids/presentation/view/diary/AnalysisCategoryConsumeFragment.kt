@@ -56,17 +56,17 @@ class AnalysisCategoryConsumeFragment : BaseFragment<FragmentAnalysisCategoryCon
     }
 
     private fun fetchData() {
-        val categoryDetails = viewModel.getConsumptionByCategory(category)
-
-        if (!::adapter.isInitialized) {
-            adapter = CategoryConsumeAdapter(this)
-            binding.rvCategoryConsume.layoutManager = LinearLayoutManager(requireContext())
-            binding.rvCategoryConsume.adapter = adapter
-        }
-        val formattedDetails = categoryDetails.map {
-            Triple(it.first, it.second, it.third)
-        }
-        adapter.submitList(formattedDetails)
+//        val categoryDetails = viewModel.getConsumptionByCategory(category)
+//
+//        if (!::adapter.isInitialized) {
+//            adapter = CategoryConsumeAdapter(this)
+//            binding.rvCategoryConsume.layoutManager = LinearLayoutManager(requireContext())
+//            binding.rvCategoryConsume.adapter = adapter
+//        }
+//        val formattedDetails = categoryDetails.map {
+//            Triple(it.first, it.second, it.third)
+//        }
+//        adapter.submitList(formattedDetails)
     }
 
     override fun onResume() {

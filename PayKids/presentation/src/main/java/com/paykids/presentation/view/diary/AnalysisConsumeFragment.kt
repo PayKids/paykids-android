@@ -78,42 +78,42 @@ class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisConsumeBinding>() {
 
     @SuppressLint("SetTextI18n")
     private fun fetchData(currentMonth: String) {
-        val totalConsume = viewModel.getMonthConsumption(currentMonth)
-        binding.tvMonthConsumption.text = "${Constants.formatAmount(totalConsume)}원 사용 중"
-
-        val categoryPercentages = viewModel.getMonthlyCostCategory(currentMonth)
-        if (::adapter.isInitialized) {
-            val sortedCategories = categoryPercentages
-                .sortedByDescending { it.percentage }
-                .map {
-                    ConsumeCategoryAdapter.CategoryItem.Normal(
-                        name = it.categoryName,
-                        amount = it.totalAmount.toString(),
-                        percent = "${it.percentage}%"
-                    )
-                }
-
-            adapter.submitList(sortedCategories)
-        }
-
-        val topCategories = categoryPercentages
-            .sortedByDescending { it.percentage }
-            .take(3)
-        val sections = topCategories.map { it.percentage / 100.0f }
-        val colors = mutableListOf(
-            ContextCompat.getColor(requireContext(), R.color.blue1),
-            ContextCompat.getColor(requireContext(), R.color.blue2),
-            ContextCompat.getColor(requireContext(), R.color.blue3)
-        )
-
-        while (colors.size < sections.size) {
-            colors.add(Color.LTGRAY)
-        }
-
-        binding.categoryProgressView.updateSections(
-            sections,
-            colors,
-            topCategories.map { it.categoryName })
+//        val totalConsume = viewModel.getMonthConsumption(currentMonth)
+//        binding.tvMonthConsumption.text = "${Constants.formatAmount(totalConsume)}원 사용 중"
+//
+//        val categoryPercentages = viewModel.getMonthlyCostCategory(currentMonth)
+//        if (::adapter.isInitialized) {
+//            val sortedCategories = categoryPercentages
+//                .sortedByDescending { it.percentage }
+//                .map {
+//                    ConsumeCategoryAdapter.CategoryItem.Normal(
+//                        name = it.categoryName,
+//                        amount = it.totalAmount.toString(),
+//                        percent = "${it.percentage}%"
+//                    )
+//                }
+//
+//            adapter.submitList(sortedCategories)
+//        }
+//
+//        val topCategories = categoryPercentages
+//            .sortedByDescending { it.percentage }
+//            .take(3)
+//        val sections = topCategories.map { it.percentage / 100.0f }
+//        val colors = mutableListOf(
+//            ContextCompat.getColor(requireContext(), R.color.blue1),
+//            ContextCompat.getColor(requireContext(), R.color.blue2),
+//            ContextCompat.getColor(requireContext(), R.color.blue3)
+//        )
+//
+//        while (colors.size < sections.size) {
+//            colors.add(Color.LTGRAY)
+//        }
+//
+//        binding.categoryProgressView.updateSections(
+//            sections,
+//            colors,
+//            topCategories.map { it.categoryName })
     }
 
     private fun updateDeleteButtonVisibility(items: List<String>) {

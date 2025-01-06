@@ -36,9 +36,9 @@ class DiaryMonthFragment : BaseFragment<FragmentDiaryMonthBinding>() {
         val daysInMonth = getDaysInMonth(date)
         val initialList =
             daysInMonth.map { day -> Pair(day, null as DayInfo?) }
-        viewModel.fetchDayInfo()
-        viewModel.getDayInfoForMonth("12")
-        viewModel.getDayInfoForMonth("1")
+//        viewModel.fetchDayInfo()
+//        viewModel.getDayInfoForMonth("12")
+//        viewModel.getDayInfoForMonth("1")
 
         dayAdapter = DiaryDayCalendarAdapter().apply {
             setRvItemClickListener(object : OnRvItemClickListener<Int> {
@@ -51,9 +51,9 @@ class DiaryMonthFragment : BaseFragment<FragmentDiaryMonthBinding>() {
         }
         dayAdapter.submitList(initialList)
 
-        viewModel.dayInfoList.observe(viewLifecycleOwner) { details ->
-            updateDayDetails(details)
-        }
+//        viewModel.dayInfoList.observe(viewLifecycleOwner) { details ->
+//            updateDayDetails(details)
+//        }
 
         binding.rvCalendarDays.layoutManager = GridLayoutManager(requireContext(), 7)
         binding.rvCalendarDays.adapter = dayAdapter
