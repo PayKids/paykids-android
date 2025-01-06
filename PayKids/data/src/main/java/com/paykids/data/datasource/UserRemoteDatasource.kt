@@ -2,11 +2,12 @@ package com.paykids.data.datasource
 
 import com.paykids.data.model.BaseResponse
 import com.paykids.data.model.UserInfoResponseDTO
+import okhttp3.MultipartBody
 
 interface UserRemoteDatasource {
     suspend fun getUserInfo(accessToken: String): Result<BaseResponse<UserInfoResponseDTO>>
 
-    suspend fun changeProfileImage(accessToken: String): Result<BaseResponse<String>>
+    suspend fun updateProfileImage(accessToken: String, file: MultipartBody.Part): Result<BaseResponse<String>>
 
     suspend fun saveNickname(accessToken: String, nickname: String): Result<BaseResponse<String>>
 

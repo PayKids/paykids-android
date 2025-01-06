@@ -9,16 +9,22 @@ import com.paykids.domain.usecase.auth.SignOutUseCase
 import com.paykids.domain.usecase.auth.WithdrawalUseCase
 import com.paykids.domain.usecase.datastore.ClearUserDataUseCase
 import com.paykids.domain.usecase.datastore.GetAccessTokenUseCase
+import com.paykids.domain.usecase.user.ChangeNicknameUseCase
 import com.paykids.domain.usecase.user.GetUserInfoUseCase
+import com.paykids.domain.usecase.user.UpdateProfileImageUseCase
 import com.paykids.presentation.utils.UiState
 import com.paykids.util.LoggerUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import okhttp3.MultipartBody
+import java.io.File
 import javax.inject.Inject
 
 @HiltViewModel
 class MyPageViewModel @Inject constructor(
     private val getUserInfoUseCase: GetUserInfoUseCase,
+    private val changeNicknameUseCase: ChangeNicknameUseCase,
+    private val updateProfileImageUseCase: UpdateProfileImageUseCase,
     private val signOutUseCase: SignOutUseCase,
     private val withdrawalUseCase: WithdrawalUseCase,
     private val clearUserDataUseCase: ClearUserDataUseCase,
@@ -39,6 +45,45 @@ class MyPageViewModel @Inject constructor(
                 }
                 .onFailure {
                     _userInfoState.value = UiState.Failure(message = "유저 정보 불러오기 실패")
+                }
+        }
+    }
+
+    private val _nickChangeState = MutableLiveData<UiState<Unit>>(UiState.Loading)
+    val nickChangeState: LiveData<UiState<Unit>> get() = _nickChangeState
+
+    fun changeNickname(nickname: String) {
+        _nickChangeState.value = UiState.Loading
+
+        viewModelScope.launch {
+            changeNicknameUseCase(
+                getAccessTokenUseCase.invoke().getOrNull().orEmpty(),
+                nickname
+            ).onSuccess {
+                _nickChangeState.value = UiState.Success(Unit)
+            }.onFailure { e ->
+                _nickChangeState.value = UiState.Failure(message = e.message.toString())
+            }
+        }
+    }
+
+    private val _uploadImageState = MutableLiveData<UiState<String>>(UiState.Loading)
+    val uploadImageState: LiveData<UiState<String>> get() = _uploadImageState
+
+    fun uploadProfileImage(file: File, mimeType: String) {
+        _uploadImageState.value = UiState.Loading
+
+        viewModelScope.launch {
+            val accessToken = getAccessTokenUseCase.invoke().getOrNull().toString()
+
+            updateProfileImageUseCase(accessToken, file, mimeType)
+                .onSuccess {
+                    _uploadImageState.value = UiState.Success(it)
+                    LoggerUtils.d("Profile image uploaded successfully")
+                }
+                .onFailure { e ->
+                    _uploadImageState.value = UiState.Failure(message = e.message.toString())
+                    LoggerUtils.e("Profile image upload failed: ${e.message}")
                 }
         }
     }

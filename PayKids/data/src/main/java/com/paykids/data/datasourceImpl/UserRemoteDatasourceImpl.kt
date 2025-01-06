@@ -4,6 +4,7 @@ import com.paykids.data.datasource.UserRemoteDatasource
 import com.paykids.data.model.BaseResponse
 import com.paykids.data.model.UserInfoResponseDTO
 import com.paykids.data.service.UserService
+import okhttp3.MultipartBody
 import javax.inject.Inject
 
 class UserRemoteDatasourceImpl @Inject constructor(
@@ -27,11 +28,31 @@ class UserRemoteDatasourceImpl @Inject constructor(
         }
     }
 
-    override suspend fun changeProfileImage(accessToken: String): Result<BaseResponse<String>> {
-        TODO("Not yet implemented")
+    override suspend fun updateProfileImage(
+        accessToken: String,
+        file: MultipartBody.Part
+    ): Result<BaseResponse<String>> {
+        return try {
+            val response = userService.updateProfileImage(accessToken, file)
+            if (response.isSuccessful) {
+                val res = response.body()
+                if (res != null) {
+                    Result.success(res)
+                } else {
+                    Result.failure(Exception("update Profile failed: response body is null"))
+                }
+            } else {
+                Result.failure(Exception("update Profile failed: ${response.message()}"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
     }
 
-    override suspend fun saveNickname(accessToken: String, nickname: String): Result<BaseResponse<String>> {
+    override suspend fun saveNickname(
+        accessToken: String,
+        nickname: String
+    ): Result<BaseResponse<String>> {
         return try {
             val response = userService.saveNickname(accessToken, nickname)
             if (response.isSuccessful) {
@@ -49,7 +70,24 @@ class UserRemoteDatasourceImpl @Inject constructor(
         }
     }
 
-    override suspend fun changeNickname(accessToken: String, newNickname: String): Result<BaseResponse<String>> {
-        TODO("Not yet implemented")
+    override suspend fun changeNickname(
+        accessToken: String,
+        newNickname: String
+    ): Result<BaseResponse<String>> {
+        return try {
+            val response = userService.updateNickname(accessToken, newNickname)
+            if (response.isSuccessful) {
+                val res = response.body()
+                if (res != null) {
+                    Result.success(res)
+                } else {
+                    Result.failure(Exception("change Nickname failed: response body is null"))
+                }
+            } else {
+                Result.failure(Exception("change Nickname failed: ${response.message()}"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
     }
 }

@@ -4,6 +4,10 @@ import com.paykids.data.datasource.UserRemoteDatasource
 import com.paykids.data.mapper.UserMapper
 import com.paykids.domain.model.user.UserInfo
 import com.paykids.domain.repository.UserRepository
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import java.io.File
 import javax.inject.Inject
 
 class UserRepositoryImpl @Inject constructor(
@@ -25,8 +29,30 @@ class UserRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun changeProfileImage(accessToken: String): Result<String> {
-        TODO("Not yet implemented")
+    override suspend fun updateProfileImage(
+        accessToken: String,
+        imageFile: File,
+        mimeType: String
+    ): Result<String> {
+        val requestBody = imageFile.asRequestBody(mimeType.toMediaTypeOrNull())
+        val multipartBody = MultipartBody.Part.createFormData(
+            "profile_image",
+            imageFile.name,
+            requestBody
+        )
+
+        val result = userDatasource.updateProfileImage("Bearer $accessToken", multipartBody)
+
+        return if (result.isSuccess) {
+            val res = result.getOrNull()
+            if (res != null) {
+                Result.success(res.data)
+            } else {
+                Result.failure(Exception("업로드 실패: response body is null"))
+            }
+        } else {
+            Result.failure(result.exceptionOrNull() ?: Exception("Unknown error"))
+        }
     }
 
     override suspend fun saveNickname(accessToken: String, nickname: String): Result<String> {
@@ -45,7 +71,18 @@ class UserRepositoryImpl @Inject constructor(
     }
 
     override suspend fun changeNickname(accessToken: String, newNickname: String): Result<String> {
-        TODO("Not yet implemented")
+        val result = userDatasource.changeNickname(accessToken, newNickname)
+
+        return if (result.isSuccess) {
+            val res = result.getOrNull()
+            if (res != null) {
+                Result.success(res.data)
+            } else {
+                Result.failure(Exception("change Nickname Failed: response body is null"))
+            }
+        } else {
+            Result.failure(result.exceptionOrNull() ?: Exception("Unknown error"))
+        }
     }
 
 }

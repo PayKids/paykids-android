@@ -19,6 +19,9 @@ object CustomToast {
         binding.root.background =
             ContextCompat.getDrawable(context!!, R.drawable.shape_toast_custom)
 
-        return toast
+        return Toast(context).apply {
+            duration = Toast.LENGTH_SHORT
+            view = binding.root
+        }
     }
 }
