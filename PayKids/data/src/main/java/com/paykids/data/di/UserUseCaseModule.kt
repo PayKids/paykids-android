@@ -4,6 +4,7 @@ import com.paykids.domain.repository.UserRepository
 import com.paykids.domain.usecase.user.ChangeNicknameUseCase
 import com.paykids.domain.usecase.user.GetUserInfoUseCase
 import com.paykids.domain.usecase.user.SaveNicknameUseCase
+import com.paykids.domain.usecase.user.UpdateProfileImageUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -36,6 +37,14 @@ object UserUseCaseModule {
         repository: UserRepository
     ): ChangeNicknameUseCase {
         return ChangeNicknameUseCase(repository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideUpdateProfileUseCase(
+        repository: UserRepository
+    ): UpdateProfileImageUseCase {
+        return UpdateProfileImageUseCase(repository)
     }
 }
 

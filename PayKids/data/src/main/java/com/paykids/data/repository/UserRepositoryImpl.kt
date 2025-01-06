@@ -4,6 +4,7 @@ import com.paykids.data.datasource.UserRemoteDatasource
 import com.paykids.data.mapper.UserMapper
 import com.paykids.domain.model.user.UserInfo
 import com.paykids.domain.repository.UserRepository
+import okhttp3.MultipartBody
 import javax.inject.Inject
 
 class UserRepositoryImpl @Inject constructor(
@@ -25,8 +26,22 @@ class UserRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun changeProfileImage(accessToken: String): Result<String> {
-        TODO("Not yet implemented")
+    override suspend fun updateProfileImage(
+        accessToken: String,
+        file: MultipartBody.Part
+    ): Result<String> {
+        val result = userDatasource.updateProfileImage("Bearer $accessToken", file)
+
+        return if (result.isSuccess) {
+            val res = result.getOrNull()
+            if (res != null) {
+                Result.success(res.data)
+            } else {
+                Result.failure(Exception("업로드 실패: response body is null"))
+            }
+        } else {
+            Result.failure(result.exceptionOrNull() ?: Exception("Unknown error"))
+        }
     }
 
     override suspend fun saveNickname(accessToken: String, nickname: String): Result<String> {

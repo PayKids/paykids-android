@@ -11,16 +11,19 @@ import com.paykids.domain.usecase.datastore.ClearUserDataUseCase
 import com.paykids.domain.usecase.datastore.GetAccessTokenUseCase
 import com.paykids.domain.usecase.user.ChangeNicknameUseCase
 import com.paykids.domain.usecase.user.GetUserInfoUseCase
+import com.paykids.domain.usecase.user.UpdateProfileImageUseCase
 import com.paykids.presentation.utils.UiState
 import com.paykids.util.LoggerUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import okhttp3.MultipartBody
 import javax.inject.Inject
 
 @HiltViewModel
 class MyPageViewModel @Inject constructor(
     private val getUserInfoUseCase: GetUserInfoUseCase,
     private val changeNicknameUseCase: ChangeNicknameUseCase,
+    private val updateProfileImageUseCase: UpdateProfileImageUseCase,
     private val signOutUseCase: SignOutUseCase,
     private val withdrawalUseCase: WithdrawalUseCase,
     private val clearUserDataUseCase: ClearUserDataUseCase,
@@ -60,6 +63,25 @@ class MyPageViewModel @Inject constructor(
             }.onFailure { e ->
                 _nickChangeState.value = UiState.Failure(message = e.message.toString())
             }
+        }
+    }
+
+    private val _uploadImageState = MutableLiveData<UiState<String>>(UiState.Loading)
+    val uploadImageState: LiveData<UiState<String>> get() = _uploadImageState
+
+    fun uploadProfileImage(file: MultipartBody.Part) {
+        _uploadImageState.value = UiState.Loading
+
+        viewModelScope.launch {
+            updateProfileImageUseCase(getAccessTokenUseCase.invoke().getOrNull().toString(), file)
+                .onSuccess {
+                    _uploadImageState.value = UiState.Success(it)
+                    LoggerUtils.d("Profile image uploaded successfully")
+                }
+                .onFailure { e ->
+                    _uploadImageState.value = UiState.Failure(message = e.message.toString())
+                    LoggerUtils.e("Profile image upload failed: ${e.message}")
+                }
         }
     }
 

@@ -12,10 +12,15 @@ import com.paykids.presentation.R
 import com.paykids.presentation.base.BaseFragment
 import com.paykids.presentation.custom.ConfirmDialogInterface
 import com.paykids.presentation.databinding.FragmentModifyInfoBinding
+import com.paykids.presentation.utils.ImageMapper
+import com.paykids.presentation.utils.ImageMapper.toFile
 import com.paykids.presentation.utils.UiState
 import com.paykids.presentation.view.home.HomeActivity
 import com.paykids.presentation.view.signIn.SignActivity
+import com.paykids.util.LoggerUtils
 import dagger.hilt.android.AndroidEntryPoint
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
 
 @AndroidEntryPoint
 class ModifyInfoFragment : BaseFragment<FragmentModifyInfoBinding>(), ConfirmDialogInterface {
@@ -78,6 +83,21 @@ class ModifyInfoFragment : BaseFragment<FragmentModifyInfoBinding>(), ConfirmDia
             }
         }
 
+        myPageViewModel.uploadImageState.observe(viewLifecycleOwner) {
+            when (it) {
+                is UiState.Loading -> {
+                }
+
+                is UiState.Failure -> {
+                    showToast("이미지 업로드 실패: ${it.message}")
+                }
+
+                is UiState.Success -> {
+                    showToast("프로필 이미지 업로드 성공")
+                }
+            }
+        }
+
         myPageViewModel.nickChangeState.observe(viewLifecycleOwner) {
             when (it) {
                 is UiState.Loading -> {}
@@ -124,11 +144,14 @@ class ModifyInfoFragment : BaseFragment<FragmentModifyInfoBinding>(), ConfirmDia
     }
 
     private val galleryLauncher =
-        this.registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
                 val selectedImageUri: Uri? = result.data?.data
-                selectedImageUri?.let {
-                    binding.ivProfile.setImageURI(it)
+                LoggerUtils.d(selectedImageUri.toString())
+                selectedImageUri?.let { uri ->
+                    val file = uri.toFile(requireContext())
+                    val requestBodyPart = ImageMapper.createMultipartBodyPart(file, "profile_image")
+                    myPageViewModel.uploadProfileImage(requestBodyPart)
                 }
             }
         }

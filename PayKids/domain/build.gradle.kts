@@ -11,4 +11,6 @@ java {
 dependencies {
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.javax.inject)
+
+    implementation(libs.bundles.network.bundle)
 }
