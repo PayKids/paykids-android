@@ -6,6 +6,8 @@ import android.net.Uri
 import android.provider.MediaStore
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.viewModels
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.paykids.presentation.R
 import com.paykids.presentation.base.BaseFragment
 import com.paykids.presentation.custom.ConfirmDialogInterface
@@ -20,6 +22,7 @@ class ModifyInfoFragment : BaseFragment<FragmentModifyInfoBinding>(), ConfirmDia
     private val myPageViewModel: MyPageViewModel by viewModels()
 
     override fun initView() {
+        myPageViewModel.getUserInfo()
     }
 
     override fun initListener() {
@@ -52,6 +55,28 @@ class ModifyInfoFragment : BaseFragment<FragmentModifyInfoBinding>(), ConfirmDia
 
     override fun setObserver() {
         super.setObserver()
+
+        myPageViewModel.userInfoState.observe(viewLifecycleOwner) {
+            when (it) {
+                is UiState.Failure -> {
+                    showToast(it.message)
+                }
+
+                is UiState.Loading -> {}
+
+                is UiState.Success -> {
+                    Glide.with(this)
+                        .load(it.data.profileImageURL)
+                        .placeholder(R.drawable.img_default_profile)
+                        .error(R.drawable.img_default_profile)
+                        .transform(CircleCrop())
+                        .into(binding.ivProfile)
+
+                    binding.tvNickname.text = it.data.nickname
+                    binding.tvEmail.text = it.data.email
+                }
+            }
+        }
 
         myPageViewModel.withdrawState.observe(viewLifecycleOwner) {
             when (it) {

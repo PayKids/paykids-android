@@ -50,6 +50,20 @@ class UserRemoteDatasourceImpl @Inject constructor(
     }
 
     override suspend fun changeNickname(accessToken: String, newNickname: String): Result<BaseResponse<String>> {
-        TODO("Not yet implemented")
+        return try {
+            val response = userService.saveNickname(accessToken, newNickname)
+            if (response.isSuccessful) {
+                val res = response.body()
+                if (res != null) {
+                    Result.success(res)
+                } else {
+                    Result.failure(Exception("change Nickname failed: response body is null"))
+                }
+            } else {
+                Result.failure(Exception("change Nickname failed: ${response.message()}"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
     }
 }

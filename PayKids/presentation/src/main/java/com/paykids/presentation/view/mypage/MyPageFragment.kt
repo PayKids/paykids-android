@@ -2,6 +2,8 @@ package com.paykids.presentation.view.mypage
 
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.paykids.presentation.R
 import com.paykids.presentation.base.BaseFragment
 import com.paykids.presentation.custom.ConfirmDialogInterface
@@ -56,7 +58,14 @@ class MyPageFragment : BaseFragment<FragmentMypageBinding>(), ConfirmDialogInter
                 is UiState.Loading -> {}
 
                 is UiState.Success -> {
-                    LoggerUtils.d(it.data.toString())
+                    Glide.with(this)
+                        .load(it.data.profileImageURL)
+                        .placeholder(R.drawable.img_default_profile)
+                        .error(R.drawable.img_default_profile)
+                        .transform(CircleCrop())
+                        .into(binding.ivProfile)
+
+                    binding.tvNickname.text = it.data.nickname
                 }
             }
         }

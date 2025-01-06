@@ -31,13 +31,13 @@
 
         android:contentDescription="@string/content_description_profile"
         android:scaleType="fitXY"
-        android:src="@drawable/img_dice"
-        app:layout_constraintEnd_toEndOf="parent"
 
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_mypage"
         app:shapeAppearanceOverlay="@style/CircleImageView"
-        tools:ignore="NewApi,UnusedAttribute" />
+        tools:ignore="NewApi,UnusedAttribute"
+        tools:src="@drawable/img_default_profile" />
 
     <TextView
         android:id="@+id/tv_nickname"
@@ -46,13 +46,13 @@
         android:layout_marginTop="24dp"
         android:fontFamily="@font/nanumsquare_extra_bold"
         android:includeFontPadding="false"
-        android:text="nickname"
         android:textColor="@color/black"
         android:textSize="24sp"
 
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/iv_profile" />
+        app:layout_constraintTop_toBottomOf="@id/iv_profile"
+        tools:text="nickname" />
 
     <View
         android:id="@+id/view_my_info"
