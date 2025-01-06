@@ -1,9 +1,7 @@
 package com.paykids.presentation.view.mypage
 
-import android.app.Activity
 import android.content.Intent
 import android.net.Uri
-import android.provider.MediaStore
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
@@ -12,15 +10,12 @@ import com.paykids.presentation.R
 import com.paykids.presentation.base.BaseFragment
 import com.paykids.presentation.custom.ConfirmDialogInterface
 import com.paykids.presentation.databinding.FragmentModifyInfoBinding
-import com.paykids.presentation.utils.ImageMapper
-import com.paykids.presentation.utils.ImageMapper.toFile
+import com.paykids.presentation.utils.ImageMapper.toMultipartBody
 import com.paykids.presentation.utils.UiState
 import com.paykids.presentation.view.home.HomeActivity
 import com.paykids.presentation.view.signIn.SignActivity
 import com.paykids.util.LoggerUtils
 import dagger.hilt.android.AndroidEntryPoint
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.MultipartBody
 
 @AndroidEntryPoint
 class ModifyInfoFragment : BaseFragment<FragmentModifyInfoBinding>(), ConfirmDialogInterface {
@@ -143,22 +138,28 @@ class ModifyInfoFragment : BaseFragment<FragmentModifyInfoBinding>(), ConfirmDia
         }
     }
 
-    private val galleryLauncher =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == Activity.RESULT_OK) {
-                val selectedImageUri: Uri? = result.data?.data
-                LoggerUtils.d(selectedImageUri.toString())
-                selectedImageUri?.let { uri ->
-                    val file = uri.toFile(requireContext())
-                    val requestBodyPart = ImageMapper.createMultipartBodyPart(file, "profile_image")
-                    myPageViewModel.uploadProfileImage(requestBodyPart)
-                }
+    private val galleryLauncher = registerForActivityResult(
+        ActivityResultContracts.GetContent()
+    ) { uri: Uri? ->
+        uri?.let {
+            LoggerUtils.d("Selected image URI: $it")
+            try {
+                val multipartBody = uri.toMultipartBody(requireContext(), "profile_image")
+                myPageViewModel.uploadProfileImage(multipartBody)
+            } catch (e: Exception) {
+                LoggerUtils.e("Error converting Uri to File: ${e.message}")
+                showToast("이미지 처리 중 오류가 발생했습니다")
             }
-        }
+        } ?: LoggerUtils.e("Selected image URI is null")
+    }
 
     private fun openGallery() {
-        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-        galleryLauncher.launch(intent)
+        try {
+            galleryLauncher.launch("image/*")
+        } catch (e: Exception) {
+            LoggerUtils.e("Error launching gallery: ${e.message}")
+            showToast("갤러리를 열 수 없습니다")
+        }
     }
 
     override fun onYesButtonClick() {
