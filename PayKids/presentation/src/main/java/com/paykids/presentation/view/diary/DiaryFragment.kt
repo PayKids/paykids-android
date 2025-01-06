@@ -22,7 +22,9 @@ import com.paykids.presentation.databinding.DialogDiaryBinding
 import com.paykids.presentation.databinding.FragmentDiaryBinding
 import com.paykids.presentation.utils.Constants
 import com.paykids.presentation.utils.Constants.formatDateToKorean
+import com.paykids.presentation.utils.UiState
 import com.paykids.presentation.view.OnRvItemClickListener
+import com.paykids.util.LoggerUtils
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
 import java.time.LocalDate
@@ -40,7 +42,8 @@ class DiaryFragment : BaseFragment<FragmentDiaryBinding>(), ConfirmDialogInterfa
 
     @SuppressLint("ClickableViewAccessibility")
     override fun initView() {
-        viewModel.fetchMonthlyData()
+        viewModel.getMonthTotalExpense(2025, 1)
+        viewModel.getMonthDailyExpense(2025, 1)
 
         detailAdapter = DetailConsumeAdapter(this)
         binding.rvDetailConsume.apply {
@@ -119,12 +122,32 @@ class DiaryFragment : BaseFragment<FragmentDiaryBinding>(), ConfirmDialogInterfa
     override fun setObserver() {
         super.setObserver()
 
-        viewModel.selectedDateDetails.observe(viewLifecycleOwner) { details ->
-            detailAdapter.submitList(details)
+        viewModel.monthTotalExpenseState.observe(viewLifecycleOwner) {
+            when (it) {
+                is UiState.Failure -> {
+                    showToast(it.message)
+                }
+
+                is UiState.Loading -> {}
+
+                is UiState.Success -> {
+                    LoggerUtils.d("월 전체 소비 금액 조회 성공: ${it.data}")
+                }
+            }
         }
 
-        viewModel.monthlyAllInfo.observe(viewLifecycleOwner) { transactions ->
-            updateUI(transactions)
+        viewModel.monthDailyExpenseState.observe(viewLifecycleOwner) {
+            when (it) {
+                is UiState.Failure -> {
+                    showToast(it.message)
+                }
+
+                is UiState.Loading -> {}
+
+                is UiState.Success -> {
+                    LoggerUtils.d("월 일별 소비 금액 조회 성공: ${it.data}")
+                }
+            }
         }
     }
 
@@ -140,21 +163,21 @@ class DiaryFragment : BaseFragment<FragmentDiaryBinding>(), ConfirmDialogInterfa
         val yearMonth = SimpleDateFormat("yyyy-MM", Locale.KOREAN).format(calendar.time)
         binding.tvMonth.text = "${calendar.get(Calendar.MONTH) + 1}월"
 
-        val totalConsume = viewModel.getMonthConsumption(yearMonth)
-        binding.tvMonthConsumption.text = "${Constants.formatAmount(totalConsume)}원 사용 중"
+//        val totalConsume = viewModel.getMonthConsumption(yearMonth)
+//        binding.tvMonthConsumption.text = "${Constants.formatAmount(totalConsume)}원 사용 중"
 
         viewModel.fetchDetailsForDate(yearMonth)
         getMostConsumedCategoryForMonth(yearMonth)
     }
 
     private fun getMostConsumedCategoryForMonth(yearMonth: String) {
-        val mostConsumedCategory = viewModel.getMostConsumedCategoryForMonth(yearMonth)
-        mostConsumedCategory?.let { (place, totalAmount) ->
-            val month = yearMonth.split("-")[1] + "월"
-            binding.tvConsumptionMost.text =
-                getString(R.string.text_month_most_consume, month, place)
-            binding.tvMostConsumeCategoryAmount.text = Constants.formatAmount(totalAmount)
-        }
+//        val mostConsumedCategory = viewModel.getMostConsumedCategoryForMonth(yearMonth)
+//        mostConsumedCategory?.let { (place, totalAmount) ->
+//            val month = yearMonth.split("-")[1] + "월"
+//            binding.tvConsumptionMost.text =
+//                getString(R.string.text_month_most_consume, month, place)
+//            binding.tvMostConsumeCategoryAmount.text = Constants.formatAmount(totalAmount)
+//        }
     }
 
     private fun getToday(): String {
@@ -239,9 +262,9 @@ class DiaryFragment : BaseFragment<FragmentDiaryBinding>(), ConfirmDialogInterfa
                 showToast("금액을 입력해주세요")
             } else {
                 val detailConsume = DetailConsume(formattedDate, category, amount, memo)
-                viewModel.addTransaction(detailConsume)
-
-                viewModel.fetchMonthlyData()
+//                viewModel.addTransaction(detailConsume)
+//
+//                viewModel.fetchMonthlyData()
                 dialog.dismiss()
             }
         }
