@@ -4,7 +4,10 @@ import com.paykids.data.datasource.UserRemoteDatasource
 import com.paykids.data.mapper.UserMapper
 import com.paykids.domain.model.user.UserInfo
 import com.paykids.domain.repository.UserRepository
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import java.io.File
 import javax.inject.Inject
 
 class UserRepositoryImpl @Inject constructor(
@@ -28,9 +31,17 @@ class UserRepositoryImpl @Inject constructor(
 
     override suspend fun updateProfileImage(
         accessToken: String,
-        file: MultipartBody.Part
+        imageFile: File,
+        mimeType: String
     ): Result<String> {
-        val result = userDatasource.updateProfileImage("Bearer $accessToken", file)
+        val requestBody = imageFile.asRequestBody(mimeType.toMediaTypeOrNull())
+        val multipartBody = MultipartBody.Part.createFormData(
+            "profile_image",
+            imageFile.name,
+            requestBody
+        )
+
+        val result = userDatasource.updateProfileImage("Bearer $accessToken", multipartBody)
 
         return if (result.isSuccess) {
             val res = result.getOrNull()

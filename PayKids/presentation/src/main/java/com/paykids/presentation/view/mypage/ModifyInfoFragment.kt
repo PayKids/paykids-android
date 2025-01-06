@@ -3,6 +3,7 @@ package com.paykids.presentation.view.mypage
 import android.content.Intent
 import android.net.Uri
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.net.toFile
 import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
@@ -10,6 +11,8 @@ import com.paykids.presentation.R
 import com.paykids.presentation.base.BaseFragment
 import com.paykids.presentation.custom.ConfirmDialogInterface
 import com.paykids.presentation.databinding.FragmentModifyInfoBinding
+import com.paykids.presentation.utils.ImageMapper
+import com.paykids.presentation.utils.ImageMapper.toFile
 import com.paykids.presentation.utils.ImageMapper.toMultipartBody
 import com.paykids.presentation.utils.UiState
 import com.paykids.presentation.view.home.HomeActivity
@@ -141,11 +144,16 @@ class ModifyInfoFragment : BaseFragment<FragmentModifyInfoBinding>(), ConfirmDia
     private val galleryLauncher = registerForActivityResult(
         ActivityResultContracts.GetContent()
     ) { uri: Uri? ->
-        uri?.let {
-            LoggerUtils.d("Selected image URI: $it")
+        uri?.let { imageUri ->
+            LoggerUtils.d("Selected image URI: $imageUri")
+
             try {
-                val multipartBody = uri.toMultipartBody(requireContext(), "profile_image")
-                myPageViewModel.uploadProfileImage(multipartBody)
+                val file = imageUri.toFile(requireContext())
+
+                val mimeType = requireContext().contentResolver.getType(imageUri) ?: "image/*"
+
+                myPageViewModel.uploadProfileImage(file, mimeType)
+
             } catch (e: Exception) {
                 LoggerUtils.e("Error converting Uri to File: ${e.message}")
                 showToast("이미지 처리 중 오류가 발생했습니다")

@@ -36,4 +36,21 @@ object ImageMapper {
         return MultipartBody.Part.createFormData(paramName, fileName, requestBody)
     }
 
+    fun Uri.toFile(context: Context): File {
+        val contentResolver = context.contentResolver
+        val fileName = contentResolver.query(this, null, null, null, null)?.use { cursor ->
+            val nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+            cursor.moveToFirst()
+            cursor.getString(nameIndex)
+        } ?: "temp_image"
+
+        val file = File(context.cacheDir, fileName)
+        contentResolver.openInputStream(this)?.use { inputStream ->
+            FileOutputStream(file).use { outputStream ->
+                inputStream.copyTo(outputStream)
+            }
+        }
+        return file
+    }
+
 }
