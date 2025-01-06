@@ -37,7 +37,7 @@ class ModifyInfoFragment : BaseFragment<FragmentModifyInfoBinding>(), ConfirmDia
         }
 
         binding.btnConfirm.setOnClickListener {
-
+            myPageViewModel.changeNickname(binding.etModifyNickname.text.toString())
         }
 
         binding.tvWithdraw.setOnClickListener {
@@ -74,6 +74,20 @@ class ModifyInfoFragment : BaseFragment<FragmentModifyInfoBinding>(), ConfirmDia
 
                     binding.tvNickname.text = it.data.nickname
                     binding.tvEmail.text = it.data.email
+                }
+            }
+        }
+
+        myPageViewModel.nickChangeState.observe(viewLifecycleOwner) {
+            when (it) {
+                is UiState.Loading -> {}
+                is UiState.Failure -> {
+                    showToast("닉네임 변경 실패")
+                }
+
+                is UiState.Success -> {
+                    showToast("닉네임 변경 완료")
+                    myPageViewModel.getUserInfo()
                 }
             }
         }

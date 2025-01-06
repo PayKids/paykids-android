@@ -51,7 +51,7 @@ class UserRemoteDatasourceImpl @Inject constructor(
 
     override suspend fun changeNickname(accessToken: String, newNickname: String): Result<BaseResponse<String>> {
         return try {
-            val response = userService.saveNickname(accessToken, newNickname)
+            val response = userService.updateNickname(accessToken, newNickname)
             if (response.isSuccessful) {
                 val res = response.body()
                 if (res != null) {

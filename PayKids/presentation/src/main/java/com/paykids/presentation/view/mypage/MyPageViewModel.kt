@@ -9,6 +9,7 @@ import com.paykids.domain.usecase.auth.SignOutUseCase
 import com.paykids.domain.usecase.auth.WithdrawalUseCase
 import com.paykids.domain.usecase.datastore.ClearUserDataUseCase
 import com.paykids.domain.usecase.datastore.GetAccessTokenUseCase
+import com.paykids.domain.usecase.user.ChangeNicknameUseCase
 import com.paykids.domain.usecase.user.GetUserInfoUseCase
 import com.paykids.presentation.utils.UiState
 import com.paykids.util.LoggerUtils
@@ -19,6 +20,7 @@ import javax.inject.Inject
 @HiltViewModel
 class MyPageViewModel @Inject constructor(
     private val getUserInfoUseCase: GetUserInfoUseCase,
+    private val changeNicknameUseCase: ChangeNicknameUseCase,
     private val signOutUseCase: SignOutUseCase,
     private val withdrawalUseCase: WithdrawalUseCase,
     private val clearUserDataUseCase: ClearUserDataUseCase,
@@ -40,6 +42,24 @@ class MyPageViewModel @Inject constructor(
                 .onFailure {
                     _userInfoState.value = UiState.Failure(message = "유저 정보 불러오기 실패")
                 }
+        }
+    }
+
+    private val _nickChangeState = MutableLiveData<UiState<Unit>>(UiState.Loading)
+    val nickChangeState: LiveData<UiState<Unit>> get() = _nickChangeState
+
+    fun changeNickname(nickname: String) {
+        _nickChangeState.value = UiState.Loading
+
+        viewModelScope.launch {
+            changeNicknameUseCase(
+                getAccessTokenUseCase.invoke().getOrNull().orEmpty(),
+                nickname
+            ).onSuccess {
+                _nickChangeState.value = UiState.Success(Unit)
+            }.onFailure { e ->
+                _nickChangeState.value = UiState.Failure(message = e.message.toString())
+            }
         }
     }
 
