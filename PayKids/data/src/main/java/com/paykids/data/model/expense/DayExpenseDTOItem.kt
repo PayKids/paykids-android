@@ -3,7 +3,7 @@ package com.paykids.data.model.expense
 
 import com.google.gson.annotations.SerializedName
 
-data class DayExpenseResponseDTOItem(
+data class DayExpenseDTOItem(
     @SerializedName("allowanceType")
     val allowanceType: String,
     @SerializedName("amount")

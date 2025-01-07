@@ -1,8 +1,9 @@
 package com.paykids.data.datasource
 
 import com.paykids.data.model.BaseResponse
-import com.paykids.data.model.expense.DayExpenseResponseDTO
+import com.paykids.data.model.expense.DayExpenseDTO
 import com.paykids.data.model.UserInfoResponseDTO
+import com.paykids.data.model.expense.MonthAllCategoryDTO
 import com.paykids.data.model.expense.MonthCategoryExpenseDTO
 import com.paykids.data.model.expense.MonthDailyExpenseDTO
 import com.paykids.data.model.expense.MonthMostCategoryDTO
@@ -37,10 +38,10 @@ interface ExpenseRemoteDatasource {
         accessToken: String,
         year: Int,
         month: Int
-    ): Result<BaseResponse<UserInfoResponseDTO>>
+    ): Result<BaseResponse<MonthAllCategoryDTO>>
 
     suspend fun getDayExpense(
         accessToken: String,
         localDate: String
-    ): Result<BaseResponse<DayExpenseResponseDTO>>
+    ): Result<BaseResponse<DayExpenseDTO>>
 }

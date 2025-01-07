@@ -11,7 +11,9 @@ import com.paykids.presentation.R
 import com.paykids.presentation.base.BaseFragment
 import com.paykids.presentation.databinding.FragmentAnalysisConsumeBinding
 import com.paykids.presentation.utils.Constants
+import com.paykids.presentation.utils.UiState
 import com.paykids.presentation.view.home.HomeActivity
+import com.paykids.util.LoggerUtils
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -25,6 +27,8 @@ class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisConsumeBinding>() {
 
     @SuppressLint("SetTextI18n")
     override fun initView() {
+        fetchData()
+
         currentMonth = arguments?.getString("currentMonth")
         currentMonth.let {
             val month = it!!.split("-")[1].toInt()
@@ -39,7 +43,7 @@ class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisConsumeBinding>() {
                 navigateToAnalysisConsumeLocationFragment(category, amount)
             }
         )
-        fetchData(currentMonth!!)
+//        fetchData(currentMonth!!)
 
         binding.rvDetailConsume.layoutManager = LinearLayoutManager(requireContext())
         binding.rvDetailConsume.adapter = adapter
@@ -56,13 +60,13 @@ class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisConsumeBinding>() {
 
         binding.ibLeft.setOnClickListener {
             currentMonth = changeMonth(currentMonth, -1)
-            fetchData(currentMonth!!)
+//            fetchData(currentMonth!!)
             updateMonthDisplay()
         }
 
         binding.ibRight.setOnClickListener {
             currentMonth = changeMonth(currentMonth, 1)
-            fetchData(currentMonth!!)
+//            fetchData(currentMonth!!)
             updateMonthDisplay()
         }
 
@@ -77,7 +81,9 @@ class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisConsumeBinding>() {
     }
 
     @SuppressLint("SetTextI18n")
-    private fun fetchData(currentMonth: String) {
+    private fun fetchData() {
+        viewModel.getMonthAllCategory(2025, 1)
+
 //        val totalConsume = viewModel.getMonthConsumption(currentMonth)
 //        binding.tvMonthConsumption.text = "${Constants.formatAmount(totalConsume)}원 사용 중"
 //
@@ -114,6 +120,24 @@ class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisConsumeBinding>() {
 //            sections,
 //            colors,
 //            topCategories.map { it.categoryName })
+    }
+
+    override fun setObserver() {
+        super.setObserver()
+
+        viewModel.allCategoryState.observe(viewLifecycleOwner) {
+            when (it) {
+                is UiState.Failure -> {
+                    showToast(it.message)
+                }
+
+                is UiState.Loading -> {}
+
+                is UiState.Success -> {
+                    LoggerUtils.d("월 전체 카테고리 조회 성공: ${it.data}")
+                }
+            }
+        }
     }
 
     private fun updateDeleteButtonVisibility(items: List<String>) {

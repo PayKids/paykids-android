@@ -2,8 +2,9 @@ package com.paykids.data.datasourceImpl
 
 import com.paykids.data.datasource.ExpenseRemoteDatasource
 import com.paykids.data.model.BaseResponse
-import com.paykids.data.model.expense.DayExpenseResponseDTO
+import com.paykids.data.model.expense.DayExpenseDTO
 import com.paykids.data.model.UserInfoResponseDTO
+import com.paykids.data.model.expense.MonthAllCategoryDTO
 import com.paykids.data.model.expense.MonthCategoryExpenseDTO
 import com.paykids.data.model.expense.MonthDailyExpenseDTO
 import com.paykids.data.model.expense.MonthMostCategoryDTO
@@ -110,14 +111,29 @@ class ExpenseRemoteDatasourceImpl @Inject constructor(
         accessToken: String,
         year: Int,
         month: Int
-    ): Result<BaseResponse<UserInfoResponseDTO>> {
-        TODO("Not yet implemented")
+    ): Result<BaseResponse<MonthAllCategoryDTO>> {
+        return try {
+            val response = expenseService.getMonthAllCategory(accessToken, year, month)
+
+            if (response.isSuccessful) {
+                val res = response.body()
+                if (res != null) {
+                    Result.success(res)
+                } else {
+                    Result.failure(Exception("get Month All Category failed: response body is null"))
+                }
+            } else {
+                Result.failure(Exception("get Month All Category failed: ${response.message()}"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
     }
 
     override suspend fun getDayExpense(
         accessToken: String,
         localDate: String
-    ): Result<BaseResponse<DayExpenseResponseDTO>> {
+    ): Result<BaseResponse<DayExpenseDTO>> {
         TODO("Not yet implemented")
     }
 }

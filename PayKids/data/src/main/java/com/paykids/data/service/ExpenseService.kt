@@ -1,8 +1,8 @@
 package com.paykids.data.service
 
 import com.paykids.data.model.BaseResponse
-import com.paykids.data.model.expense.DayExpenseResponseDTO
-import com.paykids.data.model.UserInfoResponseDTO
+import com.paykids.data.model.expense.DayExpenseDTO
+import com.paykids.data.model.expense.MonthAllCategoryDTO
 import com.paykids.data.model.expense.MonthCategoryExpenseDTO
 import com.paykids.data.model.expense.MonthDailyExpenseDTO
 import com.paykids.data.model.expense.MonthMostCategoryDTO
@@ -47,12 +47,12 @@ interface ExpenseService {
         @Header("Authorization") accessToken: String,
         @Query("year") year: Int,
         @Query("month") month: Int,
-    ): Response<BaseResponse<UserInfoResponseDTO>>
+    ): Response<BaseResponse<MonthAllCategoryDTO>>
 
     @GET("/expense/allowance/day")
     suspend fun getDayExpense(
         @Header("Authorization") accessToken: String,
         @Query("localDate") localDate: String
-    ): Response<BaseResponse<DayExpenseResponseDTO>>
+    ): Response<BaseResponse<DayExpenseDTO>>
 
 }

@@ -10,9 +10,11 @@ import com.paykids.domain.model.DetailConsume
 import com.paykids.domain.model.DetailIncome
 import com.paykids.domain.model.DetailTransaction
 import com.paykids.domain.model.expense.DailyExpenseInfo
+import com.paykids.domain.model.expense.MonthAllCategory
 import com.paykids.domain.model.expense.MonthCategoryExpense
 import com.paykids.domain.model.expense.MonthMostCategory
 import com.paykids.domain.usecase.datastore.GetAccessTokenUseCase
+import com.paykids.domain.usecase.expense.GetMonthAllCategoryUseCase
 import com.paykids.domain.usecase.expense.GetMonthCategoryExpenseUseCase
 import com.paykids.domain.usecase.expense.GetMonthDailyExpenseUseCase
 import com.paykids.domain.usecase.expense.GetMonthMostCategoryUseCase
@@ -29,7 +31,8 @@ class DiaryViewModel @Inject constructor(
     private val getMonthTotalExpenseUseCase: GetMonthTotalExpenseUseCase,
     private val getMonthDailyExpenseUseCase: GetMonthDailyExpenseUseCase,
     private val getMonthMostCategoryUseCase: GetMonthMostCategoryUseCase,
-    private val getMonthCategoryExpenseUseCase: GetMonthCategoryExpenseUseCase
+    private val getMonthCategoryExpenseUseCase: GetMonthCategoryExpenseUseCase,
+    private val getMonthAllCategoryUseCase: GetMonthAllCategoryUseCase
 ) : ViewModel() {
 
     private val _monthTotalExpenseState = MutableLiveData<UiState<Int>>()
@@ -107,62 +110,30 @@ class DiaryViewModel @Inject constructor(
         }
     }
 
-//    fun getDayInfoForMonth(yearMonth: String): List<DayInfo> {
-//        return dayInfoList.value?.filter { it.date.startsWith(yearMonth) } ?: emptyList()
-//    }
-//
-//    fun getMonthConsumption(yearMonth: String): Int {
-//        return monthlyAllInfo.value?.filterIsInstance<DetailConsume>()
-//            ?.filter { it.date.startsWith(yearMonth) } // 해당 년월에 해당하는 항목 필터링
-//            ?.sumOf { it.amount }
-//            ?: 0 // null일 경우 0 반환
-//    }
-//
-//    fun getMonthlyCostCategory(yearMonth: String): List<CategoryInfo> {
-//        val monthlyData = monthlyAllInfo.value?.filterIsInstance<DetailConsume>()
-//            ?.filter { it.date.startsWith(yearMonth) } ?: emptyList()
-//
-//        // 총 지출 금액 계산
-//        val totalAmount = monthlyData.sumOf { it.amount }
-//
-//        // 카테고리별 데이터 그룹화 및 합계 계산
-//        return monthlyData
-//            .groupBy { it.category }
-//            .map { (category, details) ->
-//                val categorySum = details.sumOf { it.amount }
-//                val percentage = if (totalAmount > 0) (categorySum * 100) / totalAmount else 0
-//                CategoryInfo(category, categorySum, percentage)
-//            }
-//    }
-//
-//    fun getMostConsumedCategoryForMonth(yearMonth: String): Pair<String, Int>? {
-//        fetchMonthlyData()
-//
-//        val detailsForMonth =
-//            monthlyAllInfo.value?.filterIsInstance<DetailConsume>()
-//                ?.filter { it.date.startsWith(yearMonth) } ?: emptyList()
-//
-//        val categoryTotalMap = detailsForMonth.groupingBy { it.category }
-//            .fold(0) { total, detail -> total + detail.amount }
-//
-//        return categoryTotalMap.maxByOrNull { it.value }?.toPair()
-//    }
-//
-//    fun getConsumptionByCategory(category: String): List<Triple<String, Int, String>> {
-//        return monthlyAllInfo.value
-//            ?.filterIsInstance<DetailConsume>()
-//            ?.filter { it.category == category } // 카테고리별 필터링
-//            ?.map { Triple(it.date, it.amount, it.memo) }
-//            ?: emptyList()
-//    }
-//
-//    fun addTransaction(transaction: DetailTransaction) {
-//        val updatedList = _monthlyAllInfo.value.orEmpty() + transaction
-//        _monthlyAllInfo.value = updatedList
-//
-//        fetchDetailsForDate(transaction.date)
-//        fetchDayInfo()
-//    }
+    private val _allCategoryState = MutableLiveData<UiState<List<MonthAllCategory>>>()
+    val allCategoryState: LiveData<UiState<List<MonthAllCategory>>> get() = _allCategoryState
+
+    fun getMonthAllCategory(year: Int, month: Int) {
+        _allCategoryState.value = UiState.Loading
+
+        viewModelScope.launch {
+            try {
+                getMonthAllCategoryUseCase(
+                    getAccessTokenUseCase.invoke().getOrNull().orEmpty(),
+                    year, month
+                ).onSuccess {
+                    _allCategoryState.value = UiState.Success(it)
+                }.onFailure { e ->
+                    LoggerUtils.e("get Month All Category failed: ${e.message}")
+                    _allCategoryState.value =
+                        UiState.Failure(message = e.message.toString())
+                }
+            } catch (e: Exception) {
+                LoggerUtils.e("get Month All Category exception: ${e.message}")
+                _allCategoryState.value = UiState.Failure(message = e.message.toString())
+            }
+        }
+    }
 
     private val _categoryExpenseState = MutableLiveData<UiState<List<MonthCategoryExpense>>>()
     val categoryExpenseState: LiveData<UiState<List<MonthCategoryExpense>>> get() = _categoryExpenseState
