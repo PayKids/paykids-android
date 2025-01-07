@@ -9,6 +9,9 @@ class GetMonthTotalExpenseUseCase @Inject constructor(private val repository: Ex
         year: Int,
         month: Int
     ): Result<Int> {
+        require(year >= 2000) { "유효하지 않은 연도입니다" }
+        require(month in 1..12) { "유효하지 않은 월입니다" }
+
         return repository.getMonthTotalExpense("Bearer $accessToken", year, month)
     }
 }

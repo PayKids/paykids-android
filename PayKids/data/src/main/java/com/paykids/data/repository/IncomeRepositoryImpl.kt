@@ -73,7 +73,7 @@ class IncomeRepositoryImpl @Inject constructor(
                 val categoryExpenseInfo = data.toMonthCategoryList()
                 Result.success(categoryExpenseInfo)
             } else {
-                Result.failure(Exception("get Month Total Income Failed: response body is null"))
+                Result.failure(Exception("get Month Category Income Failed: response body is null"))
             }
         } else {
             Result.failure(result.exceptionOrNull() ?: Exception("Unknown error"))

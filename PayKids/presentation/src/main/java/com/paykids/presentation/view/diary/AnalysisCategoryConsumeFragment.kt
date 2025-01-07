@@ -24,8 +24,6 @@ class AnalysisCategoryConsumeFragment : BaseFragment<FragmentAnalysisCategoryCon
     private var amount: String = ""
 
     override fun initView() {
-        fetchData()
-
         val args = AnalysisCategoryConsumeFragmentArgs.fromBundle(requireArguments())
         category = args.category
         amount = args.amount

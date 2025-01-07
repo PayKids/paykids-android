@@ -46,7 +46,7 @@ interface IncomeService {
         @Query("month") month: Int,
     ): Response<BaseResponse<MonthAllCategoryDTO>>
 
-    @GET("/expense/allowance/day")
+    @GET("/income/allowance/day")
     suspend fun getDayIncome(
         @Header("Authorization") accessToken: String,
         @Query("localDate") localDate: String
