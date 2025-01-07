@@ -4,7 +4,9 @@ import com.paykids.data.datasource.ExpenseRemoteDatasource
 import com.paykids.data.datasource.UserRemoteDatasource
 import com.paykids.data.mapper.UserMapper
 import com.paykids.data.mapper.toDailyExpenseInfoList
+import com.paykids.data.mapper.toMonthCategoryExpense
 import com.paykids.domain.model.expense.DailyExpenseInfo
+import com.paykids.domain.model.expense.MonthCategoryExpense
 import com.paykids.domain.model.expense.MonthMostCategory
 import com.paykids.domain.model.user.UserInfo
 import com.paykids.domain.repository.ExpenseRepository
@@ -87,8 +89,22 @@ class ExpenseRepositoryImpl @Inject constructor(
         year: Int,
         month: Int,
         category: String
-    ): Result<String> {
-        TODO("Not yet implemented")
+    ): Result<List<MonthCategoryExpense>> {
+        val result =
+            expenseRemoteDatasource.getMonthCategoryExpense(accessToken, year, month, category)
+
+        return if (result.isSuccess) {
+            val res = result.getOrNull()
+            if (res != null) {
+                val data = res.data
+                val categoryExpenseInfo = data.toMonthCategoryExpense()
+                Result.success(categoryExpenseInfo)
+            } else {
+                Result.failure(Exception("get Month Total Expense Failed: response body is null"))
+            }
+        } else {
+            Result.failure(result.exceptionOrNull() ?: Exception("Unknown error"))
+        }
     }
 
     override suspend fun getMonthAllCategory(

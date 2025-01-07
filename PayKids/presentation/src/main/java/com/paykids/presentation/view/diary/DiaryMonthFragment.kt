@@ -45,7 +45,7 @@ class DiaryMonthFragment : BaseFragment<FragmentDiaryMonthBinding>() {
                 override fun onClick(item: Int) {
                     val clickedDate = getDateStringForDay(item)
                     onDateClickListener?.onClick(clickedDate)
-                    viewModel.fetchDetailsForDate(clickedDate)
+//                    viewModel.fetchDetailsForDate(clickedDate)
                 }
             })
         }

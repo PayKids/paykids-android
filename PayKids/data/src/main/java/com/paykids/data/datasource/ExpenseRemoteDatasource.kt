@@ -3,6 +3,7 @@ package com.paykids.data.datasource
 import com.paykids.data.model.BaseResponse
 import com.paykids.data.model.expense.DayExpenseResponseDTO
 import com.paykids.data.model.UserInfoResponseDTO
+import com.paykids.data.model.expense.MonthCategoryExpenseDTO
 import com.paykids.data.model.expense.MonthDailyExpenseDTO
 import com.paykids.data.model.expense.MonthMostCategoryDTO
 
@@ -30,7 +31,7 @@ interface ExpenseRemoteDatasource {
         year: Int,
         month: Int,
         category: String
-    ): Result<BaseResponse<UserInfoResponseDTO>>
+    ): Result<BaseResponse<MonthCategoryExpenseDTO>>
 
     suspend fun getMonthAllCategory(
         accessToken: String,

@@ -3,6 +3,7 @@ package com.paykids.data.service
 import com.paykids.data.model.BaseResponse
 import com.paykids.data.model.expense.DayExpenseResponseDTO
 import com.paykids.data.model.UserInfoResponseDTO
+import com.paykids.data.model.expense.MonthCategoryExpenseDTO
 import com.paykids.data.model.expense.MonthDailyExpenseDTO
 import com.paykids.data.model.expense.MonthMostCategoryDTO
 import retrofit2.Response
@@ -39,7 +40,7 @@ interface ExpenseService {
         @Query("year") year: Int,
         @Query("month") month: Int,
         @Query("category") category: String
-    ): Response<BaseResponse<UserInfoResponseDTO>>
+    ): Response<BaseResponse<MonthCategoryExpenseDTO>>
 
     @GET("/expense/allowance/month-all-category")
     suspend fun getMonthAllCategory(

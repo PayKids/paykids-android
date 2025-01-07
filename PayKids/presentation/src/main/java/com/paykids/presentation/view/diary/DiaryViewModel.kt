@@ -10,8 +10,10 @@ import com.paykids.domain.model.DetailConsume
 import com.paykids.domain.model.DetailIncome
 import com.paykids.domain.model.DetailTransaction
 import com.paykids.domain.model.expense.DailyExpenseInfo
+import com.paykids.domain.model.expense.MonthCategoryExpense
 import com.paykids.domain.model.expense.MonthMostCategory
 import com.paykids.domain.usecase.datastore.GetAccessTokenUseCase
+import com.paykids.domain.usecase.expense.GetMonthCategoryExpenseUseCase
 import com.paykids.domain.usecase.expense.GetMonthDailyExpenseUseCase
 import com.paykids.domain.usecase.expense.GetMonthMostCategoryUseCase
 import com.paykids.domain.usecase.expense.GetMonthTotalExpenseUseCase
@@ -26,7 +28,8 @@ class DiaryViewModel @Inject constructor(
     private val getAccessTokenUseCase: GetAccessTokenUseCase,
     private val getMonthTotalExpenseUseCase: GetMonthTotalExpenseUseCase,
     private val getMonthDailyExpenseUseCase: GetMonthDailyExpenseUseCase,
-    private val getMonthMostCategoryUseCase: GetMonthMostCategoryUseCase
+    private val getMonthMostCategoryUseCase: GetMonthMostCategoryUseCase,
+    private val getMonthCategoryExpenseUseCase: GetMonthCategoryExpenseUseCase
 ) : ViewModel() {
 
     private val _monthTotalExpenseState = MutableLiveData<UiState<Int>>()
@@ -160,5 +163,30 @@ class DiaryViewModel @Inject constructor(
 //        fetchDetailsForDate(transaction.date)
 //        fetchDayInfo()
 //    }
+
+    private val _categoryExpenseState = MutableLiveData<UiState<List<MonthCategoryExpense>>>()
+    val categoryExpenseState: LiveData<UiState<List<MonthCategoryExpense>>> get() = _categoryExpenseState
+
+    fun getMonthCategoryExpense(year: Int, month: Int, category: String) {
+        _categoryExpenseState.value = UiState.Loading
+
+        viewModelScope.launch {
+            try {
+                getMonthCategoryExpenseUseCase(
+                    getAccessTokenUseCase.invoke().getOrNull().orEmpty(),
+                    year, month, category
+                ).onSuccess {
+                    _categoryExpenseState.value = UiState.Success(it)
+                }.onFailure { e ->
+                    LoggerUtils.e("get Month Category Expense failed: ${e.message}")
+                    _categoryExpenseState.value =
+                        UiState.Failure(message = e.message.toString())
+                }
+            } catch (e: Exception) {
+                LoggerUtils.e("get Month Category Expense exception: ${e.message}")
+                _categoryExpenseState.value = UiState.Failure(message = e.message.toString())
+            }
+        }
+    }
 
 }
