@@ -1,7 +1,6 @@
 package com.paykids.domain.usecase.income
 
 import com.paykids.domain.model.allowance.MonthCategoryInfo
-import com.paykids.domain.repository.ExpenseRepository
 import com.paykids.domain.repository.IncomeRepository
 import javax.inject.Inject
 

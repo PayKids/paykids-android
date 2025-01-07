@@ -3,6 +3,7 @@ package com.paykids.presentation.view.diary
 import android.os.Bundle
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
+import com.paykids.domain.model.allowance.DayInfo
 import com.paykids.presentation.base.BaseFragment
 import com.paykids.presentation.databinding.FragmentDiaryMonthBinding
 import com.paykids.presentation.view.OnRvItemClickListener
@@ -97,10 +98,10 @@ class DiaryMonthFragment : BaseFragment<FragmentDiaryMonthBinding>() {
     }
 
     private fun updateDayDetails(details: List<DayInfo>) {
-        val updatedList = dayAdapter.currentList.map { pair ->
-            val updatedInfo = details.find { it.date == pair.first }
-            pair.copy(second = updatedInfo)
-        }
-        dayAdapter.submitList(updatedList)
+//        val updatedList = dayAdapter.currentList.map { pair ->
+//            val updatedInfo = details.find { it. == pair.first }
+//            pair.copy(second = updatedInfo)
+//        }
+//        dayAdapter.submitList(updatedList)
     }
 }

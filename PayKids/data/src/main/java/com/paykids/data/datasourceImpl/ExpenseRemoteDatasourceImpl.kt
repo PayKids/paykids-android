@@ -2,8 +2,8 @@ package com.paykids.data.datasourceImpl
 
 import com.paykids.data.datasource.ExpenseRemoteDatasource
 import com.paykids.data.model.BaseResponse
-import com.paykids.data.model.allowance.DayDTO
 import com.paykids.data.model.allowance.AddExpenseRequestDTO
+import com.paykids.data.model.allowance.DayDTO
 import com.paykids.data.model.allowance.MonthAllCategoryDTO
 import com.paykids.data.model.allowance.MonthCategoryDTO
 import com.paykids.data.model.allowance.MonthDailyDTO
@@ -91,7 +91,8 @@ class ExpenseRemoteDatasourceImpl @Inject constructor(
         category: String
     ): Result<BaseResponse<MonthCategoryDTO>> {
         return try {
-            val response = expenseService.getMonthCategoryExpense(accessToken, year, month, category)
+            val response =
+                expenseService.getMonthCategoryExpense(accessToken, year, month, category)
 
             if (response.isSuccessful) {
                 val res = response.body()
@@ -108,7 +109,7 @@ class ExpenseRemoteDatasourceImpl @Inject constructor(
         }
     }
 
-    override suspend fun getMonthAllCategory(
+    override suspend fun getMonthAllCategoryExpense(
         accessToken: String,
         year: Int,
         month: Int
