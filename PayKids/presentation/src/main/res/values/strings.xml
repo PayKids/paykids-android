@@ -51,6 +51,11 @@
     <string name="dialog_enter_quiz">퀴즈 풀기</string>
     <string name="dialog_exit">닫기</string>
 
+    <!-- 퀴즈 페이지 나가기 다이얼로그 -->
+    <string name="dialog_check_exit">조금만 더 풀면 좋을 텐데..\n정말 퀴즈 풀이를 그만둘까요?</string>
+    <string name="dialog_continue">계속하기</string>
+    <string name="dialog_exit2">나가기</string>
+
     <!-- 마이페이지 다이얼로그 -->
     <string name="dialog_signout_title">로그아웃할까요?</string>
     <string name="dialog_signout_message">나중에 다시 로그인하려면 본인인증부터 시작해야 해요</string>

@@ -29,7 +29,9 @@ class QuizEntryFragment : BaseFragment<FragmentQuizEntryBinding>(), ConfirmDialo
             navController.navigate(R.id.studyFragment)
         }
 
-        binding.btnQuiz.setOnClickListener { }
+        binding.btnQuiz.setOnClickListener {
+            navController.navigate(R.id.quizImageFragment)
+        }
 
         binding.btnReview.setOnClickListener {
             if (!clear && incorrectQuiz == 0) {

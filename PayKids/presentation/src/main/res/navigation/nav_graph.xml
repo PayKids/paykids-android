@@ -48,6 +48,19 @@
     </fragment>
 
     <fragment
+        android:id="@+id/studyFragment"
+        android:name="com.paykids.presentation.view.quiz.StudyFragment"
+        android:label="fragment_study"
+        tools:layout="@layout/fragment_study" />
+
+    <fragment
+        android:id="@+id/quizImageFragment"
+        android:name="com.paykids.presentation.view.quiz.QuizImageFragment"
+        android:label="fragment_quiz_image"
+        tools:layout="@layout/fragment_quiz_image">
+    </fragment>
+
+    <fragment
         android:id="@+id/quizEntryFragment"
         android:name="com.paykids.presentation.view.quiz.QuizEntryFragment"
         android:label="fragment_quiz_entry"
@@ -57,19 +70,6 @@
             app:destination="@id/studyFragment"
             app:popUpTo="@id/quizEntryFragment"
             app:popUpToInclusive="false" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/studyFragment"
-        android:name="com.paykids.presentation.view.quiz.StudyFragment"
-        android:label="fragment_study"
-        tools:layout="@layout/fragment_study" />
-
-    <fragment
-        android:id="@+id/quizEntryFragment"
-        android:name="com.paykids.presentation.view.quiz.QuizEntryFragment"
-        android:label="fragment_quiz_entry"
-        tools:layout="@layout/fragment_quiz_entry">
     </fragment>
 
     <fragment
