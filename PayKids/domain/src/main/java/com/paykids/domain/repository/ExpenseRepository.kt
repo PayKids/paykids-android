@@ -42,4 +42,28 @@ interface ExpenseRepository {
         accessToken: String,
         localDate: String
     ): Result<List<DayExpense>>
+
+    suspend fun saveExpense(
+        accessToken: String,
+        id: Int,
+        date: String,
+        allowanceType: String,
+        category: String,
+        amount: Int,
+        memo: String
+    ): Result<Boolean>
+
+    suspend fun updateExpense(
+        id: Int,
+        accessToken: String,
+        date: String,
+        allowanceType: String,
+        category: String,
+        amount: Int,
+        memo: String
+    ): Result<Boolean>
+
+    suspend fun deleteExpense(
+        id: Int, accessToken: String
+    ): Result<Boolean>
 }

@@ -5,6 +5,7 @@ import com.paykids.data.mapper.toDailyExpenseInfoList
 import com.paykids.data.mapper.toDayExpense
 import com.paykids.data.mapper.toMonthAllCategory
 import com.paykids.data.mapper.toMonthCategoryExpense
+import com.paykids.data.model.expense.ExpenseRequestDTO
 import com.paykids.domain.model.expense.DayExpense
 import com.paykids.domain.model.expense.MonthAllCategory
 import com.paykids.domain.model.expense.MonthCategoryExpense
@@ -144,6 +145,50 @@ class ExpenseRepositoryImpl @Inject constructor(
         } else {
             Result.failure(result.exceptionOrNull() ?: Exception("Unknown error"))
         }
+    }
+
+    override suspend fun saveExpense(
+        accessToken: String,
+        id: Int,
+        date: String,
+        allowanceType: String,
+        category: String,
+        amount: Int,
+        memo: String
+    ): Result<Boolean> {
+        val result =
+            expenseRemoteDatasource.saveExpense(
+                accessToken, ExpenseRequestDTO(allowanceType, amount, category, date, id, memo)
+            )
+
+        return if (result.isSuccess) {
+            val res = result.getOrNull()
+            if (res != null) {
+                val data = res.data
+                Result.success(data)
+            } else {
+                Result.failure(Exception("save Expense Failed: response body is null"))
+            }
+        } else {
+            Result.failure(result.exceptionOrNull() ?: Exception("Unknown error"))
+        }
+    }
+
+    override suspend fun updateExpense(
+        id: Int,
+        accessToken: String,
+        date: String,
+        allowanceType: String,
+        category: String,
+        amount: Int,
+        memo: String
+    ): Result<Boolean> {
+        TODO("Not yet implemented")
+    }
+
+
+    override suspend fun deleteExpense(id: Int, accessToken: String): Result<Boolean> {
+        TODO("Not yet implemented")
     }
 
 }

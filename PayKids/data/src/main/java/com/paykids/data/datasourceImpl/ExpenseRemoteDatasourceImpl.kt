@@ -3,6 +3,7 @@ package com.paykids.data.datasourceImpl
 import com.paykids.data.datasource.ExpenseRemoteDatasource
 import com.paykids.data.model.BaseResponse
 import com.paykids.data.model.expense.DayExpenseDTO
+import com.paykids.data.model.expense.ExpenseRequestDTO
 import com.paykids.data.model.expense.MonthAllCategoryDTO
 import com.paykids.data.model.expense.MonthCategoryExpenseDTO
 import com.paykids.data.model.expense.MonthDailyExpenseDTO
@@ -149,5 +150,41 @@ class ExpenseRemoteDatasourceImpl @Inject constructor(
         } catch (e: Exception) {
             Result.failure(e)
         }
+    }
+
+    override suspend fun saveExpense(
+        accessToken: String,
+        expenseInfo: ExpenseRequestDTO
+    ): Result<BaseResponse<Boolean>> {
+        return try {
+            val response = expenseService.saveExpense(accessToken, expenseInfo)
+
+            if (response.isSuccessful) {
+                val res = response.body()
+                if (res != null) {
+                    Result.success(res)
+                } else {
+                    Result.failure(Exception("save Expense failed: response body is null"))
+                }
+            } else {
+                Result.failure(Exception("save Expense failed: ${response.message()}"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    override suspend fun updateExpense(
+        accessToken: String,
+        newExpenseInfo: ExpenseRequestDTO
+    ): Result<BaseResponse<Boolean>> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun deleteExpense(
+        id: Int,
+        accessToken: String
+    ): Result<BaseResponse<Boolean>> {
+        TODO("Not yet implemented")
     }
 }
