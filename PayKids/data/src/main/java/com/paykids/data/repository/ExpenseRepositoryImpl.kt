@@ -1,10 +1,10 @@
 package com.paykids.data.repository
 
 import com.paykids.data.datasource.ExpenseRemoteDatasource
-import com.paykids.data.mapper.toDailyExpenseInfoList
-import com.paykids.data.mapper.toDayExpense
-import com.paykids.data.mapper.toMonthAllCategory
-import com.paykids.data.mapper.toMonthCategoryExpense
+import com.paykids.data.mapper.toDailyInfoList
+import com.paykids.data.mapper.toDayInfoList
+import com.paykids.data.mapper.toMonthAllCategoryList
+import com.paykids.data.mapper.toMonthCategoryList
 import com.paykids.data.model.expense.AddExpenseRequestDTO
 import com.paykids.data.model.expense.UpdateExpenseRequestDTO
 import com.paykids.domain.model.expenseIncome.DayInfo
@@ -72,7 +72,7 @@ class ExpenseRepositoryImpl @Inject constructor(
             val res = result.getOrNull()
             if (res != null) {
                 val data = res.data
-                val dailyExpenseInfoList = data.toDailyExpenseInfoList()
+                val dailyExpenseInfoList = data.toDailyInfoList()
                 Result.success(dailyExpenseInfoList)
             } else {
                 Result.failure(Exception("get Month Daily Expense Failed: response body is null"))
@@ -95,7 +95,7 @@ class ExpenseRepositoryImpl @Inject constructor(
             val res = result.getOrNull()
             if (res != null) {
                 val data = res.data
-                val categoryExpenseInfo = data.toMonthCategoryExpense()
+                val categoryExpenseInfo = data.toMonthCategoryList()
                 Result.success(categoryExpenseInfo)
             } else {
                 Result.failure(Exception("get Month Total Expense Failed: response body is null"))
@@ -117,7 +117,7 @@ class ExpenseRepositoryImpl @Inject constructor(
             val res = result.getOrNull()
             if (res != null) {
                 val data = res.data
-                val allCategoryInfo = data.toMonthAllCategory()
+                val allCategoryInfo = data.toMonthAllCategoryList()
                 Result.success(allCategoryInfo)
             } else {
                 Result.failure(Exception("get Month All Category Failed: response body is null"))
@@ -138,7 +138,7 @@ class ExpenseRepositoryImpl @Inject constructor(
             val res = result.getOrNull()
             if (res != null) {
                 val data = res.data
-                val dayExpenseInfo = data.toDayExpense()
+                val dayExpenseInfo = data.toDayInfoList()
                 Result.success(dayExpenseInfo)
             } else {
                 Result.failure(Exception("get Day Expense Failed: response body is null"))

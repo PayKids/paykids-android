@@ -9,7 +9,7 @@ import com.paykids.domain.model.expenseIncome.MonthAllCategoryInfo
 import com.paykids.domain.model.expenseIncome.MonthCategoryInfo
 import com.paykids.domain.model.expenseIncome.MonthDailyInfo
 
-fun MonthDailyDTO.toDailyExpenseInfoList(): List<MonthDailyInfo> {
+fun MonthDailyDTO.toDailyInfoList(): List<MonthDailyInfo> {
     return this.map { item ->
         MonthDailyInfo(
             date = item.date,
@@ -18,7 +18,7 @@ fun MonthDailyDTO.toDailyExpenseInfoList(): List<MonthDailyInfo> {
     }
 }
 
-fun MonthCategoryDTO.toMonthCategoryExpense(): List<MonthCategoryInfo> {
+fun MonthCategoryDTO.toMonthCategoryList(): List<MonthCategoryInfo> {
     return this.map { item ->
         MonthCategoryInfo(
             date = item.date,
@@ -28,7 +28,7 @@ fun MonthCategoryDTO.toMonthCategoryExpense(): List<MonthCategoryInfo> {
     }
 }
 
-fun MonthAllCategoryDTO.toMonthAllCategory(): List<MonthAllCategoryInfo> {
+fun MonthAllCategoryDTO.toMonthAllCategoryList(): List<MonthAllCategoryInfo> {
     return this.map { item ->
         MonthAllCategoryInfo(
             category = item.category,
@@ -38,7 +38,7 @@ fun MonthAllCategoryDTO.toMonthAllCategory(): List<MonthAllCategoryInfo> {
     }
 }
 
-fun DayDTO.toDayExpense(): List<DayInfo> {
+fun DayDTO.toDayInfoList(): List<DayInfo> {
     return this.map { item ->
         DayInfo(
             category = item.category,
