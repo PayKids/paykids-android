@@ -1,14 +1,11 @@
 package com.paykids.presentation.view.diary
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.paykids.domain.model.DayInfo
-import com.paykids.presentation.R
+import com.paykids.domain.model.allowance.DayInfo
 import com.paykids.presentation.databinding.ItemDiaryDayBinding
 import com.paykids.presentation.view.OnRvItemClickListener
 import java.util.Calendar
@@ -41,53 +38,53 @@ class DiaryDayCalendarAdapter :
     }
 
     override fun onBindViewHolder(holder: DateViewHolder, position: Int) {
-        val dateAndConsume = getItem(position)
-        if (dateAndConsume.first != "previous" && dateAndConsume.first != "next") {
-            holder.bind(dateAndConsume, isToday(dateAndConsume.first))
-        } else {
-            holder.clear()
-        }
+//        val dateAndConsume = getItem(position)
+//        if (dateAndConsume.first != "previous" && dateAndConsume.first != "next") {
+//            holder.bind(dateAndConsume, isToday(dateAndConsume.first))
+//        } else {
+//            holder.clear()
+//        }
     }
 
     inner class DateViewHolder(val binding: ItemDiaryDayBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(dateAndConsume: Pair<String, DayInfo?>, isToday: Boolean) {
-            val date = dateAndConsume.first
-            val detailConsume = dateAndConsume.second
-            val day = date.split("-").lastOrNull() ?: ""
+//        fun bind(dateAndConsume: Pair<String, DayInfo?>, isToday: Boolean) {
+//            val date = dateAndConsume.first
+//            val detailConsume = dateAndConsume.second
+//            val day = date.split("-").lastOrNull() ?: ""
+//
+//            binding.tvDay.text = day
+//            binding.tvIncome.text = when {
+//                detailConsume?.income == null || detailConsume.income == 0 -> ""
+//                else -> "+${detailConsume.income}"
+//            }
+//            binding.tvConsume.text = when {
+//                detailConsume?.consume == null || detailConsume.consume == 0 -> ""
+//                else -> "-${detailConsume.consume}"
+//            }
+//            binding.root.isClickable = true
+//            binding.root.visibility = View.VISIBLE
+//
+//            binding.root.setBackgroundResource(0)
+//            binding.tvDay.setTextColor(ContextCompat.getColor(itemView.context, R.color.black))
+//            if (isToday) {
+//                binding.ivDiaryCheck.setBackgroundResource(R.drawable.shape_bg_day)
+//                binding.tvDay.setTextColor(ContextCompat.getColor(itemView.context, R.color.white))
+//            }
 
-            binding.tvDay.text = day
-            binding.tvIncome.text = when {
-                detailConsume?.income == null || detailConsume.income == 0 -> ""
-                else -> "+${detailConsume.income}"
-            }
-            binding.tvConsume.text = when {
-                detailConsume?.consume == null || detailConsume.consume == 0 -> ""
-                else -> "-${detailConsume.consume}"
-            }
-            binding.root.isClickable = true
-            binding.root.visibility = View.VISIBLE
-
-            binding.root.setBackgroundResource(0)
-            binding.tvDay.setTextColor(ContextCompat.getColor(itemView.context, R.color.black))
-            if (isToday) {
-                binding.ivDiaryCheck.setBackgroundResource(R.drawable.shape_bg_day)
-                binding.tvDay.setTextColor(ContextCompat.getColor(itemView.context, R.color.white))
-            }
-
-            itemView.setOnClickListener {
-                rvItemClickListener.onClick(day.toInt())
-            }
-        }
-
-        fun clear() {
-            binding.tvDay.text = ""
-            binding.tvIncome.text = ""
-            binding.tvConsume.text = ""
-            binding.root.isClickable = false
-            binding.root.visibility = View.GONE
-        }
+//            itemView.setOnClickListener {
+//                rvItemClickListener.onClick(day.toInt())
+//            }
+//        }
+//
+//        fun clear() {
+//            binding.tvDay.text = ""
+//            binding.tvIncome.text = ""
+//            binding.tvConsume.text = ""
+//            binding.root.isClickable = false
+//            binding.root.visibility = View.GONE
+//        }
     }
 
     private lateinit var rvItemClickListener: OnRvItemClickListener<Int>

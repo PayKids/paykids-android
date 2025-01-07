@@ -1,17 +1,15 @@
 package com.paykids.presentation.view.diary
 
 import android.annotation.SuppressLint
-import android.graphics.Color
 import android.view.View
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.paykids.presentation.R
 import com.paykids.presentation.base.BaseFragment
 import com.paykids.presentation.databinding.FragmentAnalysisConsumeBinding
-import com.paykids.presentation.utils.Constants
+import com.paykids.presentation.utils.UiState
 import com.paykids.presentation.view.home.HomeActivity
+import com.paykids.util.LoggerUtils
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -25,6 +23,8 @@ class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisConsumeBinding>() {
 
     @SuppressLint("SetTextI18n")
     override fun initView() {
+        fetchData()
+
         currentMonth = arguments?.getString("currentMonth")
         currentMonth.let {
             val month = it!!.split("-")[1].toInt()
@@ -39,7 +39,7 @@ class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisConsumeBinding>() {
                 navigateToAnalysisConsumeLocationFragment(category, amount)
             }
         )
-        fetchData(currentMonth!!)
+//        fetchData(currentMonth!!)
 
         binding.rvDetailConsume.layoutManager = LinearLayoutManager(requireContext())
         binding.rvDetailConsume.adapter = adapter
@@ -56,13 +56,13 @@ class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisConsumeBinding>() {
 
         binding.ibLeft.setOnClickListener {
             currentMonth = changeMonth(currentMonth, -1)
-            fetchData(currentMonth!!)
+//            fetchData(currentMonth!!)
             updateMonthDisplay()
         }
 
         binding.ibRight.setOnClickListener {
             currentMonth = changeMonth(currentMonth, 1)
-            fetchData(currentMonth!!)
+//            fetchData(currentMonth!!)
             updateMonthDisplay()
         }
 
@@ -77,43 +77,63 @@ class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisConsumeBinding>() {
     }
 
     @SuppressLint("SetTextI18n")
-    private fun fetchData(currentMonth: String) {
-        val totalConsume = viewModel.getMonthConsumption(currentMonth)
-        binding.tvMonthConsumption.text = "${Constants.formatAmount(totalConsume)}원 사용 중"
+    private fun fetchData() {
+        viewModel.getMonthAllCategory(2025, 1)
 
-        val categoryPercentages = viewModel.getMonthlyCostCategory(currentMonth)
-        if (::adapter.isInitialized) {
-            val sortedCategories = categoryPercentages
-                .sortedByDescending { it.percentage }
-                .map {
-                    ConsumeCategoryAdapter.CategoryItem.Normal(
-                        name = it.categoryName,
-                        amount = it.totalAmount.toString(),
-                        percent = "${it.percentage}%"
-                    )
+//        val totalConsume = viewModel.getMonthConsumption(currentMonth)
+//        binding.tvMonthConsumption.text = "${Constants.formatAmount(totalConsume)}원 사용 중"
+//
+//        val categoryPercentages = viewModel.getMonthlyCostCategory(currentMonth)
+//        if (::adapter.isInitialized) {
+//            val sortedCategories = categoryPercentages
+//                .sortedByDescending { it.percentage }
+//                .map {
+//                    ConsumeCategoryAdapter.CategoryItem.Normal(
+//                        name = it.categoryName,
+//                        amount = it.totalAmount.toString(),
+//                        percent = "${it.percentage}%"
+//                    )
+//                }
+//
+//            adapter.submitList(sortedCategories)
+//        }
+//
+//        val topCategories = categoryPercentages
+//            .sortedByDescending { it.percentage }
+//            .take(3)
+//        val sections = topCategories.map { it.percentage / 100.0f }
+//        val colors = mutableListOf(
+//            ContextCompat.getColor(requireContext(), R.color.blue1),
+//            ContextCompat.getColor(requireContext(), R.color.blue2),
+//            ContextCompat.getColor(requireContext(), R.color.blue3)
+//        )
+//
+//        while (colors.size < sections.size) {
+//            colors.add(Color.LTGRAY)
+//        }
+//
+//        binding.categoryProgressView.updateSections(
+//            sections,
+//            colors,
+//            topCategories.map { it.categoryName })
+    }
+
+    override fun setObserver() {
+        super.setObserver()
+
+        viewModel.allCategoryState.observe(viewLifecycleOwner) {
+            when (it) {
+                is UiState.Failure -> {
+                    showToast(it.message)
                 }
 
-            adapter.submitList(sortedCategories)
+                is UiState.Loading -> {}
+
+                is UiState.Success -> {
+                    LoggerUtils.d("월 전체 카테고리 조회 성공: ${it.data}")
+                }
+            }
         }
-
-        val topCategories = categoryPercentages
-            .sortedByDescending { it.percentage }
-            .take(3)
-        val sections = topCategories.map { it.percentage / 100.0f }
-        val colors = mutableListOf(
-            ContextCompat.getColor(requireContext(), R.color.blue1),
-            ContextCompat.getColor(requireContext(), R.color.blue2),
-            ContextCompat.getColor(requireContext(), R.color.blue3)
-        )
-
-        while (colors.size < sections.size) {
-            colors.add(Color.LTGRAY)
-        }
-
-        binding.categoryProgressView.updateSections(
-            sections,
-            colors,
-            topCategories.map { it.categoryName })
     }
 
     private fun updateDeleteButtonVisibility(items: List<String>) {
