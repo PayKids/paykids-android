@@ -5,7 +5,8 @@ import com.paykids.data.mapper.toDailyExpenseInfoList
 import com.paykids.data.mapper.toDayExpense
 import com.paykids.data.mapper.toMonthAllCategory
 import com.paykids.data.mapper.toMonthCategoryExpense
-import com.paykids.data.model.expense.ExpenseRequestDTO
+import com.paykids.data.model.expense.AddExpenseRequestDTO
+import com.paykids.data.model.expense.UpdateExpenseRequestDTO
 import com.paykids.domain.model.expense.DayExpense
 import com.paykids.domain.model.expense.MonthAllCategory
 import com.paykids.domain.model.expense.MonthCategoryExpense
@@ -149,7 +150,6 @@ class ExpenseRepositoryImpl @Inject constructor(
 
     override suspend fun saveExpense(
         accessToken: String,
-        id: Int,
         date: String,
         allowanceType: String,
         category: String,
@@ -158,7 +158,7 @@ class ExpenseRepositoryImpl @Inject constructor(
     ): Result<Boolean> {
         val result =
             expenseRemoteDatasource.saveExpense(
-                accessToken, ExpenseRequestDTO(allowanceType, amount, category, date, id, memo)
+                accessToken, AddExpenseRequestDTO(allowanceType, amount, category, date, memo)
             )
 
         return if (result.isSuccess) {
@@ -183,7 +183,23 @@ class ExpenseRepositoryImpl @Inject constructor(
         amount: Int,
         memo: String
     ): Result<Boolean> {
-        TODO("Not yet implemented")
+        val result =
+            expenseRemoteDatasource.updateExpense(
+                accessToken,
+                UpdateExpenseRequestDTO(allowanceType, amount, category, date, id, memo)
+            )
+
+        return if (result.isSuccess) {
+            val res = result.getOrNull()
+            if (res != null) {
+                val data = res.data
+                Result.success(data)
+            } else {
+                Result.failure(Exception("update Expense Failed: response body is null"))
+            }
+        } else {
+            Result.failure(result.exceptionOrNull() ?: Exception("Unknown error"))
+        }
     }
 
 

@@ -292,7 +292,7 @@ class DiaryFragment : BaseFragment<FragmentDiaryBinding>(), ConfirmDialogInterfa
             if (amount <= 0) {
                 showToast("금액을 입력해주세요")
             } else {
-                viewModel.saveExpense(1, formattedDate, "EXPENSE", amount, memo, category)
+                viewModel.saveExpense(formattedDate, "EXPENSE", amount, memo, category)
 
                 dialog.dismiss()
             }

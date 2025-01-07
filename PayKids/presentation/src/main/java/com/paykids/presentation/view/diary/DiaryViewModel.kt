@@ -16,7 +16,8 @@ import com.paykids.domain.usecase.expense.GetMonthCategoryExpenseUseCase
 import com.paykids.domain.usecase.expense.GetMonthDailyExpenseUseCase
 import com.paykids.domain.usecase.expense.GetMonthMostCategoryUseCase
 import com.paykids.domain.usecase.expense.GetMonthTotalExpenseUseCase
-import com.paykids.domain.usecase.expense.SaveExpenseUseCase
+import com.paykids.domain.usecase.expense.AddExpenseUseCase
+import com.paykids.domain.usecase.expense.UpdateExpenseUseCase
 import com.paykids.presentation.utils.UiState
 import com.paykids.util.LoggerUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -32,7 +33,8 @@ class DiaryViewModel @Inject constructor(
     private val getMonthCategoryExpenseUseCase: GetMonthCategoryExpenseUseCase,
     private val getMonthAllCategoryUseCase: GetMonthAllCategoryUseCase,
     private val getDayExpenseUseCase: GetDayExpenseUseCase,
-    private val saveExpenseUseCase: SaveExpenseUseCase
+    private val addExpenseUseCase: AddExpenseUseCase,
+    private val updateExpenseUseCase: UpdateExpenseUseCase
 ) : ViewModel() {
 
     private val _monthTotalExpenseState = MutableLiveData<UiState<Int>>()
@@ -189,7 +191,6 @@ class DiaryViewModel @Inject constructor(
     val saveExpenseState: LiveData<UiState<Boolean>> get() = _saveExpenseState
 
     fun saveExpense(
-        id: Int,
         date: String,
         allowanceType: String,
         amount: Int,
@@ -200,9 +201,9 @@ class DiaryViewModel @Inject constructor(
 
         viewModelScope.launch {
             try {
-                saveExpenseUseCase(
+                addExpenseUseCase(
                     getAccessTokenUseCase.invoke().getOrNull().orEmpty(),
-                    id, date, allowanceType, category, amount, memo
+                    date, allowanceType, category, amount, memo
                 ).onSuccess {
                     _saveExpenseState.value = UiState.Success(it)
                 }.onFailure { e ->
@@ -213,6 +214,38 @@ class DiaryViewModel @Inject constructor(
             } catch (e: Exception) {
                 LoggerUtils.e("save Expense exception: ${e.message}")
                 _saveExpenseState.value = UiState.Failure(message = e.message.toString())
+            }
+        }
+    }
+
+    private val _updateExpenseState = MutableLiveData<UiState<Boolean>>()
+    val updateExpenseState: LiveData<UiState<Boolean>> get() = _updateExpenseState
+
+    fun updateExpense(
+        id: Int,
+        date: String,
+        allowanceType: String,
+        amount: Int,
+        memo: String,
+        category: String
+    ) {
+        _updateExpenseState.value = UiState.Loading
+
+        viewModelScope.launch {
+            try {
+                updateExpenseUseCase(
+                    getAccessTokenUseCase.invoke().getOrNull().orEmpty(),
+                    id, date, allowanceType, category, amount, memo
+                ).onSuccess {
+                    _updateExpenseState.value = UiState.Success(it)
+                }.onFailure { e ->
+                    LoggerUtils.e(e.message.toString())
+                    _updateExpenseState.value =
+                        UiState.Failure(message = e.message.toString())
+                }
+            } catch (e: Exception) {
+                LoggerUtils.e("update Expense exception: ${e.message}")
+                _updateExpenseState.value = UiState.Failure(message = e.message.toString())
             }
         }
     }

@@ -2,17 +2,12 @@ package com.paykids.data.datasource
 
 import com.paykids.data.model.BaseResponse
 import com.paykids.data.model.expense.DayExpenseDTO
-import com.paykids.data.model.expense.ExpenseRequestDTO
+import com.paykids.data.model.expense.AddExpenseRequestDTO
 import com.paykids.data.model.expense.MonthAllCategoryDTO
 import com.paykids.data.model.expense.MonthCategoryExpenseDTO
 import com.paykids.data.model.expense.MonthDailyExpenseDTO
 import com.paykids.data.model.expense.MonthMostCategoryDTO
-import retrofit2.Response
-import retrofit2.http.Body
-import retrofit2.http.DELETE
-import retrofit2.http.Header
-import retrofit2.http.POST
-import retrofit2.http.Query
+import com.paykids.data.model.expense.UpdateExpenseRequestDTO
 
 interface ExpenseRemoteDatasource {
     suspend fun getMonthTotalExpense(
@@ -53,12 +48,12 @@ interface ExpenseRemoteDatasource {
 
     suspend fun saveExpense(
         accessToken: String,
-        expenseInfo: ExpenseRequestDTO
+        expenseInfo: AddExpenseRequestDTO
     ): Result<BaseResponse<Boolean>>
 
     suspend fun updateExpense(
         accessToken: String,
-        newExpenseInfo: ExpenseRequestDTO
+        newExpenseInfo: UpdateExpenseRequestDTO
     ): Result<BaseResponse<Boolean>>
 
     suspend fun deleteExpense(

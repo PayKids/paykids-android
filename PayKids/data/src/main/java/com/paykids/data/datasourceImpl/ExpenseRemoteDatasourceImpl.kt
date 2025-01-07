@@ -3,11 +3,12 @@ package com.paykids.data.datasourceImpl
 import com.paykids.data.datasource.ExpenseRemoteDatasource
 import com.paykids.data.model.BaseResponse
 import com.paykids.data.model.expense.DayExpenseDTO
-import com.paykids.data.model.expense.ExpenseRequestDTO
+import com.paykids.data.model.expense.AddExpenseRequestDTO
 import com.paykids.data.model.expense.MonthAllCategoryDTO
 import com.paykids.data.model.expense.MonthCategoryExpenseDTO
 import com.paykids.data.model.expense.MonthDailyExpenseDTO
 import com.paykids.data.model.expense.MonthMostCategoryDTO
+import com.paykids.data.model.expense.UpdateExpenseRequestDTO
 import com.paykids.data.service.ExpenseService
 import javax.inject.Inject
 
@@ -154,7 +155,7 @@ class ExpenseRemoteDatasourceImpl @Inject constructor(
 
     override suspend fun saveExpense(
         accessToken: String,
-        expenseInfo: ExpenseRequestDTO
+        expenseInfo: AddExpenseRequestDTO
     ): Result<BaseResponse<Boolean>> {
         return try {
             val response = expenseService.saveExpense(accessToken, expenseInfo)
@@ -176,9 +177,24 @@ class ExpenseRemoteDatasourceImpl @Inject constructor(
 
     override suspend fun updateExpense(
         accessToken: String,
-        newExpenseInfo: ExpenseRequestDTO
+        newExpenseInfo: UpdateExpenseRequestDTO
     ): Result<BaseResponse<Boolean>> {
-        TODO("Not yet implemented")
+        return try {
+            val response = expenseService.updateExpense(accessToken, newExpenseInfo)
+
+            if (response.isSuccessful) {
+                val res = response.body()
+                if (res != null) {
+                    Result.success(res)
+                } else {
+                    Result.failure(Exception("update Expense failed: response body is null"))
+                }
+            } else {
+                Result.failure(Exception("update Expense failed: ${response.message()}"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
     }
 
     override suspend fun deleteExpense(

@@ -45,7 +45,6 @@ interface ExpenseRepository {
 
     suspend fun saveExpense(
         accessToken: String,
-        id: Int,
         date: String,
         allowanceType: String,
         category: String,

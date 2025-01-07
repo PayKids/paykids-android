@@ -2,11 +2,12 @@ package com.paykids.data.service
 
 import com.paykids.data.model.BaseResponse
 import com.paykids.data.model.expense.DayExpenseDTO
-import com.paykids.data.model.expense.ExpenseRequestDTO
+import com.paykids.data.model.expense.AddExpenseRequestDTO
 import com.paykids.data.model.expense.MonthAllCategoryDTO
 import com.paykids.data.model.expense.MonthCategoryExpenseDTO
 import com.paykids.data.model.expense.MonthDailyExpenseDTO
 import com.paykids.data.model.expense.MonthMostCategoryDTO
+import com.paykids.data.model.expense.UpdateExpenseRequestDTO
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -62,13 +63,13 @@ interface ExpenseService {
     @POST("/expense/allowance/save")
     suspend fun saveExpense(
         @Header("Authorization") accessToken: String,
-        @Body expenseInfo: ExpenseRequestDTO
+        @Body expenseInfo: AddExpenseRequestDTO
     ): Response<BaseResponse<Boolean>>
 
     @POST("/expense/allowance/replace")
     suspend fun updateExpense(
         @Header("Authorization") accessToken: String,
-        @Body newExpenseInfo: ExpenseRequestDTO
+        @Body newExpenseInfo: UpdateExpenseRequestDTO
     ): Response<BaseResponse<Boolean>>
 
     @DELETE("/expense/allowance/delete")
