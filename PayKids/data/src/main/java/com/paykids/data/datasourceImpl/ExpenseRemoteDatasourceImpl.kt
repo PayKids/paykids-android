@@ -5,6 +5,7 @@ import com.paykids.data.model.BaseResponse
 import com.paykids.data.model.expense.DayExpenseResponseDTO
 import com.paykids.data.model.UserInfoResponseDTO
 import com.paykids.data.model.expense.MonthDailyExpenseDTO
+import com.paykids.data.model.expense.MonthMostCategoryDTO
 import com.paykids.data.service.ExpenseService
 import javax.inject.Inject
 
@@ -38,8 +39,23 @@ class ExpenseRemoteDatasourceImpl @Inject constructor(
         accessToken: String,
         year: Int,
         month: Int
-    ): Result<BaseResponse<String>> {
-        TODO("Not yet implemented")
+    ): Result<BaseResponse<MonthMostCategoryDTO>> {
+        return try {
+            val response = expenseService.getMonthMostExpenseCategory(accessToken, year, month)
+
+            if (response.isSuccessful) {
+                val res = response.body()
+                if (res != null) {
+                    Result.success(res)
+                } else {
+                    Result.failure(Exception("get Month Most Category failed: response body is null"))
+                }
+            } else {
+                Result.failure(Exception("get Month Most Category failed: ${response.message()}"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
     }
 
     override suspend fun getMonthDailyExpense(

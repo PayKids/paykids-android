@@ -4,6 +4,7 @@ import com.paykids.data.model.BaseResponse
 import com.paykids.data.model.expense.DayExpenseResponseDTO
 import com.paykids.data.model.UserInfoResponseDTO
 import com.paykids.data.model.expense.MonthDailyExpenseDTO
+import com.paykids.data.model.expense.MonthMostCategoryDTO
 
 interface ExpenseRemoteDatasource {
     suspend fun getMonthTotalExpense(
@@ -16,7 +17,7 @@ interface ExpenseRemoteDatasource {
         accessToken: String,
         year: Int,
         month: Int
-    ): Result<BaseResponse<String>>
+    ): Result<BaseResponse<MonthMostCategoryDTO>>
 
     suspend fun getMonthDailyExpense(
         accessToken: String,

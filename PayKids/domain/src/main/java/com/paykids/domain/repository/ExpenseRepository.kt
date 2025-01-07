@@ -1,8 +1,7 @@
 package com.paykids.domain.repository
 
 import com.paykids.domain.model.expense.DailyExpenseInfo
-import com.paykids.domain.model.user.UserInfo
-import java.io.File
+import com.paykids.domain.model.expense.MonthMostCategory
 
 interface ExpenseRepository {
     suspend fun getMonthTotalExpense(
@@ -15,7 +14,7 @@ interface ExpenseRepository {
         accessToken: String,
         year: Int,
         month: Int
-    ): Result<String>
+    ): Result<MonthMostCategory>
 
     suspend fun getMonthDailyExpense(
         accessToken: String,

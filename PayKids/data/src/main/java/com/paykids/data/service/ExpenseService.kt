@@ -4,6 +4,7 @@ import com.paykids.data.model.BaseResponse
 import com.paykids.data.model.expense.DayExpenseResponseDTO
 import com.paykids.data.model.UserInfoResponseDTO
 import com.paykids.data.model.expense.MonthDailyExpenseDTO
+import com.paykids.data.model.expense.MonthMostCategoryDTO
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Header
@@ -23,7 +24,7 @@ interface ExpenseService {
         @Header("Authorization") accessToken: String,
         @Query("year") year: Int,
         @Query("month") month: Int
-    ): Response<BaseResponse<String>>
+    ): Response<BaseResponse<MonthMostCategoryDTO>>
 
     @GET("/expense/allowance/month-daily-amount")
     suspend fun getMonthDailyExpense(

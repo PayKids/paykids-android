@@ -44,6 +44,7 @@ class DiaryFragment : BaseFragment<FragmentDiaryBinding>(), ConfirmDialogInterfa
     override fun initView() {
         viewModel.getMonthTotalExpense(2025, 1)
         viewModel.getMonthDailyExpense(2025, 1)
+        viewModel.getMonthMostCategory(2025, 1)
 
         detailAdapter = DetailConsumeAdapter(this)
         binding.rvDetailConsume.apply {
@@ -51,9 +52,9 @@ class DiaryFragment : BaseFragment<FragmentDiaryBinding>(), ConfirmDialogInterfa
             this.adapter = detailAdapter
         }
 
-        viewModel.selectedDateDetails.observe(viewLifecycleOwner) { details ->
-            detailAdapter.submitList(details)
-        }
+//        viewModel.selectedDateDetails.observe(viewLifecycleOwner) { details ->
+//            detailAdapter.submitList(details)
+//        }
 
         calendarAdapter = DiaryMonthCalendarStateAdapter(
             requireActivity(),
@@ -149,6 +150,20 @@ class DiaryFragment : BaseFragment<FragmentDiaryBinding>(), ConfirmDialogInterfa
                 }
             }
         }
+
+        viewModel.monthMostCategoryState.observe(viewLifecycleOwner) {
+            when (it) {
+                is UiState.Failure -> {
+                    showToast(it.message)
+                }
+
+                is UiState.Loading -> {}
+
+                is UiState.Success -> {
+                    LoggerUtils.d("월 최대 소비 카테고리, 금액 조회 성공: ${it.data}")
+                }
+            }
+        }
     }
 
     override fun onYesButtonClick() {
@@ -166,7 +181,7 @@ class DiaryFragment : BaseFragment<FragmentDiaryBinding>(), ConfirmDialogInterfa
 //        val totalConsume = viewModel.getMonthConsumption(yearMonth)
 //        binding.tvMonthConsumption.text = "${Constants.formatAmount(totalConsume)}원 사용 중"
 
-        viewModel.fetchDetailsForDate(yearMonth)
+//        viewModel.fetchDetailsForDate(yearMonth)
         getMostConsumedCategoryForMonth(yearMonth)
     }
 

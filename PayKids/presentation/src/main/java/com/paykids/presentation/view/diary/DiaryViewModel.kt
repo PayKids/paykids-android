@@ -10,8 +10,10 @@ import com.paykids.domain.model.DetailConsume
 import com.paykids.domain.model.DetailIncome
 import com.paykids.domain.model.DetailTransaction
 import com.paykids.domain.model.expense.DailyExpenseInfo
+import com.paykids.domain.model.expense.MonthMostCategory
 import com.paykids.domain.usecase.datastore.GetAccessTokenUseCase
 import com.paykids.domain.usecase.expense.GetMonthDailyExpenseUseCase
+import com.paykids.domain.usecase.expense.GetMonthMostCategoryUseCase
 import com.paykids.domain.usecase.expense.GetMonthTotalExpenseUseCase
 import com.paykids.presentation.utils.UiState
 import com.paykids.util.LoggerUtils
@@ -23,7 +25,8 @@ import javax.inject.Inject
 class DiaryViewModel @Inject constructor(
     private val getAccessTokenUseCase: GetAccessTokenUseCase,
     private val getMonthTotalExpenseUseCase: GetMonthTotalExpenseUseCase,
-    private val getMonthDailyExpenseUseCase: GetMonthDailyExpenseUseCase
+    private val getMonthDailyExpenseUseCase: GetMonthDailyExpenseUseCase,
+    private val getMonthMostCategoryUseCase: GetMonthMostCategoryUseCase
 ) : ViewModel() {
 
     private val _monthTotalExpenseState = MutableLiveData<UiState<Int>>()
@@ -51,14 +54,29 @@ class DiaryViewModel @Inject constructor(
         }
     }
 
-    private val _selectedDateDetails = MutableLiveData<List<DetailConsume>>(emptyList())
-    val selectedDateDetails: LiveData<List<DetailConsume>> get() = _selectedDateDetails
+    private val _monthMostCategoryState = MutableLiveData<UiState<MonthMostCategory>>()
+    val monthMostCategoryState: LiveData<UiState<MonthMostCategory>> get() = _monthMostCategoryState
 
-    fun fetchDetailsForDate(date: String) {
-//        val detailsForDate =
-//            monthlyAllInfo.value?.filterIsInstance<DetailConsume>()?.filter { it.date == date }
-//                ?: emptyList()
-//        _selectedDateDetails.value = detailsForDate
+    fun getMonthMostCategory(year: Int, month: Int) {
+        _monthMostCategoryState.value = UiState.Loading
+
+        viewModelScope.launch {
+            try {
+                getMonthMostCategoryUseCase(
+                    getAccessTokenUseCase.invoke().getOrNull().orEmpty(),
+                    year, month
+                ).onSuccess {
+                    _monthMostCategoryState.value = UiState.Success(it)
+                }.onFailure { e ->
+                    LoggerUtils.e("get Month Most Category failed: ${e.message}")
+                    _monthMostCategoryState.value =
+                        UiState.Failure(message = e.message.toString())
+                }
+            } catch (e: Exception) {
+                LoggerUtils.e("get Month Most Category exception: ${e.message}")
+                _monthMostCategoryState.value = UiState.Failure(message = e.message.toString())
+            }
+        }
     }
 
     private val _monthDailyExpenseState = MutableLiveData<UiState<List<DailyExpenseInfo>>>()
