@@ -1,13 +1,13 @@
 package com.paykids.data.mapper
 
-import com.paykids.data.model.expense.DayDTO
-import com.paykids.data.model.expense.MonthAllCategoryDTO
-import com.paykids.data.model.expense.MonthCategoryDTO
-import com.paykids.data.model.expense.MonthDailyDTO
-import com.paykids.domain.model.expenseIncome.DayInfo
-import com.paykids.domain.model.expenseIncome.MonthAllCategoryInfo
-import com.paykids.domain.model.expenseIncome.MonthCategoryInfo
-import com.paykids.domain.model.expenseIncome.MonthDailyInfo
+import com.paykids.data.model.allowance.DayDTO
+import com.paykids.data.model.allowance.MonthAllCategoryDTO
+import com.paykids.data.model.allowance.MonthCategoryDTO
+import com.paykids.data.model.allowance.MonthDailyDTO
+import com.paykids.domain.model.allowance.DayInfo
+import com.paykids.domain.model.allowance.MonthAllCategoryInfo
+import com.paykids.domain.model.allowance.MonthCategoryInfo
+import com.paykids.domain.model.allowance.MonthDailyInfo
 
 fun MonthDailyDTO.toDailyInfoList(): List<MonthDailyInfo> {
     return this.map { item ->

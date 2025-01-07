@@ -1,10 +1,9 @@
 package com.paykids.domain.repository
 
-import com.paykids.domain.model.expenseIncome.DayInfo
-import com.paykids.domain.model.expenseIncome.MonthAllCategoryInfo
-import com.paykids.domain.model.expenseIncome.MonthCategoryInfo
-import com.paykids.domain.model.expenseIncome.MonthDailyInfo
-import com.paykids.domain.model.expenseIncome.MonthMostCategory
+import com.paykids.domain.model.allowance.DayInfo
+import com.paykids.domain.model.allowance.MonthAllCategoryInfo
+import com.paykids.domain.model.allowance.MonthCategoryInfo
+import com.paykids.domain.model.allowance.MonthDailyInfo
 
 interface IncomeRepository {
     suspend fun getMonthTotalIncome(

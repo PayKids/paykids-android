@@ -4,11 +4,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.paykids.domain.model.expenseIncome.DayInfo
-import com.paykids.domain.model.expenseIncome.MonthAllCategoryInfo
-import com.paykids.domain.model.expenseIncome.MonthCategoryInfo
-import com.paykids.domain.model.expenseIncome.MonthDailyInfo
-import com.paykids.domain.model.expenseIncome.MonthMostCategory
+import com.paykids.domain.model.allowance.DayInfo
+import com.paykids.domain.model.allowance.MonthAllCategoryInfo
+import com.paykids.domain.model.allowance.MonthCategoryInfo
+import com.paykids.domain.model.allowance.MonthDailyInfo
+import com.paykids.domain.model.allowance.MonthMostCategory
 import com.paykids.domain.usecase.datastore.GetAccessTokenUseCase
 import com.paykids.domain.usecase.expense.GetDayExpenseUseCase
 import com.paykids.domain.usecase.expense.GetMonthAllCategoryUseCase

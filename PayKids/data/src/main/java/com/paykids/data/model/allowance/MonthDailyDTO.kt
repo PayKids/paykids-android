@@ -1,4 +1,4 @@
-package com.paykids.data.model.expense
+package com.paykids.data.model.allowance
 
 
 class MonthDailyDTO : ArrayList<MonthDailyDTOItem>()

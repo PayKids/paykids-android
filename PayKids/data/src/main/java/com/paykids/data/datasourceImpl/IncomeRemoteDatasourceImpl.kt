@@ -1,16 +1,13 @@
 package com.paykids.data.datasourceImpl
 
-import com.paykids.data.datasource.ExpenseRemoteDatasource
 import com.paykids.data.datasource.IncomeRemoteDatasource
 import com.paykids.data.model.BaseResponse
-import com.paykids.data.model.expense.DayDTO
-import com.paykids.data.model.expense.AddExpenseRequestDTO
-import com.paykids.data.model.expense.MonthAllCategoryDTO
-import com.paykids.data.model.expense.MonthCategoryDTO
-import com.paykids.data.model.expense.MonthDailyDTO
-import com.paykids.data.model.expense.MonthMostCategoryDTO
-import com.paykids.data.model.expense.UpdateExpenseRequestDTO
-import com.paykids.data.service.ExpenseService
+import com.paykids.data.model.allowance.DayDTO
+import com.paykids.data.model.allowance.AddExpenseRequestDTO
+import com.paykids.data.model.allowance.MonthAllCategoryDTO
+import com.paykids.data.model.allowance.MonthCategoryDTO
+import com.paykids.data.model.allowance.MonthDailyDTO
+import com.paykids.data.model.allowance.UpdateExpenseRequestDTO
 import com.paykids.data.service.IncomeService
 import javax.inject.Inject
 

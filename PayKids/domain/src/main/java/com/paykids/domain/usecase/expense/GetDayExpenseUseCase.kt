@@ -1,6 +1,6 @@
 package com.paykids.domain.usecase.expense
 
-import com.paykids.domain.model.expenseIncome.DayInfo
+import com.paykids.domain.model.allowance.DayInfo
 import com.paykids.domain.repository.ExpenseRepository
 import javax.inject.Inject
 

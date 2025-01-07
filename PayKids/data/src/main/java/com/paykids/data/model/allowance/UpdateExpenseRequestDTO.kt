@@ -1,15 +1,19 @@
-package com.paykids.data.model.expense
+package com.paykids.data.model.allowance
 
 
 import com.google.gson.annotations.SerializedName
 
-data class MonthAllCategoryDTOItem(
+data class UpdateExpenseRequestDTO(
     @SerializedName("allowanceType")
     val allowanceType: String,
     @SerializedName("amount")
     val amount: Int,
     @SerializedName("category")
     val category: String,
-    @SerializedName("percent")
-    val percent: String
+    @SerializedName("date")
+    val date: String,
+    @SerializedName("id")
+    val id: Int,
+    @SerializedName("memo")
+    val memo: String
 )

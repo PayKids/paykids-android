@@ -1,9 +1,9 @@
-package com.paykids.data.model.expense
+package com.paykids.data.model.allowance
 
 
 import com.google.gson.annotations.SerializedName
 
-data class UpdateExpenseRequestDTO(
+data class MonthCategoryDTOItem(
     @SerializedName("allowanceType")
     val allowanceType: String,
     @SerializedName("amount")

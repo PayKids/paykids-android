@@ -1,12 +1,12 @@
 package com.paykids.data.datasource
 
 import com.paykids.data.model.BaseResponse
-import com.paykids.data.model.expense.DayDTO
-import com.paykids.data.model.expense.AddExpenseRequestDTO
-import com.paykids.data.model.expense.MonthAllCategoryDTO
-import com.paykids.data.model.expense.MonthCategoryDTO
-import com.paykids.data.model.expense.MonthDailyDTO
-import com.paykids.data.model.expense.UpdateExpenseRequestDTO
+import com.paykids.data.model.allowance.DayDTO
+import com.paykids.data.model.allowance.AddExpenseRequestDTO
+import com.paykids.data.model.allowance.MonthAllCategoryDTO
+import com.paykids.data.model.allowance.MonthCategoryDTO
+import com.paykids.data.model.allowance.MonthDailyDTO
+import com.paykids.data.model.allowance.UpdateExpenseRequestDTO
 
 interface IncomeRemoteDatasource {
     suspend fun getMonthTotalIncome(
