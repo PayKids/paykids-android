@@ -1,12 +1,14 @@
 package com.paykids.data.di
 
 import com.paykids.domain.repository.ExpenseRepository
+import com.paykids.domain.usecase.expense.AddExpenseUseCase
 import com.paykids.domain.usecase.expense.GetDayExpenseUseCase
-import com.paykids.domain.usecase.expense.GetMonthAllCategoryUseCase
+import com.paykids.domain.usecase.expense.GetMonthAllCategoryExpenseUseCase
 import com.paykids.domain.usecase.expense.GetMonthCategoryExpenseUseCase
 import com.paykids.domain.usecase.expense.GetMonthDailyExpenseUseCase
 import com.paykids.domain.usecase.expense.GetMonthMostCategoryUseCase
 import com.paykids.domain.usecase.expense.GetMonthTotalExpenseUseCase
+import com.paykids.domain.usecase.expense.UpdateExpenseUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -53,8 +55,8 @@ object ExpenseUseCaseModule {
     @Singleton
     fun provideGetMonthAllCategoryUseCase(
         repository: ExpenseRepository
-    ): GetMonthAllCategoryUseCase {
-        return GetMonthAllCategoryUseCase(repository)
+    ): GetMonthAllCategoryExpenseUseCase {
+        return GetMonthAllCategoryExpenseUseCase(repository)
     }
 
     @Provides
@@ -65,5 +67,20 @@ object ExpenseUseCaseModule {
         return GetDayExpenseUseCase(repository)
     }
 
+    @Provides
+    @Singleton
+    fun provideAddExpenseUseCase(
+        repository: ExpenseRepository
+    ): AddExpenseUseCase {
+        return AddExpenseUseCase(repository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideUpdateExpenseUseCase(
+        repository: ExpenseRepository
+    ): UpdateExpenseUseCase {
+        return UpdateExpenseUseCase(repository)
+    }
 }
 

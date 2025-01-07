@@ -35,7 +35,7 @@ interface ExpenseRemoteDatasource {
         category: String
     ): Result<BaseResponse<MonthCategoryDTO>>
 
-    suspend fun getMonthAllCategory(
+    suspend fun getMonthAllCategoryExpense(
         accessToken: String,
         year: Int,
         month: Int

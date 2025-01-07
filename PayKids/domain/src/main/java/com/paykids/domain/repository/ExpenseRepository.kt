@@ -32,7 +32,7 @@ interface ExpenseRepository {
         category: String
     ): Result<List<MonthCategoryInfo>>
 
-    suspend fun getMonthAllCategory(
+    suspend fun getMonthAllCategoryExpense(
         accessToken: String,
         year: Int,
         month: Int

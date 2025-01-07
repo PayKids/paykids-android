@@ -105,13 +105,13 @@ class ExpenseRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getMonthAllCategory(
+    override suspend fun getMonthAllCategoryExpense(
         accessToken: String,
         year: Int,
         month: Int
     ): Result<List<MonthAllCategoryInfo>> {
         val result =
-            expenseRemoteDatasource.getMonthAllCategory(accessToken, year, month)
+            expenseRemoteDatasource.getMonthAllCategoryExpense(accessToken, year, month)
 
         return if (result.isSuccess) {
             val res = result.getOrNull()

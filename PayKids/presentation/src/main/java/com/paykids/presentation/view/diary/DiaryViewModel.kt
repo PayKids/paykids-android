@@ -11,7 +11,7 @@ import com.paykids.domain.model.allowance.MonthDailyInfo
 import com.paykids.domain.model.allowance.MonthMostCategory
 import com.paykids.domain.usecase.datastore.GetAccessTokenUseCase
 import com.paykids.domain.usecase.expense.GetDayExpenseUseCase
-import com.paykids.domain.usecase.expense.GetMonthAllCategoryUseCase
+import com.paykids.domain.usecase.expense.GetMonthAllCategoryExpenseUseCase
 import com.paykids.domain.usecase.expense.GetMonthCategoryExpenseUseCase
 import com.paykids.domain.usecase.expense.GetMonthDailyExpenseUseCase
 import com.paykids.domain.usecase.expense.GetMonthMostCategoryUseCase
@@ -31,7 +31,7 @@ class DiaryViewModel @Inject constructor(
     private val getMonthDailyExpenseUseCase: GetMonthDailyExpenseUseCase,
     private val getMonthMostCategoryUseCase: GetMonthMostCategoryUseCase,
     private val getMonthCategoryExpenseUseCase: GetMonthCategoryExpenseUseCase,
-    private val getMonthAllCategoryUseCase: GetMonthAllCategoryUseCase,
+    private val getMonthAllCategoryUseCase: GetMonthAllCategoryExpenseUseCase,
     private val getDayExpenseUseCase: GetDayExpenseUseCase,
     private val addExpenseUseCase: AddExpenseUseCase,
     private val updateExpenseUseCase: UpdateExpenseUseCase
