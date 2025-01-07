@@ -7,11 +7,11 @@ import com.paykids.data.mapper.toMonthAllCategory
 import com.paykids.data.mapper.toMonthCategoryExpense
 import com.paykids.data.model.expense.AddExpenseRequestDTO
 import com.paykids.data.model.expense.UpdateExpenseRequestDTO
-import com.paykids.domain.model.expense.DayExpense
-import com.paykids.domain.model.expense.MonthAllCategory
-import com.paykids.domain.model.expense.MonthCategoryExpense
-import com.paykids.domain.model.expense.MonthDailyExpenseInfo
-import com.paykids.domain.model.expense.MonthMostCategory
+import com.paykids.domain.model.expenseIncome.DayInfo
+import com.paykids.domain.model.expenseIncome.MonthAllCategoryInfo
+import com.paykids.domain.model.expenseIncome.MonthCategoryInfo
+import com.paykids.domain.model.expenseIncome.MonthDailyInfo
+import com.paykids.domain.model.expenseIncome.MonthMostCategory
 import com.paykids.domain.repository.ExpenseRepository
 import javax.inject.Inject
 
@@ -65,7 +65,7 @@ class ExpenseRepositoryImpl @Inject constructor(
         accessToken: String,
         year: Int,
         month: Int
-    ): Result<List<MonthDailyExpenseInfo>> {
+    ): Result<List<MonthDailyInfo>> {
         val result = expenseRemoteDatasource.getMonthDailyExpense(accessToken, year, month)
 
         return if (result.isSuccess) {
@@ -87,7 +87,7 @@ class ExpenseRepositoryImpl @Inject constructor(
         year: Int,
         month: Int,
         category: String
-    ): Result<List<MonthCategoryExpense>> {
+    ): Result<List<MonthCategoryInfo>> {
         val result =
             expenseRemoteDatasource.getMonthCategoryExpense(accessToken, year, month, category)
 
@@ -109,7 +109,7 @@ class ExpenseRepositoryImpl @Inject constructor(
         accessToken: String,
         year: Int,
         month: Int
-    ): Result<List<MonthAllCategory>> {
+    ): Result<List<MonthAllCategoryInfo>> {
         val result =
             expenseRemoteDatasource.getMonthAllCategory(accessToken, year, month)
 
@@ -130,7 +130,7 @@ class ExpenseRepositoryImpl @Inject constructor(
     override suspend fun getDayExpense(
         accessToken: String,
         localDate: String
-    ): Result<List<DayExpense>> {
+    ): Result<List<DayInfo>> {
         val result =
             expenseRemoteDatasource.getDayExpense(accessToken, localDate)
 

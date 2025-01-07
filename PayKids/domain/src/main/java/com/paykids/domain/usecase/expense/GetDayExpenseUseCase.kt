@@ -1,6 +1,6 @@
 package com.paykids.domain.usecase.expense
 
-import com.paykids.domain.model.expense.DayExpense
+import com.paykids.domain.model.expenseIncome.DayInfo
 import com.paykids.domain.repository.ExpenseRepository
 import javax.inject.Inject
 
@@ -8,7 +8,7 @@ class GetDayExpenseUseCase @Inject constructor(private val repository: ExpenseRe
     suspend operator fun invoke(
         accessToken: String,
         localDate: String
-    ): Result<List<DayExpense>> {
+    ): Result<List<DayInfo>> {
         return repository.getDayExpense("Bearer $accessToken", localDate)
     }
 }

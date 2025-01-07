@@ -1,6 +1,6 @@
 package com.paykids.domain.usecase.expense
 
-import com.paykids.domain.model.expense.MonthMostCategory
+import com.paykids.domain.model.expenseIncome.MonthMostCategory
 import com.paykids.domain.repository.ExpenseRepository
 import javax.inject.Inject
 

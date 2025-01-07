@@ -7,7 +7,6 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.paykids.domain.model.DayInfo
 import com.paykids.presentation.R
 import com.paykids.presentation.databinding.ItemDiaryDayBinding
 import com.paykids.presentation.view.OnRvItemClickListener

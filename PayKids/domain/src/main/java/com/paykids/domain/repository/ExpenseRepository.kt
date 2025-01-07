@@ -1,10 +1,10 @@
 package com.paykids.domain.repository
 
-import com.paykids.domain.model.expense.DayExpense
-import com.paykids.domain.model.expense.MonthAllCategory
-import com.paykids.domain.model.expense.MonthCategoryExpense
-import com.paykids.domain.model.expense.MonthDailyExpenseInfo
-import com.paykids.domain.model.expense.MonthMostCategory
+import com.paykids.domain.model.expenseIncome.DayInfo
+import com.paykids.domain.model.expenseIncome.MonthAllCategoryInfo
+import com.paykids.domain.model.expenseIncome.MonthCategoryInfo
+import com.paykids.domain.model.expenseIncome.MonthDailyInfo
+import com.paykids.domain.model.expenseIncome.MonthMostCategory
 
 interface ExpenseRepository {
     suspend fun getMonthTotalExpense(
@@ -23,25 +23,25 @@ interface ExpenseRepository {
         accessToken: String,
         year: Int,
         month: Int
-    ): Result<List<MonthDailyExpenseInfo>>
+    ): Result<List<MonthDailyInfo>>
 
     suspend fun getMonthCategoryExpense(
         accessToken: String,
         year: Int,
         month: Int,
         category: String
-    ): Result<List<MonthCategoryExpense>>
+    ): Result<List<MonthCategoryInfo>>
 
     suspend fun getMonthAllCategory(
         accessToken: String,
         year: Int,
         month: Int
-    ): Result<List<MonthAllCategory>>
+    ): Result<List<MonthAllCategoryInfo>>
 
     suspend fun getDayExpense(
         accessToken: String,
         localDate: String
-    ): Result<List<DayExpense>>
+    ): Result<List<DayInfo>>
 
     suspend fun saveExpense(
         accessToken: String,

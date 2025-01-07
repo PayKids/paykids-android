@@ -1,4 +1,4 @@
-package com.paykids.domain.model.expense
+package com.paykids.domain.model.expenseIncome
 
 data class MonthMostCategory(
     val category: String,

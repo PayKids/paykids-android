@@ -1,6 +1,6 @@
 package com.paykids.domain.usecase.expense
 
-import com.paykids.domain.model.expense.MonthCategoryExpense
+import com.paykids.domain.model.expenseIncome.MonthCategoryInfo
 import com.paykids.domain.repository.ExpenseRepository
 import javax.inject.Inject
 
@@ -9,7 +9,7 @@ class GetMonthCategoryExpenseUseCase @Inject constructor(private val repository:
         accessToken: String,
         year: Int,
         month: Int, category: String
-    ): Result<List<MonthCategoryExpense>> {
+    ): Result<List<MonthCategoryInfo>> {
         return repository.getMonthCategoryExpense("Bearer $accessToken", year, month, category)
     }
 }

@@ -3,7 +3,6 @@ package com.paykids.presentation.view.diary
 import android.os.Bundle
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
-import com.paykids.domain.model.DayInfo
 import com.paykids.presentation.base.BaseFragment
 import com.paykids.presentation.databinding.FragmentDiaryMonthBinding
 import com.paykids.presentation.view.OnRvItemClickListener

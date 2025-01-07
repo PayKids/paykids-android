@@ -4,11 +4,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.paykids.domain.model.expense.DayExpense
-import com.paykids.domain.model.expense.MonthAllCategory
-import com.paykids.domain.model.expense.MonthCategoryExpense
-import com.paykids.domain.model.expense.MonthDailyExpenseInfo
-import com.paykids.domain.model.expense.MonthMostCategory
+import com.paykids.domain.model.expenseIncome.DayInfo
+import com.paykids.domain.model.expenseIncome.MonthAllCategoryInfo
+import com.paykids.domain.model.expenseIncome.MonthCategoryInfo
+import com.paykids.domain.model.expenseIncome.MonthDailyInfo
+import com.paykids.domain.model.expenseIncome.MonthMostCategory
 import com.paykids.domain.usecase.datastore.GetAccessTokenUseCase
 import com.paykids.domain.usecase.expense.GetDayExpenseUseCase
 import com.paykids.domain.usecase.expense.GetMonthAllCategoryUseCase
@@ -87,8 +87,8 @@ class DiaryViewModel @Inject constructor(
         }
     }
 
-    private val _monthDailyExpenseState = MutableLiveData<UiState<List<MonthDailyExpenseInfo>>>()
-    val monthDailyExpenseState: LiveData<UiState<List<MonthDailyExpenseInfo>>> get() = _monthDailyExpenseState
+    private val _monthDailyExpenseState = MutableLiveData<UiState<List<MonthDailyInfo>>>()
+    val monthDailyExpenseState: LiveData<UiState<List<MonthDailyInfo>>> get() = _monthDailyExpenseState
 
     fun getMonthDailyExpense(year: Int, month: Int) {
         _monthDailyExpenseState.value = UiState.Loading
@@ -112,8 +112,8 @@ class DiaryViewModel @Inject constructor(
         }
     }
 
-    private val _dayExpenseState = MutableLiveData<UiState<List<DayExpense>>>()
-    val dayExpenseState: LiveData<UiState<List<DayExpense>>> get() = _dayExpenseState
+    private val _dayExpenseState = MutableLiveData<UiState<List<DayInfo>>>()
+    val dayExpenseState: LiveData<UiState<List<DayInfo>>> get() = _dayExpenseState
 
     fun getDayExpense(date: String) {
         _dayExpenseState.value = UiState.Loading
@@ -137,8 +137,8 @@ class DiaryViewModel @Inject constructor(
         }
     }
 
-    private val _allCategoryState = MutableLiveData<UiState<List<MonthAllCategory>>>()
-    val allCategoryState: LiveData<UiState<List<MonthAllCategory>>> get() = _allCategoryState
+    private val _allCategoryState = MutableLiveData<UiState<List<MonthAllCategoryInfo>>>()
+    val allCategoryState: LiveData<UiState<List<MonthAllCategoryInfo>>> get() = _allCategoryState
 
     fun getMonthAllCategory(year: Int, month: Int) {
         _allCategoryState.value = UiState.Loading
@@ -162,8 +162,8 @@ class DiaryViewModel @Inject constructor(
         }
     }
 
-    private val _categoryExpenseState = MutableLiveData<UiState<List<MonthCategoryExpense>>>()
-    val categoryExpenseState: LiveData<UiState<List<MonthCategoryExpense>>> get() = _categoryExpenseState
+    private val _categoryExpenseState = MutableLiveData<UiState<List<MonthCategoryInfo>>>()
+    val categoryExpenseState: LiveData<UiState<List<MonthCategoryInfo>>> get() = _categoryExpenseState
 
     fun getMonthCategoryExpense(year: Int, month: Int, category: String) {
         _categoryExpenseState.value = UiState.Loading

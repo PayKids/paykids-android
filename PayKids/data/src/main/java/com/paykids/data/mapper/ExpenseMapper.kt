@@ -4,23 +4,23 @@ import com.paykids.data.model.expense.DayDTO
 import com.paykids.data.model.expense.MonthAllCategoryDTO
 import com.paykids.data.model.expense.MonthCategoryDTO
 import com.paykids.data.model.expense.MonthDailyDTO
-import com.paykids.domain.model.expense.DayExpense
-import com.paykids.domain.model.expense.MonthAllCategory
-import com.paykids.domain.model.expense.MonthCategoryExpense
-import com.paykids.domain.model.expense.MonthDailyExpenseInfo
+import com.paykids.domain.model.expenseIncome.DayInfo
+import com.paykids.domain.model.expenseIncome.MonthAllCategoryInfo
+import com.paykids.domain.model.expenseIncome.MonthCategoryInfo
+import com.paykids.domain.model.expenseIncome.MonthDailyInfo
 
-fun MonthDailyDTO.toDailyExpenseInfoList(): List<MonthDailyExpenseInfo> {
+fun MonthDailyDTO.toDailyExpenseInfoList(): List<MonthDailyInfo> {
     return this.map { item ->
-        MonthDailyExpenseInfo(
+        MonthDailyInfo(
             date = item.date,
             amount = item.amount
         )
     }
 }
 
-fun MonthCategoryDTO.toMonthCategoryExpense(): List<MonthCategoryExpense> {
+fun MonthCategoryDTO.toMonthCategoryExpense(): List<MonthCategoryInfo> {
     return this.map { item ->
-        MonthCategoryExpense(
+        MonthCategoryInfo(
             date = item.date,
             amount = item.amount,
             memo = item.memo
@@ -28,9 +28,9 @@ fun MonthCategoryDTO.toMonthCategoryExpense(): List<MonthCategoryExpense> {
     }
 }
 
-fun MonthAllCategoryDTO.toMonthAllCategory(): List<MonthAllCategory> {
+fun MonthAllCategoryDTO.toMonthAllCategory(): List<MonthAllCategoryInfo> {
     return this.map { item ->
-        MonthAllCategory(
+        MonthAllCategoryInfo(
             category = item.category,
             amount = item.amount,
             percent = item.percent
@@ -38,9 +38,9 @@ fun MonthAllCategoryDTO.toMonthAllCategory(): List<MonthAllCategory> {
     }
 }
 
-fun DayDTO.toDayExpense(): List<DayExpense> {
+fun DayDTO.toDayExpense(): List<DayInfo> {
     return this.map { item ->
-        DayExpense(
+        DayInfo(
             category = item.category,
             amount = item.amount,
             memo = item.memo
