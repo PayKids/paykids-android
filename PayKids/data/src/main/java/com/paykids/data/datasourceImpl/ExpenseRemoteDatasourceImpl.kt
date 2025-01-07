@@ -2,11 +2,11 @@ package com.paykids.data.datasourceImpl
 
 import com.paykids.data.datasource.ExpenseRemoteDatasource
 import com.paykids.data.model.BaseResponse
-import com.paykids.data.model.expense.DayExpenseDTO
+import com.paykids.data.model.expense.DayDTO
 import com.paykids.data.model.expense.AddExpenseRequestDTO
 import com.paykids.data.model.expense.MonthAllCategoryDTO
-import com.paykids.data.model.expense.MonthCategoryExpenseDTO
-import com.paykids.data.model.expense.MonthDailyExpenseDTO
+import com.paykids.data.model.expense.MonthCategoryDTO
+import com.paykids.data.model.expense.MonthDailyDTO
 import com.paykids.data.model.expense.MonthMostCategoryDTO
 import com.paykids.data.model.expense.UpdateExpenseRequestDTO
 import com.paykids.data.service.ExpenseService
@@ -65,7 +65,7 @@ class ExpenseRemoteDatasourceImpl @Inject constructor(
         accessToken: String,
         year: Int,
         month: Int
-    ): Result<BaseResponse<MonthDailyExpenseDTO>> {
+    ): Result<BaseResponse<MonthDailyDTO>> {
         return try {
             val response = expenseService.getMonthDailyExpense(accessToken, year, month)
 
@@ -89,7 +89,7 @@ class ExpenseRemoteDatasourceImpl @Inject constructor(
         year: Int,
         month: Int,
         category: String
-    ): Result<BaseResponse<MonthCategoryExpenseDTO>> {
+    ): Result<BaseResponse<MonthCategoryDTO>> {
         return try {
             val response = expenseService.getMonthCategoryExpense(accessToken, year, month, category)
 
@@ -114,7 +114,7 @@ class ExpenseRemoteDatasourceImpl @Inject constructor(
         month: Int
     ): Result<BaseResponse<MonthAllCategoryDTO>> {
         return try {
-            val response = expenseService.getMonthAllCategory(accessToken, year, month)
+            val response = expenseService.getMonthAllCategoryExpense(accessToken, year, month)
 
             if (response.isSuccessful) {
                 val res = response.body()
@@ -134,7 +134,7 @@ class ExpenseRemoteDatasourceImpl @Inject constructor(
     override suspend fun getDayExpense(
         accessToken: String,
         localDate: String
-    ): Result<BaseResponse<DayExpenseDTO>> {
+    ): Result<BaseResponse<DayDTO>> {
         return try {
             val response = expenseService.getDayExpense(accessToken, localDate)
 

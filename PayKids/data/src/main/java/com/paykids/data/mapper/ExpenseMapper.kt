@@ -1,15 +1,15 @@
 package com.paykids.data.mapper
 
-import com.paykids.data.model.expense.DayExpenseDTO
+import com.paykids.data.model.expense.DayDTO
 import com.paykids.data.model.expense.MonthAllCategoryDTO
-import com.paykids.data.model.expense.MonthCategoryExpenseDTO
-import com.paykids.data.model.expense.MonthDailyExpenseDTO
+import com.paykids.data.model.expense.MonthCategoryDTO
+import com.paykids.data.model.expense.MonthDailyDTO
 import com.paykids.domain.model.expense.DayExpense
 import com.paykids.domain.model.expense.MonthAllCategory
 import com.paykids.domain.model.expense.MonthCategoryExpense
 import com.paykids.domain.model.expense.MonthDailyExpenseInfo
 
-fun MonthDailyExpenseDTO.toDailyExpenseInfoList(): List<MonthDailyExpenseInfo> {
+fun MonthDailyDTO.toDailyExpenseInfoList(): List<MonthDailyExpenseInfo> {
     return this.map { item ->
         MonthDailyExpenseInfo(
             date = item.date,
@@ -18,7 +18,7 @@ fun MonthDailyExpenseDTO.toDailyExpenseInfoList(): List<MonthDailyExpenseInfo> {
     }
 }
 
-fun MonthCategoryExpenseDTO.toMonthCategoryExpense(): List<MonthCategoryExpense> {
+fun MonthCategoryDTO.toMonthCategoryExpense(): List<MonthCategoryExpense> {
     return this.map { item ->
         MonthCategoryExpense(
             date = item.date,
@@ -38,7 +38,7 @@ fun MonthAllCategoryDTO.toMonthAllCategory(): List<MonthAllCategory> {
     }
 }
 
-fun DayExpenseDTO.toDayExpense(): List<DayExpense> {
+fun DayDTO.toDayExpense(): List<DayExpense> {
     return this.map { item ->
         DayExpense(
             category = item.category,

@@ -1,11 +1,11 @@
 package com.paykids.data.service
 
 import com.paykids.data.model.BaseResponse
-import com.paykids.data.model.expense.DayExpenseDTO
+import com.paykids.data.model.expense.DayDTO
 import com.paykids.data.model.expense.AddExpenseRequestDTO
 import com.paykids.data.model.expense.MonthAllCategoryDTO
-import com.paykids.data.model.expense.MonthCategoryExpenseDTO
-import com.paykids.data.model.expense.MonthDailyExpenseDTO
+import com.paykids.data.model.expense.MonthCategoryDTO
+import com.paykids.data.model.expense.MonthDailyDTO
 import com.paykids.data.model.expense.MonthMostCategoryDTO
 import com.paykids.data.model.expense.UpdateExpenseRequestDTO
 import retrofit2.Response
@@ -37,7 +37,7 @@ interface ExpenseService {
         @Header("Authorization") accessToken: String,
         @Query("year") year: Int,
         @Query("month") month: Int
-    ): Response<BaseResponse<MonthDailyExpenseDTO>>
+    ): Response<BaseResponse<MonthDailyDTO>>
 
     @GET("/expense/allowance/month-category")
     suspend fun getMonthCategoryExpense(
@@ -45,10 +45,10 @@ interface ExpenseService {
         @Query("year") year: Int,
         @Query("month") month: Int,
         @Query("category") category: String
-    ): Response<BaseResponse<MonthCategoryExpenseDTO>>
+    ): Response<BaseResponse<MonthCategoryDTO>>
 
     @GET("/expense/allowance/month-all-category")
-    suspend fun getMonthAllCategory(
+    suspend fun getMonthAllCategoryExpense(
         @Header("Authorization") accessToken: String,
         @Query("year") year: Int,
         @Query("month") month: Int,
@@ -58,7 +58,7 @@ interface ExpenseService {
     suspend fun getDayExpense(
         @Header("Authorization") accessToken: String,
         @Query("localDate") localDate: String
-    ): Response<BaseResponse<DayExpenseDTO>>
+    ): Response<BaseResponse<DayDTO>>
 
     @POST("/expense/allowance/save")
     suspend fun saveExpense(
