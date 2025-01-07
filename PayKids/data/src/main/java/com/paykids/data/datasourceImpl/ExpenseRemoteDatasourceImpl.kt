@@ -134,6 +134,21 @@ class ExpenseRemoteDatasourceImpl @Inject constructor(
         accessToken: String,
         localDate: String
     ): Result<BaseResponse<DayExpenseDTO>> {
-        TODO("Not yet implemented")
+        return try {
+            val response = expenseService.getDayExpense(accessToken, localDate)
+
+            if (response.isSuccessful) {
+                val res = response.body()
+                if (res != null) {
+                    Result.success(res)
+                } else {
+                    Result.failure(Exception("get Day Expense failed: response body is null"))
+                }
+            } else {
+                Result.failure(Exception("get Day Expense failed: ${response.message()}"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
     }
 }

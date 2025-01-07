@@ -1,23 +1,16 @@
 package com.paykids.data.repository
 
 import com.paykids.data.datasource.ExpenseRemoteDatasource
-import com.paykids.data.datasource.UserRemoteDatasource
-import com.paykids.data.mapper.UserMapper
 import com.paykids.data.mapper.toDailyExpenseInfoList
+import com.paykids.data.mapper.toDayExpense
 import com.paykids.data.mapper.toMonthAllCategory
 import com.paykids.data.mapper.toMonthCategoryExpense
-import com.paykids.data.model.expense.MonthAllCategoryDTO
-import com.paykids.domain.model.expense.DailyExpenseInfo
+import com.paykids.domain.model.expense.DayExpense
+import com.paykids.domain.model.expense.MonthDailyExpenseInfo
 import com.paykids.domain.model.expense.MonthAllCategory
 import com.paykids.domain.model.expense.MonthCategoryExpense
 import com.paykids.domain.model.expense.MonthMostCategory
-import com.paykids.domain.model.user.UserInfo
 import com.paykids.domain.repository.ExpenseRepository
-import com.paykids.domain.repository.UserRepository
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.MultipartBody
-import okhttp3.RequestBody.Companion.asRequestBody
-import java.io.File
 import javax.inject.Inject
 
 class ExpenseRepositoryImpl @Inject constructor(
@@ -70,7 +63,7 @@ class ExpenseRepositoryImpl @Inject constructor(
         accessToken: String,
         year: Int,
         month: Int
-    ): Result<List<DailyExpenseInfo>> {
+    ): Result<List<MonthDailyExpenseInfo>> {
         val result = expenseRemoteDatasource.getMonthDailyExpense(accessToken, year, month)
 
         return if (result.isSuccess) {
@@ -132,8 +125,25 @@ class ExpenseRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getDayExpense(accessToken: String, localDate: String): Result<String> {
-        TODO("Not yet implemented")
+    override suspend fun getDayExpense(
+        accessToken: String,
+        localDate: String
+    ): Result<List<DayExpense>> {
+        val result =
+            expenseRemoteDatasource.getDayExpense(accessToken, localDate)
+
+        return if (result.isSuccess) {
+            val res = result.getOrNull()
+            if (res != null) {
+                val data = res.data
+                val dayExpenseInfo = data.toDayExpense()
+                Result.success(dayExpenseInfo)
+            } else {
+                Result.failure(Exception("get Day Expense Failed: response body is null"))
+            }
+        } else {
+            Result.failure(result.exceptionOrNull() ?: Exception("Unknown error"))
+        }
     }
 
 }
