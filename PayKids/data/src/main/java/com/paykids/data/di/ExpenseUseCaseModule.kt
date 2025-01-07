@@ -4,6 +4,7 @@ import com.paykids.domain.repository.ExpenseRepository
 import com.paykids.domain.repository.UserRepository
 import com.paykids.domain.usecase.expense.GetDayExpenseUseCase
 import com.paykids.domain.usecase.expense.GetMonthAllCategoryUseCase
+import com.paykids.domain.usecase.expense.GetMonthCategoryExpenseUseCase
 import com.paykids.domain.usecase.expense.GetMonthDailyExpenseUseCase
 import com.paykids.domain.usecase.expense.GetMonthMostCategoryUseCase
 import com.paykids.domain.usecase.expense.GetMonthTotalExpenseUseCase
@@ -49,8 +50,8 @@ object ExpenseUseCaseModule {
     @Singleton
     fun provideGetMonthCategoryExpenseUseCase(
         repository: ExpenseRepository
-    ): GetMonthMostCategoryUseCase {
-        return GetMonthMostCategoryUseCase(repository)
+    ): GetMonthCategoryExpenseUseCase {
+        return GetMonthCategoryExpenseUseCase(repository)
     }
 
     @Provides

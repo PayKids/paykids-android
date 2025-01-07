@@ -47,7 +47,7 @@ class DiaryViewModel @Inject constructor(
                 ).onSuccess {
                     _monthTotalExpenseState.value = UiState.Success(it)
                 }.onFailure { e ->
-                    LoggerUtils.e("get Month Total Expense failed: ${e.message}")
+                    LoggerUtils.e(e.message.toString())
                     _monthTotalExpenseState.value =
                         UiState.Failure(message = e.message.toString())
                 }
@@ -72,7 +72,7 @@ class DiaryViewModel @Inject constructor(
                 ).onSuccess {
                     _monthMostCategoryState.value = UiState.Success(it)
                 }.onFailure { e ->
-                    LoggerUtils.e("get Month Most Category failed: ${e.message}")
+                    LoggerUtils.e(e.message.toString())
                     _monthMostCategoryState.value =
                         UiState.Failure(message = e.message.toString())
                 }
@@ -97,7 +97,7 @@ class DiaryViewModel @Inject constructor(
                 ).onSuccess {
                     _monthDailyExpenseState.value = UiState.Success(it)
                 }.onFailure { e ->
-                    LoggerUtils.e("get Month Daily Expense failed: ${e.message}")
+                    LoggerUtils.e(e.message.toString())
                     _monthDailyExpenseState.value =
                         UiState.Failure(message = e.message.toString())
                 }
@@ -122,7 +122,7 @@ class DiaryViewModel @Inject constructor(
                 ).onSuccess {
                     _dayExpenseState.value = UiState.Success(it)
                 }.onFailure { e ->
-                    LoggerUtils.e("get Day Expense failed: ${e.message}")
+                    LoggerUtils.e(e.message.toString())
                     _dayExpenseState.value =
                         UiState.Failure(message = e.message.toString())
                 }
@@ -147,7 +147,7 @@ class DiaryViewModel @Inject constructor(
                 ).onSuccess {
                     _allCategoryState.value = UiState.Success(it)
                 }.onFailure { e ->
-                    LoggerUtils.e("get Month All Category failed: ${e.message}")
+                    LoggerUtils.e(e.message.toString())
                     _allCategoryState.value =
                         UiState.Failure(message = e.message.toString())
                 }
@@ -172,7 +172,7 @@ class DiaryViewModel @Inject constructor(
                 ).onSuccess {
                     _categoryExpenseState.value = UiState.Success(it)
                 }.onFailure { e ->
-                    LoggerUtils.e("get Month Category Expense failed: ${e.message}")
+                    LoggerUtils.e(e.message.toString())
                     _categoryExpenseState.value =
                         UiState.Failure(message = e.message.toString())
                 }
