@@ -5,9 +5,9 @@ import com.paykids.data.model.expense.MonthAllCategoryDTO
 import com.paykids.data.model.expense.MonthCategoryExpenseDTO
 import com.paykids.data.model.expense.MonthDailyExpenseDTO
 import com.paykids.domain.model.expense.DayExpense
-import com.paykids.domain.model.expense.MonthDailyExpenseInfo
 import com.paykids.domain.model.expense.MonthAllCategory
 import com.paykids.domain.model.expense.MonthCategoryExpense
+import com.paykids.domain.model.expense.MonthDailyExpenseInfo
 
 fun MonthDailyExpenseDTO.toDailyExpenseInfoList(): List<MonthDailyExpenseInfo> {
     return this.map { item ->

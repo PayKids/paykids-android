@@ -1,16 +1,12 @@
 package com.paykids.presentation.view.diary
 
 import android.annotation.SuppressLint
-import android.graphics.Color
 import android.view.View
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.paykids.presentation.R
 import com.paykids.presentation.base.BaseFragment
 import com.paykids.presentation.databinding.FragmentAnalysisConsumeBinding
-import com.paykids.presentation.utils.Constants
 import com.paykids.presentation.utils.UiState
 import com.paykids.presentation.view.home.HomeActivity
 import com.paykids.util.LoggerUtils

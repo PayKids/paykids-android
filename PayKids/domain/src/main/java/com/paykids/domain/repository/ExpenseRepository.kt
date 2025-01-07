@@ -1,9 +1,9 @@
 package com.paykids.domain.repository
 
 import com.paykids.domain.model.expense.DayExpense
-import com.paykids.domain.model.expense.MonthDailyExpenseInfo
 import com.paykids.domain.model.expense.MonthAllCategory
 import com.paykids.domain.model.expense.MonthCategoryExpense
+import com.paykids.domain.model.expense.MonthDailyExpenseInfo
 import com.paykids.domain.model.expense.MonthMostCategory
 
 interface ExpenseRepository {

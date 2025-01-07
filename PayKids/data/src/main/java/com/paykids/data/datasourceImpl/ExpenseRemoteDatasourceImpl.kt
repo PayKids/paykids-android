@@ -3,7 +3,6 @@ package com.paykids.data.datasourceImpl
 import com.paykids.data.datasource.ExpenseRemoteDatasource
 import com.paykids.data.model.BaseResponse
 import com.paykids.data.model.expense.DayExpenseDTO
-import com.paykids.data.model.UserInfoResponseDTO
 import com.paykids.data.model.expense.MonthAllCategoryDTO
 import com.paykids.data.model.expense.MonthCategoryExpenseDTO
 import com.paykids.data.model.expense.MonthDailyExpenseDTO

@@ -1,17 +1,12 @@
 package com.paykids.data.di
 
 import com.paykids.domain.repository.ExpenseRepository
-import com.paykids.domain.repository.UserRepository
 import com.paykids.domain.usecase.expense.GetDayExpenseUseCase
 import com.paykids.domain.usecase.expense.GetMonthAllCategoryUseCase
 import com.paykids.domain.usecase.expense.GetMonthCategoryExpenseUseCase
 import com.paykids.domain.usecase.expense.GetMonthDailyExpenseUseCase
 import com.paykids.domain.usecase.expense.GetMonthMostCategoryUseCase
 import com.paykids.domain.usecase.expense.GetMonthTotalExpenseUseCase
-import com.paykids.domain.usecase.user.ChangeNicknameUseCase
-import com.paykids.domain.usecase.user.GetUserInfoUseCase
-import com.paykids.domain.usecase.user.SaveNicknameUseCase
-import com.paykids.domain.usecase.user.UpdateProfileImageUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
