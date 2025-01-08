@@ -16,7 +16,6 @@ class DiaryMonthCalendarStateAdapter(
         val calendar = Calendar.getInstance().apply {
             add(Calendar.MONTH, position - (Int.MAX_VALUE / 2))
         }
-//        return DiaryMonthFragment.newInstance(calendar.time)
         return DiaryMonthFragment.newInstance(calendar.time).apply {
             setOnDateClickListener(onDateClickListener)
         }

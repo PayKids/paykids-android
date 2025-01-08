@@ -4,9 +4,13 @@ import android.os.Bundle
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import com.paykids.domain.model.allowance.DayInfo
+import com.paykids.domain.model.allowance.MonthDailyInfo
 import com.paykids.presentation.base.BaseFragment
 import com.paykids.presentation.databinding.FragmentDiaryMonthBinding
+import com.paykids.presentation.utils.Constants
+import com.paykids.presentation.utils.UiState
 import com.paykids.presentation.view.OnRvItemClickListener
+import com.paykids.util.LoggerUtils
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Calendar
 import java.util.Date
@@ -32,35 +36,59 @@ class DiaryMonthFragment : BaseFragment<FragmentDiaryMonthBinding>() {
     }
 
     override fun initView() {
+
+        val today = getToday()
+        val currentYear = today.split("-")[0].toInt()
+        val currentMonth = today.split("-")[1].toInt()
         date = arguments?.getLong(ARG_DATE)?.let { Date(it) } ?: Date()
         val daysInMonth = getDaysInMonth(date)
         val initialList =
-            daysInMonth.map { day -> Pair(day, null as DayInfo?) }
+            daysInMonth.map { day -> Pair(day, null as MonthDailyInfo?) }
 
-        viewModel.getMonthDailyExpense(2025, 1)
-
-//        viewModel.fetchDayInfo()
-//        viewModel.getDayInfoForMonth("12")
-//        viewModel.getDayInfoForMonth("1")
+        viewModel.getMonthDailyExpense(currentYear, currentMonth)
 
         dayAdapter = DiaryDayCalendarAdapter().apply {
             setRvItemClickListener(object : OnRvItemClickListener<Int> {
                 override fun onClick(item: Int) {
                     val clickedDate = getDateStringForDay(item)
                     onDateClickListener?.onClick(clickedDate)
-//                    viewModel.fetchDetailsForDate(clickedDate)
+                    viewModel.getDayExpense(clickedDate)
                 }
             })
         }
         dayAdapter.submitList(initialList)
 
-//        viewModel.dayInfoList.observe(viewLifecycleOwner) { details ->
-//            updateDayDetails(details)
-//        }
-
         binding.rvCalendarDays.layoutManager = GridLayoutManager(requireContext(), 7)
         binding.rvCalendarDays.adapter = dayAdapter
         binding.rvCalendarDays.itemAnimator = null
+    }
+
+    override fun setObserver() {
+        super.setObserver()
+
+        viewModel.monthDailyExpenseState.observe(viewLifecycleOwner) { it ->
+            when (it) {
+                is UiState.Failure -> {
+                    showToast(it.message)
+                }
+
+                is UiState.Loading -> {}
+
+                is UiState.Success -> {
+                    LoggerUtils.d("날짜별 소비 금액 조회 성공: ${it.data}")
+
+                    val updatedList = getDaysInMonth(date).map { day ->
+                        val monthInfo = it.data.find { monthDailyInfo ->
+                            monthDailyInfo.date == day
+                        }
+                        Pair(day, monthInfo)
+                    }
+
+                    dayAdapter.submitList(updatedList)
+                }
+            }
+        }
+
     }
 
     private fun getDateStringForDay(day: Int): String {
@@ -98,6 +126,16 @@ class DiaryMonthFragment : BaseFragment<FragmentDiaryMonthBinding>() {
 
     fun setOnDateClickListener(listener: OnRvItemClickListener<String>) {
         onDateClickListener = listener
+    }
+
+    private fun getToday(): String {
+        val today = Calendar.getInstance().run {
+            val year = get(Calendar.YEAR)
+            val month = (get(Calendar.MONTH) + 1).toString().padStart(2, '0')
+            val day = get(Calendar.DAY_OF_MONTH).toString().padStart(2, '0')
+            "$year-$month-$day"
+        }
+        return today
     }
 
     private fun updateDayDetails(details: List<DayInfo>) {
