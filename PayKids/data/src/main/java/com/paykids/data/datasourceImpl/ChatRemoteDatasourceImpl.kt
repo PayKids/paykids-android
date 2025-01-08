@@ -8,9 +8,9 @@ import javax.inject.Inject
 class ChatRemoteDatasourceImpl @Inject constructor(
     private val chatService: ChatService
 ) : ChatRemoteDatasource {
-    override suspend fun sendChat(prompt: String): Result<ChatResponseDTO> {
+    override suspend fun sendChat(accessToken: String, prompt: String): Result<ChatResponseDTO> {
         return try {
-            val response = chatService.sendChat(prompt)
+            val response = chatService.sendChat(accessToken, prompt)
             if (response.isSuccessful) {
                 val chatResponse = response.body()
 

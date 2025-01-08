@@ -61,6 +61,7 @@ class StudyRvAdapter : ListAdapter<ChatItem, RecyclerView.ViewHolder>(chatDiffCa
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(item: ChatItem) {
+            binding.tvNickname.text = item.nickname
             binding.messageText.text = item.content
             setMaxWidth(binding.messageText, itemView.context)
         }

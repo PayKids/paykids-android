@@ -17,6 +17,7 @@ class StudyFragment : BaseFragment<FragmentStudyBinding>() {
 
     override fun initView() {
         setRvAdapter()
+        viewModel.getUserInfo()
     }
 
     override fun initListener() {
@@ -32,7 +33,8 @@ class StudyFragment : BaseFragment<FragmentStudyBinding>() {
                 val userChat = ChatItem(
                     chatId = studyAdapter.getLastChatId() + 1,
                     content = chatContent,
-                    isMine = true
+                    isMine = true,
+                    nickname = viewModel.userNickname.value.toString()
                 )
 
                 val updatedList = studyAdapter.currentList.toMutableList().apply {
@@ -79,6 +81,22 @@ class StudyFragment : BaseFragment<FragmentStudyBinding>() {
     override fun setObserver() {
         super.setObserver()
 
+        viewModel.userInfoState.observe(viewLifecycleOwner) {
+            when (it) {
+                is UiState.Failure -> {
+                    showToast(it.message)
+                }
+
+                is UiState.Loading -> {}
+
+                is UiState.Success -> {
+                    viewModel.setUserNickname(it.data.nickname)
+                }
+            }
+        }
+
+
+
         viewModel.resState.observe(viewLifecycleOwner) {
             when (it) {
                 is UiState.Loading -> {}
@@ -91,7 +109,8 @@ class StudyFragment : BaseFragment<FragmentStudyBinding>() {
                     val gptResponse = ChatItem(
                         chatId = studyAdapter.getLastChatId() + 1,
                         content = it.data,
-                        isMine = false
+                        isMine = false,
+                        nickname = viewModel.userNickname.value.toString()
                     )
 
                     val updatedList = studyAdapter.currentList.toMutableList().apply {
