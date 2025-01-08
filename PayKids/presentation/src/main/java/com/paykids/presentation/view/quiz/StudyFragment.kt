@@ -41,23 +41,6 @@ class StudyFragment : BaseFragment<FragmentStudyBinding>() {
         }
     }
 
-    private fun processChatItems(dataList: List<ChatItem>): MutableList<ChatItem> {
-        val processedList = mutableListOf<ChatItem>()
-        var lastOtherMessageIndex = -1
-
-        dataList.forEachIndexed { index, item ->
-            processedList.add(item)
-
-            if (!item.isMine) {
-                lastOtherMessageIndex = index
-            }
-
-//            processedList.add(item.copy(showRefreshIcon = showRefreshIcon))
-        }
-
-        return processedList
-    }
-
     override fun setObserver() {
         super.setObserver()
 

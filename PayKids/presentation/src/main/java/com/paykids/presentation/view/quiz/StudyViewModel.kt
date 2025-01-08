@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.paykids.domain.model.ChatItem
 import com.paykids.domain.model.user.UserInfo
 import com.paykids.domain.usecase.chat.SendChatUseCase
 import com.paykids.domain.usecase.datastore.GetAccessTokenUseCase
