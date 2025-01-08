@@ -2,9 +2,11 @@ package com.paykids.data.di
 
 import com.paykids.data.datasource.AuthRemoteDatasource
 import com.paykids.data.datasource.ChatRemoteDatasource
+import com.paykids.data.datasource.QuizRemoteDatasource
 import com.paykids.data.datasource.UserRemoteDatasource
 import com.paykids.data.datasourceImpl.AuthRemoteDatasourceImpl
 import com.paykids.data.datasourceImpl.ChatRemoteDatasourceImpl
+import com.paykids.data.datasourceImpl.QuizRemoteDatasourceImpl
 import com.paykids.data.datasourceImpl.UserRemoteDatasourceImpl
 import dagger.Binds
 import dagger.Module
@@ -29,4 +31,9 @@ abstract class DatasourceModule {
     abstract fun bindUserRemoteDatasource(
         impl: UserRemoteDatasourceImpl
     ): UserRemoteDatasource
+
+    @Binds
+    abstract fun bindQuizRemoteDatasource(
+        impl: QuizRemoteDatasourceImpl
+    ): QuizRemoteDatasource
 }

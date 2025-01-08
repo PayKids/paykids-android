@@ -2,6 +2,7 @@ package com.paykids.data.di
 
 import com.paykids.data.service.AuthService
 import com.paykids.data.service.ChatService
+import com.paykids.data.service.QuizService
 import com.paykids.data.service.UserService
 import dagger.Module
 import dagger.Provides
@@ -29,4 +30,8 @@ object ServiceModule {
     fun providesChatService(retrofit: Retrofit): ChatService =
         retrofit.create(ChatService::class.java)
 
+    @Provides
+    @Singleton
+    fun providesQuizService(retrofit: Retrofit): QuizService =
+        retrofit.create(QuizService::class.java)
 }
