@@ -73,7 +73,7 @@ class StudyFragment : BaseFragment<FragmentStudyBinding>() {
                         chatId = studyAdapter.getLastChatId() + 1,
                         content = it.data,
                         isMine = false,
-                        nickname = viewModel.userNickname.value.toString()
+                        nickname = "chatGPT"
                     )
 
                     val updatedList = studyAdapter.currentList.toMutableList().apply {
@@ -88,11 +88,15 @@ class StudyFragment : BaseFragment<FragmentStudyBinding>() {
     }
 
     private fun sendMessage() {
+        val messageContent = binding.etSendChat.text.toString()
+        if (messageContent.isBlank()) return
+        val currentNickname = viewModel.userNickname.value ?: return
+
         val newMessage = ChatItem(
             chatId = studyAdapter.itemCount + 1,
             isMine = true,
-            nickname = viewModel.userNickname.value.toString(),
-            content = binding.etSendChat.text.toString()
+            nickname = currentNickname,
+            content = messageContent
         )
 
         val newList = studyAdapter.currentList.toMutableList()
@@ -101,8 +105,7 @@ class StudyFragment : BaseFragment<FragmentStudyBinding>() {
             binding.rvChat.scrollToPosition(studyAdapter.itemCount - 1)
         }
 
-        viewModel.sendQuestion(binding.etSendChat.text.toString())
-        binding.rvChat.smoothScrollToPosition(studyAdapter.itemCount - 1)
+        viewModel.sendQuestion(messageContent)
         binding.etSendChat.text.clear()
     }
 

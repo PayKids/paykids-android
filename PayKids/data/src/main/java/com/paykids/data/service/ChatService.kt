@@ -9,13 +9,13 @@ import retrofit2.http.Query
 interface ChatService {
 
     @GET("/gpt/number")
-    suspend fun sendChat(
-        @Header("Auth") accessToken: String,
+    suspend fun getChatNumber(
+        @Header("Authorization") accessToken: String,
     ):  Response<ChatResponseDTO>
 
     @GET("/gpt/chat")
     suspend fun sendChat(
-        @Header("Auth") accessToken: String,
+        @Header("Authorization") accessToken: String,
         @Query("prompt") prompt: String
     ):  Response<ChatResponseDTO>
 
