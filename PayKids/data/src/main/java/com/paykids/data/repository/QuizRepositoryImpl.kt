@@ -25,6 +25,21 @@ class QuizRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun getStageCount(): Result<Int> {
+        val result = quizDatasource.getStageCount()
+
+        return if (result.isSuccess) {
+            val res = result.getOrNull()
+            if (res != null) {
+                Result.success(res.data)
+            } else {
+                Result.failure(Exception("get StageCount Failed: response body is null"))
+            }
+        } else {
+            Result.failure(result.exceptionOrNull() ?: Exception("Unknown error"))
+        }
+    }
+
     override suspend fun getStageName(stage: Int): Result<String> {
         val result = quizDatasource.getStageName(stage)
 
