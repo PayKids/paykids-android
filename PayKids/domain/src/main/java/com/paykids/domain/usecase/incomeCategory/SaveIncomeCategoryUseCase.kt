@@ -1,6 +1,5 @@
 package com.paykids.domain.usecase.incomeCategory
 
-import com.paykids.domain.repository.ExpenseCategoryRepository
 import com.paykids.domain.repository.IncomeCategoryRepository
 import javax.inject.Inject
 

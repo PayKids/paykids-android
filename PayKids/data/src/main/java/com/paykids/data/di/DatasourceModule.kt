@@ -14,7 +14,6 @@ import com.paykids.data.datasourceImpl.ExpenseRemoteDatasourceImpl
 import com.paykids.data.datasourceImpl.IncomeCategoryRemoteDatasourceImpl
 import com.paykids.data.datasourceImpl.IncomeRemoteDatasourceImpl
 import com.paykids.data.datasourceImpl.UserRemoteDatasourceImpl
-import com.paykids.domain.repository.ExpenseCategoryRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

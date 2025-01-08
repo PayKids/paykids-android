@@ -1,16 +1,8 @@
 package com.paykids.data.service
 
 import com.paykids.data.model.BaseResponse
-import com.paykids.data.model.allowance.AddExpenseRequestDTO
-import com.paykids.data.model.allowance.DayDTO
-import com.paykids.data.model.allowance.MonthAllCategoryDTO
-import com.paykids.data.model.allowance.MonthCategoryDTO
-import com.paykids.data.model.allowance.MonthDailyDTO
-import com.paykids.data.model.allowance.MonthMostCategoryDTO
-import com.paykids.data.model.allowance.UpdateExpenseRequestDTO
 import com.paykids.data.model.allowanceCategory.CategoryListDTO
 import retrofit2.Response
-import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Header
