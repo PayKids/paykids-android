@@ -31,8 +31,9 @@
         android:fontFamily="@font/nanumsquare_extra_bold"
         android:includeFontPadding="false"
         android:padding="12dp"
-        android:textSize="16sp"
+        android:textSize="14sp"
         android:textColor="@color/white"
+        android:lineSpacingExtra="4sp"
 
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
