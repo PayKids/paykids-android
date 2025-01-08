@@ -43,11 +43,17 @@
         android:label="fragment_analysis_category_consume"
         tools:layout="@layout/fragment_analysis_category_consume">
         <argument
+            android:name="currentYear"
+            app:argType="integer" />
+        <argument
+            android:name="currentMonth"
+            app:argType="integer" />
+        <argument
             android:name="category"
             app:argType="string" />
         <argument
             android:name="amount"
-            app:argType="string" />
+            app:argType="integer" />
     </fragment>
 
     <fragment

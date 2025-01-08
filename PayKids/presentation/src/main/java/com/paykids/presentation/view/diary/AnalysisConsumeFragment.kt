@@ -20,7 +20,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisConsumeBinding>() {
     private val viewModel: DiaryViewModel by activityViewModels()
 
-    private val items = mutableListOf("편의점", "편", "의점", "편의점편", "편의점편의")
+    private var categories = mutableListOf<String>()
     private lateinit var adapter: ConsumeCategoryAdapter
     private var isDeleteMode = false
     private var currentYear: Int = 0
@@ -28,27 +28,14 @@ class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisConsumeBinding>() {
 
     @SuppressLint("SetTextI18n")
     override fun initView() {
-
         val args = AnalysisConsumeFragmentArgs.fromBundle(requireArguments())
-        val currentYear = args.currentYear
-        val currentMonth = args.currentMonth
+        currentYear = args.currentYear
+        currentMonth = args.currentMonth
         binding.tvMonth.text = "${currentMonth}월"
 
         fetchData(currentYear, currentMonth)
 
-        adapter = ConsumeCategoryAdapter(
-            onCategoryAdded = { newCategory ->
-                addCategory(newCategory)
-            },
-            onItemClick = { category, amount ->
-                navigateToAnalysisConsumeLocationFragment(category, amount)
-            }
-        )
-
-        binding.rvDetailConsume.layoutManager = LinearLayoutManager(requireContext())
-        binding.rvDetailConsume.adapter = adapter
-
-        updateDeleteButtonVisibility(items)
+        updateDeleteButtonVisibility(categories)
     }
 
     override fun initListener() {
@@ -82,7 +69,6 @@ class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisConsumeBinding>() {
     private fun fetchData(year: Int, month: Int) {
         viewModel.getMonthTotalExpense(year, month)
         viewModel.getMonthAllCategory(year, month)
-        viewModel.getMonthAllCategory(year, month)
     }
 
     @SuppressLint("SetTextI18n")
@@ -115,13 +101,34 @@ class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisConsumeBinding>() {
                 is UiState.Success -> {
                     LoggerUtils.d("월 전체 카테고리 조회 성공: ${it.data}")
 
+                    adapter = ConsumeCategoryAdapter(
+                        onCategoryAdded = { newCategory ->
+                            addCategory(newCategory)
+                        },
+                        onItemClick = { category, amount ->
+                            val action = AnalysisConsumeFragmentDirections
+                                .actionAnalysisConsumeFragmentToAnalysisCategoryConsumeFragment(
+                                    currentYear,
+                                    currentMonth,
+                                    category,
+                                    amount
+                                )
+                            findNavController().navigate(action)
+                        }
+                    )
+
+                    binding.rvDetailConsume.layoutManager = LinearLayoutManager(requireContext())
+                    binding.rvDetailConsume.adapter = adapter
+
+                    categories = it.data.map { it.category }.toMutableList()
+
                     if (::adapter.isInitialized) {
                         val sortedCategories = it.data
                             .sortedByDescending { it.percent }
                             .map {
                                 ConsumeCategoryAdapter.CategoryItem.Normal(
                                     name = it.category,
-                                    amount = it.amount.toString(),
+                                    amount = it.amount,
                                     percent = it.percent
                                 )
                             }
@@ -161,24 +168,24 @@ class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisConsumeBinding>() {
 
     private fun addCategory(newCategory: String) {
         // 새 카테고리 추가
-        items.add(newCategory)
+        categories.add(newCategory)
 
         // 어댑터에 새로운 항목 추가
         val currentList = adapter.currentList.toMutableList()
         currentList.add(
             currentList.size - 1,
-            ConsumeCategoryAdapter.CategoryItem.Normal(newCategory, false, "0", "0")
+            ConsumeCategoryAdapter.CategoryItem.Normal(newCategory, false, 0, "0")
         )
         adapter.submitList(currentList)
 
         // 삭제 버튼 가시성 업데이트
-        updateDeleteButtonVisibility(items)
+        updateDeleteButtonVisibility(categories)
     }
 
     private fun deleteSelectedItems() {
         val deletedItems = adapter.deleteSelectedItems()
-        items.removeAll { it in deletedItems }
-        updateDeleteButtonVisibility(items)
+        categories.removeAll { it in deletedItems }
+        updateDeleteButtonVisibility(categories)
     }
 
     private fun toggleDeleteMode() {
@@ -193,25 +200,6 @@ class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisConsumeBinding>() {
             binding.btnAddCategory.isEnabled = true
             deleteSelectedItems()
         }
-    }
-
-    @SuppressLint("DefaultLocale")
-    private fun changeMonth(currentMonth: String?, increment: Int): String {
-        val yearMonth = currentMonth?.split("-") ?: return ""
-        var year = yearMonth[0].toInt()
-        var month = yearMonth[1].toInt()
-
-        month += increment
-
-        if (month > 12) {
-            month = 1
-            year += 1
-        } else if (month < 1) {
-            month = 12
-            year -= 1
-        }
-
-        return String.format("%04d-%02d", year, month)
     }
 
     @SuppressLint("SetTextI18n")
@@ -236,15 +224,10 @@ class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisConsumeBinding>() {
         binding.tvMonth.text = "${currentMonth}월"
     }
 
-    private fun navigateToAnalysisConsumeLocationFragment(category: String, amount: String) {
-        val action = AnalysisConsumeFragmentDirections
-            .actionAnalysisConsumeFragmentToAnalysisCategoryConsumeFragment(category, amount)
-        findNavController().navigate(action)
-    }
-
     override fun onResume() {
         super.onResume()
         (requireActivity() as? HomeActivity)?.setBottomNavigationVisibility(false)
+        viewModel.getMonthAllCategory(currentYear, currentMonth)
     }
 
     override fun onPause() {
