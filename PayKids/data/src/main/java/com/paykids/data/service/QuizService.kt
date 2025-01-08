@@ -14,6 +14,9 @@ interface QuizService {
         @Query("number") number: Int
     ): Response<BaseResponse<QuizResponseDTO>>
 
+    @GET("/quiz/count")
+    suspend fun getStageCount(): Response<BaseResponse<Int>>
+
     @GET("/quiz/stage-name")
     suspend fun getStageName(
         @Query("stage") stage: Int
