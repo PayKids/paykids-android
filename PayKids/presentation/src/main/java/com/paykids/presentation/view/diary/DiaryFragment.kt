@@ -62,17 +62,11 @@ class DiaryFragment : BaseFragment<FragmentDiaryBinding>(), ConfirmDialogInterfa
         val navController = findNavController()
 
         binding.ivConsumptionStatus.setOnClickListener {
-//            val calendar = Calendar.getInstance().apply {
-//                add(Calendar.MONTH, binding.vpCalendarMonth.currentItem - (Int.MAX_VALUE / 2))
-//            }
-//            val currentMonth = SimpleDateFormat("yyyy-MM", Locale.KOREAN).format(calendar.time)
-
-            val bundle = Bundle().apply {
-                putInt("currentYear", currentYear)
-                putInt("currentMonth", currentMonth)
-            }
-
-            navController.navigate(R.id.analysisConsumeFragment, bundle)
+            val action = DiaryFragmentDirections.actionDiaryFragmentToAnalysisConsumeFragment(
+                currentYear = currentYear,
+                currentMonth = currentMonth
+            )
+            navController.navigate(action)
         }
 
         binding.ibAddPocketMoney.setOnClickListener {
