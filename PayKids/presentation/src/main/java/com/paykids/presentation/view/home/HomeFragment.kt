@@ -27,11 +27,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     data class Stage(
         val number: Int, val imageResIdLock: Int, val imageResIdUnlock: Int
     )
-    
+
     private val homeViewModel: HomeViewModel by viewModels()
     private var isSelected = false
     private var stages = mutableListOf<Stage>()
     private var stageCount: Int = 0
+    private lateinit var stageName: String
 
     override fun initView() {
         homeViewModel.getStageCount()
@@ -39,8 +40,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
     override fun initListener() {
         super.initListener()
-//        setupStageClickListener(binding.ivStage)
-//        setupStageClickListener(binding.ivStage2)
     }
 
     override fun setObserver() {
@@ -57,6 +56,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                 is UiState.Success -> {
                     binding.clBox.visibility = View.VISIBLE
                     binding.tvStageTitle.text = it.data
+                    stageName = it.data
                 }
             }
         }
@@ -82,16 +82,19 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         view.setOnClickListener {
             view.isSelected = !view.isSelected
             if (view.isSelected) {
-                createTooltip().showAlignBottom(view, 0, -50)
                 binding.tvStageNumber.text = "스테이지 ${stage.number}"
                 homeViewModel.getStageName(stage.number)
+                val tooltip = createTooltip()
+                tooltip.setOnBalloonClickListener {
+                    val action = HomeFragmentDirections.actionHomeFragmentToQuizEntryFragment(
+                        stage.number,
+                        stageName
+                    )
+                    findNavController().navigate(action)
+                }
+                tooltip.showAlignBottom(view, 0, -50)
             }
         }
-    }
-
-    private fun navigateToQuizEntry() {
-        val navController = findNavController()
-        navController.navigate(R.id.quizEntryFragment)
     }
 
     private fun generateStages(stageCount: Int): List<Stage> {
@@ -195,10 +198,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             setBalloonAnimation(BalloonAnimation.FADE)
             setBalloonHighlightAnimation(BalloonHighlightAnimation.SHAKE)
             setLifecycleOwner(viewLifecycleOwner)
-
-            setOnBalloonClickListener {
-                navigateToQuizEntry()
-            }
 
             build()
         }
