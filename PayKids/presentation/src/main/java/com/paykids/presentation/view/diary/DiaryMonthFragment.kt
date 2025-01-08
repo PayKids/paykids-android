@@ -36,6 +36,9 @@ class DiaryMonthFragment : BaseFragment<FragmentDiaryMonthBinding>() {
         val daysInMonth = getDaysInMonth(date)
         val initialList =
             daysInMonth.map { day -> Pair(day, null as DayInfo?) }
+
+        viewModel.getMonthDailyExpense(2025, 1)
+
 //        viewModel.fetchDayInfo()
 //        viewModel.getDayInfoForMonth("12")
 //        viewModel.getDayInfoForMonth("1")

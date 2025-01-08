@@ -71,7 +71,7 @@ class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisConsumeBinding>() {
         }
 
         binding.btnAddCategory.setOnClickListener {
-            adapter.addCategoryInput()
+//            adapter.addCategoryInput()
             binding.rvDetailConsume.smoothScrollToPosition(adapter.itemCount - 1)
         }
     }

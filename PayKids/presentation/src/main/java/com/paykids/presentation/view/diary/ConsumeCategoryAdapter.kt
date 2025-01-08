@@ -113,17 +113,17 @@ class ConsumeCategoryAdapter(
     }
 
     fun addCategoryInput() {
-        if (!isAddingCategory) {
-            isAddingCategory = true
-            val currentList = currentList.toMutableList()
-            val insertPosition = if (lastAddedPosition != -1) {
-                lastAddedPosition + 1
-            } else {
-                currentList.size - 1 // Etc 항목 바로 앞
-            }
-            currentList.add(insertPosition, CategoryItem.Add)
-            submitList(currentList)
-        }
+//        if (!isAddingCategory) {
+//            isAddingCategory = true
+//            val currentList = currentList.toMutableList()
+//            val insertPosition = if (lastAddedPosition != -1) {
+//                lastAddedPosition + 1
+//            } else {
+//                currentList.size - 1 // Etc 항목 바로 앞
+//            }
+//            currentList.add(insertPosition, CategoryItem.Add)
+//            submitList(currentList)
+//        }
     }
 
     private fun confirmCategoryInput(category: String) {

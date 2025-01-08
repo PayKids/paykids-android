@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.paykids.domain.model.DetailConsume
+import com.paykids.domain.model.allowance.DayInfo
 import com.paykids.presentation.custom.ConfirmDialogInterface
 import com.paykids.presentation.databinding.ItemDetailConsumptionBinding
 import com.paykids.presentation.utils.Constants
@@ -14,13 +15,13 @@ import com.paykids.presentation.utils.Constants
 class DetailConsumeAdapter(private val fragment: Fragment) :
     RecyclerView.Adapter<DetailConsumeAdapter.ViewHolder>(), ConfirmDialogInterface {
 
-    private val items = mutableListOf<DetailConsume>()
+    private val items = mutableListOf<DayInfo>()
 
     inner class ViewHolder(val binding: ItemDetailConsumptionBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         @SuppressLint("SetTextI18n")
-        fun bind(item: DetailConsume) {
+        fun bind(item: DayInfo) {
             val formattedAmount = Constants.formatAmount(item.amount)
 
             binding.tvConsumptionCategory.text = item.category
@@ -54,7 +55,7 @@ class DetailConsumeAdapter(private val fragment: Fragment) :
     override fun getItemCount() = items.size
 
     @SuppressLint("NotifyDataSetChanged")
-    fun submitList(newItems: List<DetailConsume>) {
+    fun submitList(newItems: List<DayInfo>) {
         items.clear()
         items.addAll(newItems)
         notifyDataSetChanged()
