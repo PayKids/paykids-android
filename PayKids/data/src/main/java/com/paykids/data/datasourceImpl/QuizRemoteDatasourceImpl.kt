@@ -27,6 +27,24 @@ class QuizRemoteDatasourceImpl @Inject constructor(
         }
     }
 
+    override suspend fun getStageCount(): Result<BaseResponse<Int>> {
+        return try {
+            val response = quizService.getStageCount()
+            if (response.isSuccessful) {
+                val res = response.body()
+                if (res != null) {
+                    Result.success(res)
+                } else {
+                    Result.failure(Exception("get StageCount failed: response body is null"))
+                }
+            } else {
+                Result.failure(Exception("get StageCount failed: ${response.message()}"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
     override suspend fun getStageName(stage: Int): Result<BaseResponse<String>> {
         return try {
             val response = quizService.getStageName(stage)
