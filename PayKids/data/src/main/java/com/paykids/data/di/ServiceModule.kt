@@ -2,11 +2,11 @@ package com.paykids.data.di
 
 import com.paykids.data.service.AuthService
 import com.paykids.data.service.ChatService
-import com.paykids.data.service.QuizService
 import com.paykids.data.service.ExpenseCategoryService
 import com.paykids.data.service.ExpenseService
 import com.paykids.data.service.IncomeCategoryService
 import com.paykids.data.service.IncomeService
+import com.paykids.data.service.QuizService
 import com.paykids.data.service.UserService
 import dagger.Module
 import dagger.Provides

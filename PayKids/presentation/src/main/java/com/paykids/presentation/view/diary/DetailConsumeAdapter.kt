@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
-import com.paykids.domain.model.DetailConsume
 import com.paykids.domain.model.allowance.DayInfo
 import com.paykids.presentation.custom.ConfirmDialogInterface
 import com.paykids.presentation.databinding.ItemDetailConsumptionBinding
