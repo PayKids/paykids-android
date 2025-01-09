@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.paykids.presentation.R
-import com.paykids.presentation.databinding.ItemAnalysisConsumptionBinding
+import com.paykids.presentation.databinding.ItemAnalysisAllowanceBinding
 import com.paykids.presentation.databinding.ItemEtcCategoryBinding
 import com.paykids.presentation.utils.Constants
 
@@ -55,14 +55,14 @@ class AllowanceCategoryAdapter(
         return when (viewType) {
 //            TYPE_ETC -> EtcViewHolder(ItemEtcCategoryBinding.inflate(inflater, parent, false))
             TYPE_ADD -> AddCategoryViewHolder(
-                ItemAnalysisConsumptionBinding.inflate(inflater, parent, false)
+                ItemAnalysisAllowanceBinding.inflate(inflater, parent, false)
             ) { category ->
                 confirmCategoryInput(category)
                 onCategoryAdded(category)
             }
 
             else -> NormalViewHolder(
-                ItemAnalysisConsumptionBinding.inflate(inflater, parent, false),
+                ItemAnalysisAllowanceBinding.inflate(inflater, parent, false),
                 onItemClick
             )
         }
@@ -157,7 +157,7 @@ class AllowanceCategoryAdapter(
     }
 
     inner class AddCategoryViewHolder(
-        private val binding: ItemAnalysisConsumptionBinding,
+        private val binding: ItemAnalysisAllowanceBinding,
         private val onCategoryConfirmed: (String) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
 
@@ -201,7 +201,7 @@ class AllowanceCategoryAdapter(
     }
 
     inner class NormalViewHolder(
-        private val binding: ItemAnalysisConsumptionBinding,
+        private val binding: ItemAnalysisAllowanceBinding,
         private val onItemClick: (String, Int) -> Unit
     ) :
         RecyclerView.ViewHolder(binding.root) {

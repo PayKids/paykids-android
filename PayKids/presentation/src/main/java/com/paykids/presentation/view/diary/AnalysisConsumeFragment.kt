@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.paykids.domain.model.allowance.MonthAllCategoryInfo
 import com.paykids.presentation.R
 import com.paykids.presentation.base.BaseFragment
-import com.paykids.presentation.databinding.FragmentAnalysisConsumeBinding
+import com.paykids.presentation.databinding.FragmentAnalysisAllowanceBinding
 import com.paykids.presentation.utils.Constants
 import com.paykids.presentation.utils.UiState
 import com.paykids.presentation.view.home.HomeActivity
@@ -19,7 +19,7 @@ import com.paykids.util.LoggerUtils
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisConsumeBinding>() {
+class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisAllowanceBinding>() {
     private val viewModel: DiaryViewModel by activityViewModels()
 
     private var categories = mutableListOf<String>()
@@ -120,7 +120,7 @@ class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisConsumeBinding>() {
 
                 is UiState.Success -> {
                     LoggerUtils.d("월 전체 소비 금액 조회 성공: ${it.data}")
-                    binding.tvMonthConsumption.text = "${Constants.formatAmount(it.data)}원 사용 중"
+                    binding.tvMonthAllowance.text = "${Constants.formatAmount(it.data)}원 사용 중"
                 }
             }
         }
@@ -135,7 +135,7 @@ class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisConsumeBinding>() {
 
                 is UiState.Success -> {
                     LoggerUtils.d("월 전체 수입 금액 조회 성공: ${it.data}")
-                    binding.tvMonthConsumption.text = "${Constants.formatAmount(it.data)}원 수입 중"
+                    binding.tvMonthAllowance.text = "${Constants.formatAmount(it.data)}원 수입 중"
                 }
             }
         }
@@ -169,8 +169,8 @@ class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisConsumeBinding>() {
                             findNavController().navigate(action)
                         }
                     )
-                    binding.rvDetailConsume.layoutManager = LinearLayoutManager(requireContext())
-                    binding.rvDetailConsume.adapter = adapter
+                    binding.rvDetailAllowance.layoutManager = LinearLayoutManager(requireContext())
+                    binding.rvDetailAllowance.adapter = adapter
                 }
 
                 val sortedCategories = state.data

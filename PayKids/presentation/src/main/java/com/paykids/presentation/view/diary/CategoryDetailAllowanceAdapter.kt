@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.paykids.presentation.custom.ConfirmDialogInterface
-import com.paykids.presentation.databinding.ItemCategoryConsumptionBinding
+import com.paykids.presentation.databinding.ItemCategoryAllowanceBinding
 import com.paykids.presentation.utils.Constants
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -16,7 +16,7 @@ class CategoryDetailAllowanceAdapter(private val fragment: Fragment) :
 
     private val items = mutableListOf<Triple<String, Int, String>>()
 
-    inner class ViewHolder(val binding: ItemCategoryConsumptionBinding) :
+    inner class ViewHolder(val binding: ItemCategoryAllowanceBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         @SuppressLint("SetTextI18n")
@@ -47,7 +47,7 @@ class CategoryDetailAllowanceAdapter(private val fragment: Fragment) :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val binding = ItemCategoryConsumptionBinding.inflate(inflater, parent, false)
+        val binding = ItemCategoryAllowanceBinding.inflate(inflater, parent, false)
         return ViewHolder(binding)
     }
 

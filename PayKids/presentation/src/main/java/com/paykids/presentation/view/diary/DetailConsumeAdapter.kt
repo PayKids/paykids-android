@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.paykids.domain.model.allowance.DayInfo
 import com.paykids.presentation.custom.ConfirmDialogInterface
-import com.paykids.presentation.databinding.ItemDetailConsumptionBinding
+import com.paykids.presentation.databinding.ItemDetailAllowanceBinding
 import com.paykids.presentation.utils.Constants
 
 class DetailConsumeAdapter(private val fragment: Fragment) :
@@ -16,7 +16,7 @@ class DetailConsumeAdapter(private val fragment: Fragment) :
 
     private val items = mutableListOf<DayInfo>()
 
-    inner class ViewHolder(val binding: ItemDetailConsumptionBinding) :
+    inner class ViewHolder(val binding: ItemDetailAllowanceBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         @SuppressLint("SetTextI18n")
@@ -43,7 +43,7 @@ class DetailConsumeAdapter(private val fragment: Fragment) :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val binding = ItemDetailConsumptionBinding.inflate(inflater, parent, false)
+        val binding = ItemDetailAllowanceBinding.inflate(inflater, parent, false)
         return ViewHolder(binding)
     }
 

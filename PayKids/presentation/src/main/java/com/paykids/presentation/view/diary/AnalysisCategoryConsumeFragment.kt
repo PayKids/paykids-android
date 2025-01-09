@@ -10,7 +10,7 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.paykids.presentation.R
 import com.paykids.presentation.base.BaseFragment
-import com.paykids.presentation.databinding.FragmentAnalysisCategoryConsumeBinding
+import com.paykids.presentation.databinding.FragmentAnalysisCategoryAllowanceBinding
 import com.paykids.presentation.utils.Constants
 import com.paykids.presentation.utils.UiState
 import com.paykids.presentation.view.home.HomeActivity
@@ -18,7 +18,7 @@ import com.paykids.util.LoggerUtils
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class AnalysisCategoryConsumeFragment : BaseFragment<FragmentAnalysisCategoryConsumeBinding>() {
+class AnalysisCategoryConsumeFragment : BaseFragment<FragmentAnalysisCategoryAllowanceBinding>() {
     private val viewModel: DiaryViewModel by activityViewModels()
     private lateinit var adapter: CategoryDetailAllowanceAdapter
 

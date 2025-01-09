@@ -106,7 +106,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
-        android:id="@+id/tv_month_consumption"
+        android:id="@+id/tv_month_allowance"
         style="@style/heading3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -129,7 +129,7 @@
 
         app:layout_constraintEnd_toEndOf="@id/cl_switch"
         app:layout_constraintStart_toStartOf="@id/cl_switch"
-        app:layout_constraintTop_toBottomOf="@id/tv_month_consumption">
+        app:layout_constraintTop_toBottomOf="@id/tv_month_allowance">
 
         <com.paykids.presentation.custom.CategoryProgressView
             android:id="@+id/categoryProgressView"
@@ -175,11 +175,11 @@
             android:orientation="vertical">
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_detail_consume"
+                android:id="@+id/rv_detail_allowance"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 tools:itemCount="5"
-                tools:listitem="@layout/item_analysis_consumption" />
+                tools:listitem="@layout/item_analysis_allowance" />
 
             <Button
                 android:id="@+id/btn_add_category"
