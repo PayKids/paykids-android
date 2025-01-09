@@ -8,6 +8,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.paykids.domain.model.allowance.MonthAllCategoryInfo
 import com.paykids.presentation.R
 import com.paykids.presentation.base.BaseFragment
 import com.paykids.presentation.databinding.FragmentAnalysisConsumeBinding
@@ -52,12 +53,10 @@ class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisConsumeBinding>() {
 
         binding.ibLeft.setOnClickListener {
             minusMonth()
-            fetchData(currentYear, currentMonth)
         }
 
         binding.ibRight.setOnClickListener {
             plusMonth()
-            fetchData(currentYear, currentMonth)
         }
 
         binding.tvDelete.setOnClickListener {
@@ -90,13 +89,27 @@ class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisConsumeBinding>() {
 
     @SuppressLint("SetTextI18n")
     private fun fetchData(year: Int, month: Int) {
-        viewModel.getMonthTotalExpense(year, month)
-        viewModel.getMonthAllCategory(year, month)
+        LoggerUtils.d(isConsumeSelected.toString())
+        if (isConsumeSelected) {
+            viewModel.getMonthTotalExpense(year, month)
+            viewModel.getMonthAllExpenseCategory(year, month)
+        } else {
+            viewModel.getMonthTotalIncome(year, month)
+            viewModel.getMonthAllIncomeCategory(year, month)
+        }
     }
 
     @SuppressLint("SetTextI18n")
     override fun setObserver() {
         super.setObserver()
+
+        viewModel.allExpenseCategoryState.observe(viewLifecycleOwner) { state ->
+            handleCategoryState(state)
+        }
+
+        viewModel.allIncomeCategoryState.observe(viewLifecycleOwner) { state ->
+            handleCategoryState(state)
+        }
 
         viewModel.monthTotalExpenseState.observe(viewLifecycleOwner) {
             when (it) {
@@ -113,17 +126,20 @@ class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisConsumeBinding>() {
             }
         }
 
-        viewModel.allCategoryState.observe(viewLifecycleOwner) { it ->
-            when (it) {
-                is UiState.Failure -> {
-                    showToast(it.message)
-                }
+    }
 
-                is UiState.Loading -> {}
+    private fun handleCategoryState(state: UiState<List<MonthAllCategoryInfo>>) {
+        when (state) {
+            is UiState.Failure -> {
+                showToast(state.message)
+            }
 
-                is UiState.Success -> {
-                    LoggerUtils.d("월 전체 카테고리 조회 성공: ${it.data}")
+            is UiState.Loading -> {}
 
+            is UiState.Success -> {
+                LoggerUtils.d("카테고리 조회 성공: ${state.data}")
+
+                if (!::adapter.isInitialized) {
                     adapter = AllowanceCategoryAdapter(
                         onCategoryAdded = { newCategory ->
                             addCategory(newCategory)
@@ -139,44 +155,40 @@ class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisConsumeBinding>() {
                             findNavController().navigate(action)
                         }
                     )
-
                     binding.rvDetailConsume.layoutManager = LinearLayoutManager(requireContext())
                     binding.rvDetailConsume.adapter = adapter
-
-                    categories = it.data.map { it.category }.toMutableList()
-
-                    if (::adapter.isInitialized) {
-                        val sortedCategories = it.data
-                            .sortedByDescending { it.percent.replace("%", "").toFloat() }
-                            .map {
-                                AllowanceCategoryAdapter.CategoryItem.Normal(
-                                    name = it.category,
-                                    amount = it.amount,
-                                    percent = it.percent
-                                )
-                            }
-
-                        adapter.submitList(sortedCategories)
-                    }
-
-                    val topCategories = it.data
-                        .sortedByDescending { it.percent.replace("%", "").toFloat() }
-                        .take(3)
-                    val colors = mutableListOf(
-                        ContextCompat.getColor(requireContext(), R.color.blue1),
-                        ContextCompat.getColor(requireContext(), R.color.blue2),
-                        ContextCompat.getColor(requireContext(), R.color.blue3)
-                    )
-
-                    while (colors.size < it.data.size) {
-                        colors.add(Color.LTGRAY)
-                    }
-
-                    binding.categoryProgressView.updateSections(
-                        it.data.map { it.percent.replace("%", "").toFloat() },
-                        colors,
-                        topCategories.map { it.category })
                 }
+
+                val sortedCategories = state.data
+                    .sortedByDescending { it.percent.replace("%", "").toFloat() }
+                    .map {
+                        AllowanceCategoryAdapter.CategoryItem.Normal(
+                            name = it.category,
+                            amount = it.amount,
+                            percent = it.percent
+                        )
+                    }
+
+                adapter.submitList(sortedCategories)
+
+                val topCategories = state.data
+                    .sortedByDescending { it.percent.replace("%", "").toFloat() }
+                    .take(3)
+                val colors = mutableListOf(
+                    ContextCompat.getColor(requireContext(), R.color.blue1),
+                    ContextCompat.getColor(requireContext(), R.color.blue2),
+                    ContextCompat.getColor(requireContext(), R.color.blue3)
+                )
+
+                while (colors.size < state.data.size) {
+                    colors.add(Color.LTGRAY)
+                }
+
+                binding.categoryProgressView.updateSections(
+                    state.data.map { it.percent.replace("%", "").toFloat() },
+                    colors,
+                    topCategories.map { it.category }
+                )
             }
         }
     }
@@ -234,6 +246,7 @@ class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisConsumeBinding>() {
             currentMonth -= 1
         }
         binding.tvMonth.text = "${currentMonth}월"
+        fetchData(currentYear, currentMonth)
     }
 
     @SuppressLint("SetTextI18n")
@@ -245,6 +258,7 @@ class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisConsumeBinding>() {
             currentMonth += 1
         }
         binding.tvMonth.text = "${currentMonth}월"
+        fetchData(currentYear, currentMonth)
     }
 
     private fun toggleSwitch() {
@@ -257,6 +271,8 @@ class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisConsumeBinding>() {
 
             binding.tvIncome.setBackgroundResource(R.color.transparent)
             binding.tvIncome.setTextColor(requireContext().getColor(R.color.gray7))
+
+            viewModel.getMonthAllExpenseCategory(currentYear, currentMonth)
         } else {
             // 수입이 선택된 경우
             binding.tvIncome.setBackgroundResource(R.drawable.switch_bg_select)
@@ -264,6 +280,8 @@ class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisConsumeBinding>() {
 
             binding.tvConsume.setBackgroundResource(R.color.transparent)
             binding.tvConsume.setTextColor(requireContext().getColor(R.color.gray7))
+
+            viewModel.getMonthAllIncomeCategory(currentYear, currentMonth)
         }
     }
 
