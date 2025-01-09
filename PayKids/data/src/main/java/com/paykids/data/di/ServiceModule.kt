@@ -38,6 +38,9 @@ object ServiceModule {
     @Singleton
     fun providesQuizService(retrofit: Retrofit): QuizService =
         retrofit.create(QuizService::class.java)
+
+    @Provides
+    @Singleton
     fun providesExpenseService(retrofit: Retrofit): ExpenseService =
         retrofit.create(ExpenseService::class.java)
 
