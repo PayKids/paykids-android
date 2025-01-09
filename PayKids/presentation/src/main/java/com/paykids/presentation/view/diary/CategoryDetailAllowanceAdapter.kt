@@ -11,8 +11,8 @@ import com.paykids.presentation.utils.Constants
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class CategoryConsumeAdapter(private val fragment: Fragment) :
-    RecyclerView.Adapter<CategoryConsumeAdapter.ViewHolder>(), ConfirmDialogInterface {
+class CategoryDetailAllowanceAdapter(private val fragment: Fragment) :
+    RecyclerView.Adapter<CategoryDetailAllowanceAdapter.ViewHolder>(), ConfirmDialogInterface {
 
     private val items = mutableListOf<Triple<String, Int, String>>()
 

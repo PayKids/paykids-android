@@ -13,10 +13,10 @@ import com.paykids.presentation.databinding.ItemAnalysisConsumptionBinding
 import com.paykids.presentation.databinding.ItemEtcCategoryBinding
 import com.paykids.presentation.utils.Constants
 
-class ConsumeCategoryAdapter(
+class AllowanceCategoryAdapter(
     private val onCategoryAdded: (String) -> Unit,
     private val onItemClick: (String, Int) -> Unit
-) : ListAdapter<ConsumeCategoryAdapter.CategoryItem, RecyclerView.ViewHolder>(CategoryDiffCallback()) {
+) : ListAdapter<AllowanceCategoryAdapter.CategoryItem, RecyclerView.ViewHolder>(CategoryDiffCallback()) {
 
     private var isAddingCategory = false
     private var isDeleteMode = false

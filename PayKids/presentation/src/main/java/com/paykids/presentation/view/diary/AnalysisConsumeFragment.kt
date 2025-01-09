@@ -22,8 +22,9 @@ class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisConsumeBinding>() {
     private val viewModel: DiaryViewModel by activityViewModels()
 
     private var categories = mutableListOf<String>()
-    private lateinit var adapter: ConsumeCategoryAdapter
+    private lateinit var adapter: AllowanceCategoryAdapter
     private var isDeleteMode = false
+    private var isConsumeSelected = true
     private var currentYear: Int = 0
     private var currentMonth: Int = 0
 
@@ -43,6 +44,10 @@ class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisConsumeBinding>() {
 
         binding.ibBack.setOnClickListener {
             parentFragmentManager.popBackStack()
+        }
+
+        binding.clSwitch.setOnClickListener {
+            toggleSwitch()
         }
 
         binding.ibLeft.setOnClickListener {
@@ -119,7 +124,7 @@ class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisConsumeBinding>() {
                 is UiState.Success -> {
                     LoggerUtils.d("월 전체 카테고리 조회 성공: ${it.data}")
 
-                    adapter = ConsumeCategoryAdapter(
+                    adapter = AllowanceCategoryAdapter(
                         onCategoryAdded = { newCategory ->
                             addCategory(newCategory)
                         },
@@ -144,7 +149,7 @@ class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisConsumeBinding>() {
                         val sortedCategories = it.data
                             .sortedByDescending { it.percent.replace("%", "").toFloat() }
                             .map {
-                                ConsumeCategoryAdapter.CategoryItem.Normal(
+                                AllowanceCategoryAdapter.CategoryItem.Normal(
                                     name = it.category,
                                     amount = it.amount,
                                     percent = it.percent
@@ -192,7 +197,7 @@ class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisConsumeBinding>() {
         val currentList = adapter.currentList.toMutableList()
         currentList.add(
             currentList.size - 1,
-            ConsumeCategoryAdapter.CategoryItem.Normal(newCategory, false, 0, "0")
+            AllowanceCategoryAdapter.CategoryItem.Normal(newCategory, false, 0, "0")
         )
         adapter.submitList(currentList)
 
@@ -240,6 +245,26 @@ class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisConsumeBinding>() {
             currentMonth += 1
         }
         binding.tvMonth.text = "${currentMonth}월"
+    }
+
+    private fun toggleSwitch() {
+        isConsumeSelected = !isConsumeSelected
+
+        if (isConsumeSelected) {
+            // 소비가 선택된 경우
+            binding.tvConsume.setBackgroundResource(R.drawable.switch_bg_select)
+            binding.tvConsume.setTextColor(requireContext().getColor(R.color.black))
+
+            binding.tvIncome.setBackgroundResource(R.color.transparent)
+            binding.tvIncome.setTextColor(requireContext().getColor(R.color.gray7))
+        } else {
+            // 수입이 선택된 경우
+            binding.tvIncome.setBackgroundResource(R.drawable.switch_bg_select)
+            binding.tvIncome.setTextColor(requireContext().getColor(R.color.black))
+
+            binding.tvConsume.setBackgroundResource(R.color.transparent)
+            binding.tvConsume.setTextColor(requireContext().getColor(R.color.gray7))
+        }
     }
 
     @SuppressLint("SetTextI18n")

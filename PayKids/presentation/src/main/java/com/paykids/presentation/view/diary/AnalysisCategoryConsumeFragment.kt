@@ -20,7 +20,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class AnalysisCategoryConsumeFragment : BaseFragment<FragmentAnalysisCategoryConsumeBinding>() {
     private val viewModel: DiaryViewModel by activityViewModels()
-    private lateinit var adapter: CategoryConsumeAdapter
+    private lateinit var adapter: CategoryDetailAllowanceAdapter
 
     override fun initView() {
         val args: AnalysisCategoryConsumeFragmentArgs by navArgs()
@@ -88,7 +88,7 @@ class AnalysisCategoryConsumeFragment : BaseFragment<FragmentAnalysisCategoryCon
                 is UiState.Success -> {
                     LoggerUtils.d("카테고리 별 월별 소비 금액 조회 성공: ${it.data}")
                     if (!::adapter.isInitialized) {
-                        adapter = CategoryConsumeAdapter(this)
+                        adapter = CategoryDetailAllowanceAdapter(this)
                         binding.rvCategoryConsume.layoutManager =
                             LinearLayoutManager(requireContext())
                         binding.rvCategoryConsume.adapter = adapter
