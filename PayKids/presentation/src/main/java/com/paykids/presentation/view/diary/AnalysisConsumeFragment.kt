@@ -34,24 +34,6 @@ class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisConsumeBinding>() {
         currentMonth = args.currentMonth
         binding.tvMonth.text = "${currentMonth}월"
 
-        adapter = ConsumeCategoryAdapter(
-            onCategoryAdded = { newCategory ->
-                addCategory(newCategory)
-            },
-            onItemClick = { category, amount ->
-                val action = AnalysisConsumeFragmentDirections
-                    .actionAnalysisConsumeFragmentToAnalysisCategoryConsumeFragment(
-                        currentYear,
-                        currentMonth,
-                        category,
-                        amount
-                    )
-                findNavController().navigate(action)
-            }
-        )
-        binding.rvDetailConsume.layoutManager = LinearLayoutManager(requireContext())
-        binding.rvDetailConsume.adapter = adapter
-
         fetchData(currentYear, currentMonth)
         updateDeleteButtonVisibility(categories)
     }
@@ -173,7 +155,7 @@ class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisConsumeBinding>() {
                     }
 
                     val topCategories = it.data
-                        .sortedByDescending { it.percent.toFloat() }
+                        .sortedByDescending { it.percent.replace("%", "").toFloat() }
                         .take(3)
                     val colors = mutableListOf(
                         ContextCompat.getColor(requireContext(), R.color.blue1),

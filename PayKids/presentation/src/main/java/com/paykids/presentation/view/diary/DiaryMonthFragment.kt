@@ -93,7 +93,10 @@ class DiaryMonthFragment : BaseFragment<FragmentDiaryMonthBinding>() {
         refreshCalendar()
     }
 
-    private fun updateCalendarWithData(expenseData: List<MonthDailyInfo>, incomeData: List<MonthDailyInfo>) {
+    private fun updateCalendarWithData(
+        expenseData: List<MonthDailyInfo>,
+        incomeData: List<MonthDailyInfo>
+    ) {
         val updatedList = getDaysInMonth(date).map { day ->
             val expenseInfo = expenseData.find { it.date == day }
             val incomeInfo = incomeData.find { it.date == day }
@@ -104,21 +107,10 @@ class DiaryMonthFragment : BaseFragment<FragmentDiaryMonthBinding>() {
     }
 
     private fun refreshCalendar() {
-        viewModel.monthDailyExpenseState.value?.let { expenseState ->
-            viewModel.monthDailyIncomeState.value?.let { incomeState ->
-                if (expenseState is UiState.Success && incomeState is UiState.Success) {
-                    val expenseData = expenseState.data
-                    val incomeData = incomeState.data
-
-                    val updatedList = getDaysInMonth(date).map { day ->
-                        val expenseInfo = expenseData.find { it.date == day }
-                        val incomeInfo = incomeData.find { it.date == day }
-                        Pair(day, Pair(expenseInfo, incomeInfo))
-                    }
-
-                    dayAdapter.submitList(updatedList)
-                }
-            }
+        val expenseState = viewModel.monthDailyExpenseState.value
+        val incomeState = viewModel.monthDailyIncomeState.value
+        if (expenseState is UiState.Success && incomeState is UiState.Success) {
+            updateCalendarWithData(expenseState.data, incomeState.data)
         }
     }
 
@@ -127,7 +119,9 @@ class DiaryMonthFragment : BaseFragment<FragmentDiaryMonthBinding>() {
             time = date
             set(Calendar.DAY_OF_MONTH, day)
         }
-        return "${calendar.get(Calendar.YEAR)}-${(calendar.get(Calendar.MONTH) + 1).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}"
+        return "${calendar.get(Calendar.YEAR)}-${
+            (calendar.get(Calendar.MONTH) + 1).toString().padStart(2, '0')
+        }-${day.toString().padStart(2, '0')}"
     }
 
     private fun getDaysInMonth(date: Date): List<String> {
