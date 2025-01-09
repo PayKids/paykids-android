@@ -15,21 +15,21 @@ import com.paykids.presentation.view.OnRvItemClickListener
 import java.util.Calendar
 
 class DiaryDayCalendarAdapter :
-    ListAdapter<Pair<String, MonthDailyInfo?>, DiaryDayCalendarAdapter.DateViewHolder>(diaryDiffUtil) {
+    ListAdapter<Pair<String, Pair<MonthDailyInfo?, MonthDailyInfo?>>, DiaryDayCalendarAdapter.DateViewHolder>(diaryDiffUtil) {
 
     companion object {
         private val diaryDiffUtil =
-            object : DiffUtil.ItemCallback<Pair<String, MonthDailyInfo?>>() {
+            object : DiffUtil.ItemCallback<Pair<String, Pair<MonthDailyInfo?, MonthDailyInfo?>>>() {
                 override fun areItemsTheSame(
-                    oldItem: Pair<String, MonthDailyInfo?>,
-                    newItem: Pair<String, MonthDailyInfo?>
+                    oldItem: Pair<String, Pair<MonthDailyInfo?, MonthDailyInfo?>>,
+                    newItem: Pair<String, Pair<MonthDailyInfo?, MonthDailyInfo?>>
                 ): Boolean {
                     return oldItem.first == newItem.first
                 }
 
                 override fun areContentsTheSame(
-                    oldItem: Pair<String, MonthDailyInfo?>,
-                    newItem: Pair<String, MonthDailyInfo?>
+                    oldItem: Pair<String, Pair<MonthDailyInfo?, MonthDailyInfo?>>,
+                    newItem: Pair<String, Pair<MonthDailyInfo?, MonthDailyInfo?>>
                 ): Boolean {
                     return oldItem.second == newItem.second
                 }
@@ -43,9 +43,9 @@ class DiaryDayCalendarAdapter :
     }
 
     override fun onBindViewHolder(holder: DateViewHolder, position: Int) {
-        val dateAndConsume = getItem(position)
-        if (dateAndConsume.first != "previous" && dateAndConsume.first != "next") {
-            holder.bind(dateAndConsume, isToday(dateAndConsume.first))
+        val dateAndDetails = getItem(position)
+        if (dateAndDetails.first != "previous" && dateAndDetails.first != "next") {
+            holder.bind(dateAndDetails, isToday(dateAndDetails.first))
         } else {
             holder.clear()
         }
@@ -54,29 +54,23 @@ class DiaryDayCalendarAdapter :
     inner class DateViewHolder(val binding: ItemDiaryDayBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(dateAndConsume: Pair<String, MonthDailyInfo?>, isToday: Boolean) {
-            val date = dateAndConsume.first
-            val detailConsume = dateAndConsume.second
+        fun bind(dateAndDetails: Pair<String, Pair<MonthDailyInfo?, MonthDailyInfo?>>, isToday: Boolean) {
+            val date = dateAndDetails.first
+            val (expenseInfo, incomeInfo) = dateAndDetails.second
             val day = date.split("-").lastOrNull() ?: ""
 
             binding.tvDay.text = day
             binding.tvIncome.text = when {
-                detailConsume?.amount == null || detailConsume.amount == 0 -> ""
-                else -> "+${detailConsume.amount}"
+                incomeInfo?.amount == null || incomeInfo.amount == 0 -> ""
+                else -> "+${incomeInfo.amount}"
             }
             binding.tvConsume.text = when {
-                detailConsume?.amount == null || detailConsume.amount == 0 -> ""
-                else -> "-${detailConsume.amount}"
+                expenseInfo?.amount == null || expenseInfo.amount == 0 -> ""
+                else -> "-${expenseInfo.amount}"
             }
             binding.root.isClickable = true
             binding.root.visibility = View.VISIBLE
-
-            binding.root.setBackgroundResource(0)
-            binding.tvDay.setTextColor(ContextCompat.getColor(itemView.context, R.color.black))
-            if (isToday) {
-                binding.ivDiaryCheck.setBackgroundResource(R.drawable.shape_bg_day)
-                binding.tvDay.setTextColor(ContextCompat.getColor(itemView.context, R.color.white))
-            }
+            setTodayHighlight(isToday)
 
             itemView.setOnClickListener {
                 rvItemClickListener.onClick(day.toInt())
@@ -89,6 +83,16 @@ class DiaryDayCalendarAdapter :
             binding.tvConsume.text = ""
             binding.root.isClickable = false
             binding.root.visibility = View.GONE
+        }
+
+        private fun setTodayHighlight(isToday: Boolean) {
+            binding.root.setBackgroundResource(0)
+            binding.tvDay.setTextColor(ContextCompat.getColor(itemView.context, R.color.black))
+
+            if (isToday) {
+                binding.ivDiaryCheck.setBackgroundResource(R.drawable.shape_bg_day)
+                binding.tvDay.setTextColor(ContextCompat.getColor(itemView.context, R.color.white))
+            }
         }
     }
 

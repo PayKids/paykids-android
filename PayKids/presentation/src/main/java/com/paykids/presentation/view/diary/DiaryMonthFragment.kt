@@ -36,16 +36,16 @@ class DiaryMonthFragment : BaseFragment<FragmentDiaryMonthBinding>() {
     }
 
     override fun initView() {
-
+        date = arguments?.getLong(ARG_DATE)?.let { Date(it) } ?: Date()
         val today = getToday()
         val currentYear = today.split("-")[0].toInt()
         val currentMonth = today.split("-")[1].toInt()
-        date = arguments?.getLong(ARG_DATE)?.let { Date(it) } ?: Date()
-        val daysInMonth = getDaysInMonth(date)
-        val initialList =
-            daysInMonth.map { day -> Pair(day, null as MonthDailyInfo?) }
+//        val daysInMonth = getDaysInMonth(date)
+//        val initialList =
+//            daysInMonth.map { day -> Pair(day, null as MonthDailyInfo?) }
 
         viewModel.getMonthDailyExpense(currentYear, currentMonth)
+        viewModel.getMonthDailyIncome(currentYear, currentMonth)
 
         dayAdapter = DiaryDayCalendarAdapter().apply {
             setRvItemClickListener(object : OnRvItemClickListener<Int> {
@@ -56,7 +56,6 @@ class DiaryMonthFragment : BaseFragment<FragmentDiaryMonthBinding>() {
                 }
             })
         }
-        dayAdapter.submitList(initialList)
 
         binding.rvCalendarDays.layoutManager = GridLayoutManager(requireContext(), 7)
         binding.rvCalendarDays.adapter = dayAdapter
@@ -66,22 +65,17 @@ class DiaryMonthFragment : BaseFragment<FragmentDiaryMonthBinding>() {
     override fun setObserver() {
         super.setObserver()
 
-        viewModel.monthDailyExpenseState.observe(viewLifecycleOwner) { it ->
-            when (it) {
-                is UiState.Failure -> {
-                    showToast(it.message)
-                }
+        viewModel.monthDailyExpenseState.observe(viewLifecycleOwner) { expenseState ->
+            viewModel.monthDailyIncomeState.observe(viewLifecycleOwner) { incomeState ->
+                if (expenseState is UiState.Success && incomeState is UiState.Success) {
 
-                is UiState.Loading -> {}
-
-                is UiState.Success -> {
-                    LoggerUtils.d("날짜별 소비 금액 조회 성공: ${it.data}")
+                    val expenseData = expenseState.data
+                    val incomeData = incomeState.data
 
                     val updatedList = getDaysInMonth(date).map { day ->
-                        val monthInfo = it.data.find { monthDailyInfo ->
-                            monthDailyInfo.date == day
-                        }
-                        Pair(day, monthInfo)
+                        val expenseInfo = expenseData.find { it.date == day }
+                        val incomeInfo = incomeData.find { it.date == day }
+                        Pair(day, Pair(expenseInfo, incomeInfo))
                     }
 
                     dayAdapter.submitList(updatedList)
