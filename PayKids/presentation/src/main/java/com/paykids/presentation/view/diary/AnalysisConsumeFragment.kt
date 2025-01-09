@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.paykids.domain.model.allowance.MonthAllCategoryInfo
@@ -21,11 +22,13 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisAllowanceBinding>() {
     private val viewModel: DiaryViewModel by activityViewModels()
+    private val categoryViewModel: CategoryViewModel by viewModels()
 
     private var categories = mutableListOf<String>()
     private lateinit var adapter: AllowanceCategoryAdapter
     private var isDeleteMode = false
     private var isConsumeSelected = true
+    private lateinit var currentList: MutableList<AllowanceCategoryAdapter.CategoryItem>
     private var currentYear: Int = 0
     private var currentMonth: Int = 0
 
@@ -37,7 +40,6 @@ class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisAllowanceBinding>()
         binding.tvMonth.text = "${currentMonth}월"
 
         fetchData(currentYear, currentMonth)
-        updateDeleteButtonVisibility(categories)
     }
 
     override fun initListener() {
@@ -204,23 +206,19 @@ class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisAllowanceBinding>()
                     colors,
                     topCategories.map { it.category }
                 )
+
+                updateDeleteButtonVisibility(state.data.map { it.category })
             }
         }
     }
 
     private fun updateDeleteButtonVisibility(items: List<String>) {
-        if (items.isEmpty()) {
-            binding.flDelete.visibility = View.GONE
-        } else {
-            binding.flDelete.visibility = View.VISIBLE
-        }
+        binding.flDelete.visibility = if (items.isNotEmpty()) View.VISIBLE else View.GONE
     }
 
     private fun addCategory(newCategory: String) {
-        // 새 카테고리 추가
         categories.add(newCategory)
 
-        // 어댑터에 새로운 항목 추가
         val currentList = adapter.currentList.toMutableList()
         currentList.add(
             currentList.size - 1,
@@ -228,14 +226,33 @@ class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisAllowanceBinding>()
         )
         adapter.submitList(currentList)
 
-        // 삭제 버튼 가시성 업데이트
         updateDeleteButtonVisibility(categories)
     }
 
-    private fun deleteSelectedItems() {
-        val deletedItems = adapter.deleteSelectedItems()
-        categories.removeAll { it in deletedItems }
-        updateDeleteButtonVisibility(categories)
+    private fun deleteExpenseItems(): List<String> {
+        val selectedItems = adapter.getSelectedCategories()
+        val selectedNames = selectedItems.map { it.name }
+
+        selectedNames.forEach { categoryName ->
+            categoryViewModel.deleteExpenseCategory(categoryName)
+        }
+
+        currentList.removeAll(selectedItems)
+        adapter.submitList(currentList)
+        return selectedNames
+    }
+
+    private fun deleteIncomeItems(): List<String> {
+        val selectedItems = adapter.getSelectedCategories()
+        val selectedNames = selectedItems.map { it.name }
+
+        selectedNames.forEach { categoryName ->
+            categoryViewModel.deleteIncomeCategory(categoryName)
+        }
+
+        currentList.removeAll(selectedItems)
+        adapter.submitList(currentList)
+        return selectedNames
     }
 
     private fun toggleDeleteMode() {
@@ -245,10 +262,21 @@ class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisAllowanceBinding>()
         if (isDeleteMode) {
             binding.tvDelete.text = "삭제"
             binding.btnAddCategory.isEnabled = false
+
+            if (isConsumeSelected) {
+                deleteExpenseItems()
+            } else {
+                deleteIncomeItems()
+            }
         } else {
             binding.tvDelete.text = "카테고리 삭제"
             binding.btnAddCategory.isEnabled = true
-            deleteSelectedItems()
+
+            if (isConsumeSelected) {
+                deleteExpenseItems()
+            } else {
+                deleteIncomeItems()
+            }
         }
     }
 

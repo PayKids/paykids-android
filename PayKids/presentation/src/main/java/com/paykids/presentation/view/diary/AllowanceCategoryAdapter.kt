@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -100,23 +101,14 @@ class AllowanceCategoryAdapter(
     @SuppressLint("NotifyDataSetChanged")
     fun toggleDeleteMode(deleteMode: Boolean) {
         isDeleteMode = deleteMode
+        if (!deleteMode) {
+            lastAddedPosition = -1
+        }
         notifyDataSetChanged()
     }
 
-    fun deleteSelectedItems(): List<String> {
-        val deletedItems = mutableListOf<String>()
-        val currentList = currentList.toMutableList()
-        currentList.removeAll {
-            if (it is CategoryItem.Normal && it.isSelected) {
-                deletedItems.add(it.name)
-                true
-            } else {
-                false
-            }
-        }
-        submitList(currentList)
-        isDeleteMode = false
-        return deletedItems
+    fun getSelectedCategories(): List<CategoryItem.Normal> {
+        return currentList.filterIsInstance<CategoryItem.Normal>().filter { it.isSelected }
     }
 
     fun addCategoryInput() {
@@ -217,13 +209,9 @@ class AllowanceCategoryAdapter(
             onSelectionChanged: (Boolean) -> Unit
         ) {
             with(binding) {
-                // 카테고리 이름 설정
                 tvConsumptionCategory.visibility = View.VISIBLE
                 tvConsumptionCategory.text = category
-
-                // 소비 금액 설정
                 tvConsumeAmount.visibility = if (isDeleteMode) View.GONE else View.VISIBLE
-
                 binding.tvConsumeAmount.text =
                     if (isConsumeSelected) {
                         "+${Constants.formatAmount(amount)}"
@@ -231,7 +219,6 @@ class AllowanceCategoryAdapter(
                         "-${Constants.formatAmount(amount)}"
                     }
 
-                // 퍼센트 설정
                 tvPercent.visibility = if (isDeleteMode) View.GONE else View.VISIBLE
                 tvPercent.text = percent
 
@@ -271,6 +258,7 @@ class AllowanceCategoryAdapter(
 
     sealed class CategoryItem {
         data class Normal(
+
             val name: String,
             var isSelected: Boolean = false,
             val amount: Int,
