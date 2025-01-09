@@ -11,8 +11,10 @@ import com.paykids.presentation.utils.Constants
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class CategoryDetailAllowanceAdapter(private val fragment: Fragment) :
-    RecyclerView.Adapter<CategoryDetailAllowanceAdapter.ViewHolder>(), ConfirmDialogInterface {
+class CategoryDetailAllowanceAdapter(
+    private val isConsumeClicked: Boolean,
+    private val fragment: AnalysisCategoryConsumeFragment
+) : RecyclerView.Adapter<CategoryDetailAllowanceAdapter.ViewHolder>(), ConfirmDialogInterface {
 
     private val items = mutableListOf<Triple<String, Int, String>>()
 
@@ -24,8 +26,12 @@ class CategoryDetailAllowanceAdapter(private val fragment: Fragment) :
             val formattedDate = formatToMonthDay(item.first)
             val formattedAmount = Constants.formatAmount(item.second)
 
-            binding.tvConsumeDate.text = formattedDate
-            binding.tvConsumeAmount.text = "-${formattedAmount}"
+            binding.tvAllowanceDate.text = formattedDate
+            if (isConsumeClicked) {
+                binding.tvAllowanceAmount.text = "-$formattedAmount"
+            } else {
+                binding.tvAllowanceAmount.text = "+$formattedAmount"
+            }
             binding.tvMemo.text = item.third
 
             itemView.setOnClickListener {

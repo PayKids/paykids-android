@@ -164,7 +164,8 @@ class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisAllowanceBinding>()
                                     currentYear,
                                     currentMonth,
                                     category,
-                                    amount
+                                    amount,
+                                    isConsumeSelected
                                 )
                             findNavController().navigate(action)
                         }

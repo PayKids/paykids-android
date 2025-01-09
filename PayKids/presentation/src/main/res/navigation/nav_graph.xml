@@ -54,6 +54,9 @@
         <argument
             android:name="amount"
             app:argType="integer" />
+        <argument
+            android:name="isConsumeClicked"
+            app:argType="boolean" />
     </fragment>
 
     <fragment
