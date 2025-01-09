@@ -29,13 +29,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     )
 
     private val homeViewModel: HomeViewModel by viewModels()
-    private var isSelected = false
     private var stages = mutableListOf<Stage>()
     private var stageCount: Int = 0
     private lateinit var stageName: String
+    private var unlockedStageNumber: Int = 0
+
 
     override fun initView() {
-        homeViewModel.getStageCount()
+        homeViewModel.getStageToGo()
     }
 
     override fun initListener() {
@@ -54,9 +55,27 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                 is UiState.Loading -> {}
 
                 is UiState.Success -> {
-                    binding.clBox.visibility = View.VISIBLE
                     binding.tvStageTitle.text = it.data
                     stageName = it.data
+                }
+            }
+        }
+
+        homeViewModel.stageToGoState.observe(viewLifecycleOwner) {
+            when (it) {
+                is UiState.Failure -> {
+                    showToast(it.message)
+                }
+
+                is UiState.Loading -> {}
+
+                is UiState.Success -> {
+                    unlockedStageNumber = it.data
+                    val stageName = homeViewModel.getStageName(unlockedStageNumber)
+                    binding.tvStageTitle.text = stageName.toString()
+                    binding.tvStageNumber.text = "스테이지 ${unlockedStageNumber}"
+
+                    homeViewModel.getStageCount() // 해금된 스테이지 번호 불러오기
                 }
             }
         }
@@ -76,10 +95,16 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                 }
             }
         }
+
     }
 
     private fun setupStageClickListener(view: View, stage: Stage) {
         view.setOnClickListener {
+            if (stage.number > unlockedStageNumber) {
+                showToast("해당 스테이지는 잠금 상태입니다.")
+                return@setOnClickListener
+            }
+
             view.isSelected = !view.isSelected
             if (view.isSelected) {
                 binding.tvStageNumber.text = "스테이지 ${stage.number}"
@@ -87,8 +112,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                 val tooltip = createTooltip()
                 tooltip.setOnBalloonClickListener {
                     val action = HomeFragmentDirections.actionHomeFragmentToQuizEntryFragment(
-                        stage.number,
-                        stageName
+                        stage.number, stageName
                     )
                     findNavController().navigate(action)
                 }
@@ -137,7 +161,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
         // 데이터 리스트 기반으로 스테이지 생성
         stages.forEachIndexed { index, stage ->
-            val frameLayout = createStageFrame(imageViewSize, stage) // FrameLayout 생성
+            val isUnlocked = stage.number <= unlockedStageNumber
+            val frameLayout = createStageFrame(imageViewSize, stage, isUnlocked) // FrameLayout 생성
             val horizontalOffset = calculateHorizontalOffset(index, stageOffsets) // 수평 오프셋 계산
 
             addStageToLayout(
@@ -153,14 +178,17 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         }
     }
 
-    private fun createStageFrame(imageViewSize: Int, stage: Stage): FrameLayout {
+    private fun createStageFrame(
+        imageViewSize: Int, stage: Stage, isUnlocked: Boolean
+    ): FrameLayout {
         val frameLayout = FrameLayout(requireContext()).apply {
             id = View.generateViewId()
             layoutParams = ConstraintLayout.LayoutParams(imageViewSize, imageViewSize)
         }
 
-        val borderView = createBorderView(imageViewSize)
-        val imageView = createImageView(stage.imageResIdLock)
+        val borderView = createBorderView(imageViewSize, isUnlocked)
+        val imageView =
+            createImageView(if (isUnlocked) stage.imageResIdUnlock else stage.imageResIdLock)
 
         frameLayout.addView(borderView)
         frameLayout.addView(imageView)
@@ -169,13 +197,15 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         return frameLayout
     }
 
-    private fun createBorderView(size: Int): View {
+    private fun createBorderView(size: Int, isUnlocked: Boolean): View {
         return View(requireContext()).apply {
             layoutParams = FrameLayout.LayoutParams(size, size)
             background = GradientDrawable().apply {
                 shape = GradientDrawable.OVAL
                 setColor(ContextCompat.getColor(requireContext(), R.color.white))
-                setStroke(6.dp, ContextCompat.getColor(requireContext(), R.color.gray2))
+                if (isUnlocked) {
+                    setStroke(6.dp, ContextCompat.getColor(requireContext(), R.color.blue1))
+                } else setStroke(6.dp, ContextCompat.getColor(requireContext(), R.color.gray2))
             }
         }
     }
@@ -270,6 +300,5 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
     override fun onResume() {
         super.onResume()
-        binding.clBox.visibility = View.GONE
     }
 }
