@@ -1,6 +1,7 @@
 package com.paykids.presentation.view.quiz
 
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.paykids.presentation.R
 import com.paykids.presentation.base.BaseFragment
 import com.paykids.presentation.custom.ConfirmDialogInterface
@@ -10,10 +11,17 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class QuizEntryFragment : BaseFragment<FragmentQuizEntryBinding>(), ConfirmDialogInterface {
+    private val args: QuizEntryFragmentArgs by navArgs()
     private val incorrectQuiz = 0
     private var clear = false
 
     override fun initView() {
+        // 전달받은 스테이지 번호와 이름 사용
+        val stageNumber = args.stageNumber
+        val stageName = args.stageName
+
+        binding.tvStage.text = "스테이지 $stageNumber"
+        binding.tvStageName.text = stageName
 
     }
 
