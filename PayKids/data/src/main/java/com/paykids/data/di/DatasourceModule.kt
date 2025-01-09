@@ -2,6 +2,18 @@ package com.paykids.data.di
 
 import com.paykids.data.datasource.AuthRemoteDatasource
 import com.paykids.data.datasource.ChatRemoteDatasource
+import com.paykids.data.datasource.QuizRemoteDatasource
+import com.paykids.data.datasource.UserRemoteDatasource
+import com.paykids.data.datasourceImpl.AuthRemoteDatasourceImpl
+import com.paykids.data.datasourceImpl.ChatRemoteDatasourceImpl
+import com.paykids.data.datasourceImpl.QuizRemoteDatasourceImpl
+import com.paykids.data.datasource.ExpenseCategoryRemoteDatasource
+import com.paykids.data.datasource.ExpenseRemoteDatasource
+import com.paykids.data.datasource.IncomeCategoryRemoteDatasource
+import com.paykids.data.datasource.IncomeRemoteDatasource
+import com.paykids.data.datasource.UserRemoteDatasource
+import com.paykids.data.datasourceImpl.AuthRemoteDatasourceImpl
+import com.paykids.data.datasourceImpl.ChatRemoteDatasourceImpl
 import com.paykids.data.datasource.ExpenseCategoryRemoteDatasource
 import com.paykids.data.datasource.ExpenseRemoteDatasource
 import com.paykids.data.datasource.IncomeCategoryRemoteDatasource
@@ -39,6 +51,9 @@ abstract class DatasourceModule {
     ): UserRemoteDatasource
 
     @Binds
+    abstract fun bindQuizRemoteDatasource(
+        impl: QuizRemoteDatasourceImpl
+    ): QuizRemoteDatasource
     abstract fun bindExpenseRemoteDatasource(
         impl: ExpenseRemoteDatasourceImpl
     ): ExpenseRemoteDatasource

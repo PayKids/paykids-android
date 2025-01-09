@@ -88,6 +88,12 @@
             app:destination="@id/studyFragment"
             app:popUpTo="@id/quizEntryFragment"
             app:popUpToInclusive="false" />
+        <argument
+            android:name="stageNumber"
+            app:argType="integer" />
+        <argument
+            android:name="stageName"
+            app:argType="string" />
     </fragment>
 
     <fragment
