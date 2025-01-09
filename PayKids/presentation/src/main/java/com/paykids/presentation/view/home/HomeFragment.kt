@@ -102,7 +102,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         view.setOnClickListener {
             if (stage.number > unlockedStageNumber) {
                 showToast("해당 스테이지는 잠금 상태입니다.")
-                return@setOnClickListener
+                //return@setOnClickListener
             }
 
             view.isSelected = !view.isSelected
