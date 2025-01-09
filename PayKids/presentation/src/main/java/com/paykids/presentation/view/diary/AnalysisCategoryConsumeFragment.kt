@@ -1,5 +1,6 @@
 package com.paykids.presentation.view.diary
 
+import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
@@ -50,7 +51,21 @@ class AnalysisCategoryConsumeFragment : BaseFragment<FragmentAnalysisCategoryCon
     override fun initListener() {
         super.initListener()
 
+//        binding.ibBack.setOnClickListener {
+//            parentFragmentManager.popBackStack()
+//        }
         binding.ibBack.setOnClickListener {
+            val args: AnalysisCategoryConsumeFragmentArgs by navArgs()
+            val currentYear = args.currentYear
+            val currentMonth = args.currentMonth
+
+            parentFragmentManager.setFragmentResult(
+                "CATEGORY_BACK_RESULT",
+                Bundle().apply {
+                    putInt("year", currentYear)
+                    putInt("month", currentMonth)
+                }
+            )
             parentFragmentManager.popBackStack()
         }
     }

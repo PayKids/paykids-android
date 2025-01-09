@@ -2,6 +2,7 @@ package com.paykids.presentation.view.diary
 
 import android.annotation.SuppressLint
 import android.graphics.Color
+import android.os.Bundle
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
@@ -33,8 +34,25 @@ class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisConsumeBinding>() {
         currentMonth = args.currentMonth
         binding.tvMonth.text = "${currentMonth}월"
 
-        fetchData(currentYear, currentMonth)
+        adapter = ConsumeCategoryAdapter(
+            onCategoryAdded = { newCategory ->
+                addCategory(newCategory)
+            },
+            onItemClick = { category, amount ->
+                val action = AnalysisConsumeFragmentDirections
+                    .actionAnalysisConsumeFragmentToAnalysisCategoryConsumeFragment(
+                        currentYear,
+                        currentMonth,
+                        category,
+                        amount
+                    )
+                findNavController().navigate(action)
+            }
+        )
+        binding.rvDetailConsume.layoutManager = LinearLayoutManager(requireContext())
+        binding.rvDetailConsume.adapter = adapter
 
+        fetchData(currentYear, currentMonth)
         updateDeleteButtonVisibility(categories)
     }
 
@@ -62,6 +80,24 @@ class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisConsumeBinding>() {
         binding.btnAddCategory.setOnClickListener {
 //            adapter.addCategoryInput()
 //            binding.rvDetailConsume.smoothScrollToPosition(adapter.itemCount - 1)
+        }
+    }
+
+    @SuppressLint("SetTextI18n")
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        parentFragmentManager.setFragmentResultListener(
+            "CATEGORY_BACK_RESULT",
+            viewLifecycleOwner
+        ) { _, bundle ->
+            val year = bundle.getInt("year")
+            val month = bundle.getInt("month")
+
+            currentYear = year
+            currentMonth = month
+            binding.tvMonth.text = "${currentMonth}월"
+            fetchData(currentYear, currentMonth)
         }
     }
 
@@ -124,7 +160,7 @@ class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisConsumeBinding>() {
 
                     if (::adapter.isInitialized) {
                         val sortedCategories = it.data
-                            .sortedByDescending { it.percent }
+                            .sortedByDescending { it.percent.replace("%", "").toFloat() }
                             .map {
                                 ConsumeCategoryAdapter.CategoryItem.Normal(
                                     name = it.category,
@@ -137,7 +173,7 @@ class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisConsumeBinding>() {
                     }
 
                     val topCategories = it.data
-                        .sortedByDescending { it.percent }
+                        .sortedByDescending { it.percent.toFloat() }
                         .take(3)
                     val colors = mutableListOf(
                         ContextCompat.getColor(requireContext(), R.color.blue1),
@@ -150,7 +186,7 @@ class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisConsumeBinding>() {
                     }
 
                     binding.categoryProgressView.updateSections(
-                        it.data.map { it.percent.toFloat() },
+                        it.data.map { it.percent.replace("%", "").toFloat() },
                         colors,
                         topCategories.map { it.category })
                 }
@@ -224,10 +260,11 @@ class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisConsumeBinding>() {
         binding.tvMonth.text = "${currentMonth}월"
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onResume() {
         super.onResume()
         (requireActivity() as? HomeActivity)?.setBottomNavigationVisibility(false)
-        viewModel.getMonthAllCategory(currentYear, currentMonth)
+        fetchData(currentYear, currentMonth)
     }
 
     override fun onPause() {
