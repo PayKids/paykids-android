@@ -15,7 +15,7 @@ import com.paykids.presentation.utils.Constants
 
 class ConsumeCategoryAdapter(
     private val onCategoryAdded: (String) -> Unit,
-    private val onItemClick: (String, String) -> Unit
+    private val onItemClick: (String, Int) -> Unit
 ) : ListAdapter<ConsumeCategoryAdapter.CategoryItem, RecyclerView.ViewHolder>(CategoryDiffCallback()) {
 
     private var isAddingCategory = false
@@ -113,17 +113,17 @@ class ConsumeCategoryAdapter(
     }
 
     fun addCategoryInput() {
-        if (!isAddingCategory) {
-            isAddingCategory = true
-            val currentList = currentList.toMutableList()
-            val insertPosition = if (lastAddedPosition != -1) {
-                lastAddedPosition + 1
-            } else {
-                currentList.size - 1 // Etc 항목 바로 앞
-            }
-            currentList.add(insertPosition, CategoryItem.Add)
-            submitList(currentList)
-        }
+//        if (!isAddingCategory) {
+//            isAddingCategory = true
+//            val currentList = currentList.toMutableList()
+//            val insertPosition = if (lastAddedPosition != -1) {
+//                lastAddedPosition + 1
+//            } else {
+//                currentList.size - 1 // Etc 항목 바로 앞
+//            }
+//            currentList.add(insertPosition, CategoryItem.Add)
+//            submitList(currentList)
+//        }
     }
 
     private fun confirmCategoryInput(category: String) {
@@ -131,7 +131,7 @@ class ConsumeCategoryAdapter(
             val currentList = currentList.toMutableList()
             val addIndex = currentList.indexOfFirst { it is CategoryItem.Add }
             if (addIndex != -1) {
-                currentList[addIndex] = CategoryItem.Normal(category, false, "0", "0")
+                currentList[addIndex] = CategoryItem.Normal(category, false, 0, "0%")
                 lastAddedPosition = addIndex
                 notifyItemChanged(addIndex)
             } else {
@@ -140,7 +140,7 @@ class ConsumeCategoryAdapter(
                 } else {
                     currentList.size - 1 // Etc 항목 바로 앞
                 }
-                currentList.add(insertPosition, CategoryItem.Normal(category, false, "0", "0"))
+                currentList.add(insertPosition, CategoryItem.Normal(category, false, 0, "0%"))
                 lastAddedPosition = insertPosition
                 notifyItemInserted(insertPosition)
             }
@@ -195,7 +195,7 @@ class ConsumeCategoryAdapter(
 
     class NormalViewHolder(
         private val binding: ItemAnalysisConsumptionBinding,
-        private val onItemClick: (String, String) -> Unit
+        private val onItemClick: (String, Int) -> Unit
     ) :
         RecyclerView.ViewHolder(binding.root) {
         private var isChecked = false
@@ -203,7 +203,7 @@ class ConsumeCategoryAdapter(
         @SuppressLint("SetTextI18n")
         fun bind(
             category: String,
-            amount: String,
+            amount: Int,
             percent: String,
             isDeleteMode: Boolean,
             isSelected: Boolean,
@@ -260,7 +260,7 @@ class ConsumeCategoryAdapter(
         data class Normal(
             val name: String,
             var isSelected: Boolean = false,
-            val amount: String,
+            val amount: Int,
             val percent: String
         ) : CategoryItem()
 

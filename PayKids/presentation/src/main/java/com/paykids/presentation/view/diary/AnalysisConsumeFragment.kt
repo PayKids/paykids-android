@@ -1,12 +1,17 @@
 package com.paykids.presentation.view.diary
 
 import android.annotation.SuppressLint
+import android.graphics.Color
+import android.os.Bundle
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.paykids.presentation.R
 import com.paykids.presentation.base.BaseFragment
 import com.paykids.presentation.databinding.FragmentAnalysisConsumeBinding
+import com.paykids.presentation.utils.Constants
 import com.paykids.presentation.utils.UiState
 import com.paykids.presentation.view.home.HomeActivity
 import com.paykids.util.LoggerUtils
@@ -16,35 +21,21 @@ import dagger.hilt.android.AndroidEntryPoint
 class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisConsumeBinding>() {
     private val viewModel: DiaryViewModel by activityViewModels()
 
-    private val items = mutableListOf("편의점", "편", "의점", "편의점편", "편의점편의")
+    private var categories = mutableListOf<String>()
     private lateinit var adapter: ConsumeCategoryAdapter
     private var isDeleteMode = false
-    private var currentMonth: String? = null
+    private var currentYear: Int = 0
+    private var currentMonth: Int = 0
 
     @SuppressLint("SetTextI18n")
     override fun initView() {
-        fetchData()
+        val args = AnalysisConsumeFragmentArgs.fromBundle(requireArguments())
+        currentYear = args.currentYear
+        currentMonth = args.currentMonth
+        binding.tvMonth.text = "${currentMonth}월"
 
-        currentMonth = arguments?.getString("currentMonth")
-        currentMonth.let {
-            val month = it!!.split("-")[1].toInt()
-            binding.tvMonth.text = "${month}월"
-        }
-
-        adapter = ConsumeCategoryAdapter(
-            onCategoryAdded = { newCategory ->
-                addCategory(newCategory)
-            },
-            onItemClick = { category, amount ->
-                navigateToAnalysisConsumeLocationFragment(category, amount)
-            }
-        )
-//        fetchData(currentMonth!!)
-
-        binding.rvDetailConsume.layoutManager = LinearLayoutManager(requireContext())
-        binding.rvDetailConsume.adapter = adapter
-
-        updateDeleteButtonVisibility(items)
+        fetchData(currentYear, currentMonth)
+        updateDeleteButtonVisibility(categories)
     }
 
     override fun initListener() {
@@ -55,15 +46,13 @@ class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisConsumeBinding>() {
         }
 
         binding.ibLeft.setOnClickListener {
-            currentMonth = changeMonth(currentMonth, -1)
-//            fetchData(currentMonth!!)
-            updateMonthDisplay()
+            minusMonth()
+            fetchData(currentYear, currentMonth)
         }
 
         binding.ibRight.setOnClickListener {
-            currentMonth = changeMonth(currentMonth, 1)
-//            fetchData(currentMonth!!)
-            updateMonthDisplay()
+            plusMonth()
+            fetchData(currentYear, currentMonth)
         }
 
         binding.tvDelete.setOnClickListener {
@@ -71,57 +60,55 @@ class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisConsumeBinding>() {
         }
 
         binding.btnAddCategory.setOnClickListener {
-            adapter.addCategoryInput()
-            binding.rvDetailConsume.smoothScrollToPosition(adapter.itemCount - 1)
+//            adapter.addCategoryInput()
+//            binding.rvDetailConsume.smoothScrollToPosition(adapter.itemCount - 1)
         }
     }
 
     @SuppressLint("SetTextI18n")
-    private fun fetchData() {
-        viewModel.getMonthAllCategory(2025, 1)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-//        val totalConsume = viewModel.getMonthConsumption(currentMonth)
-//        binding.tvMonthConsumption.text = "${Constants.formatAmount(totalConsume)}원 사용 중"
-//
-//        val categoryPercentages = viewModel.getMonthlyCostCategory(currentMonth)
-//        if (::adapter.isInitialized) {
-//            val sortedCategories = categoryPercentages
-//                .sortedByDescending { it.percentage }
-//                .map {
-//                    ConsumeCategoryAdapter.CategoryItem.Normal(
-//                        name = it.categoryName,
-//                        amount = it.totalAmount.toString(),
-//                        percent = "${it.percentage}%"
-//                    )
-//                }
-//
-//            adapter.submitList(sortedCategories)
-//        }
-//
-//        val topCategories = categoryPercentages
-//            .sortedByDescending { it.percentage }
-//            .take(3)
-//        val sections = topCategories.map { it.percentage / 100.0f }
-//        val colors = mutableListOf(
-//            ContextCompat.getColor(requireContext(), R.color.blue1),
-//            ContextCompat.getColor(requireContext(), R.color.blue2),
-//            ContextCompat.getColor(requireContext(), R.color.blue3)
-//        )
-//
-//        while (colors.size < sections.size) {
-//            colors.add(Color.LTGRAY)
-//        }
-//
-//        binding.categoryProgressView.updateSections(
-//            sections,
-//            colors,
-//            topCategories.map { it.categoryName })
+        parentFragmentManager.setFragmentResultListener(
+            "CATEGORY_BACK_RESULT",
+            viewLifecycleOwner
+        ) { _, bundle ->
+            val year = bundle.getInt("year")
+            val month = bundle.getInt("month")
+
+            currentYear = year
+            currentMonth = month
+            binding.tvMonth.text = "${currentMonth}월"
+            fetchData(currentYear, currentMonth)
+        }
     }
 
+    @SuppressLint("SetTextI18n")
+    private fun fetchData(year: Int, month: Int) {
+        viewModel.getMonthTotalExpense(year, month)
+        viewModel.getMonthAllCategory(year, month)
+    }
+
+    @SuppressLint("SetTextI18n")
     override fun setObserver() {
         super.setObserver()
 
-        viewModel.allCategoryState.observe(viewLifecycleOwner) {
+        viewModel.monthTotalExpenseState.observe(viewLifecycleOwner) {
+            when (it) {
+                is UiState.Failure -> {
+                    showToast(it.message)
+                }
+
+                is UiState.Loading -> {}
+
+                is UiState.Success -> {
+                    LoggerUtils.d("월 전체 소비 금액 조회 성공: ${it.data}")
+                    binding.tvMonthConsumption.text = "${Constants.formatAmount(it.data)}원 사용 중"
+                }
+            }
+        }
+
+        viewModel.allCategoryState.observe(viewLifecycleOwner) { it ->
             when (it) {
                 is UiState.Failure -> {
                     showToast(it.message)
@@ -131,6 +118,59 @@ class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisConsumeBinding>() {
 
                 is UiState.Success -> {
                     LoggerUtils.d("월 전체 카테고리 조회 성공: ${it.data}")
+
+                    adapter = ConsumeCategoryAdapter(
+                        onCategoryAdded = { newCategory ->
+                            addCategory(newCategory)
+                        },
+                        onItemClick = { category, amount ->
+                            val action = AnalysisConsumeFragmentDirections
+                                .actionAnalysisConsumeFragmentToAnalysisCategoryConsumeFragment(
+                                    currentYear,
+                                    currentMonth,
+                                    category,
+                                    amount
+                                )
+                            findNavController().navigate(action)
+                        }
+                    )
+
+                    binding.rvDetailConsume.layoutManager = LinearLayoutManager(requireContext())
+                    binding.rvDetailConsume.adapter = adapter
+
+                    categories = it.data.map { it.category }.toMutableList()
+
+                    if (::adapter.isInitialized) {
+                        val sortedCategories = it.data
+                            .sortedByDescending { it.percent.replace("%", "").toFloat() }
+                            .map {
+                                ConsumeCategoryAdapter.CategoryItem.Normal(
+                                    name = it.category,
+                                    amount = it.amount,
+                                    percent = it.percent
+                                )
+                            }
+
+                        adapter.submitList(sortedCategories)
+                    }
+
+                    val topCategories = it.data
+                        .sortedByDescending { it.percent.replace("%", "").toFloat() }
+                        .take(3)
+                    val colors = mutableListOf(
+                        ContextCompat.getColor(requireContext(), R.color.blue1),
+                        ContextCompat.getColor(requireContext(), R.color.blue2),
+                        ContextCompat.getColor(requireContext(), R.color.blue3)
+                    )
+
+                    while (colors.size < it.data.size) {
+                        colors.add(Color.LTGRAY)
+                    }
+
+                    binding.categoryProgressView.updateSections(
+                        it.data.map { it.percent.replace("%", "").toFloat() },
+                        colors,
+                        topCategories.map { it.category })
                 }
             }
         }
@@ -146,24 +186,24 @@ class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisConsumeBinding>() {
 
     private fun addCategory(newCategory: String) {
         // 새 카테고리 추가
-        items.add(newCategory)
+        categories.add(newCategory)
 
         // 어댑터에 새로운 항목 추가
         val currentList = adapter.currentList.toMutableList()
         currentList.add(
             currentList.size - 1,
-            ConsumeCategoryAdapter.CategoryItem.Normal(newCategory, false, "0", "0")
+            ConsumeCategoryAdapter.CategoryItem.Normal(newCategory, false, 0, "0")
         )
         adapter.submitList(currentList)
 
         // 삭제 버튼 가시성 업데이트
-        updateDeleteButtonVisibility(items)
+        updateDeleteButtonVisibility(categories)
     }
 
     private fun deleteSelectedItems() {
         val deletedItems = adapter.deleteSelectedItems()
-        items.removeAll { it in deletedItems }
-        updateDeleteButtonVisibility(items)
+        categories.removeAll { it in deletedItems }
+        updateDeleteButtonVisibility(categories)
     }
 
     private fun toggleDeleteMode() {
@@ -180,42 +220,33 @@ class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisConsumeBinding>() {
         }
     }
 
-    @SuppressLint("DefaultLocale")
-    private fun changeMonth(currentMonth: String?, increment: Int): String {
-        val yearMonth = currentMonth?.split("-") ?: return ""
-        var year = yearMonth[0].toInt()
-        var month = yearMonth[1].toInt()
-
-        month += increment
-
-        if (month > 12) {
-            month = 1
-            year += 1
-        } else if (month < 1) {
-            month = 12
-            year -= 1
+    @SuppressLint("SetTextI18n")
+    private fun minusMonth() {
+        if (currentMonth == 1) {
+            currentMonth = 12
+            currentYear -= 1
+        } else {
+            currentMonth -= 1
         }
-
-        return String.format("%04d-%02d", year, month)
+        binding.tvMonth.text = "${currentMonth}월"
     }
 
     @SuppressLint("SetTextI18n")
-    private fun updateMonthDisplay() {
-        currentMonth?.let {
-            val month = it.split("-")[1].toInt()
-            binding.tvMonth.text = "${month}월"
+    private fun plusMonth() {
+        if (currentMonth == 12) {
+            currentMonth = 1
+            currentYear += 1
+        } else {
+            currentMonth += 1
         }
+        binding.tvMonth.text = "${currentMonth}월"
     }
 
-    private fun navigateToAnalysisConsumeLocationFragment(category: String, amount: String) {
-        val action = AnalysisConsumeFragmentDirections
-            .actionAnalysisConsumeFragmentToAnalysisCategoryConsumeFragment(category, amount)
-        findNavController().navigate(action)
-    }
-
+    @SuppressLint("SetTextI18n")
     override fun onResume() {
         super.onResume()
         (requireActivity() as? HomeActivity)?.setBottomNavigationVisibility(false)
+        fetchData(currentYear, currentMonth)
     }
 
     override fun onPause() {

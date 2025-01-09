@@ -1,10 +1,13 @@
 package com.paykids.presentation.view.diary
 
+import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.paykids.presentation.R
 import com.paykids.presentation.base.BaseFragment
 import com.paykids.presentation.databinding.FragmentAnalysisCategoryConsumeBinding
@@ -17,18 +20,15 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class AnalysisCategoryConsumeFragment : BaseFragment<FragmentAnalysisCategoryConsumeBinding>() {
     private val viewModel: DiaryViewModel by activityViewModels()
-
     private lateinit var adapter: CategoryConsumeAdapter
 
-    private var category: String = ""
-    private var amount: String = ""
-
     override fun initView() {
-        val args = AnalysisCategoryConsumeFragmentArgs.fromBundle(requireArguments())
-        category = args.category
-        amount = args.amount
+        val args: AnalysisCategoryConsumeFragmentArgs by navArgs()
+        val currentYear = args.currentYear
+        val currentMonth = args.currentMonth
+        val category = args.category
+        val amount = args.amount
 
-        val amount = this.amount.toInt()
         val formattedText = "${category}에서 ${Constants.formatAmount(amount)}원 소비 중"
         val spannableString = SpannableString(formattedText)
 
@@ -45,37 +45,39 @@ class AnalysisCategoryConsumeFragment : BaseFragment<FragmentAnalysisCategoryCon
 
         binding.tvConsumeInfo.text = spannableString
 
-        fetchData()
+        fetchData(currentYear, currentMonth, category)
     }
 
     override fun initListener() {
         super.initListener()
 
+//        binding.ibBack.setOnClickListener {
+//            parentFragmentManager.popBackStack()
+//        }
         binding.ibBack.setOnClickListener {
+            val args: AnalysisCategoryConsumeFragmentArgs by navArgs()
+            val currentYear = args.currentYear
+            val currentMonth = args.currentMonth
+
+            parentFragmentManager.setFragmentResult(
+                "CATEGORY_BACK_RESULT",
+                Bundle().apply {
+                    putInt("year", currentYear)
+                    putInt("month", currentMonth)
+                }
+            )
             parentFragmentManager.popBackStack()
         }
     }
 
-    private fun fetchData() {
-        viewModel.getMonthCategoryExpense(2025,1,"기타")
-
-//        val categoryDetails = viewModel.getConsumptionByCategory(category)
-//
-//        if (!::adapter.isInitialized) {
-//            adapter = CategoryConsumeAdapter(this)
-//            binding.rvCategoryConsume.layoutManager = LinearLayoutManager(requireContext())
-//            binding.rvCategoryConsume.adapter = adapter
-//        }
-//        val formattedDetails = categoryDetails.map {
-//            Triple(it.first, it.second, it.third)
-//        }
-//        adapter.submitList(formattedDetails)
+    private fun fetchData(year: Int, month: Int, category: String) {
+        viewModel.getMonthCategoryExpense(year, month, category)
     }
 
     override fun setObserver() {
         super.setObserver()
 
-        viewModel.categoryExpenseState.observe(viewLifecycleOwner) {
+        viewModel.categoryExpenseState.observe(viewLifecycleOwner) { it ->
             when (it) {
                 is UiState.Failure -> {
                     showToast(it.message)
@@ -85,6 +87,19 @@ class AnalysisCategoryConsumeFragment : BaseFragment<FragmentAnalysisCategoryCon
 
                 is UiState.Success -> {
                     LoggerUtils.d("카테고리 별 월별 소비 금액 조회 성공: ${it.data}")
+                    if (!::adapter.isInitialized) {
+                        adapter = CategoryConsumeAdapter(this)
+                        binding.rvCategoryConsume.layoutManager =
+                            LinearLayoutManager(requireContext())
+                        binding.rvCategoryConsume.adapter = adapter
+                    }
+
+                    val formattedDetails = it.data.map {
+                        val dateParts = it.date.substring(5)
+                        val formattedDate = dateParts.replace("-", " / ")
+                        Triple(formattedDate, it.amount, it.memo)
+                    }
+                    adapter.submitList(formattedDetails)
                 }
             }
         }

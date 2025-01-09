@@ -18,6 +18,7 @@ import com.paykids.domain.usecase.expense.GetMonthDailyExpenseUseCase
 import com.paykids.domain.usecase.expense.GetMonthMostCategoryUseCase
 import com.paykids.domain.usecase.expense.GetMonthTotalExpenseUseCase
 import com.paykids.domain.usecase.expense.UpdateExpenseUseCase
+import com.paykids.domain.usecase.income.GetMonthDailyIncomeUseCase
 import com.paykids.presentation.utils.UiState
 import com.paykids.util.LoggerUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -34,8 +35,16 @@ class DiaryViewModel @Inject constructor(
     private val getMonthAllCategoryUseCase: GetMonthAllCategoryExpenseUseCase,
     private val getDayExpenseUseCase: GetDayExpenseUseCase,
     private val addExpenseUseCase: AddExpenseUseCase,
-    private val updateExpenseUseCase: UpdateExpenseUseCase
+    private val updateExpenseUseCase: UpdateExpenseUseCase,
+    private val getMonthDailyIncomeUseCase: GetMonthDailyIncomeUseCase
 ) : ViewModel() {
+
+    private val _currentMonthData = MutableLiveData<Pair<Int, Int>>()
+    val currentMonthData: LiveData<Pair<Int, Int>> get() = _currentMonthData
+
+    fun updateMonth(year: Int, month: Int) {
+        _currentMonthData.value = Pair(year, month)
+    }
 
     private val _monthTotalExpenseState = MutableLiveData<UiState<Int>>()
     val monthTotalExpenseState: LiveData<UiState<Int>> get() = _monthTotalExpenseState
@@ -246,6 +255,31 @@ class DiaryViewModel @Inject constructor(
             } catch (e: Exception) {
                 LoggerUtils.e("update Expense exception: ${e.message}")
                 _updateExpenseState.value = UiState.Failure(message = e.message.toString())
+            }
+        }
+    }
+
+    private val _monthDailyIncomeState = MutableLiveData<UiState<List<MonthDailyInfo>>>()
+    val monthDailyIncomeState: LiveData<UiState<List<MonthDailyInfo>>> get() = _monthDailyIncomeState
+
+    fun getMonthDailyIncome(year: Int, month: Int) {
+        _monthDailyIncomeState.value = UiState.Loading
+
+        viewModelScope.launch {
+            try {
+                getMonthDailyIncomeUseCase(
+                    getAccessTokenUseCase.invoke().getOrNull().orEmpty(),
+                    year, month
+                ).onSuccess {
+                    _monthDailyIncomeState.value = UiState.Success(it)
+                }.onFailure { e ->
+                    LoggerUtils.e(e.message.toString())
+                    _monthDailyIncomeState.value =
+                        UiState.Failure(message = e.message.toString())
+                }
+            } catch (e: Exception) {
+                LoggerUtils.e("get Month Daily Income exception: ${e.message}")
+                _monthDailyIncomeState.value = UiState.Failure(message = e.message.toString())
             }
         }
     }
