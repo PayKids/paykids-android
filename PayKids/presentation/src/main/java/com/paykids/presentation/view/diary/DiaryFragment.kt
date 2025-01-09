@@ -83,16 +83,16 @@ class DiaryFragment : BaseFragment<FragmentDiaryBinding>(), ConfirmDialogInterfa
 
         binding.ibLeft.setOnClickListener {
             minusMonth()
+            viewModel.updateMonth(currentYear, currentMonth)
             val currentPos = binding.vpCalendarMonth.currentItem
             binding.vpCalendarMonth.setCurrentItem(currentPos - 1, false)
-            viewModel.getMonthMostCategory(currentYear, currentMonth)
         }
 
         binding.ibRight.setOnClickListener {
             plusMonth()
+            viewModel.updateMonth(currentYear, currentMonth)
             val currentPos = binding.vpCalendarMonth.currentItem
             binding.vpCalendarMonth.setCurrentItem(currentPos + 1, false)
-            viewModel.getMonthMostCategory(currentYear, currentMonth)
         }
     }
 
@@ -193,7 +193,6 @@ class DiaryFragment : BaseFragment<FragmentDiaryBinding>(), ConfirmDialogInterfa
         }
 
         updateSelectDayText(today)
-        viewModel.getMonthDailyExpense(year, month)
         viewModel.getMonthMostCategory(year, month)
         viewModel.getDayExpense(today)
     }

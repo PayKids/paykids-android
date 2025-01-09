@@ -39,6 +39,13 @@ class DiaryViewModel @Inject constructor(
     private val getMonthDailyIncomeUseCase: GetMonthDailyIncomeUseCase
 ) : ViewModel() {
 
+    private val _currentMonthData = MutableLiveData<Pair<Int, Int>>()
+    val currentMonthData: LiveData<Pair<Int, Int>> get() = _currentMonthData
+
+    fun updateMonth(year: Int, month: Int) {
+        _currentMonthData.value = Pair(year, month)
+    }
+
     private val _monthTotalExpenseState = MutableLiveData<UiState<Int>>()
     val monthTotalExpenseState: LiveData<UiState<Int>> get() = _monthTotalExpenseState
 
