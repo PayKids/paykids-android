@@ -19,8 +19,8 @@ class SignInProviderFragment : BaseFragment<FragmentSignProviderBinding>() {
         super.initListener()
 
         binding.btnKakao.setOnClickListener {
-            signViewModel.signInWithKakao()
-//            navigateToHome()
+//            signViewModel.signInWithKakao()
+            navigateToHome()
         }
     }
 

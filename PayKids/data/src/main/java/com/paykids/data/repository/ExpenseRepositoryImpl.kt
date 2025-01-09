@@ -47,7 +47,7 @@ class ExpenseRepositoryImpl @Inject constructor(
         return if (result.isSuccess) {
             val res = result.getOrNull()
             if (res != null) {
-                val data = res.data
+                val data = res.data[0]
                 val mostCategoryInfo = MonthMostCategory(
                     category = data.category,
                     amount = data.amount
