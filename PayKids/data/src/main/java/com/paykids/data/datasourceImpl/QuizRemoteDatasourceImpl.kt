@@ -63,5 +63,23 @@ class QuizRemoteDatasourceImpl @Inject constructor(
         }
     }
 
+    override suspend fun getStageToGo(accessToken: String): Result<BaseResponse<Int>> {
+        return try {
+            val response = quizService.getStageToGo(accessToken)
+            if (response.isSuccessful) {
+                val res = response.body()
+                if (res != null) {
+                    Result.success(res)
+                } else {
+                    Result.failure(Exception("get StageToGo failed: response body is null"))
+                }
+            } else {
+                Result.failure(Exception("get StageToGo failed: ${response.message()}"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
 
 }

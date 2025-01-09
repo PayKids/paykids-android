@@ -9,4 +9,6 @@ interface QuizRemoteDatasource {
     suspend fun getStageCount(): Result<BaseResponse<Int>>
 
     suspend fun getStageName(stage: Int): Result<BaseResponse<String>>
+
+    suspend fun getStageToGo(accessToken: String): Result<BaseResponse<Int>>
 }
