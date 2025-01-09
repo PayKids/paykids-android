@@ -15,7 +15,8 @@ import com.paykids.presentation.utils.Constants
 
 class AllowanceCategoryAdapter(
     private val onCategoryAdded: (String) -> Unit,
-    private val onItemClick: (String, Int) -> Unit
+    private val onItemClick: (String, Int) -> Unit,
+    private var isConsumeSelected: Boolean = false
 ) : ListAdapter<AllowanceCategoryAdapter.CategoryItem, RecyclerView.ViewHolder>(CategoryDiffCallback()) {
 
     private var isAddingCategory = false
@@ -28,10 +29,16 @@ class AllowanceCategoryAdapter(
         private const val TYPE_ADD = 2
     }
 
+    @SuppressLint("NotifyDataSetChanged")
+    fun updateMode(isConsume: Boolean) {
+        isConsumeSelected = isConsume
+        notifyDataSetChanged()
+    }
+
     override fun getItemViewType(position: Int): Int {
         return when (getItem(position)) {
             is CategoryItem.Normal -> TYPE_NORMAL
-            is CategoryItem.Etc -> TYPE_ETC
+//            is CategoryItem.Etc -> TYPE_ETC
             is CategoryItem.Add -> TYPE_ADD
             else -> -1
         }
@@ -46,7 +53,7 @@ class AllowanceCategoryAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         return when (viewType) {
-            TYPE_ETC -> EtcViewHolder(ItemEtcCategoryBinding.inflate(inflater, parent, false))
+//            TYPE_ETC -> EtcViewHolder(ItemEtcCategoryBinding.inflate(inflater, parent, false))
             TYPE_ADD -> AddCategoryViewHolder(
                 ItemAnalysisConsumptionBinding.inflate(inflater, parent, false)
             ) { category ->
@@ -193,7 +200,7 @@ class AllowanceCategoryAdapter(
         }
     }
 
-    class NormalViewHolder(
+    inner class NormalViewHolder(
         private val binding: ItemAnalysisConsumptionBinding,
         private val onItemClick: (String, Int) -> Unit
     ) :
@@ -216,7 +223,13 @@ class AllowanceCategoryAdapter(
 
                 // 소비 금액 설정
                 tvConsumeAmount.visibility = if (isDeleteMode) View.GONE else View.VISIBLE
-                tvConsumeAmount.text = "-${Constants.formatAmount(amount.toInt())}"
+
+                binding.tvConsumeAmount.text =
+                    if (isConsumeSelected) {
+                        "+${Constants.formatAmount(amount)}"
+                    } else {
+                        "-${Constants.formatAmount(amount)}"
+                    }
 
                 // 퍼센트 설정
                 tvPercent.visibility = if (isDeleteMode) View.GONE else View.VISIBLE

@@ -53,7 +53,7 @@ class DiaryViewModel @Inject constructor(
     private val _monthTotalExpenseState = MutableLiveData<UiState<Int>>()
     val monthTotalExpenseState: LiveData<UiState<Int>> get() = _monthTotalExpenseState
 
-    fun getMonthTotalIncome(year: Int, month: Int) {
+    fun getMonthTotalExpense(year: Int, month: Int) {
         _monthTotalExpenseState.value = UiState.Loading
 
         viewModelScope.launch {
@@ -69,21 +69,21 @@ class DiaryViewModel @Inject constructor(
                         UiState.Failure(message = e.message.toString())
                 }
             } catch (e: Exception) {
-                LoggerUtils.e("get Month Total Income exception: ${e.message}")
+                LoggerUtils.e("get Month Total Expense exception: ${e.message}")
                 _monthTotalExpenseState.value = UiState.Failure(message = e.message.toString())
             }
         }
     }
 
     private val _monthTotalIncomeState = MutableLiveData<UiState<Int>>()
-    val _onthTotalIncomeState: LiveData<UiState<Int>> get() = _monthTotalIncomeState
+    val monthTotalIncomeState: LiveData<UiState<Int>> get() = _monthTotalIncomeState
 
-    fun getMonthTotalExpense(year: Int, month: Int) {
+    fun getMonthTotalIncome(year: Int, month: Int) {
         _monthTotalIncomeState.value = UiState.Loading
 
         viewModelScope.launch {
             try {
-                getMonthTotalExpenseUseCase(
+                getMonthTotalIncomeUseCase(
                     getAccessTokenUseCase.invoke().getOrNull().orEmpty(),
                     year, month
                 ).onSuccess {
@@ -94,7 +94,7 @@ class DiaryViewModel @Inject constructor(
                         UiState.Failure(message = e.message.toString())
                 }
             } catch (e: Exception) {
-                LoggerUtils.e("get Month Total Expense exception: ${e.message}")
+                LoggerUtils.e("get Month Total Income exception: ${e.message}")
                 _monthTotalIncomeState.value = UiState.Failure(message = e.message.toString())
             }
         }

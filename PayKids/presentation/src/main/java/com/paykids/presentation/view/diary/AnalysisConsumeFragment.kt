@@ -89,7 +89,6 @@ class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisConsumeBinding>() {
 
     @SuppressLint("SetTextI18n")
     private fun fetchData(year: Int, month: Int) {
-        LoggerUtils.d(isConsumeSelected.toString())
         if (isConsumeSelected) {
             viewModel.getMonthTotalExpense(year, month)
             viewModel.getMonthAllExpenseCategory(year, month)
@@ -122,6 +121,21 @@ class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisConsumeBinding>() {
                 is UiState.Success -> {
                     LoggerUtils.d("월 전체 소비 금액 조회 성공: ${it.data}")
                     binding.tvMonthConsumption.text = "${Constants.formatAmount(it.data)}원 사용 중"
+                }
+            }
+        }
+
+        viewModel.monthTotalIncomeState.observe(viewLifecycleOwner) {
+            when (it) {
+                is UiState.Failure -> {
+                    showToast(it.message)
+                }
+
+                is UiState.Loading -> {}
+
+                is UiState.Success -> {
+                    LoggerUtils.d("월 전체 수입 금액 조회 성공: ${it.data}")
+                    binding.tvMonthConsumption.text = "${Constants.formatAmount(it.data)}원 수입 중"
                 }
             }
         }
@@ -272,7 +286,7 @@ class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisConsumeBinding>() {
             binding.tvIncome.setBackgroundResource(R.color.transparent)
             binding.tvIncome.setTextColor(requireContext().getColor(R.color.gray7))
 
-            viewModel.getMonthAllExpenseCategory(currentYear, currentMonth)
+            fetchData(currentYear, currentMonth)
         } else {
             // 수입이 선택된 경우
             binding.tvIncome.setBackgroundResource(R.drawable.switch_bg_select)
@@ -281,7 +295,11 @@ class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisConsumeBinding>() {
             binding.tvConsume.setBackgroundResource(R.color.transparent)
             binding.tvConsume.setTextColor(requireContext().getColor(R.color.gray7))
 
-            viewModel.getMonthAllIncomeCategory(currentYear, currentMonth)
+            fetchData(currentYear, currentMonth)
+        }
+
+        if (::adapter.isInitialized) {
+            adapter.updateMode(!isConsumeSelected)
         }
     }
 
