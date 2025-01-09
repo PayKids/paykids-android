@@ -5,12 +5,13 @@ import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.paykids.presentation.R
 import com.paykids.presentation.base.BaseFragment
 import com.paykids.presentation.databinding.FragmentAnalysisCategoryConsumeBinding
 import com.paykids.presentation.utils.Constants
+import com.paykids.presentation.utils.UiState
 import com.paykids.presentation.view.home.HomeActivity
+import com.paykids.util.LoggerUtils
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -56,17 +57,37 @@ class AnalysisCategoryConsumeFragment : BaseFragment<FragmentAnalysisCategoryCon
     }
 
     private fun fetchData() {
-        val categoryDetails = viewModel.getConsumptionByCategory(category)
+        viewModel.getMonthCategoryExpense(2025,1,"기타")
 
-        if (!::adapter.isInitialized) {
-            adapter = CategoryConsumeAdapter(this)
-            binding.rvCategoryConsume.layoutManager = LinearLayoutManager(requireContext())
-            binding.rvCategoryConsume.adapter = adapter
+//        val categoryDetails = viewModel.getConsumptionByCategory(category)
+//
+//        if (!::adapter.isInitialized) {
+//            adapter = CategoryConsumeAdapter(this)
+//            binding.rvCategoryConsume.layoutManager = LinearLayoutManager(requireContext())
+//            binding.rvCategoryConsume.adapter = adapter
+//        }
+//        val formattedDetails = categoryDetails.map {
+//            Triple(it.first, it.second, it.third)
+//        }
+//        adapter.submitList(formattedDetails)
+    }
+
+    override fun setObserver() {
+        super.setObserver()
+
+        viewModel.categoryExpenseState.observe(viewLifecycleOwner) {
+            when (it) {
+                is UiState.Failure -> {
+                    showToast(it.message)
+                }
+
+                is UiState.Loading -> {}
+
+                is UiState.Success -> {
+                    LoggerUtils.d("카테고리 별 월별 소비 금액 조회 성공: ${it.data}")
+                }
+            }
         }
-        val formattedDetails = categoryDetails.map {
-            Triple(it.first, it.second, it.third)
-        }
-        adapter.submitList(formattedDetails)
     }
 
     override fun onResume() {

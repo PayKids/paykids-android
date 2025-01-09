@@ -17,6 +17,7 @@ class StudyFragment : BaseFragment<FragmentStudyBinding>() {
 
     override fun initView() {
         setRvAdapter()
+        viewModel.getUserInfo()
     }
 
     override fun initListener() {
@@ -27,26 +28,7 @@ class StudyFragment : BaseFragment<FragmentStudyBinding>() {
         }
 
         binding.ibSend.setOnClickListener {
-            val chatContent = binding.etSendChat.text.toString()
-            if (chatContent.isNotEmpty()) {
-                val userChat = ChatItem(
-                    chatId = studyAdapter.getLastChatId() + 1,
-                    content = chatContent,
-                    isMine = true
-                )
-
-                val updatedList = studyAdapter.currentList.toMutableList().apply {
-                    add(userChat)
-                }
-                studyAdapter.submitList(updatedList)
-                binding.rvChat.scrollToPosition(updatedList.size - 1)
-
-                viewModel.sendQuestion(chatContent)
-
-                binding.etSendChat.text.clear()
-            } else {
-                showToast("작성된 내용이 없어요")
-            }
+            sendMessage()
         }
 
     }
@@ -59,25 +41,24 @@ class StudyFragment : BaseFragment<FragmentStudyBinding>() {
         }
     }
 
-    private fun processChatItems(dataList: List<ChatItem>): MutableList<ChatItem> {
-        val processedList = mutableListOf<ChatItem>()
-        var lastOtherMessageIndex = -1
-
-        dataList.forEachIndexed { index, item ->
-            processedList.add(item)
-
-            if (!item.isMine) {
-                lastOtherMessageIndex = index
-            }
-
-//            processedList.add(item.copy(showRefreshIcon = showRefreshIcon))
-        }
-
-        return processedList
-    }
-
     override fun setObserver() {
         super.setObserver()
+
+        viewModel.userInfoState.observe(viewLifecycleOwner) {
+            when (it) {
+                is UiState.Failure -> {
+                    showToast(it.message)
+                }
+
+                is UiState.Loading -> {}
+
+                is UiState.Success -> {
+                    viewModel.setUserNickname(it.data.nickname)
+                }
+            }
+        }
+
+
 
         viewModel.resState.observe(viewLifecycleOwner) {
             when (it) {
@@ -91,17 +72,41 @@ class StudyFragment : BaseFragment<FragmentStudyBinding>() {
                     val gptResponse = ChatItem(
                         chatId = studyAdapter.getLastChatId() + 1,
                         content = it.data,
-                        isMine = false
+                        isMine = false,
+                        nickname = "chatGPT"
                     )
 
                     val updatedList = studyAdapter.currentList.toMutableList().apply {
                         add(gptResponse)
                     }
+
                     studyAdapter.submitList(updatedList)
-                    binding.rvChat.scrollToPosition(updatedList.size - 1)
+                    binding.rvChat.smoothScrollToPosition(studyAdapter.itemCount - 1)
                 }
             }
         }
+    }
+
+    private fun sendMessage() {
+        val messageContent = binding.etSendChat.text.toString()
+        if (messageContent.isBlank()) return
+        val currentNickname = viewModel.userNickname.value ?: return
+
+        val newMessage = ChatItem(
+            chatId = studyAdapter.itemCount + 1,
+            isMine = true,
+            nickname = currentNickname,
+            content = messageContent
+        )
+
+        val newList = studyAdapter.currentList.toMutableList()
+        newList.add(newMessage)
+        studyAdapter.submitList(newList) {
+            binding.rvChat.scrollToPosition(studyAdapter.itemCount - 1)
+        }
+
+        viewModel.sendQuestion(messageContent)
+        binding.etSendChat.text.clear()
     }
 
     override fun onResume() {

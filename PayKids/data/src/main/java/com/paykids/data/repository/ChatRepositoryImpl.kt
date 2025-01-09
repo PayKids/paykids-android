@@ -8,8 +8,8 @@ class ChatRepositoryImpl @Inject constructor(
     private val chatRemoteDataSource: ChatRemoteDatasource
 ) : ChatRepository {
 
-    override suspend fun sendChat(question: String): Result<String> {
-        val result = chatRemoteDataSource.sendChat(question)
+    override suspend fun sendChat(accessToken: String, question: String): Result<String> {
+        val result = chatRemoteDataSource.sendChat(accessToken, question)
 
         return if (result.isSuccess) {
             val res = result.getOrNull()

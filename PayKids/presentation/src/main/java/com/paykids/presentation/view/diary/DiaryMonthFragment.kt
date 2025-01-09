@@ -3,7 +3,7 @@ package com.paykids.presentation.view.diary
 import android.os.Bundle
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
-import com.paykids.domain.model.DayInfo
+import com.paykids.domain.model.allowance.DayInfo
 import com.paykids.presentation.base.BaseFragment
 import com.paykids.presentation.databinding.FragmentDiaryMonthBinding
 import com.paykids.presentation.view.OnRvItemClickListener
@@ -36,24 +36,24 @@ class DiaryMonthFragment : BaseFragment<FragmentDiaryMonthBinding>() {
         val daysInMonth = getDaysInMonth(date)
         val initialList =
             daysInMonth.map { day -> Pair(day, null as DayInfo?) }
-        viewModel.fetchDayInfo()
-        viewModel.getDayInfoForMonth("12")
-        viewModel.getDayInfoForMonth("1")
+//        viewModel.fetchDayInfo()
+//        viewModel.getDayInfoForMonth("12")
+//        viewModel.getDayInfoForMonth("1")
 
         dayAdapter = DiaryDayCalendarAdapter().apply {
             setRvItemClickListener(object : OnRvItemClickListener<Int> {
                 override fun onClick(item: Int) {
                     val clickedDate = getDateStringForDay(item)
                     onDateClickListener?.onClick(clickedDate)
-                    viewModel.fetchDetailsForDate(clickedDate)
+//                    viewModel.fetchDetailsForDate(clickedDate)
                 }
             })
         }
         dayAdapter.submitList(initialList)
 
-        viewModel.dayInfoList.observe(viewLifecycleOwner) { details ->
-            updateDayDetails(details)
-        }
+//        viewModel.dayInfoList.observe(viewLifecycleOwner) { details ->
+//            updateDayDetails(details)
+//        }
 
         binding.rvCalendarDays.layoutManager = GridLayoutManager(requireContext(), 7)
         binding.rvCalendarDays.adapter = dayAdapter
@@ -98,10 +98,10 @@ class DiaryMonthFragment : BaseFragment<FragmentDiaryMonthBinding>() {
     }
 
     private fun updateDayDetails(details: List<DayInfo>) {
-        val updatedList = dayAdapter.currentList.map { pair ->
-            val updatedInfo = details.find { it.date == pair.first }
-            pair.copy(second = updatedInfo)
-        }
-        dayAdapter.submitList(updatedList)
+//        val updatedList = dayAdapter.currentList.map { pair ->
+//            val updatedInfo = details.find { it. == pair.first }
+//            pair.copy(second = updatedInfo)
+//        }
+//        dayAdapter.submitList(updatedList)
     }
 }
