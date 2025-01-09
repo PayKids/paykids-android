@@ -8,4 +8,6 @@ interface QuizRepository {
     suspend fun getStageCount() : Result<Int>
 
     suspend fun getStageName(stage: Int) : Result<String>
+
+    suspend fun getStageGoTo(accessToken: String) : Result<Int>
 }

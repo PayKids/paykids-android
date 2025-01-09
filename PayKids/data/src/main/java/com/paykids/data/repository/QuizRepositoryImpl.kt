@@ -54,4 +54,19 @@ class QuizRepositoryImpl @Inject constructor(
             Result.failure(result.exceptionOrNull() ?: Exception("Unknown error"))
         }
     }
+
+    override suspend fun getStageGoTo(accessToken: String): Result<Int> {
+        val result = quizDatasource.getStageToGo(accessToken)
+
+        return if (result.isSuccess) {
+            val res = result.getOrNull()
+            if (res != null) {
+                Result.success(res.data)
+            } else {
+                Result.failure(Exception("get StageName Failed: response body is null"))
+            }
+        } else {
+            Result.failure(result.exceptionOrNull() ?: Exception("Unknown error"))
+        }
+    }
 }
