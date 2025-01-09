@@ -10,6 +10,7 @@ import android.util.AttributeSet
 import android.view.View
 import androidx.core.content.res.ResourcesCompat
 import com.paykids.presentation.R
+import com.paykids.util.LoggerUtils
 
 class CategoryProgressView @JvmOverloads constructor(
     context: Context,
@@ -29,23 +30,27 @@ class CategoryProgressView @JvmOverloads constructor(
         val totalWidth = width.toFloat()
         var startX = 0f
 
-        for (i in sections.indices) {
+        for (i in categoryNames.indices) {
             val sectionWidth = totalWidth * sections[i]
             paint.color = colors.getOrElse(i) { Color.LTGRAY }
             canvas.drawRect(startX, 0f, startX + sectionWidth, height.toFloat(), paint)
 
             val sectionCenterX = startX + sectionWidth / 2
             val sectionCenterY = height / 2f
+
             paint.color = Color.WHITE
             paint.textAlign = Paint.Align.CENTER
-            paint.textSize = 36f
-            paint.typeface = ResourcesCompat.getFont(context, R.font.nanumsquare_bold)
+            paint.textSize = 16f
+            paint.typeface =
+                ResourcesCompat.getFont(context, R.font.nanumsquare_bold) ?: paint.typeface
+
             val textHeight = paint.fontMetrics.bottom - paint.fontMetrics.top
             val textBaseline = sectionCenterY + (textHeight / 2) - paint.fontMetrics.bottom
 
             categoryNames.getOrNull(i)?.let {
                 canvas.drawText(it, sectionCenterX, textBaseline, paint)
             }
+
             startX += sectionWidth
         }
     }
