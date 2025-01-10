@@ -294,12 +294,8 @@ class DiaryFragment : BaseFragment<FragmentDiaryBinding>(), ConfirmDialogInterfa
                 is UiState.Success -> {
                     binding.spinnerCategory.visibility = View.VISIBLE
                     val categories = uiState.data
-                    val adapter = ArrayAdapter(
-                        requireContext(),
-                        android.R.layout.simple_spinner_item,
-                        categories.map { it.category })
-                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                    binding.spinnerCategory.adapter = adapter
+                    val customAdapter = CustomSpinnerAdapter(requireContext(), categories.map { it.category }.toTypedArray())
+                    binding.spinnerCategory.adapter = customAdapter
                 }
 
                 is UiState.Failure -> {
