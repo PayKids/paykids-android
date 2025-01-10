@@ -84,7 +84,6 @@ class DiaryFragment : BaseFragment<FragmentDiaryBinding>(), ConfirmDialogInterfa
         binding.ibLeft.setOnClickListener {
             minusMonth()
             viewModel.updateMonth(currentYear, currentMonth)
-            viewModel.getMonthMostCategory(currentYear, currentMonth)
             val currentPos = binding.vpCalendarMonth.currentItem
             binding.vpCalendarMonth.setCurrentItem(currentPos - 1, false)
         }
@@ -92,7 +91,6 @@ class DiaryFragment : BaseFragment<FragmentDiaryBinding>(), ConfirmDialogInterfa
         binding.ibRight.setOnClickListener {
             plusMonth()
             viewModel.updateMonth(currentYear, currentMonth)
-            viewModel.getMonthMostCategory(currentYear, currentMonth)
             val currentPos = binding.vpCalendarMonth.currentItem
             binding.vpCalendarMonth.setCurrentItem(currentPos + 1, false)
         }
@@ -177,6 +175,7 @@ class DiaryFragment : BaseFragment<FragmentDiaryBinding>(), ConfirmDialogInterfa
 
                 is UiState.Success -> {
                     LoggerUtils.d("소비 내역 저장 성공: ${it.data}")
+                    fetchData(currentYear, currentMonth)
                     showToast("소비 내역 저장 성공")
                 }
             }
@@ -192,6 +191,11 @@ class DiaryFragment : BaseFragment<FragmentDiaryBinding>(), ConfirmDialogInterfa
 
                 is UiState.Success -> {
                     LoggerUtils.d("수입 내역 저장 성공: ${it.data}")
+                    if (!it.data) {
+                        // 이미 저장된 데이터로 인한 중복 호출 방지
+                        return@observe
+                    }
+                    fetchData(currentYear, currentMonth)
                     showToast("수입 내역 저장 성공")
                 }
             }
