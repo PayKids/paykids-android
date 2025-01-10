@@ -33,6 +33,8 @@ class DetailConsumeAdapter(private val fragment: Fragment) :
                         putString("place", item.category)
                         putString("amount", formattedAmount)
                         putString("memo", item.memo)
+                        putBoolean("isEditMode", true)
+                        putBoolean("isConsumeSelected", true)
                     }
                 }
                 dialog.isCancelable = true

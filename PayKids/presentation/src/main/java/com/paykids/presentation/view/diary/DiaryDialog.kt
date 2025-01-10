@@ -7,7 +7,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Spinner
 import androidx.fragment.app.DialogFragment
+import androidx.lifecycle.ViewModelProvider
 import com.paykids.presentation.R
 import com.paykids.presentation.custom.ConfirmDialogInterface
 import com.paykids.presentation.databinding.DialogDiaryBinding
@@ -20,6 +22,10 @@ class DiaryDialog : DialogFragment(), ConfirmDialogInterface {
     private var confirmDialogInterface: ConfirmDialogInterface? = null
     private var isConsumeSelected = true
     private var currentDate: LocalDate = LocalDate.now()
+    private var isEditMode = false
+
+    private lateinit var viewModel: DiaryViewModel
+    private lateinit var categorySpinner: Spinner
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -29,15 +35,33 @@ class DiaryDialog : DialogFragment(), ConfirmDialogInterface {
         _binding = DialogDiaryBinding.inflate(inflater, container, false)
         val view = binding.root
 
+        viewModel = ViewModelProvider(this).get(DiaryViewModel::class.java)
+        categorySpinner = binding.spinnerCategory
+
+        viewModel.getExpenseCategory().observe(viewLifecycleOwner, Observer { categories ->
+            val adapter = CustomSpinnerAdapter(requireContext(), categories.toTypedArray())
+            categorySpinner.adapter = adapter
+        })
+
         // 레이아웃 배경을 투명하게 해줌
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
-        val place = arguments?.getString("place")
-        val amount = arguments?.getString("amount")
-        val memo = arguments?.getString("memo")
+        arguments?.let {
+            val place = it.getString("place", "")
+            val amount = it.getString("amount", "")
+            val memo = it.getString("memo", "")
+            isEditMode = it.getBoolean("isEditMode", false)
+            isConsumeSelected = it.getBoolean("isConsumeSelected", true)
 
-        binding.etAddAmount.setText(amount)
-        binding.etMemo.setText(memo)
+            binding.etAmount.setText(amount)
+            binding.etMemo.setText(memo)
+
+            if (isEditMode) {
+                binding.tvTitle.text = "용돈 수정하기"
+            } else {
+                binding.tvTitle.text = "용돈 기입하기"
+            }
+        }
 
         val spinner = binding.spinnerCategory
         val items = resources.getStringArray(R.array.category_array)

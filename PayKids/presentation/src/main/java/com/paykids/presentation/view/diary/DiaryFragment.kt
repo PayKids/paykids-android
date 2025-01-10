@@ -433,11 +433,11 @@ class DiaryFragment : BaseFragment<FragmentDiaryBinding>(), ConfirmDialogInterfa
             binding.tvDay.text = "${selectedDate.dayOfMonth}일"
         }
 
-        binding.etAddAmount.setText("")
+        binding.etAmount.setText("")
         binding.etMemo.setText("")
 
         binding.btnSubmit.setOnClickListener {
-            val amount = binding.etAddAmount.text.toString().toIntOrNull() ?: 0
+            val amount = binding.etAmount.text.toString().toIntOrNull() ?: 0
             val memo = binding.etMemo.text.toString()
             val category = binding.spinnerCategory.selectedItem.toString()
             val formattedDate = selectedDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
