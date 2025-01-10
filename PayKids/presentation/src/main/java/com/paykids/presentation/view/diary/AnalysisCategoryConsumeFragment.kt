@@ -22,7 +22,7 @@ class AnalysisCategoryConsumeFragment : BaseFragment<FragmentAnalysisCategoryAll
     private val viewModel: DiaryViewModel by activityViewModels()
     private lateinit var adapter: CategoryDetailAllowanceAdapter
 
-    private var isConsumeClicked: Boolean = false
+    private var isConsumeClicked: Boolean = true
 
     override fun initView() {
         val args: AnalysisCategoryConsumeFragmentArgs by navArgs()

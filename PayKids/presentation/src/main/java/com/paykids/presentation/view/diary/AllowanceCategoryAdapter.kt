@@ -13,12 +13,13 @@ import com.paykids.presentation.R
 import com.paykids.presentation.databinding.ItemAnalysisAllowanceBinding
 import com.paykids.presentation.databinding.ItemEtcCategoryBinding
 import com.paykids.presentation.utils.Constants
+import com.paykids.util.LoggerUtils
 
 class AllowanceCategoryAdapter(
     private val categoryViewModel: CategoryViewModel,
     private val onCategoryAdded: (String) -> Unit,
     private val onItemClick: (String, Int) -> Unit,
-    private var isConsumeSelected: Boolean = false
+    private var isConsumeSelected: Boolean = true
 ) : ListAdapter<AllowanceCategoryAdapter.CategoryItem, RecyclerView.ViewHolder>(CategoryDiffCallback()) {
 
     private var isAddingCategory = false
@@ -59,7 +60,6 @@ class AllowanceCategoryAdapter(
                 ItemAnalysisAllowanceBinding.inflate(inflater, parent, false)
             ) { category ->
                 confirmCategoryInput(category)
-                categoryViewModel.addExpenseCategory(category)
             }
 
             else -> NormalViewHolder(
@@ -152,6 +152,11 @@ class AllowanceCategoryAdapter(
                     if (actionId == EditorInfo.IME_ACTION_DONE) {
                         val input = v.text.toString().trim()
                         if (input.isNotEmpty()) {
+                            if (isConsumeSelected) {
+                                categoryViewModel.addExpenseCategory(input)
+                            } else {
+                                categoryViewModel.addIncomeCategory(input)
+                            }
                             onCategoryConfirmed(input)
                             tvConsumptionCategory.text = input
                             editCategoryName.visibility = View.GONE
@@ -196,9 +201,9 @@ class AllowanceCategoryAdapter(
                 tvConsumeAmount.visibility = if (isDeleteMode) View.GONE else View.VISIBLE
                 binding.tvConsumeAmount.text =
                     if (isConsumeSelected) {
-                        "+${Constants.formatAmount(amount)}"
-                    } else {
                         "-${Constants.formatAmount(amount)}"
+                    } else {
+                        "+${Constants.formatAmount(amount)}"
                     }
 
                 tvPercent.visibility = if (isDeleteMode) View.GONE else View.VISIBLE

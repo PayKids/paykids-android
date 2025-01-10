@@ -2,7 +2,6 @@ package com.paykids.presentation.view.diary
 
 import android.annotation.SuppressLint
 import android.graphics.Color
-import android.os.Bundle
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
@@ -39,7 +38,7 @@ class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisAllowanceBinding>()
         currentMonth = args.currentMonth
         binding.tvMonth.text = "${currentMonth}월"
 
-        fetchData(currentYear, currentMonth)
+        setupFragmentResultListener()
     }
 
     override fun initListener() {
@@ -71,9 +70,7 @@ class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisAllowanceBinding>()
     }
 
     @SuppressLint("SetTextI18n")
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
+    private fun  setupFragmentResultListener() {
         parentFragmentManager.setFragmentResultListener(
             "CATEGORY_BACK_RESULT",
             viewLifecycleOwner
@@ -170,7 +167,8 @@ class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisAllowanceBinding>()
                                     isConsumeSelected
                                 )
                             findNavController().navigate(action)
-                        }
+                        },
+                        isConsumeSelected
                     )
                     binding.rvDetailAllowance.layoutManager = LinearLayoutManager(requireContext())
                     binding.rvDetailAllowance.adapter = adapter
@@ -329,7 +327,7 @@ class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisAllowanceBinding>()
         }
 
         if (::adapter.isInitialized) {
-            adapter.updateMode(!isConsumeSelected)
+            adapter.updateMode(isConsumeSelected)
         }
     }
 
