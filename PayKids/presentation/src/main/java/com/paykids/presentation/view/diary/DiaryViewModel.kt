@@ -357,7 +357,7 @@ class DiaryViewModel @Inject constructor(
                         UiState.Failure(message = e.message.toString())
                 }
             } catch (e: Exception) {
-                LoggerUtils.e("save Expense exception: ${e.message}")
+                LoggerUtils.e("add Expense exception: ${e.message}")
                 _addExpenseState.value = UiState.Failure(message = e.message.toString())
             }
         }
@@ -388,7 +388,7 @@ class DiaryViewModel @Inject constructor(
                         UiState.Failure(message = e.message.toString())
                 }
             } catch (e: Exception) {
-                LoggerUtils.e("save Income exception: ${e.message}")
+                LoggerUtils.e("add Income exception: ${e.message}")
                 _addIncomeState.value = UiState.Failure(message = e.message.toString())
             }
         }

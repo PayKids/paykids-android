@@ -84,6 +84,7 @@ class DiaryFragment : BaseFragment<FragmentDiaryBinding>(), ConfirmDialogInterfa
         binding.ibLeft.setOnClickListener {
             minusMonth()
             viewModel.updateMonth(currentYear, currentMonth)
+            viewModel.getMonthMostCategory(currentYear, currentMonth)
             val currentPos = binding.vpCalendarMonth.currentItem
             binding.vpCalendarMonth.setCurrentItem(currentPos - 1, false)
         }
@@ -91,6 +92,7 @@ class DiaryFragment : BaseFragment<FragmentDiaryBinding>(), ConfirmDialogInterfa
         binding.ibRight.setOnClickListener {
             plusMonth()
             viewModel.updateMonth(currentYear, currentMonth)
+            viewModel.getMonthMostCategory(currentYear, currentMonth)
             val currentPos = binding.vpCalendarMonth.currentItem
             binding.vpCalendarMonth.setCurrentItem(currentPos + 1, false)
         }
@@ -161,6 +163,36 @@ class DiaryFragment : BaseFragment<FragmentDiaryBinding>(), ConfirmDialogInterfa
                         this.adapter = detailAdapter
                     }
                     detailAdapter.submitList(it.data)
+                }
+            }
+        }
+
+        viewModel.addExpenseState.observe(viewLifecycleOwner) {
+            when (it) {
+                is UiState.Failure -> {
+                    showToast(it.message)
+                }
+
+                is UiState.Loading -> {}
+
+                is UiState.Success -> {
+                    LoggerUtils.d("소비 내역 저장 성공: ${it.data}")
+                    showToast("소비 내역 저장 성공")
+                }
+            }
+        }
+
+        viewModel.addIncomeState.observe(viewLifecycleOwner) {
+            when (it) {
+                is UiState.Failure -> {
+                    showToast(it.message)
+                }
+
+                is UiState.Loading -> {}
+
+                is UiState.Success -> {
+                    LoggerUtils.d("수입 내역 저장 성공: ${it.data}")
+                    showToast("수입 내역 저장 성공")
                 }
             }
         }
@@ -409,7 +441,11 @@ class DiaryFragment : BaseFragment<FragmentDiaryBinding>(), ConfirmDialogInterfa
             if (amount <= 0) {
                 showToast("금액을 입력해주세요")
             } else {
-                viewModel.addExpense(formattedDate, "EXPENSE", amount, memo, category)
+                if (isExpenseSelected) {
+                    viewModel.addExpense(formattedDate, "EXPENSE", amount, memo, category)
+                } else {
+                    viewModel.addIncome(formattedDate, "INCOME", amount, memo, category)
+                }
 
                 dialog.dismiss()
             }
