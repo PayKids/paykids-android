@@ -28,7 +28,7 @@ class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisAllowanceBinding>()
     private lateinit var adapter: AllowanceCategoryAdapter
     private var isDeleteMode = false
     private var isConsumeSelected = true
-    private lateinit var currentList: MutableList<AllowanceCategoryAdapter.CategoryItem>
+    private var currentList: MutableList<AllowanceCategoryAdapter.CategoryItem>? = null
     private var currentYear: Int = 0
     private var currentMonth: Int = 0
 
@@ -66,8 +66,7 @@ class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisAllowanceBinding>()
         }
 
         binding.btnAddCategory.setOnClickListener {
-//            adapter.addCategoryInput()
-//            binding.rvDetailConsume.smoothScrollToPosition(adapter.itemCount - 1)
+            adapter.addCategoryInput()
         }
     }
 
@@ -157,6 +156,7 @@ class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisAllowanceBinding>()
 
                 if (!::adapter.isInitialized) {
                     adapter = AllowanceCategoryAdapter(
+                        categoryViewModel,
                         onCategoryAdded = { newCategory ->
                             addCategory(newCategory)
                         },
@@ -186,6 +186,7 @@ class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisAllowanceBinding>()
                         )
                     }
 
+                currentList?.addAll(sortedCategories)
                 adapter.submitList(sortedCategories)
 
                 val topCategories = state.data
@@ -237,7 +238,7 @@ class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisAllowanceBinding>()
             categoryViewModel.deleteExpenseCategory(categoryName)
         }
 
-        currentList.removeAll(selectedItems)
+        currentList!!.removeAll(selectedItems)
         adapter.submitList(currentList)
         return selectedNames
     }
@@ -250,7 +251,7 @@ class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisAllowanceBinding>()
             categoryViewModel.deleteIncomeCategory(categoryName)
         }
 
-        currentList.removeAll(selectedItems)
+        currentList!!.removeAll(selectedItems)
         adapter.submitList(currentList)
         return selectedNames
     }

@@ -16,7 +16,7 @@ interface ExpenseCategoryService {
         @Header("Authorization") accessToken: String,
     ): Response<BaseResponse<CategoryListDTO>>
 
-    @POST("/expense/category/category-list")
+    @POST("/expense/category/save-category")
     suspend fun saveExpenseCategory(
         @Header("Authorization") accessToken: String,
         @Query("category") category: String,

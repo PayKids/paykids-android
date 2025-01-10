@@ -15,6 +15,7 @@ import com.paykids.presentation.databinding.ItemEtcCategoryBinding
 import com.paykids.presentation.utils.Constants
 
 class AllowanceCategoryAdapter(
+    private val categoryViewModel: CategoryViewModel,
     private val onCategoryAdded: (String) -> Unit,
     private val onItemClick: (String, Int) -> Unit,
     private var isConsumeSelected: Boolean = false
@@ -22,7 +23,7 @@ class AllowanceCategoryAdapter(
 
     private var isAddingCategory = false
     private var isDeleteMode = false
-    private var lastAddedPosition = -1 // 마지막으로 추가된 카테고리의 위치
+    private var lastAddedPosition = -1
 
     companion object {
         private const val TYPE_NORMAL = 0
@@ -58,7 +59,7 @@ class AllowanceCategoryAdapter(
                 ItemAnalysisAllowanceBinding.inflate(inflater, parent, false)
             ) { category ->
                 confirmCategoryInput(category)
-                onCategoryAdded(category)
+                categoryViewModel.addExpenseCategory(category)
             }
 
             else -> NormalViewHolder(
@@ -130,7 +131,6 @@ class AllowanceCategoryAdapter(
                 submitList(currentList)
             }
             isAddingCategory = false
-            onCategoryAdded(category)
         }
     }
 
@@ -141,7 +141,6 @@ class AllowanceCategoryAdapter(
 
         fun bind() {
             with(binding) {
-                // 초기 상태에서는 TextView만 보이게 설정
                 tvConsumptionCategory.visibility = View.GONE
                 editCategoryName.apply {
                     visibility = View.VISIBLE
@@ -149,15 +148,12 @@ class AllowanceCategoryAdapter(
                     requestFocus()
                 }
 
-                // 키보드에서 완료 버튼을 눌렀을 때
                 editCategoryName.setOnEditorActionListener { v, actionId, _ ->
                     if (actionId == EditorInfo.IME_ACTION_DONE) {
                         val input = v.text.toString().trim()
                         if (input.isNotEmpty()) {
                             onCategoryConfirmed(input)
-                            // 입력 완료 후 TextView로 변경
                             tvConsumptionCategory.text = input
-                            // EditText를 숨기고 TextView만 보이도록 설정
                             editCategoryName.visibility = View.GONE
                             tvConsumptionCategory.visibility = View.VISIBLE
                         }
