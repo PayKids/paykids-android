@@ -47,7 +47,6 @@ class AllowanceCategoryAdapter(
 
     fun setInitialList(items: List<CategoryItem>) {
         val initialList = items.toMutableList()
-        initialList.add(CategoryItem.Etc)
         submitList(initialList)
     }
 
@@ -112,17 +111,14 @@ class AllowanceCategoryAdapter(
     }
 
     fun addCategoryInput() {
-//        if (!isAddingCategory) {
-//            isAddingCategory = true
-//            val currentList = currentList.toMutableList()
-//            val insertPosition = if (lastAddedPosition != -1) {
-//                lastAddedPosition + 1
-//            } else {
-//                currentList.size - 1 // Etc 항목 바로 앞
-//            }
-//            currentList.add(insertPosition, CategoryItem.Add)
-//            submitList(currentList)
-//        }
+        if (!isAddingCategory) {
+            isAddingCategory = true
+            val currentList = currentList.toMutableList()
+            currentList.add(CategoryItem.Add)
+            submitList(currentList) {
+                notifyItemInserted(currentList.size - 1)
+            }
+        }
     }
 
     private fun confirmCategoryInput(category: String) {
@@ -131,17 +127,7 @@ class AllowanceCategoryAdapter(
             val addIndex = currentList.indexOfFirst { it is CategoryItem.Add }
             if (addIndex != -1) {
                 currentList[addIndex] = CategoryItem.Normal(category, false, 0, "0%")
-                lastAddedPosition = addIndex
-                notifyItemChanged(addIndex)
-            } else {
-                val insertPosition = if (lastAddedPosition != -1) {
-                    lastAddedPosition + 1
-                } else {
-                    currentList.size - 1 // Etc 항목 바로 앞
-                }
-                currentList.add(insertPosition, CategoryItem.Normal(category, false, 0, "0%"))
-                lastAddedPosition = insertPosition
-                notifyItemInserted(insertPosition)
+                submitList(currentList)
             }
             isAddingCategory = false
             onCategoryAdded(category)

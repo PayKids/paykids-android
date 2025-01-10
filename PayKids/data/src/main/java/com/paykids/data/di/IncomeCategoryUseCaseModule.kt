@@ -2,7 +2,7 @@ package com.paykids.data.di
 
 import com.paykids.domain.repository.IncomeCategoryRepository
 import com.paykids.domain.usecase.incomeCategory.DeleteIncomeCategoryUseCase
-import com.paykids.domain.usecase.incomeCategory.SaveIncomeCategoryUseCase
+import com.paykids.domain.usecase.incomeCategory.AddIncomeCategoryUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -17,8 +17,8 @@ object IncomeCategoryUseCaseModule {
     @Singleton
     fun provideSaveIncomeCategoryUseCase(
         repository: IncomeCategoryRepository
-    ): SaveIncomeCategoryUseCase {
-        return SaveIncomeCategoryUseCase(repository)
+    ): AddIncomeCategoryUseCase {
+        return AddIncomeCategoryUseCase(repository)
     }
 
     @Provides
