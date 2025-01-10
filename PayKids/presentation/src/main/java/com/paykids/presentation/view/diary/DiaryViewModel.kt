@@ -9,6 +9,7 @@ import com.paykids.domain.model.allowance.MonthAllCategoryInfo
 import com.paykids.domain.model.allowance.MonthCategoryInfo
 import com.paykids.domain.model.allowance.MonthDailyInfo
 import com.paykids.domain.model.allowance.MonthMostCategory
+import com.paykids.domain.model.allowanceCategory.CategoryInfo
 import com.paykids.domain.usecase.datastore.GetAccessTokenUseCase
 import com.paykids.domain.usecase.expense.AddExpenseUseCase
 import com.paykids.domain.usecase.expense.GetDayExpenseUseCase
@@ -18,11 +19,13 @@ import com.paykids.domain.usecase.expense.GetMonthDailyExpenseUseCase
 import com.paykids.domain.usecase.expense.GetMonthMostCategoryUseCase
 import com.paykids.domain.usecase.expense.GetMonthTotalExpenseUseCase
 import com.paykids.domain.usecase.expense.UpdateExpenseUseCase
+import com.paykids.domain.usecase.expenseCategory.GetExpenseCategoryUseCase
 import com.paykids.domain.usecase.income.AddIncomeUseCase
 import com.paykids.domain.usecase.income.GetMonthAllCategoryIncomeUseCase
 import com.paykids.domain.usecase.income.GetMonthCategoryIncomeUseCase
 import com.paykids.domain.usecase.income.GetMonthDailyIncomeUseCase
 import com.paykids.domain.usecase.income.GetMonthTotalIncomeUseCase
+import com.paykids.domain.usecase.incomeCategory.GetIncomeCategoryUseCase
 import com.paykids.presentation.utils.UiState
 import com.paykids.util.LoggerUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -32,6 +35,7 @@ import javax.inject.Inject
 @HiltViewModel
 class DiaryViewModel @Inject constructor(
     private val getAccessTokenUseCase: GetAccessTokenUseCase,
+    private val getExpenseCategoryUseCase: GetExpenseCategoryUseCase,
     private val getMonthTotalExpenseUseCase: GetMonthTotalExpenseUseCase,
     private val getMonthDailyExpenseUseCase: GetMonthDailyExpenseUseCase,
     private val getMonthMostCategoryUseCase: GetMonthMostCategoryUseCase,
@@ -41,6 +45,7 @@ class DiaryViewModel @Inject constructor(
     private val addExpenseUseCase: AddExpenseUseCase,
     private val addIncomeUseCase: AddIncomeUseCase,
     private val updateExpenseUseCase: UpdateExpenseUseCase,
+    private val getIncomeCategoryUseCase: GetIncomeCategoryUseCase,
     private val getMonthTotalIncomeUseCase: GetMonthTotalIncomeUseCase,
     private val getMonthDailyIncomeUseCase: GetMonthDailyIncomeUseCase,
     private val getMonthAllCategoryIncomeUseCase: GetMonthAllCategoryIncomeUseCase,
@@ -100,6 +105,54 @@ class DiaryViewModel @Inject constructor(
             } catch (e: Exception) {
                 LoggerUtils.e("get Month Total Income exception: ${e.message}")
                 _monthTotalIncomeState.value = UiState.Failure(message = e.message.toString())
+            }
+        }
+    }
+
+    private val _getExpenseCategoryState = MutableLiveData<UiState<List<CategoryInfo>>>()
+    val getExpenseCategoryState: LiveData<UiState<List<CategoryInfo>>> get() = _getExpenseCategoryState
+
+    fun getExpenseCategory() {
+        _getExpenseCategoryState.value = UiState.Loading
+
+        viewModelScope.launch {
+            try {
+                getExpenseCategoryUseCase(
+                    getAccessTokenUseCase.invoke().getOrNull().orEmpty()
+                ).onSuccess {
+                    _getExpenseCategoryState.value = UiState.Success(it)
+                }.onFailure { e ->
+                    LoggerUtils.e(e.message.toString())
+                    _getExpenseCategoryState.value =
+                        UiState.Failure(message = e.message.toString())
+                }
+            } catch (e: Exception) {
+                LoggerUtils.e("get Expense Category exception: ${e.message}")
+                _getExpenseCategoryState.value = UiState.Failure(message = e.message.toString())
+            }
+        }
+    }
+
+    private val _getIncomeCategoryState = MutableLiveData<UiState<List<CategoryInfo>>>()
+    val getIncomeCategoryState: LiveData<UiState<List<CategoryInfo>>> get() = _getIncomeCategoryState
+
+    fun getIncomeCategory() {
+        _getIncomeCategoryState.value = UiState.Loading
+
+        viewModelScope.launch {
+            try {
+                getIncomeCategoryUseCase(
+                    getAccessTokenUseCase.invoke().getOrNull().orEmpty()
+                ).onSuccess {
+                    _getIncomeCategoryState.value = UiState.Success(it)
+                }.onFailure { e ->
+                    LoggerUtils.e(e.message.toString())
+                    _getIncomeCategoryState.value =
+                        UiState.Failure(message = e.message.toString())
+                }
+            } catch (e: Exception) {
+                LoggerUtils.e("get Income Category exception: ${e.message}")
+                _getIncomeCategoryState.value = UiState.Failure(message = e.message.toString())
             }
         }
     }

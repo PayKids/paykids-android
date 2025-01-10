@@ -8,8 +8,11 @@ import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.view.LayoutInflater
+import android.view.View
 import android.view.Window
 import android.view.WindowManager
+import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -280,9 +283,35 @@ class DiaryFragment : BaseFragment<FragmentDiaryBinding>(), ConfirmDialogInterfa
         binding.tvMonth.text = "${currentMonth}월"
         binding.tvDay.text = "${currentDay}일"
 
-        val items = resources.getStringArray(R.array.category_array)
-        val adapter = CustomSpinnerAdapter(requireContext(), items)
-        binding.spinnerCategory.adapter = adapter
+        viewModel.getExpenseCategory()
+
+        viewModel.getExpenseCategoryState.observe(viewLifecycleOwner) { uiState ->
+            when (uiState) {
+                is UiState.Loading -> {
+                    binding.spinnerCategory.visibility = View.GONE
+                }
+
+                is UiState.Success -> {
+                    binding.spinnerCategory.visibility = View.VISIBLE
+                    val categories = uiState.data
+                    val adapter = ArrayAdapter(
+                        requireContext(),
+                        android.R.layout.simple_spinner_item,
+                        categories.map { it.category })
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                    binding.spinnerCategory.adapter = adapter
+                }
+
+                is UiState.Failure -> {
+                    binding.spinnerCategory.visibility = View.GONE
+                    Toast.makeText(
+                        requireContext(),
+                        "카테고리 조회 실패: ${uiState.message}",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+        }
 
         binding.ivYearUp.setOnClickListener {
             selectedDate = selectedDate.plusYears(1)

@@ -29,7 +29,7 @@ class ExpenseCategoryRemoteDatasourceImpl @Inject constructor(
         }
     }
 
-    override suspend fun saveExpenseCategory(
+    override suspend fun addExpenseCategory(
         accessToken: String,
         category: String
     ): Result<BaseResponse<Boolean>> {
@@ -41,10 +41,10 @@ class ExpenseCategoryRemoteDatasourceImpl @Inject constructor(
                 if (res != null) {
                     Result.success(res)
                 } else {
-                    Result.failure(Exception("save Expense Category failed: response body is null"))
+                    Result.failure(Exception("add Expense Category failed: response body is null"))
                 }
             } else {
-                Result.failure(Exception("save Expense Category failed: ${response.message()}"))
+                Result.failure(Exception("add Expense Category failed: ${response.message()}"))
             }
         } catch (e: Exception) {
             Result.failure(e)

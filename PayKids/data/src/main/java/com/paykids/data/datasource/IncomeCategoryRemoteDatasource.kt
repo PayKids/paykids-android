@@ -9,7 +9,7 @@ interface IncomeCategoryRemoteDatasource {
         accessToken: String,
     ): Result<BaseResponse<CategoryListDTO>>
 
-    suspend fun saveIncomeCategory(
+    suspend fun addIncomeCategory(
         accessToken: String,
         category: String
     ): Result<BaseResponse<Boolean>>

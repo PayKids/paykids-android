@@ -29,7 +29,7 @@ class IncomeCategoryRemoteDatasourceImpl @Inject constructor(
         }
     }
 
-    override suspend fun saveIncomeCategory(
+    override suspend fun addIncomeCategory(
         accessToken: String,
         category: String
     ): Result<BaseResponse<Boolean>> {
@@ -41,10 +41,10 @@ class IncomeCategoryRemoteDatasourceImpl @Inject constructor(
                 if (res != null) {
                     Result.success(res)
                 } else {
-                    Result.failure(Exception("save Income Category failed: response body is null"))
+                    Result.failure(Exception("add Income Category failed: response body is null"))
                 }
             } else {
-                Result.failure(Exception("save Income Category failed: ${response.message()}"))
+                Result.failure(Exception("add Income Category failed: ${response.message()}"))
             }
         } catch (e: Exception) {
             Result.failure(e)
