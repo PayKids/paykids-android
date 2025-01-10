@@ -276,6 +276,7 @@ class DiaryFragment : BaseFragment<FragmentDiaryBinding>(), ConfirmDialogInterfa
 
         val dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
         var selectedDate = LocalDate.parse(date, dateFormatter)
+        var isExpenseSelected = true
         val currentYear = selectedDate.year
         val currentMonth = selectedDate.monthValue
         val currentDay = selectedDate.dayOfMonth
@@ -283,7 +284,14 @@ class DiaryFragment : BaseFragment<FragmentDiaryBinding>(), ConfirmDialogInterfa
         binding.tvMonth.text = "${currentMonth}월"
         binding.tvDay.text = "${currentDay}일"
 
-        viewModel.getExpenseCategory()
+        fun fetchCategory() {
+            LoggerUtils.d(isExpenseSelected.toString())
+            if (isExpenseSelected) {
+                viewModel.getExpenseCategory()
+            } else {
+                viewModel.getIncomeCategory()
+            }
+        }
 
         viewModel.getExpenseCategoryState.observe(viewLifecycleOwner) { uiState ->
             when (uiState) {
@@ -294,7 +302,10 @@ class DiaryFragment : BaseFragment<FragmentDiaryBinding>(), ConfirmDialogInterfa
                 is UiState.Success -> {
                     binding.spinnerCategory.visibility = View.VISIBLE
                     val categories = uiState.data
-                    val customAdapter = CustomSpinnerAdapter(requireContext(), categories.map { it.category }.toTypedArray())
+                    val customAdapter = CustomSpinnerAdapter(
+                        requireContext(),
+                        categories.map { it.category }.toTypedArray()
+                    )
                     binding.spinnerCategory.adapter = customAdapter
                 }
 
@@ -307,6 +318,53 @@ class DiaryFragment : BaseFragment<FragmentDiaryBinding>(), ConfirmDialogInterfa
                     ).show()
                 }
             }
+        }
+
+        viewModel.getIncomeCategoryState.observe(viewLifecycleOwner) { uiState ->
+            when (uiState) {
+                is UiState.Loading -> {
+                    binding.spinnerCategory.visibility = View.GONE
+                }
+
+                is UiState.Success -> {
+                    binding.spinnerCategory.visibility = View.VISIBLE
+                    val categories = uiState.data
+                    val customAdapter = CustomSpinnerAdapter(
+                        requireContext(),
+                        categories.map { it.category }.toTypedArray()
+                    )
+                    binding.spinnerCategory.adapter = customAdapter
+                }
+
+                is UiState.Failure -> {
+                    binding.spinnerCategory.visibility = View.GONE
+                    Toast.makeText(
+                        requireContext(),
+                        "수입 카테고리 조회 실패: ${uiState.message}",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+        }
+
+        fetchCategory()
+
+        binding.clSwitch.setOnClickListener {
+            isExpenseSelected = !isExpenseSelected
+            if (isExpenseSelected) {
+                binding.tvConsume.setBackgroundResource(R.drawable.switch_bg_select)
+                binding.tvConsume.setTextColor(requireContext().getColor(R.color.black))
+
+                binding.tvIncome.setBackgroundResource(R.color.transparent)
+                binding.tvIncome.setTextColor(requireContext().getColor(R.color.gray7))
+            } else {
+                binding.tvIncome.setBackgroundResource(R.drawable.switch_bg_select)
+                binding.tvIncome.setTextColor(requireContext().getColor(R.color.black))
+
+                binding.tvConsume.setBackgroundResource(R.color.transparent)
+                binding.tvConsume.setTextColor(requireContext().getColor(R.color.gray7))
+            }
+            fetchCategory()
         }
 
         binding.ivYearUp.setOnClickListener {
