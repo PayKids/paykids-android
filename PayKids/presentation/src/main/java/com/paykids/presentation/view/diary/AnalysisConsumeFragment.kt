@@ -2,6 +2,7 @@ package com.paykids.presentation.view.diary
 
 import android.annotation.SuppressLint
 import android.graphics.Color
+import android.os.Bundle
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
@@ -38,6 +39,8 @@ class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisAllowanceBinding>()
         currentMonth = args.currentMonth
         binding.tvMonth.text = "${currentMonth}월"
 
+        initializeAdapter()
+        fetchData(currentYear, currentMonth)
         setupFragmentResultListener()
     }
 
@@ -69,8 +72,13 @@ class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisAllowanceBinding>()
         }
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setupFragmentResultListener()
+    }
+
     @SuppressLint("SetTextI18n")
-    private fun  setupFragmentResultListener() {
+    private fun setupFragmentResultListener() {
         parentFragmentManager.setFragmentResultListener(
             "CATEGORY_BACK_RESULT",
             viewLifecycleOwner
@@ -81,8 +89,34 @@ class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisAllowanceBinding>()
             currentYear = year
             currentMonth = month
             binding.tvMonth.text = "${currentMonth}월"
-            fetchData(currentYear, currentMonth)
+
+            if (!::adapter.isInitialized) {
+                initializeAdapter()
+            }
         }
+    }
+
+    private fun initializeAdapter() {
+        adapter = AllowanceCategoryAdapter(
+            categoryViewModel,
+            onCategoryAdded = { newCategory ->
+                addCategory(newCategory)
+            },
+            onItemClick = { category, amount ->
+                val action = AnalysisConsumeFragmentDirections
+                    .actionAnalysisConsumeFragmentToAnalysisCategoryConsumeFragment(
+                        currentYear,
+                        currentMonth,
+                        category,
+                        amount,
+                        isConsumeSelected
+                    )
+                findNavController().navigate(action)
+            },
+            isConsumeSelected
+        )
+        binding.rvDetailAllowance.layoutManager = LinearLayoutManager(requireContext())
+        binding.rvDetailAllowance.adapter = adapter
     }
 
     @SuppressLint("SetTextI18n")
@@ -152,26 +186,7 @@ class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisAllowanceBinding>()
                 LoggerUtils.d("카테고리 조회 성공: ${state.data}")
 
                 if (!::adapter.isInitialized) {
-                    adapter = AllowanceCategoryAdapter(
-                        categoryViewModel,
-                        onCategoryAdded = { newCategory ->
-                            addCategory(newCategory)
-                        },
-                        onItemClick = { category, amount ->
-                            val action = AnalysisConsumeFragmentDirections
-                                .actionAnalysisConsumeFragmentToAnalysisCategoryConsumeFragment(
-                                    currentYear,
-                                    currentMonth,
-                                    category,
-                                    amount,
-                                    isConsumeSelected
-                                )
-                            findNavController().navigate(action)
-                        },
-                        isConsumeSelected
-                    )
-                    binding.rvDetailAllowance.layoutManager = LinearLayoutManager(requireContext())
-                    binding.rvDetailAllowance.adapter = adapter
+                    initializeAdapter()
                 }
 
                 val sortedCategories = state.data
@@ -184,8 +199,8 @@ class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisAllowanceBinding>()
                         )
                     }
 
-                currentList?.addAll(sortedCategories)
-                adapter.submitList(sortedCategories)
+                currentList = sortedCategories.toMutableList()
+                adapter.submitList(currentList)
 
                 val topCategories = state.data
                     .sortedByDescending { it.percent.replace("%", "").toFloat() }
@@ -335,7 +350,6 @@ class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisAllowanceBinding>()
     override fun onResume() {
         super.onResume()
         (requireActivity() as? HomeActivity)?.setBottomNavigationVisibility(false)
-        fetchData(currentYear, currentMonth)
     }
 
     override fun onPause() {
