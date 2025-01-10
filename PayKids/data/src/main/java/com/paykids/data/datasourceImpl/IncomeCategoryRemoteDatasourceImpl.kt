@@ -34,7 +34,7 @@ class IncomeCategoryRemoteDatasourceImpl @Inject constructor(
         category: String
     ): Result<BaseResponse<Boolean>> {
         return try {
-            val response = incomeCategoryService.saveIncomeCategory(accessToken, category)
+            val response = incomeCategoryService.addIncomeCategory(accessToken, category)
 
             if (response.isSuccessful) {
                 val res = response.body()

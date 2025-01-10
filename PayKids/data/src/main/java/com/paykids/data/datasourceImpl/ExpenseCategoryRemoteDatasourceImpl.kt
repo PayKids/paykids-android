@@ -34,7 +34,7 @@ class ExpenseCategoryRemoteDatasourceImpl @Inject constructor(
         category: String
     ): Result<BaseResponse<Boolean>> {
         return try {
-            val response = expenseCategoryService.saveExpenseCategory(accessToken, category)
+            val response = expenseCategoryService.addExpenseCategory(accessToken, category)
 
             if (response.isSuccessful) {
                 val res = response.body()
