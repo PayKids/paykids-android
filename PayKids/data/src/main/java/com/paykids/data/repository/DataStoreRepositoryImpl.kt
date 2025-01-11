@@ -6,6 +6,7 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.paykids.domain.enums.AuthProvider
 import com.paykids.domain.repository.DataStoreRepository
+import com.paykids.util.LoggerUtils
 import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 
@@ -24,8 +25,10 @@ class DataStoreRepositoryImpl @Inject constructor(
             dataStorePreferences.edit { preferences ->
                 preferences.clear()
             }
+            LoggerUtils.d("DataStore cleared successfully.")
             Result.success(true)
         } catch (e: Exception) {
+            LoggerUtils.e("Failed to clear DataStore: ${e.message}")
             Result.failure(e)
         }
     }

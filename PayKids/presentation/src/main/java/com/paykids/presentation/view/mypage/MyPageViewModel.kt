@@ -90,12 +90,6 @@ class MyPageViewModel @Inject constructor(
     private var _signOutState = MutableLiveData<UiState<Unit>>(UiState.Loading)
     val signOutState: LiveData<UiState<Unit>> get() = _signOutState
 
-    private val _withdrawState = MutableLiveData<UiState<String>>(UiState.Loading)
-    val withdrawState: LiveData<UiState<String>> get() = _withdrawState
-
-    private val _clearState = MutableLiveData<UiState<Boolean>>(UiState.Loading)
-    val clearState: LiveData<UiState<Boolean>> get() = _clearState
-
     fun signOut() {
         _signOutState.value = UiState.Loading
 
@@ -112,21 +106,27 @@ class MyPageViewModel @Inject constructor(
         }
     }
 
+    private val _withdrawState = MutableLiveData<UiState<Unit>>(UiState.Loading)
+    val withdrawState: LiveData<UiState<Unit>> get() = _withdrawState
+
     fun withdraw() {
         _withdrawState.value = UiState.Loading
 
         viewModelScope.launch {
             withdrawalUseCase.invoke(getAccessTokenUseCase.invoke().getOrNull().toString())
                 .onSuccess {
-                    _signOutState.value = UiState.Success(Unit)
+                    _withdrawState.value = UiState.Success(Unit)
                     LoggerUtils.d("회원 탈퇴 성공")
                 }
                 .onFailure {
-                    _signOutState.value = UiState.Failure(message = "회원 탈퇴 실패")
+                    _withdrawState.value = UiState.Failure(message = "회원 탈퇴 실패")
                     LoggerUtils.e("회원 탈퇴 실패")
                 }
         }
     }
+
+    private val _clearState = MutableLiveData<UiState<Unit>>(UiState.Loading)
+    val clearState: LiveData<UiState<Unit>> get() = _clearState
 
     fun clearData() {
         _clearState.value = UiState.Loading
@@ -135,7 +135,7 @@ class MyPageViewModel @Inject constructor(
             try {
                 clearUserDataUseCase()
                     .onSuccess {
-                        _clearState.value = UiState.Success(it)
+                        _clearState.value = UiState.Success(Unit)
                     }
                     .onFailure { e ->
                         LoggerUtils.e("Clear User Data failed: ${e.message}")
