@@ -9,7 +9,7 @@ class GetMonthMostCategoryUseCase @Inject constructor(private val repository: Ex
         accessToken: String,
         year: Int,
         month: Int
-    ): Result<MonthMostCategory> {
+    ): Result<MonthMostCategory?> {
         return repository.getMonthMostExpenseCategory("Bearer $accessToken", year, month)
     }
 }

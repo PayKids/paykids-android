@@ -17,7 +17,7 @@ interface ExpenseRepository {
         accessToken: String,
         year: Int,
         month: Int
-    ): Result<MonthMostCategory>
+    ): Result<MonthMostCategory?>
 
     suspend fun getMonthDailyExpense(
         accessToken: String,

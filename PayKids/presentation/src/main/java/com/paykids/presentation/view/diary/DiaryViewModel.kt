@@ -169,7 +169,15 @@ class DiaryViewModel @Inject constructor(
                     getAccessTokenUseCase.invoke().getOrNull().orEmpty(),
                     year, month
                 ).onSuccess {
-                    _monthMostCategoryState.value = UiState.Success(it)
+                    if (it == null) {
+                        _monthMostCategoryState.value = UiState.Success(
+                            MonthMostCategory(
+                                "기타", 0
+                            )
+                        )
+                    } else {
+                        _monthMostCategoryState.value = UiState.Success(it)
+                    }
                 }.onFailure { e ->
                     LoggerUtils.e(e.message.toString())
                     _monthMostCategoryState.value =

@@ -32,10 +32,6 @@ class ModifyInfoFragment : BaseFragment<FragmentModifyInfoBinding>(), ConfirmDia
             parentFragmentManager.popBackStack()
         }
 
-        binding.ivModifyImage.setOnClickListener {
-            openGallery()
-        }
-
         binding.btnConfirm.setOnClickListener {
             myPageViewModel.changeNickname(binding.etModifyNickname.text.toString())
         }

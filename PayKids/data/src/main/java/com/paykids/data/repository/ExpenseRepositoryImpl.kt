@@ -41,18 +41,22 @@ class ExpenseRepositoryImpl @Inject constructor(
         accessToken: String,
         year: Int,
         month: Int
-    ): Result<MonthMostCategory> {
+    ): Result<MonthMostCategory?> {
         val result = expenseRemoteDatasource.getMonthMostExpenseCategory(accessToken, year, month)
 
         return if (result.isSuccess) {
             val res = result.getOrNull()
             if (res != null) {
-                val data = res.data[0]
-                val mostCategoryInfo = MonthMostCategory(
-                    category = data.category,
-                    amount = data.amount
-                )
-                Result.success(mostCategoryInfo)
+                if (res.data.isEmpty()) {
+                    Result.success(null)
+                } else {
+                    val data = res.data[0]
+                    val mostCategoryInfo = MonthMostCategory(
+                        category = data.category,
+                        amount = data.amount
+                    )
+                    Result.success(mostCategoryInfo)
+                }
             } else {
                 Result.failure(Exception("get Month Most Category Failed: response body is null"))
             }
