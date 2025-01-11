@@ -1,0 +1,13 @@
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/tv_answer"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="start"
+    android:background="@drawable/shape_quiz_box_default"
+    android:paddingVertical="24.5dp"
+    android:paddingHorizontal="22.5dp"
+    android:textColor="@color/black"
+    android:textSize="16sp"
+    android:fontFamily="@font/nanumsquare_bold"
+    tools:text="답변 예시 텍스트" />

@@ -65,9 +65,9 @@
         android:layout_width="0dp"
         android:layout_height="200dp"
         android:background="@drawable/shape_bg_quiz_image2"
-        app:layout_constraintStart_toStartOf="@id/gl_answer"
-        app:layout_constraintEnd_toEndOf="@id/gl_answer"
-        app:layout_constraintBottom_toTopOf="@id/gl_answer"
+        app:layout_constraintStart_toStartOf="@id/rv_answers"
+        app:layout_constraintEnd_toEndOf="@id/rv_answers"
+        app:layout_constraintBottom_toTopOf="@id/rv_answers"
         android:layout_marginHorizontal="4.5dp"
         android:layout_marginBottom="21.5dp"
         android:clipToOutline="true">
@@ -88,8 +88,8 @@
         android:gravity="center_vertical"
         android:visibility="invisible"
         android:background="@drawable/shape_quiz_correct_answer_box"
-        app:layout_constraintStart_toStartOf="@id/gl_answer"
-        app:layout_constraintEnd_toEndOf="@id/gl_answer"
+        app:layout_constraintStart_toStartOf="@id/rv_answers"
+        app:layout_constraintEnd_toEndOf="@id/rv_answers"
         app:layout_constraintTop_toTopOf="@id/fl_image"
         android:layout_marginTop="-18dp"
         android:layout_marginHorizontal="4.5dp">
@@ -121,8 +121,8 @@
         android:gravity="center_vertical"
         android:visibility="invisible"
         android:background="@drawable/shape_quiz_wrong_answer_box"
-        app:layout_constraintStart_toStartOf="@id/gl_answer"
-        app:layout_constraintEnd_toEndOf="@id/gl_answer"
+        app:layout_constraintStart_toStartOf="@id/rv_answers"
+        app:layout_constraintEnd_toEndOf="@id/rv_answers"
         app:layout_constraintTop_toTopOf="@id/fl_image"
         android:layout_marginTop="-18dp"
         android:layout_marginHorizontal="4.5dp">
@@ -146,63 +146,16 @@
             android:layout_weight="1"/>
     </LinearLayout>
 
-    <GridLayout
-        android:id="@+id/gl_answer"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_answers"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:rowCount="3"
-        android:columnCount="1"
-        android:layout_gravity="center"
-
+        android:layout_marginHorizontal="15.5dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginBottom="45.5dp"
-        android:layout_marginHorizontal="15.5dp">
-
-
-        <!-- 첫 번째 답안 -->
-        <TextView
-            android:id="@+id/tv_answer_first"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="start"
-            android:background="@drawable/shape_quiz_box_default"
-            android:paddingVertical="24.5dp"
-            android:paddingHorizontal="22.5dp"
-            tools:text="10,000원 권 지폐에는 조선 시대의 왕이자 한글을 창시한 세종대왕이 그려져 있다."
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            android:fontFamily="@font/nanumsquare_bold" />
-
-        <!-- 두 번째 답안 -->
-        <TextView
-            android:id="@+id/tv_answer_second"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="start"
-            android:background="@drawable/shape_quiz_box_default"
-            android:paddingVertical="24.5dp"
-            android:paddingHorizontal="22.5dp"
-            tools:text="10,000원 권 지폐에는 페이키즈 기획팀장이자 디콘디의 핵폭탄(WOW) 방재완이 그려져 있다."
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            android:fontFamily="@font/nanumsquare_bold" />
-
-        <!-- 세 번째 답안 -->
-        <TextView
-            android:id="@+id/tv_answer_third"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="start"
-            android:background="@drawable/shape_quiz_box_default"
-            android:paddingVertical="24.5dp"
-            android:paddingHorizontal="22.5dp"
-            tools:text="로또 되고 싶다 앙♡"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            android:fontFamily="@font/nanumsquare_bold" />
-
-    </GridLayout>
+        tools:listitem="@layout/item_answer_box_text"
+        tools:itemCount="4"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
