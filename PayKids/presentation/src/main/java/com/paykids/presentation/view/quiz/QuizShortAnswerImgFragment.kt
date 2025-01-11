@@ -1,20 +1,18 @@
 package com.paykids.presentation.view.quiz
 
-import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.bumptech.glide.Glide
 import com.paykids.presentation.R
 import com.paykids.presentation.base.BaseFragment
 import com.paykids.presentation.custom.ConfirmDialogInterface
-import com.paykids.presentation.databinding.FragmentQuizImageBinding
+import com.paykids.presentation.databinding.FragmentQuizShortAnswerImgBinding
 import com.paykids.presentation.utils.UiState
 import com.paykids.util.LoggerUtils
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class QuizImageFragment : BaseFragment<FragmentQuizImageBinding>(), ConfirmDialogInterface {
+class QuizShortAnswerImgFragment : BaseFragment<FragmentQuizShortAnswerImgBinding>(), ConfirmDialogInterface {
     private val quizEntryViewModel: QuizEntryViewModel by activityViewModels()
     private val args: QuizImageFragmentArgs by navArgs()
     private var stageNumber: Int = 0
@@ -39,15 +37,10 @@ class QuizImageFragment : BaseFragment<FragmentQuizImageBinding>(), ConfirmDialo
             dialog.isCancelable = false
             dialog.show(parentFragmentManager, "AllClearDialog")
         }
-
-        val answerFirst = binding.root.findViewById<View>(R.id.answer_first)
-        val answerSecond = binding.root.findViewById<View>(R.id.answer_second)
-        val answerThird = binding.root.findViewById<View>(R.id.answer_third)
-        val answerFourth = binding.root.findViewById<View>(R.id.answer_fourth)
-        answerFirst.setOnClickListener { onAnswerClicked(1) }
-        answerSecond.setOnClickListener { onAnswerClicked(2) }
-        answerThird.setOnClickListener { onAnswerClicked(3) }
-        answerFourth.setOnClickListener { onAnswerClicked(4) }
+        binding.tvDecision.setOnClickListener {
+            // getQuiz를 호출하여 다음 퀴즈를 로드
+            quizEntryViewModel.getQuiz(stageNumber, quizNumber + 1)  // quizNumber는 다음 퀴즈 번호로 증가시킴
+        }
     }
 
     override fun setObserver() {
@@ -70,7 +63,6 @@ class QuizImageFragment : BaseFragment<FragmentQuizImageBinding>(), ConfirmDialo
                     LoggerUtils.d("Quiz loaded: ${quiz.question}")
                     binding.tvQuestion.text = quiz.question
                     binding.tvQuizProgress.text = "${quiz.number}/${quiz.count}"
-                    quiz.imageURL?.let { it1 -> loadChoiceImages(it1) }
                 }
             }
         }
@@ -78,35 +70,6 @@ class QuizImageFragment : BaseFragment<FragmentQuizImageBinding>(), ConfirmDialo
 
     override fun onYesButtonClick() {
 
-    }
-
-    // 이미지 로딩 함수
-    private fun loadChoiceImages(imageURLMap: Map<String, String>) {
-        // Glide로 이미지 로딩
-        Glide.with(this)
-            .load(imageURLMap["image1"])
-            .into(binding.answerFirst.ivAnswerImage)
-
-        Glide.with(this)
-            .load(imageURLMap["image2"])
-            .into(binding.answerSecond.ivAnswerImage)
-
-        Glide.with(this)
-            .load(imageURLMap["image3"])
-            .into(binding.answerThird.ivAnswerImage)
-
-        Glide.with(this)
-            .load(imageURLMap["image4"])
-            .into(binding.answerFourth.ivAnswerImage)
-
-    }
-
-    private fun onAnswerClicked(answerNumber: Int) {
-        val stageNumber = args.stageNumber
-        val quizNumber = args.quizNumber
-
-        // getQuiz를 호출하여 다음 퀴즈를 로드
-        quizEntryViewModel.getQuiz(stageNumber, quizNumber + 1)  // quizNumber는 다음 퀴즈 번호로 증가시킴
     }
 
     private fun navigateToNextQuiz() {
@@ -119,32 +82,31 @@ class QuizImageFragment : BaseFragment<FragmentQuizImageBinding>(), ConfirmDialo
             // 각 퀴즈 유형에 따라 프래그먼트로 전달
             when (quiz.quizType) {
                 "IMAGE_CHOICE" -> {
-                    val action = QuizImageFragmentDirections
-                        .actionQuizImageFragmentToQuizImageFragment(stageNumber, quizNumber)
+                    val action = QuizShortAnswerImgFragmentDirections
+                        .actionQuizShortAnswerImgFragmentToQuizImageFragment(stageNumber, quizNumber)
                     findNavController().navigate(action)
                 }
                 "TEXT_CHOICE" -> {
                     val action = if (quiz.imageURL.isNullOrEmpty()) {
-                        QuizImageFragmentDirections
-                            .actionQuizImageFragmentToQuizMultipleChoiceFragment(stageNumber, quizNumber)
+                        QuizShortAnswerImgFragmentDirections
+                            .actionQuizShortAnswerImgFragmentToQuizMultipleChoiceFragment(stageNumber, quizNumber)
                     } else {
-                        QuizImageFragmentDirections
-                            .actionQuizImageFragmentToQuizMultipleChoiceImgFragment(stageNumber, quizNumber)
+                        QuizShortAnswerImgFragmentDirections
+                            .actionQuizShortAnswerImgFragmentToQuizMultipleChoiceImgFragment(stageNumber, quizNumber)
                     }
                     findNavController().navigate(action)
                 }
                 "SHORT_ANSWER" -> {
                     val action = if (quiz.imageURL.isNullOrEmpty()) {
-                        QuizImageFragmentDirections
-                            .actionQuizImageFragmentToQuizShortAnswerFragment(stageNumber, quizNumber)
+                        QuizShortAnswerImgFragmentDirections
+                            .actionQuizShortAnswerImgFragmentToQuizShortAnswerFragment(stageNumber, quizNumber)
                     } else {
-                        QuizImageFragmentDirections
-                            .actionQuizImageFragmentToQuizShortAnswerImgFragment(stageNumber, quizNumber)
+                        QuizShortAnswerImgFragmentDirections
+                            .actionQuizShortAnswerImgFragmentToQuizShortAnswerImgFragment(stageNumber, quizNumber)
                     }
                     findNavController().navigate(action)
                 }
             }
         }
     }
-
 }

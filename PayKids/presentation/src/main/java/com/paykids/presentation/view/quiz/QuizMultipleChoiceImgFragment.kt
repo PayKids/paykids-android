@@ -1,29 +1,39 @@
 package com.paykids.presentation.view.quiz
 
-import android.view.View
+import QuizMultipleChoiceRvAdapter
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.bumptech.glide.Glide
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.paykids.presentation.R
 import com.paykids.presentation.base.BaseFragment
 import com.paykids.presentation.custom.ConfirmDialogInterface
-import com.paykids.presentation.databinding.FragmentQuizImageBinding
+import com.paykids.presentation.databinding.FragmentQuizMultipleChoiceImgBinding
 import com.paykids.presentation.utils.UiState
 import com.paykids.util.LoggerUtils
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class QuizImageFragment : BaseFragment<FragmentQuizImageBinding>(), ConfirmDialogInterface {
+class QuizMultipleChoiceImgFragment : BaseFragment<FragmentQuizMultipleChoiceImgBinding>(), ConfirmDialogInterface {
     private val quizEntryViewModel: QuizEntryViewModel by activityViewModels()
     private val args: QuizImageFragmentArgs by navArgs()
     private var stageNumber: Int = 0
     private var quizNumber: Int = 0
 
+    private val adapter by lazy {
+        QuizMultipleChoiceRvAdapter { answer -> onAnswerClicked(answer) }
+    }
     override fun initView() {
         stageNumber = args.stageNumber
         quizNumber = args.quizNumber
 
+        binding.rvAnswers.apply {
+            layoutManager = LinearLayoutManager(requireContext()) // 또는 GridLayoutManager(requireContext(), spanCount)
+            // 어댑터 초기화
+            adapter = this@QuizMultipleChoiceImgFragment.adapter
+        }
+
+        // 퀴즈 데이터 로드
         quizEntryViewModel.getQuiz(stageNumber, quizNumber)
     }
 
@@ -39,15 +49,6 @@ class QuizImageFragment : BaseFragment<FragmentQuizImageBinding>(), ConfirmDialo
             dialog.isCancelable = false
             dialog.show(parentFragmentManager, "AllClearDialog")
         }
-
-        val answerFirst = binding.root.findViewById<View>(R.id.answer_first)
-        val answerSecond = binding.root.findViewById<View>(R.id.answer_second)
-        val answerThird = binding.root.findViewById<View>(R.id.answer_third)
-        val answerFourth = binding.root.findViewById<View>(R.id.answer_fourth)
-        answerFirst.setOnClickListener { onAnswerClicked(1) }
-        answerSecond.setOnClickListener { onAnswerClicked(2) }
-        answerThird.setOnClickListener { onAnswerClicked(3) }
-        answerFourth.setOnClickListener { onAnswerClicked(4) }
     }
 
     override fun setObserver() {
@@ -59,7 +60,9 @@ class QuizImageFragment : BaseFragment<FragmentQuizImageBinding>(), ConfirmDialo
                     showToast(it.message)
                 }
 
-                is UiState.Loading -> {}
+                is UiState.Loading -> {
+                    // 로딩 상태 처리
+                }
 
                 is UiState.Success -> {
                     val quiz = it.data
@@ -70,43 +73,26 @@ class QuizImageFragment : BaseFragment<FragmentQuizImageBinding>(), ConfirmDialo
                     LoggerUtils.d("Quiz loaded: ${quiz.question}")
                     binding.tvQuestion.text = quiz.question
                     binding.tvQuizProgress.text = "${quiz.number}/${quiz.count}"
-                    quiz.imageURL?.let { it1 -> loadChoiceImages(it1) }
+
+                    // 답변 리스트 어댑터에 설정
+                    val answers = quiz.choices?.values?.toList()
+                    adapter.submitList(answers)
                 }
             }
         }
     }
 
+    private fun onAnswerClicked(answer: String) {
+        // 답변 클릭 시 처리
+        LoggerUtils.d("Answer clicked: $answer / ${stageNumber} / ${quizNumber}")
+
+        // 다음 퀴즈 로드
+        quizEntryViewModel.getQuiz(stageNumber, quizNumber + 1)
+        navigateToNextQuiz()
+    }
+
     override fun onYesButtonClick() {
 
-    }
-
-    // 이미지 로딩 함수
-    private fun loadChoiceImages(imageURLMap: Map<String, String>) {
-        // Glide로 이미지 로딩
-        Glide.with(this)
-            .load(imageURLMap["image1"])
-            .into(binding.answerFirst.ivAnswerImage)
-
-        Glide.with(this)
-            .load(imageURLMap["image2"])
-            .into(binding.answerSecond.ivAnswerImage)
-
-        Glide.with(this)
-            .load(imageURLMap["image3"])
-            .into(binding.answerThird.ivAnswerImage)
-
-        Glide.with(this)
-            .load(imageURLMap["image4"])
-            .into(binding.answerFourth.ivAnswerImage)
-
-    }
-
-    private fun onAnswerClicked(answerNumber: Int) {
-        val stageNumber = args.stageNumber
-        val quizNumber = args.quizNumber
-
-        // getQuiz를 호출하여 다음 퀴즈를 로드
-        quizEntryViewModel.getQuiz(stageNumber, quizNumber + 1)  // quizNumber는 다음 퀴즈 번호로 증가시킴
     }
 
     private fun navigateToNextQuiz() {
@@ -119,32 +105,31 @@ class QuizImageFragment : BaseFragment<FragmentQuizImageBinding>(), ConfirmDialo
             // 각 퀴즈 유형에 따라 프래그먼트로 전달
             when (quiz.quizType) {
                 "IMAGE_CHOICE" -> {
-                    val action = QuizImageFragmentDirections
-                        .actionQuizImageFragmentToQuizImageFragment(stageNumber, quizNumber)
+                    val action = QuizMultipleChoiceImgFragmentDirections
+                        .actionQuizMultipleChoiceImgFragmentToQuizImageFragment(stageNumber, quizNumber)
                     findNavController().navigate(action)
                 }
                 "TEXT_CHOICE" -> {
                     val action = if (quiz.imageURL.isNullOrEmpty()) {
-                        QuizImageFragmentDirections
-                            .actionQuizImageFragmentToQuizMultipleChoiceFragment(stageNumber, quizNumber)
+                        QuizMultipleChoiceImgFragmentDirections
+                            .actionQuizMultipleChoiceImgFragmentToQuizMultipleChoiceFragment(stageNumber, quizNumber)
                     } else {
-                        QuizImageFragmentDirections
-                            .actionQuizImageFragmentToQuizMultipleChoiceImgFragment(stageNumber, quizNumber)
+                        QuizMultipleChoiceImgFragmentDirections
+                            .actionQuizMultipleChoiceImgFragmentToQuizMultipleChoiceImgFragment(stageNumber, quizNumber)
                     }
                     findNavController().navigate(action)
                 }
                 "SHORT_ANSWER" -> {
                     val action = if (quiz.imageURL.isNullOrEmpty()) {
-                        QuizImageFragmentDirections
-                            .actionQuizImageFragmentToQuizShortAnswerFragment(stageNumber, quizNumber)
+                        QuizMultipleChoiceImgFragmentDirections
+                            .actionQuizMultipleChoiceImgFragmentToQuizShortAnswerFragment(stageNumber, quizNumber)
                     } else {
-                        QuizImageFragmentDirections
-                            .actionQuizImageFragmentToQuizShortAnswerImgFragment(stageNumber, quizNumber)
+                        QuizMultipleChoiceImgFragmentDirections
+                            .actionQuizMultipleChoiceImgFragmentToQuizShortAnswerImgFragment(stageNumber, quizNumber)
                     }
                     findNavController().navigate(action)
                 }
             }
         }
     }
-
 }
