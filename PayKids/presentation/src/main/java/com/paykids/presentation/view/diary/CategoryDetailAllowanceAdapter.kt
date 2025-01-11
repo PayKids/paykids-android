@@ -3,7 +3,6 @@ package com.paykids.presentation.view.diary
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.paykids.presentation.custom.ConfirmDialogInterface
 import com.paykids.presentation.databinding.ItemCategoryAllowanceBinding

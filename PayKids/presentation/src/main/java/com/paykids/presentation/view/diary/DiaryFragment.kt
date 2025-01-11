@@ -12,7 +12,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
-import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
@@ -20,7 +19,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
-import com.paykids.domain.model.allowance.DayInfo
 import com.paykids.domain.model.allowanceCategory.CategoryInfo
 import com.paykids.presentation.R
 import com.paykids.presentation.base.BaseFragment

@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
-import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -13,7 +12,6 @@ import com.paykids.presentation.R
 import com.paykids.presentation.databinding.ItemAnalysisAllowanceBinding
 import com.paykids.presentation.databinding.ItemEtcCategoryBinding
 import com.paykids.presentation.utils.Constants
-import com.paykids.util.LoggerUtils
 
 class AllowanceCategoryAdapter(
     private val categoryViewModel: CategoryViewModel,

@@ -1,16 +1,12 @@
 package com.paykids.presentation.view.diary
 
 import android.annotation.SuppressLint
-import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.paykids.domain.model.allowance.DayInfo
-import com.paykids.presentation.custom.ConfirmDialogInterface
 import com.paykids.presentation.databinding.ItemDetailAllowanceBinding
 import com.paykids.presentation.utils.Constants
-import com.paykids.util.LoggerUtils
 
 class DetailConsumeAdapter(
     private val listener: OnItemClickListener,

@@ -1,10 +1,8 @@
 package com.paykids.data.di
 
-import com.paykids.domain.repository.ExpenseCategoryRepository
 import com.paykids.domain.repository.IncomeCategoryRepository
-import com.paykids.domain.usecase.expenseCategory.GetExpenseCategoryUseCase
-import com.paykids.domain.usecase.incomeCategory.DeleteIncomeCategoryUseCase
 import com.paykids.domain.usecase.incomeCategory.AddIncomeCategoryUseCase
+import com.paykids.domain.usecase.incomeCategory.DeleteIncomeCategoryUseCase
 import com.paykids.domain.usecase.incomeCategory.GetIncomeCategoryUseCase
 import dagger.Module
 import dagger.Provides

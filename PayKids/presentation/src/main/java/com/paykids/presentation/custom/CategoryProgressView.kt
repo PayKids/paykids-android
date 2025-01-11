@@ -10,7 +10,6 @@ import android.util.AttributeSet
 import android.view.View
 import androidx.core.content.res.ResourcesCompat
 import com.paykids.presentation.R
-import com.paykids.util.LoggerUtils
 
 class CategoryProgressView @JvmOverloads constructor(
     context: Context,
