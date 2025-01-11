@@ -10,9 +10,20 @@ import com.paykids.domain.model.allowance.DayInfo
 import com.paykids.presentation.custom.ConfirmDialogInterface
 import com.paykids.presentation.databinding.ItemDetailAllowanceBinding
 import com.paykids.presentation.utils.Constants
+import com.paykids.util.LoggerUtils
 
-class DetailConsumeAdapter(private val fragment: Fragment) :
-    RecyclerView.Adapter<DetailConsumeAdapter.ViewHolder>(), ConfirmDialogInterface {
+class DetailConsumeAdapter(
+    private val listener: OnItemClickListener,
+    private val fragment: DiaryFragment
+) :
+    RecyclerView.Adapter<DetailConsumeAdapter.ViewHolder>() {
+
+    interface OnItemClickListener {
+        fun onItemClick(
+            id: Int, date: String, allowanceType: String,
+            category: String, amount: Int, memo: String
+        )
+    }
 
     private val items = mutableListOf<DayInfo>()
 
@@ -26,20 +37,6 @@ class DetailConsumeAdapter(private val fragment: Fragment) :
             binding.tvConsumptionCategory.text = item.category
             binding.tvConsumeAmount.text = "-${formattedAmount}원"
             binding.tvMemo.text = item.memo
-
-            itemView.setOnClickListener {
-                val dialog = DiaryDialog().apply {
-                    arguments = Bundle().apply {
-                        putString("place", item.category)
-                        putString("amount", formattedAmount)
-                        putString("memo", item.memo)
-                        putBoolean("isEditMode", true)
-                        putBoolean("isConsumeSelected", true)
-                    }
-                }
-                dialog.isCancelable = true
-                dialog.show(fragment.parentFragmentManager, "ModifyDiaryDialog")
-            }
         }
     }
 
@@ -50,7 +47,18 @@ class DetailConsumeAdapter(private val fragment: Fragment) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(items[position])
+        val item = items[position]
+        holder.bind(item)
+        holder.itemView.setOnClickListener {
+            listener.onItemClick(
+                item.id,
+                item.date,
+                item.allowanceType,
+                item.category,
+                item.amount,
+                item.memo
+            )
+        }
     }
 
     override fun getItemCount() = items.size
@@ -60,9 +68,5 @@ class DetailConsumeAdapter(private val fragment: Fragment) :
         items.clear()
         items.addAll(newItems)
         notifyDataSetChanged()
-    }
-
-    override fun onYesButtonClick() {
-        TODO("Not yet implemented")
     }
 }

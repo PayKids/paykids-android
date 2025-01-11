@@ -17,13 +17,13 @@
         android:fontFamily="@font/nanumsquare_extra_bold"
 
         android:gravity="center"
+        android:text="@string/dialog_add_title"
         android:textColor="@color/black"
-        android:textSize="20sp"
 
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/cl_dialog"
-        tools:text="@string/dialog_add_title" />
+        app:layout_constraintTop_toTopOf="@id/cl_dialog" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_switch"

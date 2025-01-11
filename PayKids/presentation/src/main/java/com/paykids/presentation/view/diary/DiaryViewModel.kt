@@ -401,9 +401,9 @@ class DiaryViewModel @Inject constructor(
         id: Int,
         date: String,
         allowanceType: String,
+        category: String,
         amount: Int,
         memo: String,
-        category: String
     ) {
         _updateExpenseState.value = UiState.Loading
 

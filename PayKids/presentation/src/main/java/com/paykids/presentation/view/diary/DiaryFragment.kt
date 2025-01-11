@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
@@ -19,6 +20,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
+import com.paykids.domain.model.allowance.DayInfo
+import com.paykids.domain.model.allowanceCategory.CategoryInfo
 import com.paykids.presentation.R
 import com.paykids.presentation.base.BaseFragment
 import com.paykids.presentation.custom.ConfirmDialogInterface
@@ -154,7 +157,28 @@ class DiaryFragment : BaseFragment<FragmentDiaryBinding>(), ConfirmDialogInterfa
 
                 is UiState.Success -> {
                     LoggerUtils.d("일별 소비 내역 조회 성공: ${it.data}")
-                    detailAdapter = DetailConsumeAdapter(this)
+
+                    detailAdapter =
+                        DetailConsumeAdapter(object : DetailConsumeAdapter.OnItemClickListener {
+                            override fun onItemClick(
+                                id: Int,
+                                date: String,
+                                allowanceType: String,
+                                category: String,
+                                amount: Int,
+                                memo: String
+                            ) {
+                                showModifyDiaryDialog(
+                                    id,
+                                    date,
+                                    allowanceType,
+                                    category,
+                                    amount,
+                                    memo
+                                )
+                            }
+                        }, this)
+
                     binding.rvDetailConsume.apply {
                         layoutManager =
                             LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
@@ -299,6 +323,15 @@ class DiaryFragment : BaseFragment<FragmentDiaryBinding>(), ConfirmDialogInterfa
         }
     }
 
+    private fun setupCategorySpinner(isExpenseSelected: Boolean, binding: DialogDiaryBinding) {
+        if (isExpenseSelected) {
+            viewModel.getExpenseCategory()
+        } else {
+            viewModel.getIncomeCategory()
+        }
+        binding.spinnerCategory.visibility = View.GONE
+    }
+
     @SuppressLint("SetTextI18n")
     private fun showAddPocketMoneyDialog(date: String) {
         val dialog = Dialog(requireContext())
@@ -320,16 +353,9 @@ class DiaryFragment : BaseFragment<FragmentDiaryBinding>(), ConfirmDialogInterfa
         binding.tvMonth.text = "${currentMonth}월"
         binding.tvDay.text = "${currentDay}일"
 
-        fun fetchCategory() {
-            LoggerUtils.d(isExpenseSelected.toString())
-            if (isExpenseSelected) {
-                viewModel.getExpenseCategory()
-            } else {
-                viewModel.getIncomeCategory()
-            }
-        }
+        setupCategorySpinner(isExpenseSelected, binding)
 
-        viewModel.getExpenseCategoryState.observe(viewLifecycleOwner) { uiState ->
+        fun handleCategoryState(uiState: UiState<List<CategoryInfo>>) {
             when (uiState) {
                 is UiState.Loading -> {
                     binding.spinnerCategory.visibility = View.GONE
@@ -356,34 +382,13 @@ class DiaryFragment : BaseFragment<FragmentDiaryBinding>(), ConfirmDialogInterfa
             }
         }
 
-        viewModel.getIncomeCategoryState.observe(viewLifecycleOwner) { uiState ->
-            when (uiState) {
-                is UiState.Loading -> {
-                    binding.spinnerCategory.visibility = View.GONE
-                }
-
-                is UiState.Success -> {
-                    binding.spinnerCategory.visibility = View.VISIBLE
-                    val categories = uiState.data
-                    val customAdapter = CustomSpinnerAdapter(
-                        requireContext(),
-                        categories.map { it.category }.toTypedArray()
-                    )
-                    binding.spinnerCategory.adapter = customAdapter
-                }
-
-                is UiState.Failure -> {
-                    binding.spinnerCategory.visibility = View.GONE
-                    Toast.makeText(
-                        requireContext(),
-                        "수입 카테고리 조회 실패: ${uiState.message}",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-            }
+        viewModel.getExpenseCategoryState.observe(viewLifecycleOwner) { uiState ->
+            if (isExpenseSelected) handleCategoryState(uiState)
         }
 
-        fetchCategory()
+        viewModel.getIncomeCategoryState.observe(viewLifecycleOwner) { uiState ->
+            if (!isExpenseSelected) handleCategoryState(uiState)
+        }
 
         binding.clSwitch.setOnClickListener {
             isExpenseSelected = !isExpenseSelected
@@ -400,7 +405,7 @@ class DiaryFragment : BaseFragment<FragmentDiaryBinding>(), ConfirmDialogInterfa
                 binding.tvConsume.setBackgroundResource(R.color.transparent)
                 binding.tvConsume.setTextColor(requireContext().getColor(R.color.gray7))
             }
-            fetchCategory()
+            setupCategorySpinner(isExpenseSelected, binding)
         }
 
         binding.ivYearUp.setOnClickListener {
@@ -454,7 +459,45 @@ class DiaryFragment : BaseFragment<FragmentDiaryBinding>(), ConfirmDialogInterfa
                 dialog.dismiss()
             }
         }
-
         dialog.show()
     }
+
+    @SuppressLint("SetTextI18n")
+    fun showModifyDiaryDialog(
+        id: Int,
+        date: String,
+        allowanceType: String,
+        category: String,
+        amount: Int,
+        memo: String
+    ) {
+        val dialog = DiaryDialog().apply {
+            arguments = Bundle().apply {
+                putInt("id", id)
+                putString("date", date)
+                putString("category", category)
+                putInt("amount", amount)
+                putString("memo", memo)
+                putBoolean("isEditMode", true)
+                putBoolean("isConsumeSelected", true)
+            }
+        }
+
+        dialog.setOnModifyDiaryListener(object : DiaryDialog.OnModifyDiaryListener {
+            override fun onModify(
+                id: Int,
+                date: String,
+                allowanceType: String,
+                category: String,
+                amount: Int,
+                memo: String
+            ) {
+                viewModel.updateExpense(id, date, allowanceType, category, amount, memo)
+            }
+        })
+
+        dialog.isCancelable = true
+        dialog.show(childFragmentManager, "ModifyDiaryDialog")
+    }
+
 }
