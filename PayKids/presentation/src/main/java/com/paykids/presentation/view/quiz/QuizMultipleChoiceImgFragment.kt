@@ -1,7 +1,10 @@
 package com.paykids.presentation.view.quiz
 
 import QuizMultipleChoiceRvAdapter
+import android.annotation.SuppressLint
+import android.view.View
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -12,13 +15,17 @@ import com.paykids.presentation.databinding.FragmentQuizMultipleChoiceImgBinding
 import com.paykids.presentation.utils.UiState
 import com.paykids.util.LoggerUtils
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class QuizMultipleChoiceImgFragment : BaseFragment<FragmentQuizMultipleChoiceImgBinding>(), ConfirmDialogInterface {
     private val quizEntryViewModel: QuizEntryViewModel by activityViewModels()
-    private val args: QuizImageFragmentArgs by navArgs()
+    private val args: QuizMultipleChoiceImgFragmentArgs by navArgs()
     private var stageNumber: Int = 0
     private var quizNumber: Int = 0
+    private var isCorrect: Boolean? = null
+    private var userAnswer: String = ""
 
     private val adapter by lazy {
         QuizMultipleChoiceRvAdapter { answer -> onAnswerClicked(answer) }
@@ -28,7 +35,7 @@ class QuizMultipleChoiceImgFragment : BaseFragment<FragmentQuizMultipleChoiceImg
         quizNumber = args.quizNumber
 
         binding.rvAnswers.apply {
-            layoutManager = LinearLayoutManager(requireContext()) // 또는 GridLayoutManager(requireContext(), spanCount)
+            layoutManager = LinearLayoutManager(requireContext())
             // 어댑터 초기화
             adapter = this@QuizMultipleChoiceImgFragment.adapter
         }
@@ -51,6 +58,7 @@ class QuizMultipleChoiceImgFragment : BaseFragment<FragmentQuizMultipleChoiceImg
         }
     }
 
+    @SuppressLint("SetTextI18n")
     override fun setObserver() {
         super.setObserver()
 
@@ -75,24 +83,62 @@ class QuizMultipleChoiceImgFragment : BaseFragment<FragmentQuizMultipleChoiceImg
                     binding.tvQuizProgress.text = "${quiz.number}/${quiz.count}"
 
                     // 답변 리스트 어댑터에 설정
-                    val answers = quiz.choices?.values?.toList()
+                    val answers = quiz.choices?.map { entry ->
+                        entry.key to entry.value // "A" to "Answer 1"
+                    } ?: emptyList()
                     adapter.submitList(answers)
+                }
+            }
+        }
+
+        quizEntryViewModel.checkAnswerState.observe(viewLifecycleOwner) {
+            when (it) {
+                is UiState.Failure -> {
+                    showToast(it.message)
+                }
+
+                is UiState.Loading -> {}
+
+                is UiState.Success -> {
+                    // userAnswer가 비어 있으면 UI 업데이트를 하지 않음
+                    if (userAnswer.isEmpty()) {
+                        return@observe
+                    }
+                    isCorrect = it.data
+                    updateUIForAnswer()
                 }
             }
         }
     }
 
-    private fun onAnswerClicked(answer: String) {
-        // 답변 클릭 시 처리
-        LoggerUtils.d("Answer clicked: $answer / ${stageNumber} / ${quizNumber}")
-
-        // 다음 퀴즈 로드
-        quizEntryViewModel.getQuiz(stageNumber, quizNumber + 1)
-        navigateToNextQuiz()
-    }
-
     override fun onYesButtonClick() {
 
+    }
+
+    private fun onAnswerClicked(answerLetter: String) {
+        // 답변 클릭 시 처리
+        LoggerUtils.d("Answer clicked: $answerLetter")
+
+        userAnswer = answerLetter
+        quizEntryViewModel.checkAnswer(stageNumber, quizNumber, answerLetter)
+        adapter.updateSelectedAnswer(answerLetter)
+
+        // 딜레이 후 다음 퀴즈 로드
+        lifecycleScope.launch {
+            delay(2000L) // 2초 딜레이
+            quizEntryViewModel.getQuiz(stageNumber, quizNumber + 1)
+        }
+    }
+
+    private fun updateUIForAnswer() {
+        if (isCorrect == true) {
+            binding.ivBackground.setImageResource(R.drawable.bg_quiz_correct)
+            binding.llCorrectAnswer.visibility = View.VISIBLE
+        } else if (isCorrect == false) {
+            // 오답일 때
+            binding.ivBackground.setImageResource(R.drawable.bg_quiz_wrong)
+            binding.llWrongAnswer.visibility = View.VISIBLE
+        }
     }
 
     private fun navigateToNextQuiz() {
