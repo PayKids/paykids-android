@@ -252,7 +252,7 @@ class DiaryFragment : BaseFragment<FragmentDiaryBinding>(), ConfirmDialogInterfa
             updateCurrentMonthText(binding.vpCalendarMonth.currentItem)
         }
 
-        updateSelectDayText(today)
+        updateSelectDayText("$year-$month-01")
         viewModel.getMonthMostCategory(year, month)
         viewModel.getDayExpense(today)
     }
