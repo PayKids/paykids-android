@@ -85,6 +85,7 @@ class DiaryFragment : BaseFragment<FragmentDiaryBinding>(), ConfirmDialogInterfa
         binding.ibLeft.setOnClickListener {
             minusMonth()
             viewModel.updateMonth(currentYear, currentMonth)
+            fetchData(currentYear, currentMonth)
             val currentPos = binding.vpCalendarMonth.currentItem
             binding.vpCalendarMonth.setCurrentItem(currentPos - 1, false)
         }
@@ -92,6 +93,7 @@ class DiaryFragment : BaseFragment<FragmentDiaryBinding>(), ConfirmDialogInterfa
         binding.ibRight.setOnClickListener {
             plusMonth()
             viewModel.updateMonth(currentYear, currentMonth)
+            fetchData(currentYear, currentMonth)
             val currentPos = binding.vpCalendarMonth.currentItem
             binding.vpCalendarMonth.setCurrentItem(currentPos + 1, false)
         }
@@ -263,7 +265,7 @@ class DiaryFragment : BaseFragment<FragmentDiaryBinding>(), ConfirmDialogInterfa
         val yearMonth = SimpleDateFormat("yyyy-MM", Locale.KOREAN).format(calendar.time)
         val year = yearMonth.split("-")[0].toInt()
         val month = yearMonth.split("-")[1].toInt()
-        binding.tvMonth.text = "${calendar.get(Calendar.MONTH) + 1}월"
+        binding.tvMonth.text = "${currentMonth}월"
 
         viewModel.getMonthTotalExpense(year, month)
     }
