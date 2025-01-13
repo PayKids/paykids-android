@@ -81,5 +81,28 @@ class QuizRemoteDatasourceImpl @Inject constructor(
         }
     }
 
+    override suspend fun checkAnswer(
+        accessToken: String,
+        stage: Int,
+        number: Int,
+        answer: String
+    ): Result<BaseResponse<Boolean>> {
+        return try {
+            val response = quizService.checkAnswer(accessToken, stage, number, answer)
+            if (response.isSuccessful) {
+                val res = response.body()
+                if (res != null) {
+                    Result.success(res)
+                } else {
+                    Result.failure(Exception("check Answer failed: response body is null"))
+                }
+            } else {
+                Result.failure(Exception("check Answer failed: ${response.message()}"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
 
 }
