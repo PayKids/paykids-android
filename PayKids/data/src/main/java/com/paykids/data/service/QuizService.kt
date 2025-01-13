@@ -26,4 +26,12 @@ interface QuizService {
     suspend fun getStageToGo(
         @Header("Authorization") accessToken: String,
     ): Response<BaseResponse<Int>>
+
+    @GET("/quiz/check-answer")
+    suspend fun checkAnswer(
+        @Header("Authorization") accessToken: String,
+        @Query("stage") stage: Int,
+        @Query("number") number: Int,
+        @Query("answer") answer: String
+    ): Response<BaseResponse<Boolean>>
 }
