@@ -69,4 +69,24 @@ class QuizRepositoryImpl @Inject constructor(
             Result.failure(result.exceptionOrNull() ?: Exception("Unknown error"))
         }
     }
+
+    override suspend fun checkAnswer(
+        accessToken: String,
+        stage: Int,
+        number: Int,
+        answer: String
+    ): Result<Boolean> {
+        val result = quizDatasource.checkAnswer(accessToken, stage, number, answer)
+
+        return if (result.isSuccess) {
+            val res = result.getOrNull()
+            if (res != null) {
+                Result.success(res.data)
+            } else {
+                Result.failure(Exception("check Answer Failed: response body is null"))
+            }
+        } else {
+            Result.failure(result.exceptionOrNull() ?: Exception("Unknown error"))
+        }
+    }
 }
