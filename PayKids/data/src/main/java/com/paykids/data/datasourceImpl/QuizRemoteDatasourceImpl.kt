@@ -2,6 +2,7 @@ package com.paykids.data.datasourceImpl
 
 import com.paykids.data.datasource.QuizRemoteDatasource
 import com.paykids.data.model.BaseResponse
+import com.paykids.data.model.QuizClearResponseDTO
 import com.paykids.data.model.QuizResponseDTO
 import com.paykids.data.service.QuizService
 import javax.inject.Inject
@@ -104,5 +105,25 @@ class QuizRemoteDatasourceImpl @Inject constructor(
         }
     }
 
+    override suspend fun checkClear(
+        accessToken: String,
+        stage: Int
+    ): Result<BaseResponse<QuizClearResponseDTO>> {
+        return try {
+            val response = quizService.checkClear(accessToken, stage)
+            if (response.isSuccessful) {
+                val res = response.body()
+                if (res != null) {
+                    Result.success(res)
+                } else {
+                    Result.failure(Exception("check stageClear failed: response body is null"))
+                }
+            } else {
+                Result.failure(Exception("check stageClear failed: ${response.message()}"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
 
 }
