@@ -1,6 +1,7 @@
 package com.paykids.data.service
 
 import com.paykids.data.model.BaseResponse
+import com.paykids.data.model.QuizClearResponseDTO
 import com.paykids.data.model.QuizResponseDTO
 import retrofit2.Response
 import retrofit2.http.GET
@@ -34,4 +35,10 @@ interface QuizService {
         @Query("number") number: Int,
         @Query("answer") answer: String
     ): Response<BaseResponse<Boolean>>
+
+    @GET("/quiz/check-stage")
+    suspend fun checkClear(
+        @Header("Authorization") accessToken: String,
+        @Query("stage") stage: Int
+    ): Response<BaseResponse<QuizClearResponseDTO>>
 }
