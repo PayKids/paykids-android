@@ -58,8 +58,6 @@ class StudyFragment : BaseFragment<FragmentStudyBinding>() {
             }
         }
 
-
-
         viewModel.resState.observe(viewLifecycleOwner) {
             when (it) {
                 is UiState.Loading -> {}
@@ -80,8 +78,11 @@ class StudyFragment : BaseFragment<FragmentStudyBinding>() {
                         add(gptResponse)
                     }
 
-                    studyAdapter.submitList(updatedList)
-                    binding.rvChat.smoothScrollToPosition(studyAdapter.itemCount - 1)
+                    studyAdapter.submitList(updatedList) {
+                        binding.rvChat.post {
+                            binding.rvChat.scrollToPosition(studyAdapter.itemCount - 1)
+                        }
+                    }
                 }
             }
         }
