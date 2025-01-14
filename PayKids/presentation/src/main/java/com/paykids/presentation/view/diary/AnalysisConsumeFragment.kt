@@ -205,21 +205,14 @@ class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisAllowanceBinding>()
                 val topCategories = state.data
                     .sortedByDescending { it.percent.replace("%", "").toFloat() }
                     .take(3)
+                val percentages = topCategories.map { it.percent.replace("%", "").toFloat() / 100 }
                 val colors = mutableListOf(
                     ContextCompat.getColor(requireContext(), R.color.blue1),
                     ContextCompat.getColor(requireContext(), R.color.blue2),
                     ContextCompat.getColor(requireContext(), R.color.blue3)
                 )
-
-                while (colors.size < state.data.size) {
-                    colors.add(Color.LTGRAY)
-                }
-
-                binding.categoryProgressView.updateSections(
-                    state.data.map { it.percent.replace("%", "").toFloat() },
-                    colors,
-                    topCategories.map { it.category }
-                )
+                val categoryNames = topCategories.map { it.category }
+                binding.categoryProgressView.updateSections(percentages, colors, categoryNames)
 
                 updateDeleteButtonVisibility(state.data.map { it.category })
             }
