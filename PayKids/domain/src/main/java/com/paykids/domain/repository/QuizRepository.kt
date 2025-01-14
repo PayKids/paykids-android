@@ -1,6 +1,7 @@
 package com.paykids.domain.repository
 
 import com.paykids.domain.model.quiz.Quiz
+import com.paykids.domain.model.quiz.QuizClear
 
 interface QuizRepository {
     suspend fun getQuiz(stage: Int, number: Int) : Result<Quiz>
@@ -12,4 +13,6 @@ interface QuizRepository {
     suspend fun getStageGoTo(accessToken: String) : Result<Int>
 
     suspend fun checkAnswer(accessToken: String, stage: Int, number: Int, answer: String) : Result<Boolean>
+
+    suspend fun checkClear(accessToken: String, stage: Int) : Result<QuizClear>
 }
