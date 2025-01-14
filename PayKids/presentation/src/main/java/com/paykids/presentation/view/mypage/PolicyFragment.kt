@@ -1,5 +1,7 @@
 package com.paykids.presentation.view.mypage
 
+import android.content.Intent
+import android.net.Uri
 import com.paykids.presentation.base.BaseFragment
 import com.paykids.presentation.databinding.FragmentPolicyBinding
 import com.paykids.presentation.view.home.HomeActivity
@@ -23,7 +25,11 @@ class PolicyFragment : BaseFragment<FragmentPolicyBinding>() {
         }
 
         binding.ivPolicy.setOnClickListener {
-
+            val url = "https://paykids2025.blogspot.com/2025/01/blog-post.html"
+            val intent = Intent(Intent.ACTION_VIEW).apply {
+                data = Uri.parse(url)
+            }
+            startActivity(intent)
         }
 
         binding.ivLicense.setOnClickListener {
