@@ -19,6 +19,14 @@
     <string name="text_btn_quiz">퀴즈 풀기</string>
     <string name="text_btn_review">오답노트 풀기</string>
 
+    <!-- 퀴즈 클리어 화면 -->
+    <string name="text_box_all_clear">스테이지 클리어!\n놀라워요! 모든 문제를 다 맞혔어요!</string>
+    <string name="text_box_first_clear">스테이지 클리어!\n축하해요! 틀린 문제도 복습해봐요!</string>
+    <string name="text_box_failed">클리어 실패..\n괜찮아요! 다시 도전해 볼까요?</string>
+    <string name="text_box_incorrect_answer_note_clear">스테이지 클리어!\n축하해요!</string>
+    <string name="text_box_review">복습을 완료했어요!</string>
+    <string name="text_box_error">Error</string>
+
     <!-- 학습하기 화면 -->
     <string name="text_study_title">학습하기</string>
     <string name="hint_chat">내용을 입력하세요</string>
