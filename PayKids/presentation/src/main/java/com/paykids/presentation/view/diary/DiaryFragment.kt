@@ -74,17 +74,8 @@ class DiaryFragment : BaseFragment<FragmentDiaryBinding>(), ConfirmDialogInterfa
             showAddPocketMoneyDialog(today)
         }
 
-        binding.vpCalendarMonth.registerOnPageChangeCallback(object :
-            ViewPager2.OnPageChangeCallback() {
-            override fun onPageSelected(position: Int) {
-                super.onPageSelected(position)
-                updateCurrentMonthText(position)
-            }
-        })
-
         binding.ibLeft.setOnClickListener {
             minusMonth()
-            viewModel.updateMonth(currentYear, currentMonth)
             fetchData(currentYear, currentMonth)
             val currentPos = binding.vpCalendarMonth.currentItem
             binding.vpCalendarMonth.setCurrentItem(currentPos - 1, false)
@@ -92,7 +83,6 @@ class DiaryFragment : BaseFragment<FragmentDiaryBinding>(), ConfirmDialogInterfa
 
         binding.ibRight.setOnClickListener {
             plusMonth()
-            viewModel.updateMonth(currentYear, currentMonth)
             fetchData(currentYear, currentMonth)
             val currentPos = binding.vpCalendarMonth.currentItem
             binding.vpCalendarMonth.setCurrentItem(currentPos + 1, false)
@@ -253,21 +243,15 @@ class DiaryFragment : BaseFragment<FragmentDiaryBinding>(), ConfirmDialogInterfa
         }
 
         updateSelectDayText("$year-$month-01")
+        viewModel.getMonthTotalExpense(year, month)
         viewModel.getMonthMostCategory(year, month)
         viewModel.getDayExpense(today)
     }
 
     @SuppressLint("SetTextI18n")
     private fun updateCurrentMonthText(position: Int) {
-        val calendar = Calendar.getInstance().apply {
-            add(Calendar.MONTH, position - (Int.MAX_VALUE / 2))
-        }
-        val yearMonth = SimpleDateFormat("yyyy-MM", Locale.KOREAN).format(calendar.time)
-        val year = yearMonth.split("-")[0].toInt()
-        val month = yearMonth.split("-")[1].toInt()
         binding.tvMonth.text = "${currentMonth}월"
-
-        viewModel.getMonthTotalExpense(year, month)
+        viewModel.getMonthTotalExpense(currentYear, currentMonth)
     }
 
     private fun fetchMonthMostCategoryInfo(category: String, amount: Int) {
@@ -312,6 +296,7 @@ class DiaryFragment : BaseFragment<FragmentDiaryBinding>(), ConfirmDialogInterfa
         } else {
             currentMonth -= 1
         }
+        viewModel.updateMonth(currentYear, currentMonth)
     }
 
     private fun plusMonth() {
@@ -321,6 +306,7 @@ class DiaryFragment : BaseFragment<FragmentDiaryBinding>(), ConfirmDialogInterfa
         } else {
             currentMonth += 1
         }
+        viewModel.updateMonth(currentYear, currentMonth)
     }
 
     private fun setupCategorySpinner(isExpenseSelected: Boolean, binding: DialogDiaryBinding) {
