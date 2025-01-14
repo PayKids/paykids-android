@@ -17,7 +17,8 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class QuizShortAnswerImgFragment : BaseFragment<FragmentQuizShortAnswerImgBinding>(), ConfirmDialogInterface {
+class QuizShortAnswerImgFragment : BaseFragment<FragmentQuizShortAnswerImgBinding>(),
+    ConfirmDialogInterface {
     private val quizEntryViewModel: QuizEntryViewModel by activityViewModels()
     private val args: QuizShortAnswerImgFragmentArgs by navArgs()
     private var stageNumber: Int = 0
@@ -54,6 +55,25 @@ class QuizShortAnswerImgFragment : BaseFragment<FragmentQuizShortAnswerImgBindin
             }
             // 답안을 체크하는 메서드 호출
             quizEntryViewModel.checkAnswer(stageNumber, quizNumber, userAnswer)
+            // 딜레이 후 다음 퀴즈 로드
+            lifecycleScope.launch {
+                delay(2000L) // 2초 딜레이
+
+                // 마지막 퀴즈인 경우 QuizClearFragment로 이동
+                val quizState = quizEntryViewModel.quizState.value
+                if (quizState is UiState.Success) {
+                    val quiz = quizState.data
+                    if (quizNumber == quiz.count) {
+                        val action =
+                            QuizMultipleChoiceFragmentDirections.actionQuizMultipleChoiceFragmentToQuizClearFragment(
+                                stageNumber
+                            )
+                        findNavController().navigate(action)
+                    }
+                }
+
+                quizEntryViewModel.getQuiz(stageNumber, quizNumber + 1)
+            }
         }
     }
 
@@ -71,7 +91,7 @@ class QuizShortAnswerImgFragment : BaseFragment<FragmentQuizShortAnswerImgBindin
 
                 is UiState.Success -> {
                     val quiz = it.data
-                    if (quiz.number > quizNumber ) { // 퀴즈를 풀어 다음 퀴즈 번호를 관찰한 경우
+                    if (quiz.number > quizNumber) { // 퀴즈를 풀어 다음 퀴즈 번호를 관찰한 경우
                         navigateToNextQuiz()
                         return@observe
                     }
@@ -117,12 +137,6 @@ class QuizShortAnswerImgFragment : BaseFragment<FragmentQuizShortAnswerImgBindin
                 binding.llWrongAnswer.visibility = View.VISIBLE
             }
         }
-
-        // 딜레이 후 다음 퀴즈 로드
-        lifecycleScope.launch {
-            delay(2000L) // 2초 딜레이
-            quizEntryViewModel.getQuiz(stageNumber, quizNumber + 1)
-        }
     }
 
     private fun navigateToNextQuiz() {
@@ -136,26 +150,43 @@ class QuizShortAnswerImgFragment : BaseFragment<FragmentQuizShortAnswerImgBindin
             when (quiz.quizType) {
                 "IMAGE_CHOICE" -> {
                     val action = QuizShortAnswerImgFragmentDirections
-                        .actionQuizShortAnswerImgFragmentToQuizImageFragment(stageNumber, quizNumber)
+                        .actionQuizShortAnswerImgFragmentToQuizImageFragment(
+                            stageNumber,
+                            quizNumber
+                        )
                     findNavController().navigate(action)
                 }
+
                 "TEXT_CHOICE" -> {
                     val action = if (quiz.imageURL.isNullOrEmpty()) {
                         QuizShortAnswerImgFragmentDirections
-                            .actionQuizShortAnswerImgFragmentToQuizMultipleChoiceFragment(stageNumber, quizNumber)
+                            .actionQuizShortAnswerImgFragmentToQuizMultipleChoiceFragment(
+                                stageNumber,
+                                quizNumber
+                            )
                     } else {
                         QuizShortAnswerImgFragmentDirections
-                            .actionQuizShortAnswerImgFragmentToQuizMultipleChoiceImgFragment(stageNumber, quizNumber)
+                            .actionQuizShortAnswerImgFragmentToQuizMultipleChoiceImgFragment(
+                                stageNumber,
+                                quizNumber
+                            )
                     }
                     findNavController().navigate(action)
                 }
+
                 "SHORT_ANSWER" -> {
                     val action = if (quiz.imageURL.isNullOrEmpty()) {
                         QuizShortAnswerImgFragmentDirections
-                            .actionQuizShortAnswerImgFragmentToQuizShortAnswerFragment(stageNumber, quizNumber)
+                            .actionQuizShortAnswerImgFragmentToQuizShortAnswerFragment(
+                                stageNumber,
+                                quizNumber
+                            )
                     } else {
                         QuizShortAnswerImgFragmentDirections
-                            .actionQuizShortAnswerImgFragmentToQuizShortAnswerImgFragment(stageNumber, quizNumber)
+                            .actionQuizShortAnswerImgFragmentToQuizShortAnswerImgFragment(
+                                stageNumber,
+                                quizNumber
+                            )
                     }
                     findNavController().navigate(action)
                 }

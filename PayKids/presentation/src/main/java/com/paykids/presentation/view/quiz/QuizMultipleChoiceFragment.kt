@@ -130,6 +130,20 @@ class QuizMultipleChoiceFragment : BaseFragment<FragmentQuizMultipleChoiceBindin
         // 딜레이 후 다음 퀴즈 로드
         lifecycleScope.launch {
             delay(2000L) // 2초 딜레이
+
+            // 마지막 퀴즈인 경우 QuizClearFragment로 이동
+            val quizState = quizEntryViewModel.quizState.value
+            if (quizState is UiState.Success) {
+                val quiz = quizState.data
+                if (quizNumber == quiz.count) {
+                    val action =
+                        QuizMultipleChoiceFragmentDirections.actionQuizMultipleChoiceFragmentToQuizClearFragment(
+                            stageNumber
+                        )
+                    findNavController().navigate(action)
+                }
+            }
+
             quizEntryViewModel.getQuiz(stageNumber, quizNumber + 1)
         }
     }

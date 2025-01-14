@@ -141,6 +141,26 @@ class QuizImageFragment : BaseFragment<FragmentQuizImageBinding>(), ConfirmDialo
         this.userAnswer = userAnswer
         // 정답 확인 메서드 호출
         quizEntryViewModel.checkAnswer(stageNumber, quizNumber, userAnswer)
+
+        // 딜레이 후 다음 퀴즈 로드
+        lifecycleScope.launch {
+            delay(2000L) // 2초 딜레이
+
+            // 마지막 퀴즈인 경우 QuizClearFragment로 이동
+            val quizState = quizEntryViewModel.quizState.value
+            if (quizState is UiState.Success) {
+                val quiz = quizState.data
+                if (quizNumber == quiz.count) {
+                    val action =
+                        QuizMultipleChoiceFragmentDirections.actionQuizMultipleChoiceFragmentToQuizClearFragment(
+                            stageNumber
+                        )
+                    findNavController().navigate(action)
+                }
+            }
+
+            quizEntryViewModel.getQuiz(stageNumber, quizNumber + 1)
+        }
     }
 
     private fun updateUIForAnswer() {
@@ -169,12 +189,6 @@ class QuizImageFragment : BaseFragment<FragmentQuizImageBinding>(), ConfirmDialo
                 correctAnswerView?.setBackgroundResource(R.drawable.shape_quiz_box_blue)
                 binding.llWrongAnswer.visibility = View.VISIBLE
             }
-        }
-
-        // 딜레이 후 다음 퀴즈 로드
-        lifecycleScope.launch {
-            delay(2000L) // 2초 딜레이
-            quizEntryViewModel.getQuiz(stageNumber, quizNumber + 1)
         }
     }
 
