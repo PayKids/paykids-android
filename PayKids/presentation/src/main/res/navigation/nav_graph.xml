@@ -12,7 +12,7 @@
         tools:layout="@layout/fragment_diary">
         <action
             android:id="@+id/action_diaryFragment_to_analysisConsumeFragment"
-            app:destination="@id/analysisConsumeFragment"/>
+            app:destination="@id/analysisConsumeFragment" />
         <argument
             android:name="currentYear"
             app:argType="integer" />
@@ -28,7 +28,7 @@
         tools:layout="@layout/fragment_analysis_allowance">
         <action
             android:id="@+id/action_analysisConsumeFragment_to_analysisCategoryConsumeFragment"
-            app:destination="@id/analysisCategoryConsumeFragment"/>
+            app:destination="@id/analysisCategoryConsumeFragment" />
         <argument
             android:name="currentYear"
             app:argType="integer" />
@@ -76,12 +76,6 @@
         tools:layout="@layout/fragment_study" />
 
     <fragment
-        android:id="@+id/quizImageFragment"
-        android:name="com.paykids.presentation.view.quiz.QuizImageFragment"
-        android:label="fragment_quiz_image"
-        tools:layout="@layout/fragment_quiz_image"></fragment>
-
-    <fragment
         android:id="@+id/quizEntryFragment"
         android:name="com.paykids.presentation.view.quiz.QuizEntryFragment"
         android:label="fragment_quiz_entry"
@@ -91,12 +85,262 @@
             app:destination="@id/studyFragment"
             app:popUpTo="@id/quizEntryFragment"
             app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_quizEntryFragment_to_quizImageFragment"
+            app:destination="@id/quizImageFragment"
+            app:popUpTo="@id/quizEntryFragment"
+            app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_quizEntryFragment_to_quizMultipleChoiceFragment"
+            app:destination="@id/quizMultipleChoiceFragment"
+            app:popUpTo="@id/quizEntryFragment"
+            app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_quizEntryFragment_to_quizMultipleChoiceImgFragment"
+            app:destination="@id/quizMultipleChoiceImgFragment"
+            app:popUpTo="@id/quizEntryFragment"
+            app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_quizEntryFragment_to_quizShortAnswerFragment"
+            app:destination="@id/quizShortAnswerFragment"
+            app:popUpTo="@id/quizEntryFragment"
+            app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_quizEntryFragment_to_quizShortAnswerImgFragment"
+            app:destination="@id/quizShortAnswerImgFragment"
+            app:popUpTo="@id/quizEntryFragment"
+            app:popUpToInclusive="false" />
         <argument
             android:name="stageNumber"
             app:argType="integer" />
         <argument
             android:name="stageName"
             app:argType="string" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/quizImageFragment"
+        android:name="com.paykids.presentation.view.quiz.QuizImageFragment"
+        android:label="fragment_quiz_image"
+        tools:layout="@layout/fragment_quiz_image">
+        <action
+            android:id="@+id/action_quizImageFragment_to_quizImageFragment"
+            app:destination="@id/quizImageFragment"
+            app:popUpTo="@id/quizImageFragment"
+            app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_quizImageFragment_to_quizMultipleChoiceFragment"
+            app:destination="@id/quizMultipleChoiceFragment"
+            app:popUpTo="@id/quizImageFragment"
+            app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_quizImageFragment_to_quizMultipleChoiceImgFragment"
+            app:destination="@id/quizMultipleChoiceImgFragment"
+            app:popUpTo="@id/quizImageFragment"
+            app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_quizImageFragment_to_quizShortAnswerFragment"
+            app:destination="@id/quizShortAnswerFragment"
+            app:popUpTo="@id/quizImageFragment"
+            app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_quizImageFragment_to_quizShortAnswerImgFragment"
+            app:destination="@id/quizShortAnswerImgFragment"
+            app:popUpTo="@id/quizImageFragment"
+            app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_quizImageFragment_to_quizClearFragment"
+            app:destination="@id/quizClearFragment"
+            app:popUpTo="@id/quizImageFragment"
+            app:popUpToInclusive="false" />
+        <argument
+            android:name="stageNumber"
+            app:argType="integer" />
+        <argument
+            android:name="quizNumber"
+            app:argType="integer" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/quizMultipleChoiceFragment"
+        android:name="com.paykids.presentation.view.quiz.QuizMultipleChoiceFragment"
+        android:label="fragment_quiz_multiple_choice"
+        tools:layout="@layout/fragment_quiz_multiple_choice">
+        <action
+            android:id="@+id/action_quizMultipleChoiceFragment_to_quizImageFragment"
+            app:destination="@id/quizImageFragment"
+            app:popUpTo="@id/quizMultipleChoiceFragment"
+            app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_quizMultipleChoiceFragment_to_quizMultipleChoiceFragment"
+            app:destination="@id/quizMultipleChoiceFragment"
+            app:popUpTo="@id/quizMultipleChoiceFragment"
+            app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_quizMultipleChoiceFragment_to_quizMultipleChoiceImgFragment"
+            app:destination="@id/quizMultipleChoiceImgFragment"
+            app:popUpTo="@id/quizMultipleChoiceFragment"
+            app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_quizMultipleChoiceFragment_to_quizShortAnswerFragment"
+            app:destination="@id/quizShortAnswerFragment"
+            app:popUpTo="@id/quizMultipleChoiceFragment"
+            app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_quizMultipleChoiceFragment_to_quizShortAnswerImgFragment"
+            app:destination="@id/quizShortAnswerImgFragment"
+            app:popUpTo="@id/quizMultipleChoiceFragment"
+            app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_quizMultipleChoiceFragment_to_quizClearFragment"
+            app:destination="@id/quizClearFragment"
+            app:popUpTo="@id/quizMultipleChoiceFragment"
+            app:popUpToInclusive="false" />
+        <argument
+            android:name="stageNumber"
+            app:argType="integer" />
+        <argument
+            android:name="quizNumber"
+            app:argType="integer" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/quizMultipleChoiceImgFragment"
+        android:name="com.paykids.presentation.view.quiz.QuizMultipleChoiceImgFragment"
+        android:label="fragment_quiz_multiple_choice_img"
+        tools:layout="@layout/fragment_quiz_multiple_choice_img">
+        <action
+            android:id="@+id/action_quizMultipleChoiceImgFragment_to_quizImageFragment"
+            app:destination="@id/quizImageFragment"
+            app:popUpTo="@id/quizMultipleChoiceImgFragment"
+            app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_quizMultipleChoiceImgFragment_to_quizMultipleChoiceFragment"
+            app:destination="@id/quizMultipleChoiceFragment"
+            app:popUpTo="@id/quizMultipleChoiceImgFragment"
+            app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_quizMultipleChoiceImgFragment_to_quizMultipleChoiceImgFragment"
+            app:destination="@id/quizMultipleChoiceImgFragment"
+            app:popUpTo="@id/quizMultipleChoiceImgFragment"
+            app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_quizMultipleChoiceImgFragment_to_quizShortAnswerFragment"
+            app:destination="@id/quizShortAnswerFragment"
+            app:popUpTo="@id/quizMultipleChoiceImgFragment"
+            app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_quizMultipleChoiceImgFragment_to_quizShortAnswerImgFragment"
+            app:destination="@id/quizShortAnswerImgFragment"
+            app:popUpTo="@id/quizMultipleChoiceImgFragment"
+            app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_quizMultipleChoiceImgFragment_to_quizClearFragment"
+            app:destination="@id/quizClearFragment"
+            app:popUpTo="@id/quizMultipleChoiceImgFragment"
+            app:popUpToInclusive="false" />
+        <argument
+            android:name="stageNumber"
+            app:argType="integer" />
+        <argument
+            android:name="quizNumber"
+            app:argType="integer" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/quizShortAnswerFragment"
+        android:name="com.paykids.presentation.view.quiz.QuizShortAnswerFragment"
+        android:label="fragment_quiz_short_answer"
+        tools:layout="@layout/fragment_quiz_short_answer">
+        <action
+            android:id="@+id/action_quizShortAnswerFragment_to_quizImageFragment"
+            app:destination="@id/quizImageFragment"
+            app:popUpTo="@id/quizShortAnswerFragment"
+            app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_quizShortAnswerFragment_to_quizMultipleChoiceFragment"
+            app:destination="@id/quizMultipleChoiceFragment"
+            app:popUpTo="@id/quizShortAnswerFragment"
+            app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_quizShortAnswerFragment_to_quizMultipleChoiceImgFragment"
+            app:destination="@id/quizMultipleChoiceImgFragment"
+            app:popUpTo="@id/quizShortAnswerFragment"
+            app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_quizShortAnswerFragment_to_quizShortAnswerFragment"
+            app:destination="@id/quizShortAnswerFragment"
+            app:popUpTo="@id/quizShortAnswerFragment"
+            app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_quizShortAnswerFragment_to_quizShortAnswerImgFragment"
+            app:destination="@id/quizShortAnswerImgFragment"
+            app:popUpTo="@id/quizShortAnswerFragment"
+            app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_quizShortAnswerFragment_to_quizClearFragment"
+            app:destination="@id/quizClearFragment"
+            app:popUpTo="@id/quizShortAnswerFragment"
+            app:popUpToInclusive="false" />
+        <argument
+            android:name="stageNumber"
+            app:argType="integer" />
+        <argument
+            android:name="quizNumber"
+            app:argType="integer" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/quizShortAnswerImgFragment"
+        android:name="com.paykids.presentation.view.quiz.QuizShortAnswerImgFragment"
+        android:label="fragment_quiz_short_answer_img"
+        tools:layout="@layout/fragment_quiz_short_answer_img">
+        <action
+            android:id="@+id/action_quizShortAnswerImgFragment_to_quizImageFragment"
+            app:destination="@id/quizImageFragment"
+            app:popUpTo="@id/quizShortAnswerImgFragment"
+            app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_quizShortAnswerImgFragment_to_quizMultipleChoiceFragment"
+            app:destination="@id/quizMultipleChoiceFragment"
+            app:popUpTo="@id/quizShortAnswerImgFragment"
+            app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_quizShortAnswerImgFragment_to_quizMultipleChoiceImgFragment"
+            app:destination="@id/quizMultipleChoiceImgFragment"
+            app:popUpTo="@id/quizShortAnswerImgFragment"
+            app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_quizShortAnswerImgFragment_to_quizShortAnswerFragment"
+            app:destination="@id/quizShortAnswerFragment"
+            app:popUpTo="@id/quizShortAnswerImgFragment"
+            app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_quizShortAnswerImgFragment_to_quizShortAnswerImgFragment"
+            app:destination="@id/quizShortAnswerImgFragment"
+            app:popUpTo="@id/quizShortAnswerImgFragment"
+            app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_quizShortAnswerImgFragment_to_quizClearFragment"
+            app:destination="@id/quizClearFragment"
+            app:popUpTo="@id/quizShortAnswerImgFragment"
+            app:popUpToInclusive="false" />
+        <argument
+            android:name="stageNumber"
+            app:argType="integer" />
+        <argument
+            android:name="quizNumber"
+            app:argType="integer" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/quizClearFragment"
+        android:name="com.paykids.presentation.view.quiz.QuizClearFragment"
+        android:label="fragment_quizClear"
+        tools:layout="@layout/fragment_quiz_clear">
+        <argument
+            android:name="stageNumber"
+            app:argType="integer" />
     </fragment>
 
     <fragment

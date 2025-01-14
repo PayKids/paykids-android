@@ -7,17 +7,19 @@
     android:layout_height="match_parent">
 
     <ImageView
+        android:id="@+id/iv_background"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:scaleType="centerCrop"
-        android:src="@drawable/bg_quiz_clear"
+        tools:src="@drawable/bg_quiz_clear"
         tools:ignore="MissingConstraints" />
 
     <TextView
+        android:id="@+id/tv_clear_message"
         android:layout_width="0dp"
         android:layout_height="109dp"
         android:layout_marginBottom="182.5dp"
-        android:background="@drawable/shape_quiz_clear_box"
+        tools:background="@drawable/shape_quiz_clear_box"
         android:fontFamily="@font/nanumsquare_extra_bold"
         android:gravity="center"
         android:lineHeight="26sp"

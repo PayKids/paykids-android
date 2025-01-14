@@ -100,15 +100,17 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
     private fun setupStageClickListener(view: View, stage: Stage) {
         view.setOnClickListener {
-            if (stage.number > unlockedStageNumber) {
-                showToast("해당 스테이지는 잠금 상태입니다.")
-                return@setOnClickListener
-            }
 
             view.isSelected = !view.isSelected
             if (view.isSelected) {
                 binding.tvStageNumber.text = "스테이지 ${stage.number}"
                 homeViewModel.getStageName(stage.number)
+
+                if (stage.number > unlockedStageNumber) {
+                    showToast("해당 스테이지는 잠금 상태입니다.")
+                    return@setOnClickListener
+                }
+
                 val tooltip = createTooltip()
                 tooltip.setOnBalloonClickListener {
                     val action = HomeFragmentDirections.actionHomeFragmentToQuizEntryFragment(

@@ -7,6 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
+import androidx.navigation.fragment.findNavController
+import com.paykids.presentation.R
 import com.paykids.presentation.custom.ConfirmDialogInterface
 import com.paykids.presentation.databinding.DialogQuizExitBinding
 
@@ -39,8 +41,8 @@ class ExitDialog(
         binding.btnExit.setOnClickListener {
             this.confirmDialogInterface?.onYesButtonClick()
             dismiss()
-            // 이전 프래그먼트로 돌아가기
-            parentFragmentManager.popBackStack()
+            // 홈 프래그먼트로 돌아가기
+            findNavController().navigate(R.id.homeFragment)
         }
 
         binding.btnContinue.setOnClickListener {

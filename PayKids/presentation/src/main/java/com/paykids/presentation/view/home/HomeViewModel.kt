@@ -69,7 +69,7 @@ class HomeViewModel @Inject constructor(
         _stageToGoState.value = UiState.Loading
 
         viewModelScope.launch {
-            //getStageToGoUseCase.invoke("eyJhbGciOiJIUzI1NiJ9.eyJ1dWlkIjoiNjRjMjk5OTktMmIxYS00NDUwLWEzNWMtMzNiN2NmZTBiZTlhIiwiZW1haWwiOiJwYXlraWRzMjAyNEBnbWFpbC5jb20iLCJpYXQiOjE3MzY0MDQ2NTcsImV4cCI6MTczNjQ0Nzg1N30.-UpYS1ZEloR_JHDKDj0fdeQ57PDJ4IaxoDTeIiEtcR8")
+//            getStageToGoUseCase.invoke("eyJhbGciOiJIUzI1NiJ9.eyJ1dWlkIjoiNjRjMjk5OTktMmIxYS00NDUwLWEzNWMtMzNiN2NmZTBiZTlhIiwiZW1haWwiOiJwYXlraWRzMjAyNEBnbWFpbC5jb20iLCJpYXQiOjE3MzY4NjQxODUsImV4cCI6MTczNjkwNzM4NX0.ZnjtSGyqmjIHyJ6ZXDPoUqFRUp3wGOTKaK1lhZPYAbo")
             getStageToGoUseCase.invoke(getAccessTokenUseCase.invoke().getOrNull().toString())
                 .onSuccess {
                     _stageToGoState.value =
