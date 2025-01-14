@@ -12,7 +12,7 @@
         tools:layout="@layout/fragment_diary">
         <action
             android:id="@+id/action_diaryFragment_to_analysisConsumeFragment"
-            app:destination="@id/analysisConsumeFragment"/>
+            app:destination="@id/analysisConsumeFragment" />
         <argument
             android:name="currentYear"
             app:argType="integer" />
@@ -28,7 +28,7 @@
         tools:layout="@layout/fragment_analysis_consume">
         <action
             android:id="@+id/action_analysisConsumeFragment_to_analysisCategoryConsumeFragment"
-            app:destination="@id/analysisCategoryConsumeFragment"/>
+            app:destination="@id/analysisCategoryConsumeFragment" />
         <argument
             android:name="currentYear"
             app:argType="integer" />
@@ -145,6 +145,11 @@
             app:destination="@id/quizShortAnswerImgFragment"
             app:popUpTo="@id/quizImageFragment"
             app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_quizImageFragment_to_quizClearFragment"
+            app:destination="@id/quizClearFragment"
+            app:popUpTo="@id/quizImageFragment"
+            app:popUpToInclusive="false" />
         <argument
             android:name="stageNumber"
             app:argType="integer" />
@@ -181,6 +186,11 @@
         <action
             android:id="@+id/action_quizMultipleChoiceFragment_to_quizShortAnswerImgFragment"
             app:destination="@id/quizShortAnswerImgFragment"
+            app:popUpTo="@id/quizMultipleChoiceFragment"
+            app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_quizMultipleChoiceFragment_to_quizClearFragment"
+            app:destination="@id/quizClearFragment"
             app:popUpTo="@id/quizMultipleChoiceFragment"
             app:popUpToInclusive="false" />
         <argument
@@ -221,6 +231,11 @@
             app:destination="@id/quizShortAnswerImgFragment"
             app:popUpTo="@id/quizMultipleChoiceImgFragment"
             app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_quizMultipleChoiceImgFragment_to_quizClearFragment"
+            app:destination="@id/quizClearFragment"
+            app:popUpTo="@id/quizMultipleChoiceImgFragment"
+            app:popUpToInclusive="false" />
         <argument
             android:name="stageNumber"
             app:argType="integer" />
@@ -257,6 +272,11 @@
         <action
             android:id="@+id/action_quizShortAnswerFragment_to_quizShortAnswerImgFragment"
             app:destination="@id/quizShortAnswerImgFragment"
+            app:popUpTo="@id/quizShortAnswerFragment"
+            app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_quizShortAnswerFragment_to_quizClearFragment"
+            app:destination="@id/quizClearFragment"
             app:popUpTo="@id/quizShortAnswerFragment"
             app:popUpToInclusive="false" />
         <argument
@@ -297,11 +317,26 @@
             app:destination="@id/quizShortAnswerImgFragment"
             app:popUpTo="@id/quizShortAnswerImgFragment"
             app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_quizShortAnswerImgFragment_to_quizClearFragment"
+            app:destination="@id/quizClearFragment"
+            app:popUpTo="@id/quizShortAnswerImgFragment"
+            app:popUpToInclusive="false" />
         <argument
             android:name="stageNumber"
             app:argType="integer" />
         <argument
             android:name="quizNumber"
+            app:argType="integer" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/quizClearFragment"
+        android:name="com.paykids.presentation.view.quiz.QuizClearFragment"
+        android:label="fragment_quizClear"
+        tools:layout="@layout/fragment_quiz_clear">
+        <argument
+            android:name="stageNumber"
             app:argType="integer" />
     </fragment>
 
