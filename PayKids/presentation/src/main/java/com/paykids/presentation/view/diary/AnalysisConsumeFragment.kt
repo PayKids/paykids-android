@@ -236,7 +236,7 @@ class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisAllowanceBinding>()
         updateDeleteButtonVisibility(categories)
     }
 
-    private fun deleteExpenseItems(): List<String> {
+    private fun  deleteExpenseItems(): List<String> {
         val selectedItems = adapter.getSelectedCategories()
         val selectedNames = selectedItems.map { it.name }
 
@@ -270,20 +270,14 @@ class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisAllowanceBinding>()
             binding.tvDelete.text = "삭제"
             binding.btnAddCategory.isEnabled = false
 
-            if (isConsumeSelected) {
-                deleteExpenseItems()
-            } else {
-                deleteIncomeItems()
-            }
+//            if (isConsumeSelected) {
+//                deleteExpenseItems()
+//            } else {
+//                deleteIncomeItems()
+//            }
         } else {
             binding.tvDelete.text = "카테고리 삭제"
             binding.btnAddCategory.isEnabled = true
-
-            if (isConsumeSelected) {
-                deleteExpenseItems()
-            } else {
-                deleteIncomeItems()
-            }
         }
     }
 
