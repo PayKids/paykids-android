@@ -41,7 +41,6 @@ class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisAllowanceBinding>()
 
         initializeAdapter()
         fetchData(currentYear, currentMonth)
-        setupFragmentResultListener()
     }
 
     override fun initListener() {

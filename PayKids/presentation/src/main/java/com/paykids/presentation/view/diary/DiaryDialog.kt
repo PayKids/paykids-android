@@ -173,6 +173,7 @@ class DiaryDialog : DialogFragment(), ConfirmDialogInterface {
 
         binding.ivDayDown.setOnClickListener {
             currentDate = currentDate.minusDays(1)
+            updateDateDisplay()
         }
     }
 

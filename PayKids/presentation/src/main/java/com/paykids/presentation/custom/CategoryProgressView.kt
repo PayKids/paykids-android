@@ -61,11 +61,7 @@ class CategoryProgressView @JvmOverloads constructor(
         newColors: List<Int>,
         newCategoryNames: List<String>
     ) {
-        require(newSections.sum() <= 100f) { "Section percentages should sum up to 100.00 or less." }
-
-        LoggerUtils.d("Sections: $newSections")
-        LoggerUtils.d("Colors: $newColors")
-        LoggerUtils.d("Names: $newCategoryNames")
+        require(newSections.sum() <= 100f) { "퍼센트의 총합은 100.00이하여야 합니다." }
 
         sections = newSections
         colors = newColors.take(newSections.size).toMutableList().apply {

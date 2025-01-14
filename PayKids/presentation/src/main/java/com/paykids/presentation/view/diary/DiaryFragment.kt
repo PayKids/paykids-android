@@ -189,6 +189,10 @@ class DiaryFragment : BaseFragment<FragmentDiaryBinding>(), ConfirmDialogInterfa
 
                 is UiState.Success -> {
                     LoggerUtils.d("소비 내역 저장 성공: ${it.data}")
+                    if (!it.data) {
+                        // 이미 저장된 데이터로 인한 중복 호출 방지
+                        return@observe
+                    }
                     fetchData(currentYear, currentMonth)
                     showToast("소비 내역 저장 성공")
                 }
