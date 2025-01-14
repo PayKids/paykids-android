@@ -1,6 +1,5 @@
 package com.paykids.presentation.custom
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
@@ -10,7 +9,6 @@ import android.util.AttributeSet
 import android.view.View
 import androidx.core.content.res.ResourcesCompat
 import com.paykids.presentation.R
-import com.paykids.util.LoggerUtils
 
 class CategoryProgressView @JvmOverloads constructor(
     context: Context,

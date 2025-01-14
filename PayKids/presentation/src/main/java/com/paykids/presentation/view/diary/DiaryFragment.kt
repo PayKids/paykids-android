@@ -18,7 +18,6 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.viewpager2.widget.ViewPager2
 import com.paykids.domain.model.allowanceCategory.CategoryInfo
 import com.paykids.presentation.R
 import com.paykids.presentation.base.BaseFragment
@@ -31,11 +30,9 @@ import com.paykids.presentation.utils.UiState
 import com.paykids.presentation.view.OnRvItemClickListener
 import com.paykids.util.LoggerUtils
 import dagger.hilt.android.AndroidEntryPoint
-import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.Calendar
-import java.util.Locale
 
 @AndroidEntryPoint
 class DiaryFragment : BaseFragment<FragmentDiaryBinding>(), ConfirmDialogInterface {

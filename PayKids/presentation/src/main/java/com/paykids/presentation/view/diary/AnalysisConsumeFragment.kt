@@ -1,7 +1,6 @@
 package com.paykids.presentation.view.diary
 
 import android.annotation.SuppressLint
-import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import androidx.core.content.ContextCompat
