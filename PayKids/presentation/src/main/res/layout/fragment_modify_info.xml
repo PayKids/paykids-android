@@ -45,22 +45,12 @@
         android:contentDescription="@string/content_description_profile"
         android:scaleType="fitXY"
 
-        tools:src="@drawable/img_default_profile"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_mypage"
         app:shapeAppearanceOverlay="@style/CircleImageView"
-        tools:ignore="NewApi,UnusedAttribute" />
-
-    <ImageView
-        android:id="@+id/iv_modify_image"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:contentDescription="@null"
-        android:src="@drawable/ic_add_photo"
-
-        app:layout_constraintBottom_toBottomOf="@id/iv_profile"
-        app:layout_constraintEnd_toEndOf="@id/iv_profile" />
+        tools:ignore="NewApi,UnusedAttribute"
+        tools:src="@drawable/img_default_profile" />
 
     <TextView
         android:id="@+id/tv_nickname"
@@ -185,26 +175,26 @@
         android:textColor="@color/black"
         android:textSize="16sp"
 
-        tools:text="hbj0209@kakao.com"
         app:layout_constraintBottom_toBottomOf="@id/tv_email_text"
         app:layout_constraintEnd_toEndOf="@id/view_my_info"
         app:layout_constraintStart_toEndOf="@id/tv_email_text"
         app:layout_constraintTop_toTopOf="@id/tv_email_text"
-        tools:ignore="Autofill,LabelFor" />
+        tools:ignore="Autofill,LabelFor"
+        tools:text="hbj0209@kakao.com" />
 
     <TextView
         android:id="@+id/tv_withdraw"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="48dp"
+        android:layout_marginTop="160dp"
 
         android:fontFamily="@font/nanumsquare_extra_bold"
         android:text="@string/text_withdrawal"
         android:textColor="@color/red"
         android:textSize="18sp"
 
-        app:layout_constraintBottom_toBottomOf="@id/view_my_info"
         app:layout_constraintEnd_toEndOf="@id/view_my_info"
-        app:layout_constraintStart_toStartOf="@id/view_my_info" />
+        app:layout_constraintStart_toStartOf="@id/view_my_info"
+        app:layout_constraintTop_toBottomOf="@id/tv_email" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

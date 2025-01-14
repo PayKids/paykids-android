@@ -8,7 +8,7 @@ interface IncomeCategoryRepository {
         accessToken: String,
     ): Result<List<CategoryInfo>>
 
-    suspend fun saveIncomeCategory(
+    suspend fun addIncomeCategory(
         accessToken: String,
         category: String
     ): Result<Boolean>

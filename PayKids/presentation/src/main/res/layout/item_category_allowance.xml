@@ -9,7 +9,7 @@
     android:padding="14dp">
 
     <TextView
-        android:id="@+id/tv_consume_date"
+        android:id="@+id/tv_allowance_date"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -26,7 +26,7 @@
         tools:text="11/11" />
 
     <TextView
-        android:id="@+id/tv_consume_amount"
+        android:id="@+id/tv_allowance_amount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
@@ -36,11 +36,11 @@
         android:textColor="@color/black"
         android:textSize="18sp"
 
-        app:layout_constraintBottom_toBottomOf="@id/tv_consume_date"
+        app:layout_constraintBottom_toBottomOf="@id/tv_allowance_date"
         app:layout_constraintEnd_toStartOf="@id/tv_memo"
         app:layout_constraintHorizontal_bias="0.1"
-        app:layout_constraintStart_toEndOf="@id/tv_consume_date"
-        app:layout_constraintTop_toTopOf="@id/tv_consume_date"
+        app:layout_constraintStart_toEndOf="@id/tv_allowance_date"
+        app:layout_constraintTop_toTopOf="@id/tv_allowance_date"
         tools:text="-1,800" />
 
     <TextView
@@ -58,9 +58,9 @@
         android:textSize="16sp"
         android:visibility="visible"
 
-        app:layout_constraintBottom_toBottomOf="@id/tv_consume_date"
+        app:layout_constraintBottom_toBottomOf="@id/tv_allowance_date"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/tv_consume_date"
+        app:layout_constraintTop_toTopOf="@id/tv_allowance_date"
         tools:text="메모메모" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

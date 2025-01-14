@@ -9,7 +9,7 @@ interface ExpenseCategoryRemoteDatasource {
         accessToken: String,
     ): Result<BaseResponse<CategoryListDTO>>
 
-    suspend fun saveExpenseCategory(
+    suspend fun addExpenseCategory(
         accessToken: String,
         category: String
     ): Result<BaseResponse<Boolean>>

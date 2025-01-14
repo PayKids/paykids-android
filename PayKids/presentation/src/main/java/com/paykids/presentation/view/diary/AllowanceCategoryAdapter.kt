@@ -9,18 +9,20 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.paykids.presentation.R
-import com.paykids.presentation.databinding.ItemAnalysisConsumptionBinding
+import com.paykids.presentation.databinding.ItemAnalysisAllowanceBinding
 import com.paykids.presentation.databinding.ItemEtcCategoryBinding
 import com.paykids.presentation.utils.Constants
 
-class ConsumeCategoryAdapter(
+class AllowanceCategoryAdapter(
+    private val categoryViewModel: CategoryViewModel,
     private val onCategoryAdded: (String) -> Unit,
-    private val onItemClick: (String, Int) -> Unit
-) : ListAdapter<ConsumeCategoryAdapter.CategoryItem, RecyclerView.ViewHolder>(CategoryDiffCallback()) {
+    private val onItemClick: (String, Int) -> Unit,
+    private var isConsumeSelected: Boolean = true
+) : ListAdapter<AllowanceCategoryAdapter.CategoryItem, RecyclerView.ViewHolder>(CategoryDiffCallback()) {
 
     private var isAddingCategory = false
     private var isDeleteMode = false
-    private var lastAddedPosition = -1 // 마지막으로 추가된 카테고리의 위치
+    private var lastAddedPosition = -1
 
     companion object {
         private const val TYPE_NORMAL = 0
@@ -28,10 +30,16 @@ class ConsumeCategoryAdapter(
         private const val TYPE_ADD = 2
     }
 
+    @SuppressLint("NotifyDataSetChanged")
+    fun updateMode(isConsume: Boolean) {
+        isConsumeSelected = isConsume
+        notifyDataSetChanged()
+    }
+
     override fun getItemViewType(position: Int): Int {
         return when (getItem(position)) {
             is CategoryItem.Normal -> TYPE_NORMAL
-            is CategoryItem.Etc -> TYPE_ETC
+//            is CategoryItem.Etc -> TYPE_ETC
             is CategoryItem.Add -> TYPE_ADD
             else -> -1
         }
@@ -39,23 +47,21 @@ class ConsumeCategoryAdapter(
 
     fun setInitialList(items: List<CategoryItem>) {
         val initialList = items.toMutableList()
-        initialList.add(CategoryItem.Etc)
         submitList(initialList)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         return when (viewType) {
-            TYPE_ETC -> EtcViewHolder(ItemEtcCategoryBinding.inflate(inflater, parent, false))
+//            TYPE_ETC -> EtcViewHolder(ItemEtcCategoryBinding.inflate(inflater, parent, false))
             TYPE_ADD -> AddCategoryViewHolder(
-                ItemAnalysisConsumptionBinding.inflate(inflater, parent, false)
+                ItemAnalysisAllowanceBinding.inflate(inflater, parent, false)
             ) { category ->
                 confirmCategoryInput(category)
-                onCategoryAdded(category)
             }
 
             else -> NormalViewHolder(
-                ItemAnalysisConsumptionBinding.inflate(inflater, parent, false),
+                ItemAnalysisAllowanceBinding.inflate(inflater, parent, false),
                 onItemClick
             )
         }
@@ -93,37 +99,25 @@ class ConsumeCategoryAdapter(
     @SuppressLint("NotifyDataSetChanged")
     fun toggleDeleteMode(deleteMode: Boolean) {
         isDeleteMode = deleteMode
+        if (!deleteMode) {
+            lastAddedPosition = -1
+        }
         notifyDataSetChanged()
     }
 
-    fun deleteSelectedItems(): List<String> {
-        val deletedItems = mutableListOf<String>()
-        val currentList = currentList.toMutableList()
-        currentList.removeAll {
-            if (it is CategoryItem.Normal && it.isSelected) {
-                deletedItems.add(it.name)
-                true
-            } else {
-                false
-            }
-        }
-        submitList(currentList)
-        isDeleteMode = false
-        return deletedItems
+    fun getSelectedCategories(): List<CategoryItem.Normal> {
+        return currentList.filterIsInstance<CategoryItem.Normal>().filter { it.isSelected }
     }
 
     fun addCategoryInput() {
-//        if (!isAddingCategory) {
-//            isAddingCategory = true
-//            val currentList = currentList.toMutableList()
-//            val insertPosition = if (lastAddedPosition != -1) {
-//                lastAddedPosition + 1
-//            } else {
-//                currentList.size - 1 // Etc 항목 바로 앞
-//            }
-//            currentList.add(insertPosition, CategoryItem.Add)
-//            submitList(currentList)
-//        }
+        if (!isAddingCategory) {
+            isAddingCategory = true
+            val currentList = currentList.toMutableList()
+            currentList.add(CategoryItem.Add)
+            submitList(currentList) {
+                notifyItemInserted(currentList.size - 1)
+            }
+        }
     }
 
     private fun confirmCategoryInput(category: String) {
@@ -132,31 +126,19 @@ class ConsumeCategoryAdapter(
             val addIndex = currentList.indexOfFirst { it is CategoryItem.Add }
             if (addIndex != -1) {
                 currentList[addIndex] = CategoryItem.Normal(category, false, 0, "0%")
-                lastAddedPosition = addIndex
-                notifyItemChanged(addIndex)
-            } else {
-                val insertPosition = if (lastAddedPosition != -1) {
-                    lastAddedPosition + 1
-                } else {
-                    currentList.size - 1 // Etc 항목 바로 앞
-                }
-                currentList.add(insertPosition, CategoryItem.Normal(category, false, 0, "0%"))
-                lastAddedPosition = insertPosition
-                notifyItemInserted(insertPosition)
+                submitList(currentList)
             }
             isAddingCategory = false
-            onCategoryAdded(category)
         }
     }
 
     inner class AddCategoryViewHolder(
-        private val binding: ItemAnalysisConsumptionBinding,
+        private val binding: ItemAnalysisAllowanceBinding,
         private val onCategoryConfirmed: (String) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind() {
             with(binding) {
-                // 초기 상태에서는 TextView만 보이게 설정
                 tvConsumptionCategory.visibility = View.GONE
                 editCategoryName.apply {
                     visibility = View.VISIBLE
@@ -164,15 +146,17 @@ class ConsumeCategoryAdapter(
                     requestFocus()
                 }
 
-                // 키보드에서 완료 버튼을 눌렀을 때
                 editCategoryName.setOnEditorActionListener { v, actionId, _ ->
                     if (actionId == EditorInfo.IME_ACTION_DONE) {
                         val input = v.text.toString().trim()
                         if (input.isNotEmpty()) {
+                            if (isConsumeSelected) {
+                                categoryViewModel.addExpenseCategory(input)
+                            } else {
+                                categoryViewModel.addIncomeCategory(input)
+                            }
                             onCategoryConfirmed(input)
-                            // 입력 완료 후 TextView로 변경
                             tvConsumptionCategory.text = input
-                            // EditText를 숨기고 TextView만 보이도록 설정
                             editCategoryName.visibility = View.GONE
                             tvConsumptionCategory.visibility = View.VISIBLE
                         }
@@ -193,8 +177,8 @@ class ConsumeCategoryAdapter(
         }
     }
 
-    class NormalViewHolder(
-        private val binding: ItemAnalysisConsumptionBinding,
+    inner class NormalViewHolder(
+        private val binding: ItemAnalysisAllowanceBinding,
         private val onItemClick: (String, Int) -> Unit
     ) :
         RecyclerView.ViewHolder(binding.root) {
@@ -210,15 +194,16 @@ class ConsumeCategoryAdapter(
             onSelectionChanged: (Boolean) -> Unit
         ) {
             with(binding) {
-                // 카테고리 이름 설정
                 tvConsumptionCategory.visibility = View.VISIBLE
                 tvConsumptionCategory.text = category
-
-                // 소비 금액 설정
                 tvConsumeAmount.visibility = if (isDeleteMode) View.GONE else View.VISIBLE
-                tvConsumeAmount.text = "-${Constants.formatAmount(amount.toInt())}"
+                binding.tvConsumeAmount.text =
+                    if (isConsumeSelected) {
+                        "-${Constants.formatAmount(amount)}"
+                    } else {
+                        "+${Constants.formatAmount(amount)}"
+                    }
 
-                // 퍼센트 설정
                 tvPercent.visibility = if (isDeleteMode) View.GONE else View.VISIBLE
                 tvPercent.text = percent
 
@@ -258,6 +243,7 @@ class ConsumeCategoryAdapter(
 
     sealed class CategoryItem {
         data class Normal(
+
             val name: String,
             var isSelected: Boolean = false,
             val amount: Int,

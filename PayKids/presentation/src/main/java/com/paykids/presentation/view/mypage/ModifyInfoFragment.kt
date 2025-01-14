@@ -32,10 +32,6 @@ class ModifyInfoFragment : BaseFragment<FragmentModifyInfoBinding>(), ConfirmDia
             parentFragmentManager.popBackStack()
         }
 
-        binding.ivModifyImage.setOnClickListener {
-            openGallery()
-        }
-
         binding.btnConfirm.setOnClickListener {
             myPageViewModel.changeNickname(binding.etModifyNickname.text.toString())
         }
@@ -115,6 +111,7 @@ class ModifyInfoFragment : BaseFragment<FragmentModifyInfoBinding>(), ConfirmDia
                 }
 
                 is UiState.Success -> {
+                    showToast("회원 탈퇴 성공")
                     myPageViewModel.clearData()
                 }
             }
@@ -129,6 +126,7 @@ class ModifyInfoFragment : BaseFragment<FragmentModifyInfoBinding>(), ConfirmDia
                 }
 
                 is UiState.Success -> {
+                    showToast("회원 정보 삭제 성공")
                     requireActivity().apply {
                         startActivity(Intent(this, SignActivity::class.java))
                         finish()

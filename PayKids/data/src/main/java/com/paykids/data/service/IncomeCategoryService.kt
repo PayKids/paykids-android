@@ -16,8 +16,8 @@ interface IncomeCategoryService {
         @Header("Authorization") accessToken: String,
     ): Response<BaseResponse<CategoryListDTO>>
 
-    @POST("/income/category/category-list")
-    suspend fun saveIncomeCategory(
+    @POST("/income/category/save-category")
+    suspend fun addIncomeCategory(
         @Header("Authorization") accessToken: String,
         @Query("category") category: String,
     ): Response<BaseResponse<Boolean>>

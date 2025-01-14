@@ -4,18 +4,21 @@ import android.annotation.SuppressLint
 import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.view.LayoutInflater
+import android.view.View
 import android.view.Window
 import android.view.WindowManager
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.viewpager2.widget.ViewPager2
+import com.paykids.domain.model.allowanceCategory.CategoryInfo
 import com.paykids.presentation.R
 import com.paykids.presentation.base.BaseFragment
 import com.paykids.presentation.custom.ConfirmDialogInterface
@@ -27,11 +30,9 @@ import com.paykids.presentation.utils.UiState
 import com.paykids.presentation.view.OnRvItemClickListener
 import com.paykids.util.LoggerUtils
 import dagger.hilt.android.AndroidEntryPoint
-import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.Calendar
-import java.util.Locale
 
 @AndroidEntryPoint
 class DiaryFragment : BaseFragment<FragmentDiaryBinding>(), ConfirmDialogInterface {
@@ -70,24 +71,16 @@ class DiaryFragment : BaseFragment<FragmentDiaryBinding>(), ConfirmDialogInterfa
             showAddPocketMoneyDialog(today)
         }
 
-        binding.vpCalendarMonth.registerOnPageChangeCallback(object :
-            ViewPager2.OnPageChangeCallback() {
-            override fun onPageSelected(position: Int) {
-                super.onPageSelected(position)
-                updateCurrentMonthText(position)
-            }
-        })
-
         binding.ibLeft.setOnClickListener {
             minusMonth()
-            viewModel.updateMonth(currentYear, currentMonth)
+            fetchData(currentYear, currentMonth)
             val currentPos = binding.vpCalendarMonth.currentItem
             binding.vpCalendarMonth.setCurrentItem(currentPos - 1, false)
         }
 
         binding.ibRight.setOnClickListener {
             plusMonth()
-            viewModel.updateMonth(currentYear, currentMonth)
+            fetchData(currentYear, currentMonth)
             val currentPos = binding.vpCalendarMonth.currentItem
             binding.vpCalendarMonth.setCurrentItem(currentPos + 1, false)
         }
@@ -151,13 +144,74 @@ class DiaryFragment : BaseFragment<FragmentDiaryBinding>(), ConfirmDialogInterfa
 
                 is UiState.Success -> {
                     LoggerUtils.d("일별 소비 내역 조회 성공: ${it.data}")
-                    detailAdapter = DetailConsumeAdapter(this)
+
+                    detailAdapter =
+                        DetailConsumeAdapter(object : DetailConsumeAdapter.OnItemClickListener {
+                            override fun onItemClick(
+                                id: Int,
+                                date: String,
+                                allowanceType: String,
+                                category: String,
+                                amount: Int,
+                                memo: String
+                            ) {
+                                showModifyDiaryDialog(
+                                    id,
+                                    date,
+                                    allowanceType,
+                                    category,
+                                    amount,
+                                    memo
+                                )
+                            }
+                        }, this)
+
                     binding.rvDetailConsume.apply {
                         layoutManager =
                             LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
                         this.adapter = detailAdapter
                     }
                     detailAdapter.submitList(it.data)
+                }
+            }
+        }
+
+        viewModel.addExpenseState.observe(viewLifecycleOwner) {
+            when (it) {
+                is UiState.Failure -> {
+                    showToast(it.message)
+                }
+
+                is UiState.Loading -> {}
+
+                is UiState.Success -> {
+                    LoggerUtils.d("소비 내역 저장 성공: ${it.data}")
+                    if (!it.data) {
+                        // 이미 저장된 데이터로 인한 중복 호출 방지
+                        return@observe
+                    }
+                    fetchData(currentYear, currentMonth)
+                    showToast("소비 내역 저장 성공")
+                }
+            }
+        }
+
+        viewModel.addIncomeState.observe(viewLifecycleOwner) {
+            when (it) {
+                is UiState.Failure -> {
+                    showToast(it.message)
+                }
+
+                is UiState.Loading -> {}
+
+                is UiState.Success -> {
+                    LoggerUtils.d("수입 내역 저장 성공: ${it.data}")
+                    if (!it.data) {
+                        // 이미 저장된 데이터로 인한 중복 호출 방지
+                        return@observe
+                    }
+                    fetchData(currentYear, currentMonth)
+                    showToast("수입 내역 저장 성공")
                 }
             }
         }
@@ -189,22 +243,16 @@ class DiaryFragment : BaseFragment<FragmentDiaryBinding>(), ConfirmDialogInterfa
             updateCurrentMonthText(binding.vpCalendarMonth.currentItem)
         }
 
-        updateSelectDayText(today)
+        updateSelectDayText("$year-$month-01")
+        viewModel.getMonthTotalExpense(year, month)
         viewModel.getMonthMostCategory(year, month)
         viewModel.getDayExpense(today)
     }
 
     @SuppressLint("SetTextI18n")
     private fun updateCurrentMonthText(position: Int) {
-        val calendar = Calendar.getInstance().apply {
-            add(Calendar.MONTH, position - (Int.MAX_VALUE / 2))
-        }
-        val yearMonth = SimpleDateFormat("yyyy-MM", Locale.KOREAN).format(calendar.time)
-        val year = yearMonth.split("-")[0].toInt()
-        val month = yearMonth.split("-")[1].toInt()
-        binding.tvMonth.text = "${calendar.get(Calendar.MONTH) + 1}월"
-
-        viewModel.getMonthTotalExpense(year, month)
+        binding.tvMonth.text = "${currentMonth}월"
+        viewModel.getMonthTotalExpense(currentYear, currentMonth)
     }
 
     private fun fetchMonthMostCategoryInfo(category: String, amount: Int) {
@@ -249,6 +297,7 @@ class DiaryFragment : BaseFragment<FragmentDiaryBinding>(), ConfirmDialogInterfa
         } else {
             currentMonth -= 1
         }
+        viewModel.updateMonth(currentYear, currentMonth)
     }
 
     private fun plusMonth() {
@@ -258,6 +307,16 @@ class DiaryFragment : BaseFragment<FragmentDiaryBinding>(), ConfirmDialogInterfa
         } else {
             currentMonth += 1
         }
+        viewModel.updateMonth(currentYear, currentMonth)
+    }
+
+    private fun setupCategorySpinner(isExpenseSelected: Boolean, binding: DialogDiaryBinding) {
+        if (isExpenseSelected) {
+            viewModel.getExpenseCategory()
+        } else {
+            viewModel.getIncomeCategory()
+        }
+        binding.spinnerCategory.visibility = View.GONE
     }
 
     @SuppressLint("SetTextI18n")
@@ -273,6 +332,7 @@ class DiaryFragment : BaseFragment<FragmentDiaryBinding>(), ConfirmDialogInterfa
 
         val dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
         var selectedDate = LocalDate.parse(date, dateFormatter)
+        var isExpenseSelected = true
         val currentYear = selectedDate.year
         val currentMonth = selectedDate.monthValue
         val currentDay = selectedDate.dayOfMonth
@@ -280,9 +340,60 @@ class DiaryFragment : BaseFragment<FragmentDiaryBinding>(), ConfirmDialogInterfa
         binding.tvMonth.text = "${currentMonth}월"
         binding.tvDay.text = "${currentDay}일"
 
-        val items = resources.getStringArray(R.array.category_array)
-        val adapter = CustomSpinnerAdapter(requireContext(), items)
-        binding.spinnerCategory.adapter = adapter
+        setupCategorySpinner(isExpenseSelected, binding)
+
+        fun handleCategoryState(uiState: UiState<List<CategoryInfo>>) {
+            when (uiState) {
+                is UiState.Loading -> {
+                    binding.spinnerCategory.visibility = View.GONE
+                }
+
+                is UiState.Success -> {
+                    binding.spinnerCategory.visibility = View.VISIBLE
+                    val categories = uiState.data
+                    val customAdapter = CustomSpinnerAdapter(
+                        requireContext(),
+                        categories.map { it.category }.toTypedArray()
+                    )
+                    binding.spinnerCategory.adapter = customAdapter
+                }
+
+                is UiState.Failure -> {
+                    binding.spinnerCategory.visibility = View.GONE
+                    Toast.makeText(
+                        requireContext(),
+                        "카테고리 조회 실패: ${uiState.message}",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+        }
+
+        viewModel.getExpenseCategoryState.observe(viewLifecycleOwner) { uiState ->
+            if (isExpenseSelected) handleCategoryState(uiState)
+        }
+
+        viewModel.getIncomeCategoryState.observe(viewLifecycleOwner) { uiState ->
+            if (!isExpenseSelected) handleCategoryState(uiState)
+        }
+
+        binding.clSwitch.setOnClickListener {
+            isExpenseSelected = !isExpenseSelected
+            if (isExpenseSelected) {
+                binding.tvConsume.setBackgroundResource(R.drawable.switch_bg_select)
+                binding.tvConsume.setTextColor(requireContext().getColor(R.color.black))
+
+                binding.tvIncome.setBackgroundResource(R.color.transparent)
+                binding.tvIncome.setTextColor(requireContext().getColor(R.color.gray7))
+            } else {
+                binding.tvIncome.setBackgroundResource(R.drawable.switch_bg_select)
+                binding.tvIncome.setTextColor(requireContext().getColor(R.color.black))
+
+                binding.tvConsume.setBackgroundResource(R.color.transparent)
+                binding.tvConsume.setTextColor(requireContext().getColor(R.color.gray7))
+            }
+            setupCategorySpinner(isExpenseSelected, binding)
+        }
 
         binding.ivYearUp.setOnClickListener {
             selectedDate = selectedDate.plusYears(1)
@@ -314,11 +425,11 @@ class DiaryFragment : BaseFragment<FragmentDiaryBinding>(), ConfirmDialogInterfa
             binding.tvDay.text = "${selectedDate.dayOfMonth}일"
         }
 
-        binding.etAddAmount.setText("")
+        binding.etAmount.setText("")
         binding.etMemo.setText("")
 
         binding.btnSubmit.setOnClickListener {
-            val amount = binding.etAddAmount.text.toString().toIntOrNull() ?: 0
+            val amount = binding.etAmount.text.toString().toIntOrNull() ?: 0
             val memo = binding.etMemo.text.toString()
             val category = binding.spinnerCategory.selectedItem.toString()
             val formattedDate = selectedDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
@@ -326,12 +437,54 @@ class DiaryFragment : BaseFragment<FragmentDiaryBinding>(), ConfirmDialogInterfa
             if (amount <= 0) {
                 showToast("금액을 입력해주세요")
             } else {
-                viewModel.saveExpense(formattedDate, "EXPENSE", amount, memo, category)
+                if (isExpenseSelected) {
+                    viewModel.addExpense(formattedDate, "EXPENSE", amount, memo, category)
+                } else {
+                    viewModel.addIncome(formattedDate, "INCOME", amount, memo, category)
+                }
 
                 dialog.dismiss()
             }
         }
-
         dialog.show()
     }
+
+    @SuppressLint("SetTextI18n")
+    fun showModifyDiaryDialog(
+        id: Int,
+        date: String,
+        allowanceType: String,
+        category: String,
+        amount: Int,
+        memo: String
+    ) {
+        val dialog = DiaryDialog().apply {
+            arguments = Bundle().apply {
+                putInt("id", id)
+                putString("date", date)
+                putString("category", category)
+                putInt("amount", amount)
+                putString("memo", memo)
+                putBoolean("isEditMode", true)
+                putBoolean("isConsumeSelected", true)
+            }
+        }
+
+        dialog.setOnModifyDiaryListener(object : DiaryDialog.OnModifyDiaryListener {
+            override fun onModify(
+                id: Int,
+                date: String,
+                allowanceType: String,
+                category: String,
+                amount: Int,
+                memo: String
+            ) {
+                viewModel.updateExpense(id, date, allowanceType, category, amount, memo)
+            }
+        })
+
+        dialog.isCancelable = true
+        dialog.show(childFragmentManager, "ModifyDiaryDialog")
+    }
+
 }

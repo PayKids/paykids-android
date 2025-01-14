@@ -25,7 +25,7 @@
         android:id="@+id/analysisConsumeFragment"
         android:name="com.paykids.presentation.view.diary.AnalysisConsumeFragment"
         android:label="fragment_analysis_cosume"
-        tools:layout="@layout/fragment_analysis_consume">
+        tools:layout="@layout/fragment_analysis_allowance">
         <action
             android:id="@+id/action_analysisConsumeFragment_to_analysisCategoryConsumeFragment"
             app:destination="@id/analysisCategoryConsumeFragment"/>
@@ -41,7 +41,7 @@
         android:id="@+id/analysisCategoryConsumeFragment"
         android:name="com.paykids.presentation.view.diary.AnalysisCategoryConsumeFragment"
         android:label="fragment_analysis_category_consume"
-        tools:layout="@layout/fragment_analysis_category_consume">
+        tools:layout="@layout/fragment_analysis_category_allowance">
         <argument
             android:name="currentYear"
             app:argType="integer" />
@@ -54,6 +54,9 @@
         <argument
             android:name="amount"
             app:argType="integer" />
+        <argument
+            android:name="isConsumeClicked"
+            app:argType="boolean" />
     </fragment>
 
     <fragment

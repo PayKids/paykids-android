@@ -41,6 +41,9 @@ fun MonthAllCategoryDTO.toMonthAllCategoryList(): List<MonthAllCategoryInfo> {
 fun DayDTO.toDayInfoList(): List<DayInfo> {
     return this.map { item ->
         DayInfo(
+            id = item.id,
+            date = item.date,
+            allowanceType = item.allowanceType,
             category = item.category,
             amount = item.amount,
             memo = item.memo

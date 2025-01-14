@@ -1,6 +1,7 @@
 package com.paykids.data.repository
 
 import com.paykids.data.datasource.ExpenseCategoryRemoteDatasource
+import com.paykids.data.mapper.toCategoryInfo
 import com.paykids.domain.model.allowanceCategory.CategoryInfo
 import com.paykids.domain.repository.ExpenseCategoryRepository
 import javax.inject.Inject
@@ -10,15 +11,28 @@ class ExpenseCategoryRepositoryImpl @Inject constructor(
 ) : ExpenseCategoryRepository {
 
     override suspend fun getExpenseCategoryList(accessToken: String): Result<List<CategoryInfo>> {
-        TODO("Not yet implemented")
+        val result =
+            expenseCategoryRemoteDatasource.getExpenseCategoryList(accessToken)
+
+        return if (result.isSuccess) {
+            val res = result.getOrNull()
+            if (res != null) {
+                val data = res.data.toCategoryInfo()
+                Result.success(data)
+            } else {
+                Result.failure(Exception("get Expense Category Failed: response body is null"))
+            }
+        } else {
+            Result.failure(result.exceptionOrNull() ?: Exception("Unknown error"))
+        }
     }
 
-    override suspend fun saveExpenseCategory(
+    override suspend fun addExpenseCategory(
         accessToken: String,
         category: String
     ): Result<Boolean> {
         val result =
-            expenseCategoryRemoteDatasource.saveExpenseCategory(accessToken, category)
+            expenseCategoryRemoteDatasource.addExpenseCategory(accessToken, category)
 
         return if (result.isSuccess) {
             val res = result.getOrNull()

@@ -29,22 +29,22 @@ class ExpenseCategoryRemoteDatasourceImpl @Inject constructor(
         }
     }
 
-    override suspend fun saveExpenseCategory(
+    override suspend fun addExpenseCategory(
         accessToken: String,
         category: String
     ): Result<BaseResponse<Boolean>> {
         return try {
-            val response = expenseCategoryService.saveExpenseCategory(accessToken, category)
+            val response = expenseCategoryService.addExpenseCategory(accessToken, category)
 
             if (response.isSuccessful) {
                 val res = response.body()
                 if (res != null) {
                     Result.success(res)
                 } else {
-                    Result.failure(Exception("save Expense Category failed: response body is null"))
+                    Result.failure(Exception("add Expense Category failed: response body is null"))
                 }
             } else {
-                Result.failure(Exception("save Expense Category failed: ${response.message()}"))
+                Result.failure(Exception("add Expense Category failed: ${response.message()}"))
             }
         } catch (e: Exception) {
             Result.failure(e)

@@ -8,7 +8,7 @@ interface ExpenseCategoryRepository {
         accessToken: String,
     ): Result<List<CategoryInfo>>
 
-    suspend fun saveExpenseCategory(
+    suspend fun addExpenseCategory(
         accessToken: String,
         category: String
     ): Result<Boolean>

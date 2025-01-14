@@ -1,8 +1,9 @@
 package com.paykids.data.di
 
 import com.paykids.domain.repository.ExpenseCategoryRepository
+import com.paykids.domain.usecase.expenseCategory.AddExpenseCategoryUseCase
 import com.paykids.domain.usecase.expenseCategory.DeleteExpenseCategoryUseCase
-import com.paykids.domain.usecase.expenseCategory.SaveExpenseCategoryUseCase
+import com.paykids.domain.usecase.expenseCategory.GetExpenseCategoryUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -15,10 +16,18 @@ object ExpenseCategoryUseCaseModule {
 
     @Provides
     @Singleton
+    fun provideGetExpenseCategoryUseCase(
+        repository: ExpenseCategoryRepository
+    ): GetExpenseCategoryUseCase {
+        return GetExpenseCategoryUseCase(repository)
+    }
+
+    @Provides
+    @Singleton
     fun provideSaveExpenseCategoryUseCase(
         repository: ExpenseCategoryRepository
-    ): SaveExpenseCategoryUseCase {
-        return SaveExpenseCategoryUseCase(repository)
+    ): AddExpenseCategoryUseCase {
+        return AddExpenseCategoryUseCase(repository)
     }
 
     @Provides

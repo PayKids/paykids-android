@@ -29,22 +29,22 @@ class IncomeCategoryRemoteDatasourceImpl @Inject constructor(
         }
     }
 
-    override suspend fun saveIncomeCategory(
+    override suspend fun addIncomeCategory(
         accessToken: String,
         category: String
     ): Result<BaseResponse<Boolean>> {
         return try {
-            val response = incomeCategoryService.saveIncomeCategory(accessToken, category)
+            val response = incomeCategoryService.addIncomeCategory(accessToken, category)
 
             if (response.isSuccessful) {
                 val res = response.body()
                 if (res != null) {
                     Result.success(res)
                 } else {
-                    Result.failure(Exception("save Income Category failed: response body is null"))
+                    Result.failure(Exception("add Income Category failed: response body is null"))
                 }
             } else {
-                Result.failure(Exception("save Income Category failed: ${response.message()}"))
+                Result.failure(Exception("add Income Category failed: ${response.message()}"))
             }
         } catch (e: Exception) {
             Result.failure(e)

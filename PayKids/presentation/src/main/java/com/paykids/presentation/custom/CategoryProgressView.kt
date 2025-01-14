@@ -1,6 +1,5 @@
 package com.paykids.presentation.custom
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
@@ -17,12 +16,17 @@ class CategoryProgressView @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : View(context, attrs, defStyleAttr) {
 
-    private val paint = Paint(ANTI_ALIAS_FLAG)
+    private val sectionPaint = Paint(ANTI_ALIAS_FLAG)
+    private val textPaint = Paint(ANTI_ALIAS_FLAG).apply {
+        color = Color.WHITE
+        textAlign = Paint.Align.CENTER
+        typeface = ResourcesCompat.getFont(context, R.font.nanumsquare_bold)
+    }
+
     private var sections: List<Float> = emptyList()
     private var colors: List<Int> = emptyList()
     private var categoryNames: List<String> = emptyList()
 
-    @SuppressLint("DrawAllocation")
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
 
@@ -31,21 +35,21 @@ class CategoryProgressView @JvmOverloads constructor(
 
         for (i in sections.indices) {
             val sectionWidth = totalWidth * sections[i]
-            paint.color = colors.getOrElse(i) { Color.LTGRAY }
-            canvas.drawRect(startX, 0f, startX + sectionWidth, height.toFloat(), paint)
+            sectionPaint.color = colors[i]
 
+            // progress bar그리기
+            canvas.drawRect(startX, 0f, startX + sectionWidth, height.toFloat(), sectionPaint)
+
+            // 카테고리명 표시
             val sectionCenterX = startX + sectionWidth / 2
             val sectionCenterY = height / 2f
-            paint.color = Color.WHITE
-            paint.textAlign = Paint.Align.CENTER
-            paint.textSize = 36f
-            paint.typeface = ResourcesCompat.getFont(context, R.font.nanumsquare_bold)
-            val textHeight = paint.fontMetrics.bottom - paint.fontMetrics.top
-            val textBaseline = sectionCenterY + (textHeight / 2) - paint.fontMetrics.bottom
+            textPaint.textSize = 32f
 
+            val textBaseline = sectionCenterY - (textPaint.descent() + textPaint.ascent()) / 2
             categoryNames.getOrNull(i)?.let {
-                canvas.drawText(it, sectionCenterX, textBaseline, paint)
+                canvas.drawText(it, sectionCenterX, textBaseline, textPaint)
             }
+
             startX += sectionWidth
         }
     }
@@ -55,8 +59,14 @@ class CategoryProgressView @JvmOverloads constructor(
         newColors: List<Int>,
         newCategoryNames: List<String>
     ) {
+        require(newSections.sum() <= 100f) { "퍼센트의 총합은 100.00이하여야 합니다." }
+
         sections = newSections
-        colors = newColors
+        colors = newColors.take(newSections.size).toMutableList().apply {
+            while (size < newSections.size) {
+                add(Color.LTGRAY)
+            }
+        }
         categoryNames = newCategoryNames
         invalidate()
     }

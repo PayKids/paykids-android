@@ -40,6 +40,6 @@
 
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_consume_info"
-        tools:listitem="@layout/item_category_consumption" />
+        tools:listitem="@layout/item_category_allowance" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

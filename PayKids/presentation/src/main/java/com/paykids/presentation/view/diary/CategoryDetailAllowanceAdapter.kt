@@ -3,20 +3,21 @@ package com.paykids.presentation.view.diary
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.paykids.presentation.custom.ConfirmDialogInterface
-import com.paykids.presentation.databinding.ItemCategoryConsumptionBinding
+import com.paykids.presentation.databinding.ItemCategoryAllowanceBinding
 import com.paykids.presentation.utils.Constants
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class CategoryConsumeAdapter(private val fragment: Fragment) :
-    RecyclerView.Adapter<CategoryConsumeAdapter.ViewHolder>(), ConfirmDialogInterface {
+class CategoryDetailAllowanceAdapter(
+    private val isConsumeClicked: Boolean,
+    private val fragment: AnalysisCategoryConsumeFragment
+) : RecyclerView.Adapter<CategoryDetailAllowanceAdapter.ViewHolder>(), ConfirmDialogInterface {
 
     private val items = mutableListOf<Triple<String, Int, String>>()
 
-    inner class ViewHolder(val binding: ItemCategoryConsumptionBinding) :
+    inner class ViewHolder(val binding: ItemCategoryAllowanceBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         @SuppressLint("SetTextI18n")
@@ -24,8 +25,12 @@ class CategoryConsumeAdapter(private val fragment: Fragment) :
             val formattedDate = formatToMonthDay(item.first)
             val formattedAmount = Constants.formatAmount(item.second)
 
-            binding.tvConsumeDate.text = formattedDate
-            binding.tvConsumeAmount.text = "-${formattedAmount}"
+            binding.tvAllowanceDate.text = formattedDate
+            if (isConsumeClicked) {
+                binding.tvAllowanceAmount.text = "-$formattedAmount"
+            } else {
+                binding.tvAllowanceAmount.text = "+$formattedAmount"
+            }
             binding.tvMemo.text = item.third
 
             itemView.setOnClickListener {
@@ -47,7 +52,7 @@ class CategoryConsumeAdapter(private val fragment: Fragment) :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val binding = ItemCategoryConsumptionBinding.inflate(inflater, parent, false)
+        val binding = ItemCategoryAllowanceBinding.inflate(inflater, parent, false)
         return ViewHolder(binding)
     }
 
