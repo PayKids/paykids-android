@@ -14,6 +14,7 @@
         tools:ignore="MissingConstraints" />
 
     <TextView
+        android:id="@+id/tv_clear_message"
         android:layout_width="0dp"
         android:layout_height="109dp"
         android:layout_marginBottom="182.5dp"
