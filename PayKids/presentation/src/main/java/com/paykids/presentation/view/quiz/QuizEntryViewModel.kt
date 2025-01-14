@@ -57,15 +57,15 @@ class QuizEntryViewModel @Inject constructor(
         _checkAnswerState.value = UiState.Loading
 
         viewModelScope.launch {
-            checkAnswerUseCase.invoke(
-                "eyJhbGciOiJIUzI1NiJ9.eyJ1dWlkIjoiNjRjMjk5OTktMmIxYS00NDUwLWEzNWMtMzNiN2NmZTBiZTlhIiwiZW1haWwiOiJwYXlraWRzMjAyNEBnbWFpbC5jb20iLCJpYXQiOjE3MzY4MjAzNzUsImV4cCI6MTczNjg2MzU3NX0.1exX260QmpUlOfoFRgM55K5f_NTeMclk_oiEaECxLv0",
-                stage,
-                number,
-                answer
-            )
 //            checkAnswerUseCase.invoke(
-//                getAccessTokenUseCase.invoke().getOrNull().toString(), stage, number, answer
+//                "eyJhbGciOiJIUzI1NiJ9.eyJ1dWlkIjoiNjRjMjk5OTktMmIxYS00NDUwLWEzNWMtMzNiN2NmZTBiZTlhIiwiZW1haWwiOiJwYXlraWRzMjAyNEBnbWFpbC5jb20iLCJpYXQiOjE3MzY4NjQxODUsImV4cCI6MTczNjkwNzM4NX0.ZnjtSGyqmjIHyJ6ZXDPoUqFRUp3wGOTKaK1lhZPYAbo",
+//                stage,
+//                number,
+//                answer
 //            )
+            checkAnswerUseCase.invoke(
+                getAccessTokenUseCase.invoke().getOrNull().toString(), stage, number, answer
+            )
             .onSuccess {
                     _checkAnswerState.value = UiState.Success(it)
                     LoggerUtils.d("답 확인 성공: $it")
@@ -84,7 +84,7 @@ class QuizEntryViewModel @Inject constructor(
 
         viewModelScope.launch {
 //            checkClearUseCase.invoke(
-//                "eyJhbGciOiJIUzI1NiJ9.eyJ1dWlkIjoiNjRjMjk5OTktMmIxYS00NDUwLWEzNWMtMzNiN2NmZTBiZTlhIiwiZW1haWwiOiJwYXlraWRzMjAyNEBnbWFpbC5jb20iLCJpYXQiOjE3MzY4MjAzNzUsImV4cCI6MTczNjg2MzU3NX0.1exX260QmpUlOfoFRgM55K5f_NTeMclk_oiEaECxLv0",
+//                "eyJhbGciOiJIUzI1NiJ9.eyJ1dWlkIjoiNjRjMjk5OTktMmIxYS00NDUwLWEzNWMtMzNiN2NmZTBiZTlhIiwiZW1haWwiOiJwYXlraWRzMjAyNEBnbWFpbC5jb20iLCJpYXQiOjE3MzY4NjQxODUsImV4cCI6MTczNjkwNzM4NX0.ZnjtSGyqmjIHyJ6ZXDPoUqFRUp3wGOTKaK1lhZPYAbo",
 //                stage
 //            )
             checkClearUseCase.invoke(
