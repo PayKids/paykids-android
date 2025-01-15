@@ -1,5 +1,6 @@
 package com.paykids.presentation.view.quiz
 
+import android.annotation.SuppressLint
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
@@ -11,7 +12,6 @@ import com.paykids.presentation.base.BaseFragment
 import com.paykids.presentation.custom.ConfirmDialogInterface
 import com.paykids.presentation.databinding.FragmentQuizImageBinding
 import com.paykids.presentation.utils.UiState
-import com.paykids.util.LoggerUtils
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -44,7 +44,7 @@ class QuizImageFragment : BaseFragment<FragmentQuizImageBinding>(), ConfirmDialo
                     R.string.dialog_check_exit,
                 )
             dialog.isCancelable = false
-            dialog.show(parentFragmentManager, "AllClearDialog")
+            dialog.show(parentFragmentManager, "QuizExitDialog")
         }
 
         val answerFirst = binding.root.findViewById<View>(R.id.answer_first)
@@ -57,6 +57,7 @@ class QuizImageFragment : BaseFragment<FragmentQuizImageBinding>(), ConfirmDialo
         answerFourth.setOnClickListener { onAnswerClicked(4) }
     }
 
+    @SuppressLint("SetTextI18n")
     override fun setObserver() {
         super.setObserver()
 
@@ -74,7 +75,6 @@ class QuizImageFragment : BaseFragment<FragmentQuizImageBinding>(), ConfirmDialo
                         navigateToNextQuiz()
                         return@observe
                     }
-                    LoggerUtils.d("Quiz loaded: ${quiz.question}")
                     binding.tvQuestion.text = quiz.question
                     binding.tvQuizProgress.text = "${quiz.number}/${quiz.count}"
                     quiz.imageURL?.let { it1 -> loadChoiceImages(it1) }
@@ -107,9 +107,7 @@ class QuizImageFragment : BaseFragment<FragmentQuizImageBinding>(), ConfirmDialo
 
     }
 
-    // 이미지 로딩 함수
     private fun loadChoiceImages(imageURLMap: Map<String, String>) {
-        // Glide로 이미지 로딩
         Glide.with(this)
             .load(imageURLMap["image1"])
             .into(binding.answerFirst.ivAnswerImage)
@@ -128,7 +126,6 @@ class QuizImageFragment : BaseFragment<FragmentQuizImageBinding>(), ConfirmDialo
 
     }
 
-    // 답을 클릭한 경우 호출되는 함수
     private fun onAnswerClicked(answerNumber: Int) {
         selectedAnswer = answerNumber
         val userAnswer = when (answerNumber) {
@@ -139,12 +136,10 @@ class QuizImageFragment : BaseFragment<FragmentQuizImageBinding>(), ConfirmDialo
             else -> ""
         }
         this.userAnswer = userAnswer
-        // 정답 확인 메서드 호출
         quizEntryViewModel.checkAnswer(stageNumber, quizNumber, userAnswer)
 
-        // 딜레이 후 다음 퀴즈 로드
         lifecycleScope.launch {
-            delay(2000L) // 2초 딜레이
+            delay(2000L)
 
             // 마지막 퀴즈인 경우 QuizClearFragment로 이동
             val quizState = quizEntryViewModel.quizState.value
@@ -172,19 +167,15 @@ class QuizImageFragment : BaseFragment<FragmentQuizImageBinding>(), ConfirmDialo
             else -> null
         }
 
-        // 정답 여부에 따른 UI 변경
         if (selectedAnswerView != null) {
-            // 정답일 때
             if (isCorrect == true) {
                 binding.ivBackground.setImageResource(R.drawable.bg_quiz_correct)
                 selectedAnswerView.setBackgroundResource(R.drawable.shape_quiz_box_blue)
                 binding.llCorrectAnswer.visibility = View.VISIBLE
             } else if (isCorrect == false) {
-                // 오답일 때
                 binding.ivBackground.setImageResource(R.drawable.bg_quiz_wrong)
                 selectedAnswerView.setBackgroundResource(R.drawable.shape_quiz_box_red)
 
-                // 정답에 해당하는 선택지의 배경 색 변경
                 val correctAnswerView = getCorrectAnswerView()
                 correctAnswerView?.setBackgroundResource(R.drawable.shape_quiz_box_blue)
                 binding.llWrongAnswer.visibility = View.VISIBLE
@@ -193,7 +184,6 @@ class QuizImageFragment : BaseFragment<FragmentQuizImageBinding>(), ConfirmDialo
     }
 
     private fun getCorrectAnswerView(): View? {
-        // 정답에 해당하는 뷰 반환
         return when (correctAnswer) {
             "A" -> binding.answerFirst.root
             "B" -> binding.answerSecond.root
@@ -210,7 +200,6 @@ class QuizImageFragment : BaseFragment<FragmentQuizImageBinding>(), ConfirmDialo
             val stageNumber = quiz.stage
             val quizNumber = quiz.number
 
-            // 각 퀴즈 유형에 따라 프래그먼트로 전달
             when (quiz.quizType) {
                 "IMAGE_CHOICE" -> {
                     val action = QuizImageFragmentDirections

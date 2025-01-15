@@ -8,7 +8,6 @@ import com.paykids.presentation.R
 import com.paykids.presentation.base.BaseFragment
 import com.paykids.presentation.databinding.FragmentQuizClearBinding
 import com.paykids.presentation.utils.UiState
-import com.paykids.util.LoggerUtils
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -41,7 +40,6 @@ class QuizClearFragment : BaseFragment<FragmentQuizClearBinding>() {
                 }
 
                 is UiState.Loading -> {
-                    // 로딩 상태 처리
                 }
 
                 is UiState.Success -> {
@@ -77,7 +75,5 @@ class QuizClearFragment : BaseFragment<FragmentQuizClearBinding>() {
                 binding.tvClearMessage.setBackgroundResource(R.drawable.shape_quiz_clear_box)
             }
         }
-
-        LoggerUtils.d("QuizClearFragment: message=$message, isCleared=$isCleared")
     }
 }

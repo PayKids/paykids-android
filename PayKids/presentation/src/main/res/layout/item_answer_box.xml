@@ -10,16 +10,14 @@
     <FrameLayout
         android:layout_width="120dp"
         android:layout_height="120dp"
-        android:background="@drawable/shape_bg_quiz_image"
-        android:clipToOutline="true"
-        tools:ignore="UnusedAttribute">
+        android:background="@drawable/shape_bg_quiz_image">
 
         <ImageView
             android:id="@+id/iv_answer_image"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:contentDescription="@null"
-            android:scaleType="centerCrop"
+            android:scaleType="fitCenter"
             tools:src="@drawable/img_quiz_item_default" />
 
     </FrameLayout>
