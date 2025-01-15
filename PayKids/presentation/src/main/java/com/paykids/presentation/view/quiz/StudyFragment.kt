@@ -1,6 +1,8 @@
 package com.paykids.presentation.view.quiz
 
+import android.annotation.SuppressLint
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.paykids.domain.model.ChatItem
 import com.paykids.presentation.base.BaseFragment
@@ -12,10 +14,14 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class StudyFragment : BaseFragment<FragmentStudyBinding>() {
+    private val args: StudyFragmentArgs by navArgs()
     private val viewModel: StudyViewModel by viewModels()
     private lateinit var studyAdapter: StudyRvAdapter
 
+    @SuppressLint("SetTextI18n")
     override fun initView() {
+        val stageNumber = args.stageNumber
+        binding.tvStage.text = "스테이지 ${stageNumber}"
         setRvAdapter()
         viewModel.getUserInfo()
     }

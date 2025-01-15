@@ -40,7 +40,10 @@ class QuizEntryFragment : BaseFragment<FragmentQuizEntryBinding>(), ConfirmDialo
         }
 
         binding.btnStudy.setOnClickListener {
-            navController.navigate(R.id.studyFragment)
+            val stageNumber = args.stageNumber
+            val action = QuizEntryFragmentDirections
+                .actionQuizEntryFragmentToStudyFragment(stageNumber)
+            navController.navigate(action)
         }
 
         binding.btnQuiz.setOnClickListener {

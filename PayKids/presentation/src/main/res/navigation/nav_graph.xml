@@ -73,7 +73,11 @@
         android:id="@+id/studyFragment"
         android:name="com.paykids.presentation.view.quiz.StudyFragment"
         android:label="fragment_study"
-        tools:layout="@layout/fragment_study" />
+        tools:layout="@layout/fragment_study">
+        <argument
+            android:name="stageNumber"
+            app:argType="integer" />
+    </fragment>
 
     <fragment
         android:id="@+id/quizEntryFragment"

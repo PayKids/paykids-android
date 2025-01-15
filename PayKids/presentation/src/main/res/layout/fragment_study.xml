@@ -47,13 +47,13 @@
         android:fontFamily="@font/nanumsquare_extra_bold"
         android:paddingHorizontal="16dp"
         android:paddingVertical="6dp"
-        android:text="스테이지 1"
         android:textColor="@color/gray7"
         android:textSize="16sp"
 
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tb_chat" />
+        app:layout_constraintTop_toBottomOf="@id/tb_chat"
+        tools:text="스테이지 1" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_chat"
@@ -112,8 +112,8 @@
             android:layout_marginEnd="12dp"
             android:background="@color/transparent"
             android:contentDescription="@null"
-            android:scaleType="fitXY"
             android:padding="12dp"
+            android:scaleType="fitXY"
             android:src="@drawable/ic_send"
 
             app:layout_constraintBottom_toBottomOf="@id/et_send_chat"
