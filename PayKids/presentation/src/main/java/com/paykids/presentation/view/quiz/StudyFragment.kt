@@ -21,7 +21,7 @@ class StudyFragment : BaseFragment<FragmentStudyBinding>() {
     @SuppressLint("SetTextI18n")
     override fun initView() {
         val stageNumber = args.stageNumber
-        binding.tvStage.text = "스테이지 ${stageNumber}"
+        binding.tvStage.text = "스테이지 $stageNumber"
         setRvAdapter()
         viewModel.getUserInfo()
     }

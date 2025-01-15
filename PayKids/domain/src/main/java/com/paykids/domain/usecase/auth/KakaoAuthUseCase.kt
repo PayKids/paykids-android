@@ -5,7 +5,7 @@ import com.paykids.domain.repository.KakaoAuthRepository
 import javax.inject.Inject
 
 class KakaoAuthUseCase @Inject constructor(private val repository: KakaoAuthRepository) {
-    suspend operator fun invoke(): Result<SignInInfo> {
-        return repository.signInWithKakao()
+    suspend operator fun invoke(context: Any): Result<SignInInfo> {
+        return repository.signInWithKakao(context)
     }
 }

@@ -1,5 +1,7 @@
 package com.paykids.presentation.view.signIn
 
+import android.app.Activity
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -29,11 +31,11 @@ class SignViewModel @Inject constructor(
     private val _kakaoLoginState = MutableLiveData<UiState<SignInInfo>>()
     val kakaoLoginState: LiveData<UiState<SignInInfo>> get() = _kakaoLoginState
 
-    fun signInWithKakao() {
+    fun signInWithKakao(context: Context) {
         _kakaoLoginState.value = UiState.Loading
         viewModelScope.launch {
             try {
-                kakaoAuthUseCase.invoke()
+                kakaoAuthUseCase.invoke(context)
                     .onSuccess { signInInfo ->
                         _kakaoLoginState.value = UiState.Success(signInInfo)
                     }.onFailure { e ->
