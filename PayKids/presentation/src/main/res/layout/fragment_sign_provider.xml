@@ -10,7 +10,7 @@
     android:fitsSystemWindows="true">
 
     <TextView
-        style="@style/text_bold_12px"
+        style="@style/text_bold_14px"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="12dp"

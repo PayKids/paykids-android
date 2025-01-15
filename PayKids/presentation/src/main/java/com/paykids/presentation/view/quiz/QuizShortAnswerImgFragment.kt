@@ -1,7 +1,9 @@
 package com.paykids.presentation.view.quiz
 
 import android.annotation.SuppressLint
+import android.os.Bundle
 import android.view.View
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -11,6 +13,7 @@ import com.paykids.presentation.base.BaseFragment
 import com.paykids.presentation.custom.ConfirmDialogInterface
 import com.paykids.presentation.databinding.FragmentQuizShortAnswerImgBinding
 import com.paykids.presentation.utils.UiState
+import com.paykids.presentation.view.home.HomeActivity
 import com.paykids.util.LoggerUtils
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
@@ -19,6 +22,7 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class QuizShortAnswerImgFragment : BaseFragment<FragmentQuizShortAnswerImgBinding>(),
     ConfirmDialogInterface {
+    private lateinit var backPressedCallback: OnBackPressedCallback
     private val quizEntryViewModel: QuizEntryViewModel by activityViewModels()
     private val args: QuizShortAnswerImgFragmentArgs by navArgs()
     private var stageNumber: Int = 0
@@ -46,18 +50,16 @@ class QuizShortAnswerImgFragment : BaseFragment<FragmentQuizShortAnswerImgBindin
             dialog.show(parentFragmentManager, "AllClearDialog")
         }
         binding.tvDecision.setOnClickListener {
-            // 사용자가 입력한 답을 가져와서 체크
             userAnswer = binding.etAnswer.text.toString().trim()
             // 정답이 비어 있는 경우 메시지 표시
             if (userAnswer.isEmpty()) {
                 showToast("정답을 입력해주세요.")
                 return@setOnClickListener
             }
-            // 답안을 체크하는 메서드 호출
+
             quizEntryViewModel.checkAnswer(stageNumber, quizNumber, userAnswer)
-            // 딜레이 후 다음 퀴즈 로드
             lifecycleScope.launch {
-                delay(2000L) // 2초 딜레이
+                delay(2000L)
 
                 // 마지막 퀴즈인 경우 QuizClearFragment로 이동
                 val quizState = quizEntryViewModel.quizState.value
@@ -127,7 +129,6 @@ class QuizShortAnswerImgFragment : BaseFragment<FragmentQuizShortAnswerImgBindin
     }
 
     private fun updateUIForAnswer() {
-        // 사용자가 입력한 답과 정답 비교
         if (userAnswer.isNotEmpty()) {
             if (userAnswer == correctAnswer) {
                 binding.ivBackground.setImageResource(R.drawable.bg_quiz_correct)
@@ -146,7 +147,6 @@ class QuizShortAnswerImgFragment : BaseFragment<FragmentQuizShortAnswerImgBindin
             val stageNumber = quiz.stage
             val quizNumber = quiz.number
 
-            // 각 퀴즈 유형에 따라 프래그먼트로 전달
             when (quiz.quizType) {
                 "IMAGE_CHOICE" -> {
                     val action = QuizShortAnswerImgFragmentDirections
@@ -192,5 +192,29 @@ class QuizShortAnswerImgFragment : BaseFragment<FragmentQuizShortAnswerImgBindin
                 }
             }
         }
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        backPressedCallback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+            }
+        }
+
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            backPressedCallback
+        )
+    }
+
+    override fun onResume() {
+        super.onResume()
+        (requireActivity() as? HomeActivity)?.setBottomNavigationVisibility(false)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        (requireActivity() as? HomeActivity)?.setBottomNavigationVisibility(true)
     }
 }

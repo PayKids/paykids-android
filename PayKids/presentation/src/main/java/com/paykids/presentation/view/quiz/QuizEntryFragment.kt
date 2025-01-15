@@ -1,5 +1,9 @@
 package com.paykids.presentation.view.quiz
 
+import android.annotation.SuppressLint
+import android.os.Bundle
+import android.view.View
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -14,13 +18,14 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class QuizEntryFragment : BaseFragment<FragmentQuizEntryBinding>(), ConfirmDialogInterface {
+    private lateinit var backPressedCallback: OnBackPressedCallback
     private val quizEntryViewModel: QuizEntryViewModel by viewModels()
     private val args: QuizEntryFragmentArgs by navArgs()
     private val incorrectQuiz = 0
     private var clear = false
 
+    @SuppressLint("SetTextI18n")
     override fun initView() {
-        // 전달받은 스테이지 번호와 이름 사용
         val stageNumber = args.stageNumber
         val stageName = args.stageName
 
@@ -39,7 +44,10 @@ class QuizEntryFragment : BaseFragment<FragmentQuizEntryBinding>(), ConfirmDialo
         }
 
         binding.btnStudy.setOnClickListener {
-            navController.navigate(R.id.studyFragment)
+            val stageNumber = args.stageNumber
+            val action = QuizEntryFragmentDirections
+                .actionQuizEntryFragmentToStudyFragment(stageNumber)
+            navController.navigate(action)
         }
 
         binding.btnQuiz.setOnClickListener {
@@ -96,30 +104,43 @@ class QuizEntryFragment : BaseFragment<FragmentQuizEntryBinding>(), ConfirmDialo
             val stageNumber = quiz.stage
             val quizNumber = quiz.number
 
-            // 각 퀴즈 유형에 따라 프래그먼트로 전달
             when (quiz.quizType) {
                 "IMAGE_CHOICE" -> {
                     val action = QuizEntryFragmentDirections
                         .actionQuizEntryFragmentToQuizImageFragment(stageNumber, quizNumber)
                     findNavController().navigate(action)
                 }
+
                 "TEXT_CHOICE" -> {
                     val action = if (quiz.imageURL.isNullOrEmpty()) {
                         QuizEntryFragmentDirections
-                            .actionQuizEntryFragmentToQuizMultipleChoiceFragment(stageNumber, quizNumber)
+                            .actionQuizEntryFragmentToQuizMultipleChoiceFragment(
+                                stageNumber,
+                                quizNumber
+                            )
                     } else {
                         QuizEntryFragmentDirections
-                            .actionQuizEntryFragmentToQuizMultipleChoiceImgFragment(stageNumber, quizNumber)
+                            .actionQuizEntryFragmentToQuizMultipleChoiceImgFragment(
+                                stageNumber,
+                                quizNumber
+                            )
                     }
                     findNavController().navigate(action)
                 }
+
                 "SHORT_ANSWER" -> {
                     val action = if (quiz.imageURL.isNullOrEmpty()) {
                         QuizEntryFragmentDirections
-                            .actionQuizEntryFragmentToQuizShortAnswerFragment(stageNumber, quizNumber)
+                            .actionQuizEntryFragmentToQuizShortAnswerFragment(
+                                stageNumber,
+                                quizNumber
+                            )
                     } else {
                         QuizEntryFragmentDirections
-                            .actionQuizEntryFragmentToQuizShortAnswerImgFragment(stageNumber, quizNumber)
+                            .actionQuizEntryFragmentToQuizShortAnswerImgFragment(
+                                stageNumber,
+                                quizNumber
+                            )
                     }
                     findNavController().navigate(action)
                 }
@@ -127,11 +148,22 @@ class QuizEntryFragment : BaseFragment<FragmentQuizEntryBinding>(), ConfirmDialo
         }
     }
 
-
-
-
     override fun onYesButtonClick() {
         // 퀴즈 풀기 페이지로 이동
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        backPressedCallback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+            }
+        }
+
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            backPressedCallback
+        )
     }
 
     override fun onResume() {

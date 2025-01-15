@@ -20,6 +20,8 @@ abstract class BaseFragment<VB : ViewBinding> : Fragment() {
     protected val binding get() = _binding!!
 
     private var currentToast: Toast? = null
+    private var backPressedTime: Long = 0 // 뒤로가기 버튼이 눌린 시간
+    private val backPressedInterval: Long = 2000 // 두 번 눌러야 하는 시간 간격 (2초)
 
     private val keyboardListener = object : ViewTreeObserver.OnGlobalLayoutListener {
         private val rect = Rect()
@@ -101,4 +103,16 @@ abstract class BaseFragment<VB : ViewBinding> : Fragment() {
     private fun setupKeyboardListener() {
         view?.rootView?.viewTreeObserver?.addOnGlobalLayoutListener(keyboardListener)
     }
+
+    open fun onBackPressed() {
+        val currentTime = System.currentTimeMillis()
+
+        if (currentTime - backPressedTime < backPressedInterval) {
+            requireActivity().finishAffinity()
+        } else {
+            showToast("한 번 더 누르면 종료됩니다.")
+            backPressedTime = currentTime
+        }
+    }
+
 }

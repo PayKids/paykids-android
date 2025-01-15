@@ -1,18 +1,17 @@
 package com.paykids.data.repository
 
+import android.app.Activity
 import com.paykids.data.service.KakaoAuthService
 import com.paykids.domain.model.auth.SignInInfo
 import com.paykids.domain.repository.KakaoAuthRepository
 import javax.inject.Inject
 
-
 class KakaoAuthRepositoryImpl @Inject constructor(
     private val kakaoAuthService: KakaoAuthService
 ) : KakaoAuthRepository {
-    override suspend fun signInWithKakao(): Result<SignInInfo> {
+    override suspend fun signInWithKakao(context: Any): Result<SignInInfo> {
         return try {
-            val res = kakaoAuthService.signInWithKakao()
-            Result.success(res)
+            Result.success(kakaoAuthService.signInWithKakao(context as Activity))
         } catch (e: Exception) {
             Result.failure(e)
         }

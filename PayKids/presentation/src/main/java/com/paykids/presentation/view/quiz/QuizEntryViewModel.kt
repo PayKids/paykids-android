@@ -31,22 +31,22 @@ class QuizEntryViewModel @Inject constructor(
 
         viewModelScope.launch {
             getQuizUseCase.invoke(stage, number).onSuccess {
-                    _quizState.value = UiState.Success(
-                        Quiz(
-                            it.answer,
-                            it.choices,
-                            it.count,
-                            it.id,
-                            it.imageURL,
-                            it.number,
-                            it.question,
-                            it.quizType,
-                            it.stage
-                        )
+                _quizState.value = UiState.Success(
+                    Quiz(
+                        it.answer,
+                        it.choices,
+                        it.count,
+                        it.id,
+                        it.imageURL,
+                        it.number,
+                        it.question,
+                        it.quizType,
+                        it.stage
                     )
-                }.onFailure {
-                    _quizState.value = UiState.Failure(message = "퀴즈 불러오기 실패")
-                }
+                )
+            }.onFailure {
+                _quizState.value = UiState.Failure(message = "퀴즈 불러오기 실패")
+            }
         }
     }
 
@@ -66,7 +66,7 @@ class QuizEntryViewModel @Inject constructor(
             checkAnswerUseCase.invoke(
                 getAccessTokenUseCase.invoke().getOrNull().toString(), stage, number, answer
             )
-            .onSuccess {
+                .onSuccess {
                     _checkAnswerState.value = UiState.Success(it)
                     LoggerUtils.d("답 확인 성공: $it")
                 }.onFailure {
@@ -90,7 +90,7 @@ class QuizEntryViewModel @Inject constructor(
             checkClearUseCase.invoke(
                 getAccessTokenUseCase.invoke().getOrNull().toString(), stage
             )
-            .onSuccess {
+                .onSuccess {
                     _checkClearState.value = UiState.Success(it)
                     LoggerUtils.d("클리어 확인 성공: $it")
                 }.onFailure {

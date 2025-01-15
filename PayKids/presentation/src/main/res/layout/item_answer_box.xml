@@ -1,25 +1,25 @@
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="166dp"
     android:layout_height="196dp"
-    android:orientation="vertical"
     android:background="@drawable/shape_quiz_box_default"
-    android:gravity="center">
+    android:gravity="center"
+    android:orientation="vertical">
 
     <!-- 이미지 -->
     <FrameLayout
         android:layout_width="120dp"
         android:layout_height="120dp"
-        android:background="@drawable/shape_bg_quiz_image"
-        android:clipToOutline="true">
+        android:background="@drawable/shape_bg_quiz_image">
 
         <ImageView
             android:id="@+id/iv_answer_image"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:src="@drawable/img_quiz_item_default"
-            android:scaleType="centerCrop" />
+            android:contentDescription="@null"
+            android:scaleType="fitCenter"
+            tools:src="@drawable/img_quiz_item_default" />
+
     </FrameLayout>
 
     <!-- 텍스트 -->
@@ -27,10 +27,11 @@
         android:id="@+id/tv_answer_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        tools:text="디폴트"
+        android:layout_marginTop="11dp"
         android:fontFamily="@font/nanumsquare_bold"
-        android:textSize="16sp"
+        android:gravity="center"
         android:textColor="@color/black"
-        android:layout_marginTop="11dp" />
+        android:textSize="16sp"
+        tools:text="디폴트" />
+
 </LinearLayout>

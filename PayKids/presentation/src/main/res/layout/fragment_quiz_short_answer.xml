@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
+
     <ImageView
         android:id="@+id/iv_background"
         android:layout_width="match_parent"
@@ -30,9 +30,9 @@
             android:layout_gravity="center"
 
             android:fontFamily="@font/nanumsquare_extra_bold"
-            tools:text="2/7"
             android:textColor="@color/black"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            tools:text="2/7" />
 
         <ImageButton
             android:id="@+id/ib_back"
@@ -45,120 +45,124 @@
             android:src="@drawable/ic_left_black" />
     </Toolbar>
 
-    <TextView
-        android:id="@+id/tv_question"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:text="10,000원 권 지폐에는\n어떤 인물이 그려져 있을까요?"
-        android:gravity="center_horizontal"
-        android:textSize="22sp"
-        android:textColor="@color/black"
-        android:fontFamily="@font/nanumsquare_extra_bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/et_answer"
-        android:layout_marginBottom="75.5dp"/>
-
-    <LinearLayout
-        android:id="@+id/ll_correct_answer"
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nsv_content"
         android:layout_width="0dp"
-        android:layout_height="44dp"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:visibility="invisible"
-        android:background="@drawable/shape_quiz_correct_answer_box"
-        app:layout_constraintStart_toStartOf="@id/et_answer"
-        app:layout_constraintEnd_toEndOf="@id/et_answer"
-        app:layout_constraintBottom_toTopOf="@id/et_answer"
-        android:layout_marginBottom="13.5dp"
-        android:layout_marginHorizontal="4.5dp">
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_check_white"
-            android:paddingStart="15dp"/>
-
-        <TextView
-            android:id="@+id/tv_correct_answer"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="정답이에요!"
-            android:fontFamily="@font/nanumsquare_extra_bold"
-            android:textSize="18sp"
-            android:textColor="@android:color/white"
-            android:gravity="center"
-            android:layout_marginStart="-15dp"
-            android:layout_weight="1"/>
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/ll_wrong_answer"
-        android:layout_width="0dp"
-        android:layout_height="44dp"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:visibility="invisible"
-        android:background="@drawable/shape_quiz_wrong_answer_box"
-        app:layout_constraintStart_toStartOf="@id/et_answer"
-        app:layout_constraintEnd_toEndOf="@id/et_answer"
-        app:layout_constraintBottom_toTopOf="@id/et_answer"
-        android:layout_marginBottom="13.5dp"
-        android:layout_marginHorizontal="4.5dp">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_cancel_white"
-            android:paddingStart="15dp"/>
-
-        <TextView
-            android:id="@+id/tv_wrong_answer"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="오답이에요.."
-            android:fontFamily="@font/nanumsquare_extra_bold"
-            android:textSize="18sp"
-            android:textColor="@android:color/white"
-            android:gravity="center"
-            android:layout_marginStart="-15dp"
-            android:layout_weight="1"/>
-    </LinearLayout>
-
-    <EditText
-        android:id="@+id/et_answer"
-        android:layout_width="match_parent"
-        android:layout_height="95dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tb_quiz"
         app:layout_constraintBottom_toTopOf="@id/tv_decision"
-        android:layout_marginBottom="216dp"
-        android:layout_marginHorizontal="15.5dp"
-        android:textColor="@color/black"
-        android:textSize="22sp"
-        android:fontFamily="@font/nanumsquare_extra_bold"
-        android:inputType="text"
-        android:hint="정답 입력하기..."
-        android:textColorHint="@color/gray2"
-        android:gravity="center"
-        android:background="@drawable/shape_quiz_answer_input_box"
-        android:paddingHorizontal="22.5dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="vertical"
+            android:paddingHorizontal="16dp">
+
+            <TextView
+                android:id="@+id/tv_question"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/nanumsquare_extra_bold"
+                android:gravity="center_horizontal"
+                android:textColor="@color/black"
+                android:textSize="24sp"
+                tools:text="10,000원 권 지폐에는\n어떤 인물이 그려져 있을까요?" />
+
+            <LinearLayout
+                android:id="@+id/ll_correct_answer"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/shape_quiz_correct_answer_box"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:visibility="invisible">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@null"
+                    android:paddingStart="15dp"
+                    android:src="@drawable/ic_check_white" />
+
+                <TextView
+                    android:id="@+id/tv_correct_answer"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/nanumsquare_extra_bold"
+                    android:gravity="center"
+                    android:text="@string/text_correct_answer"
+                    android:textColor="@android:color/white"
+                    android:textSize="18sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_wrong_answer"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/shape_quiz_wrong_answer_box"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:visibility="invisible">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@null"
+                    android:paddingStart="15dp"
+                    android:src="@drawable/ic_cancel_white" />
+
+                <TextView
+                    android:id="@+id/tv_wrong_answer"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/nanumsquare_extra_bold"
+                    android:gravity="center"
+                    android:text="@string/text_wrong_answer"
+                    android:textColor="@android:color/white"
+                    android:textSize="18sp" />
+            </LinearLayout>
+
+            <EditText
+                android:id="@+id/et_answer"
+                android:layout_width="match_parent"
+                android:layout_height="95dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/shape_quiz_answer_input_box"
+                android:fontFamily="@font/nanumsquare_extra_bold"
+                android:gravity="center"
+                android:hint="@string/hint_input_answer"
+                android:importantForAutofill="no"
+                android:inputType="text"
+                android:paddingHorizontal="22.5dp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/gray2"
+                android:textSize="22sp" />
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 
     <TextView
         android:id="@+id/tv_decision"
         android:layout_width="0dp"
-        android:layout_height="50dp"
+        android:layout_height="56dp"
+        android:layout_marginHorizontal="12dp"
+        android:layout_marginBottom="12dp"
         android:background="@drawable/shape_quiz_decision_box"
-        app:layout_constraintStart_toStartOf="@id/et_answer"
-        app:layout_constraintEnd_toEndOf="@id/et_answer"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:text="결정하기"
         android:fontFamily="@font/nanumsquare_extra_bold"
-        android:textSize="18sp"
-        android:textColor="@android:color/white"
         android:gravity="center"
-        android:layout_marginBottom="61.5dp"
-        android:layout_marginHorizontal="4.5dp"
-        />
+        android:text="@string/text_confirm_answer"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

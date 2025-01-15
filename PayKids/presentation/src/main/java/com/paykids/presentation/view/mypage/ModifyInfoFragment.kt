@@ -2,6 +2,9 @@ package com.paykids.presentation.view.mypage
 
 import android.content.Intent
 import android.net.Uri
+import android.os.Bundle
+import android.view.View
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
@@ -19,6 +22,7 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class ModifyInfoFragment : BaseFragment<FragmentModifyInfoBinding>(), ConfirmDialogInterface {
+    private lateinit var backPressedCallback: OnBackPressedCallback
     private val myPageViewModel: MyPageViewModel by viewModels()
 
     override fun initView() {
@@ -167,6 +171,20 @@ class ModifyInfoFragment : BaseFragment<FragmentModifyInfoBinding>(), ConfirmDia
 
     override fun onYesButtonClick() {
         myPageViewModel.withdraw()
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        backPressedCallback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+            }
+        }
+
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            backPressedCallback
+        )
     }
 
     override fun onResume() {

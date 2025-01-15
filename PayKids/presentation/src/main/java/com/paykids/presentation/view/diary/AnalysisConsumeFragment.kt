@@ -3,6 +3,7 @@ package com.paykids.presentation.view.diary
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
+import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -22,7 +23,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisAllowanceBinding>() {
     private val viewModel: DiaryViewModel by activityViewModels()
     private val categoryViewModel: CategoryViewModel by viewModels()
-
+    private lateinit var backPressedCallback: OnBackPressedCallback
     private var categories = mutableListOf<String>()
     private lateinit var adapter: AllowanceCategoryAdapter
     private var isDeleteMode = false
@@ -73,6 +74,16 @@ class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisAllowanceBinding>()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupFragmentResultListener()
+
+        backPressedCallback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+            }
+        }
+
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            backPressedCallback
+        )
     }
 
     @SuppressLint("SetTextI18n")
@@ -234,7 +245,7 @@ class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisAllowanceBinding>()
         updateDeleteButtonVisibility(categories)
     }
 
-    private fun  deleteExpenseItems(): List<String> {
+    private fun deleteExpenseItems(): List<String> {
         val selectedItems = adapter.getSelectedCategories()
         val selectedNames = selectedItems.map { it.name }
 

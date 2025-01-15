@@ -2,7 +2,9 @@ package com.paykids.presentation.view.quiz
 
 import QuizMultipleChoiceRvAdapter
 import android.annotation.SuppressLint
+import android.os.Bundle
 import android.view.View
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -13,13 +15,16 @@ import com.paykids.presentation.base.BaseFragment
 import com.paykids.presentation.custom.ConfirmDialogInterface
 import com.paykids.presentation.databinding.FragmentQuizMultipleChoiceImgBinding
 import com.paykids.presentation.utils.UiState
+import com.paykids.presentation.view.home.HomeActivity
 import com.paykids.util.LoggerUtils
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class QuizMultipleChoiceImgFragment : BaseFragment<FragmentQuizMultipleChoiceImgBinding>(), ConfirmDialogInterface {
+class QuizMultipleChoiceImgFragment : BaseFragment<FragmentQuizMultipleChoiceImgBinding>(),
+    ConfirmDialogInterface {
+    private lateinit var backPressedCallback: OnBackPressedCallback
     private val quizEntryViewModel: QuizEntryViewModel by activityViewModels()
     private val args: QuizMultipleChoiceImgFragmentArgs by navArgs()
     private var stageNumber: Int = 0
@@ -30,6 +35,7 @@ class QuizMultipleChoiceImgFragment : BaseFragment<FragmentQuizMultipleChoiceImg
     private val adapter by lazy {
         QuizMultipleChoiceRvAdapter { answer -> onAnswerClicked(answer) }
     }
+
     override fun initView() {
         stageNumber = args.stageNumber
         quizNumber = args.quizNumber
@@ -74,7 +80,7 @@ class QuizMultipleChoiceImgFragment : BaseFragment<FragmentQuizMultipleChoiceImg
 
                 is UiState.Success -> {
                     val quiz = it.data
-                    if (quiz.number > quizNumber ) { // 퀴즈를 풀어 다음 퀴즈 번호를 관찰한 경우
+                    if (quiz.number > quizNumber) { // 퀴즈를 풀어 다음 퀴즈 번호를 관찰한 경우
                         navigateToNextQuiz()
                         return@observe
                     }
@@ -166,30 +172,71 @@ class QuizMultipleChoiceImgFragment : BaseFragment<FragmentQuizMultipleChoiceImg
             when (quiz.quizType) {
                 "IMAGE_CHOICE" -> {
                     val action = QuizMultipleChoiceImgFragmentDirections
-                        .actionQuizMultipleChoiceImgFragmentToQuizImageFragment(stageNumber, quizNumber)
+                        .actionQuizMultipleChoiceImgFragmentToQuizImageFragment(
+                            stageNumber,
+                            quizNumber
+                        )
                     findNavController().navigate(action)
                 }
+
                 "TEXT_CHOICE" -> {
                     val action = if (quiz.imageURL.isNullOrEmpty()) {
                         QuizMultipleChoiceImgFragmentDirections
-                            .actionQuizMultipleChoiceImgFragmentToQuizMultipleChoiceFragment(stageNumber, quizNumber)
+                            .actionQuizMultipleChoiceImgFragmentToQuizMultipleChoiceFragment(
+                                stageNumber,
+                                quizNumber
+                            )
                     } else {
                         QuizMultipleChoiceImgFragmentDirections
-                            .actionQuizMultipleChoiceImgFragmentToQuizMultipleChoiceImgFragment(stageNumber, quizNumber)
+                            .actionQuizMultipleChoiceImgFragmentToQuizMultipleChoiceImgFragment(
+                                stageNumber,
+                                quizNumber
+                            )
                     }
                     findNavController().navigate(action)
                 }
+
                 "SHORT_ANSWER" -> {
                     val action = if (quiz.imageURL.isNullOrEmpty()) {
                         QuizMultipleChoiceImgFragmentDirections
-                            .actionQuizMultipleChoiceImgFragmentToQuizShortAnswerFragment(stageNumber, quizNumber)
+                            .actionQuizMultipleChoiceImgFragmentToQuizShortAnswerFragment(
+                                stageNumber,
+                                quizNumber
+                            )
                     } else {
                         QuizMultipleChoiceImgFragmentDirections
-                            .actionQuizMultipleChoiceImgFragmentToQuizShortAnswerImgFragment(stageNumber, quizNumber)
+                            .actionQuizMultipleChoiceImgFragmentToQuizShortAnswerImgFragment(
+                                stageNumber,
+                                quizNumber
+                            )
                     }
                     findNavController().navigate(action)
                 }
             }
         }
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        backPressedCallback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+            }
+        }
+
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            backPressedCallback
+        )
+    }
+
+    override fun onResume() {
+        super.onResume()
+        (requireActivity() as? HomeActivity)?.setBottomNavigationVisibility(false)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        (requireActivity() as? HomeActivity)?.setBottomNavigationVisibility(true)
     }
 }

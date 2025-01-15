@@ -19,6 +19,12 @@
     <string name="text_btn_quiz">퀴즈 풀기</string>
     <string name="text_btn_review">오답노트 풀기</string>
 
+    <!-- 퀴즈 풀기 화면 -->
+    <string name="text_correct_answer">정답이에요!</string>
+    <string name="text_wrong_answer">오답이에요..</string>
+    <string name="hint_input_answer">정답 입력하기...</string>
+    <string name="text_confirm_answer">결정하기</string>
+
     <!-- 퀴즈 클리어 화면 -->
     <string name="text_box_all_clear">스테이지 클리어!\n놀라워요! 모든 문제를 다 맞혔어요!</string>
     <string name="text_box_first_clear">스테이지 클리어!\n축하해요! 틀린 문제도 복습해봐요!</string>
@@ -97,14 +103,6 @@
     <string name="dialog_hint_add_amount">금액을 입력하세요</string>
     <string name="dialog_hint_memo">메모를 입력하세요</string>
     <string name="dialog_text_submit">완료</string>
-
-    <string-array name="category_array">
-        <item>편의점</item>
-        <item>카페</item>
-        <item>서점</item>
-        <item>보드게임</item>
-        <item>방탈출</item>
-    </string-array>
 
     <!-- 소비 상세 내역 페이지 -->
     <string name="text_delete_category">카테고리 삭제</string>

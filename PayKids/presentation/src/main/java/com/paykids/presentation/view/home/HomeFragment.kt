@@ -5,6 +5,7 @@ import android.view.Gravity
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.ImageView
+import androidx.activity.addCallback
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.ContextCompat
@@ -23,7 +24,6 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
-    // 데이터 클래스 정의
     data class Stage(
         val number: Int, val imageResIdLock: Int, val imageResIdUnlock: Int
     )
@@ -34,9 +34,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     private lateinit var stageName: String
     private var unlockedStageNumber: Int = 0
 
-
     override fun initView() {
         homeViewModel.getStageToGo()
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
+            onBackPressed()
+        }
     }
 
     override fun initListener() {

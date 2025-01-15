@@ -7,14 +7,12 @@ import com.kakao.sdk.user.UserApiClient
 import com.paykids.domain.enums.AuthProvider
 import com.paykids.domain.model.auth.SignInInfo
 import com.paykids.util.LoggerUtils
-import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
 
 class KakaoAuthService @Inject constructor(
-    @ApplicationContext private val context: Context,
     private val client: UserApiClient,
 ) {
 
@@ -24,8 +22,8 @@ class KakaoAuthService @Inject constructor(
         const val KAKAO_ID_TOKEN = "카카오 ID 토큰"
     }
 
-    private val isKakaoTalkLoginAvailable: Boolean
-        get() = client.isKakaoTalkLoginAvailable(context)
+    private fun Context.isKakaoTalkLoginAvailable(): Boolean =
+        client.isKakaoTalkLoginAvailable(this)
 
     /**
     +     * 카카오 로그인을 수행합니다.
@@ -33,14 +31,13 @@ class KakaoAuthService @Inject constructor(
     +     * @throws IllegalStateException 토큰 발급 실패 시
     +     * @return SignInInfo 로그인 성공 시 사용자 정보
     +     */
-    suspend fun signInWithKakao(): SignInInfo {
+    suspend fun signInWithKakao(context: Context): SignInInfo {
         return suspendCoroutine { continuation ->
             val callback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
                 if (error != null) {
-                    LoggerUtils.e("로그인 실패 ${error}")
+                    LoggerUtils.e("로그인 실패 $error")
                     continuation.resumeWithException(error)
                 } else if (token != null) {
-//                    val idToken = token.accessToken
                     val idToken = token.idToken!!
                     val provider = AuthProvider.KAKAO
                     continuation.resume(SignInInfo(idToken, provider))
@@ -49,7 +46,7 @@ class KakaoAuthService @Inject constructor(
                 }
             }
 
-            if (isKakaoTalkLoginAvailable) {
+            if (context.isKakaoTalkLoginAvailable()) {
                 client.loginWithKakaoTalk(context, callback = callback)
             } else {
                 client.loginWithKakaoAccount(context, callback = callback)
