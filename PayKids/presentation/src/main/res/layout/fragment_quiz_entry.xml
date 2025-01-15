@@ -29,13 +29,13 @@
 
         android:paddingHorizontal="16dp"
         android:paddingVertical="8dp"
-        android:text="스테이지 1"
         android:textColor="@color/gray8"
         android:textSize="16sp"
-
         app:layout_constraintEnd_toEndOf="parent"
+
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="스테이지 1" />
 
     <TextView
         android:id="@+id/tv_stage_name"
@@ -45,12 +45,11 @@
 
         android:fontFamily="@font/nanumsquare_extra_bold"
         android:gravity="center"
-        android:text="화폐의 단위에 대해 알아보아요"
         android:textColor="@color/white"
         android:textSize="24sp"
 
-        app:layout_constraintTop_toBottomOf="@id/tv_stage" />
-
+        app:layout_constraintTop_toBottomOf="@id/tv_stage"
+        tools:text="화폐의 단위에 대해 알아보아요" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_study"
@@ -102,6 +101,5 @@
         android:textSize="20sp"
 
         app:layout_constraintTop_toBottomOf="@id/btn_quiz" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
