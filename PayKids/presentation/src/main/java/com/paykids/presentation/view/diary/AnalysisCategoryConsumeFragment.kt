@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
+import android.view.View
+import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.navArgs
@@ -19,6 +21,7 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class AnalysisCategoryConsumeFragment : BaseFragment<FragmentAnalysisCategoryAllowanceBinding>() {
+    private lateinit var backPressedCallback: OnBackPressedCallback
     private val viewModel: DiaryViewModel by activityViewModels()
     private lateinit var adapter: CategoryDetailAllowanceAdapter
 
@@ -138,6 +141,20 @@ class AnalysisCategoryConsumeFragment : BaseFragment<FragmentAnalysisCategoryAll
                 }
             }
         }
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        backPressedCallback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+            }
+        }
+
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            backPressedCallback
+        )
     }
 
     override fun onResume() {

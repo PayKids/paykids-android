@@ -1,6 +1,9 @@
 package com.paykids.presentation.view.quiz
 
 import android.annotation.SuppressLint
+import android.os.Bundle
+import android.view.View
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,6 +17,7 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class StudyFragment : BaseFragment<FragmentStudyBinding>() {
+    private lateinit var backPressedCallback: OnBackPressedCallback
     private val args: StudyFragmentArgs by navArgs()
     private val viewModel: StudyViewModel by viewModels()
     private lateinit var studyAdapter: StudyRvAdapter
@@ -114,6 +118,20 @@ class StudyFragment : BaseFragment<FragmentStudyBinding>() {
 
         viewModel.sendQuestion(messageContent)
         binding.etSendChat.text.clear()
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        backPressedCallback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+            }
+        }
+
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            backPressedCallback
+        )
     }
 
     override fun onResume() {

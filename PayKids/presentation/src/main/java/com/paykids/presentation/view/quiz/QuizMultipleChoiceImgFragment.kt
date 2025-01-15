@@ -2,7 +2,9 @@ package com.paykids.presentation.view.quiz
 
 import QuizMultipleChoiceRvAdapter
 import android.annotation.SuppressLint
+import android.os.Bundle
 import android.view.View
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -22,6 +24,7 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class QuizMultipleChoiceImgFragment : BaseFragment<FragmentQuizMultipleChoiceImgBinding>(),
     ConfirmDialogInterface {
+    private lateinit var backPressedCallback: OnBackPressedCallback
     private val quizEntryViewModel: QuizEntryViewModel by activityViewModels()
     private val args: QuizMultipleChoiceImgFragmentArgs by navArgs()
     private var stageNumber: Int = 0
@@ -211,6 +214,20 @@ class QuizMultipleChoiceImgFragment : BaseFragment<FragmentQuizMultipleChoiceImg
                 }
             }
         }
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        backPressedCallback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+            }
+        }
+
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            backPressedCallback
+        )
     }
 
     override fun onResume() {
