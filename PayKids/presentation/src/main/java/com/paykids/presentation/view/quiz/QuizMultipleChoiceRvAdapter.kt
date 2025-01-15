@@ -34,16 +34,13 @@ class QuizMultipleChoiceRvAdapter(
         }
     }
 
-    // 정답 설정 메서드
     fun setCorrectAnswer(answerLetter: String) {
         correctAnswerLetter = answerLetter
     }
 
-    // 선택된 답 갱신 메서드
     fun updateSelectedAnswer(answerLetter: String) {
         selectedAnswerLetter = answerLetter
 
-        // 선택된 항목과 정답 항목만 갱신
         val selectedPosition = currentList.indexOfFirst { it.first == answerLetter }
         val correctPosition = currentList.indexOfFirst { it.first == correctAnswerLetter }
 
@@ -57,7 +54,7 @@ class QuizMultipleChoiceRvAdapter(
         private val tvAnswer: TextView = itemView.findViewById(R.id.tv_answer)
 
         fun bind(answer: Pair<String, String>) {
-            tvAnswer.text = answer.second // 답의 실제 문자열 표시
+            tvAnswer.text = answer.second
 
             // 선택 상태와 정답 상태에 따른 UI 변경
             when {
@@ -94,16 +91,13 @@ class QuizMultipleChoiceRvAdapter(
 
     // 배경 설정 함수 (기존 패딩을 유지)
     private fun applyBackgroundWithPadding(tvAnswer: TextView, backgroundDrawable: Drawable?) {
-        // 기존 패딩을 가져오기
         val paddingLeft = tvAnswer.paddingLeft
         val paddingTop = tvAnswer.paddingTop
         val paddingRight = tvAnswer.paddingRight
         val paddingBottom = tvAnswer.paddingBottom
 
-        // 배경을 설정
         tvAnswer.background = backgroundDrawable
 
-        // 배경을 설정한 후 패딩을 다시 적용
         tvAnswer.setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom)
     }
 

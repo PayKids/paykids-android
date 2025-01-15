@@ -12,6 +12,7 @@ import com.paykids.presentation.base.BaseFragment
 import com.paykids.presentation.custom.ConfirmDialogInterface
 import com.paykids.presentation.databinding.FragmentQuizImageBinding
 import com.paykids.presentation.utils.UiState
+import com.paykids.presentation.view.home.HomeActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -244,4 +245,13 @@ class QuizImageFragment : BaseFragment<FragmentQuizImageBinding>(), ConfirmDialo
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        (requireActivity() as? HomeActivity)?.setBottomNavigationVisibility(false)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        (requireActivity() as? HomeActivity)?.setBottomNavigationVisibility(true)
+    }
 }

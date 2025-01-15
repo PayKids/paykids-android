@@ -13,6 +13,7 @@ import com.paykids.presentation.base.BaseFragment
 import com.paykids.presentation.custom.ConfirmDialogInterface
 import com.paykids.presentation.databinding.FragmentQuizMultipleChoiceBinding
 import com.paykids.presentation.utils.UiState
+import com.paykids.presentation.view.home.HomeActivity
 import com.paykids.util.LoggerUtils
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
@@ -36,14 +37,11 @@ class QuizMultipleChoiceFragment : BaseFragment<FragmentQuizMultipleChoiceBindin
     override fun initView() {
         stageNumber = args.stageNumber
         quizNumber = args.quizNumber
-        // RecyclerView 초기화
         binding.rvAnswers.apply {
             layoutManager = LinearLayoutManager(requireContext())
-            // 어댑터 초기화
             adapter = this@QuizMultipleChoiceFragment.adapter
         }
 
-        // 퀴즈 데이터 로드
         quizEntryViewModel.getQuiz(stageNumber, quizNumber)
     }
 
@@ -71,7 +69,6 @@ class QuizMultipleChoiceFragment : BaseFragment<FragmentQuizMultipleChoiceBindin
                 }
 
                 is UiState.Loading -> {
-                    // 로딩 상태 처리
                 }
 
                 is UiState.Success -> {
@@ -84,9 +81,8 @@ class QuizMultipleChoiceFragment : BaseFragment<FragmentQuizMultipleChoiceBindin
                     binding.tvQuestion.text = quiz.question
                     binding.tvQuizProgress.text = "${quiz.number}/${quiz.count}"
 
-                    // 답변 리스트 어댑터에 설정
                     val answers = quiz.choices?.map { entry ->
-                        entry.key to entry.value // "A" to "Answer 1"
+                        entry.key to entry.value
                     } ?: emptyList()
                     adapter.submitList(answers)
                     correctAnswerLetter = quiz.answer
@@ -120,16 +116,12 @@ class QuizMultipleChoiceFragment : BaseFragment<FragmentQuizMultipleChoiceBindin
     }
 
     private fun onAnswerClicked(answerLetter: String) {
-        // 답변 클릭 시 처리
-        LoggerUtils.d("Answer clicked: $answerLetter")
-
         userAnswer = answerLetter
         quizEntryViewModel.checkAnswer(stageNumber, quizNumber, answerLetter)
         adapter.updateSelectedAnswer(answerLetter)
 
-        // 딜레이 후 다음 퀴즈 로드
         lifecycleScope.launch {
-            delay(2000L) // 2초 딜레이
+            delay(2000L)
 
             // 마지막 퀴즈인 경우 QuizClearFragment로 이동
             val quizState = quizEntryViewModel.quizState.value
@@ -153,7 +145,6 @@ class QuizMultipleChoiceFragment : BaseFragment<FragmentQuizMultipleChoiceBindin
             binding.ivBackground.setImageResource(R.drawable.bg_quiz_correct)
             binding.llCorrectAnswer.visibility = View.VISIBLE
         } else if (isCorrect == false) {
-            // 오답일 때
             binding.ivBackground.setImageResource(R.drawable.bg_quiz_wrong)
             binding.llWrongAnswer.visibility = View.VISIBLE
         }
@@ -166,7 +157,6 @@ class QuizMultipleChoiceFragment : BaseFragment<FragmentQuizMultipleChoiceBindin
             val stageNumber = quiz.stage
             val quizNumber = quiz.number
 
-            // 각 퀴즈 유형에 따라 프래그먼트로 전달
             when (quiz.quizType) {
                 "IMAGE_CHOICE" -> {
                     val action =
@@ -203,5 +193,15 @@ class QuizMultipleChoiceFragment : BaseFragment<FragmentQuizMultipleChoiceBindin
                 }
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        (requireActivity() as? HomeActivity)?.setBottomNavigationVisibility(false)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        (requireActivity() as? HomeActivity)?.setBottomNavigationVisibility(true)
     }
 }

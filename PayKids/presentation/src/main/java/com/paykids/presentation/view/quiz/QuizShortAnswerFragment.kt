@@ -11,6 +11,7 @@ import com.paykids.presentation.base.BaseFragment
 import com.paykids.presentation.custom.ConfirmDialogInterface
 import com.paykids.presentation.databinding.FragmentQuizShortAnswerBinding
 import com.paykids.presentation.utils.UiState
+import com.paykids.presentation.view.home.HomeActivity
 import com.paykids.util.LoggerUtils
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
@@ -46,19 +47,15 @@ class QuizShortAnswerFragment : BaseFragment<FragmentQuizShortAnswerBinding>(),
             dialog.show(parentFragmentManager, "AllClearDialog")
         }
         binding.tvDecision.setOnClickListener {
-            // 사용자가 입력한 답을 가져와서 체크
             userAnswer = binding.etAnswer.text.toString().trim()
-            // 정답이 비어 있는 경우 메시지 표시
             if (userAnswer.isEmpty()) {
                 showToast("정답을 입력해주세요.")
                 return@setOnClickListener
             }
-            // 답안을 체크하는 메서드 호출
             quizEntryViewModel.checkAnswer(stageNumber, quizNumber, userAnswer)
 
-            // 딜레이 후 다음 퀴즈 로드
             lifecycleScope.launch {
-                delay(2000L) // 2초 딜레이
+                delay(2000L)
 
                 // 마지막 퀴즈인 경우 QuizClearFragment로 이동
                 val quizState = quizEntryViewModel.quizState.value
@@ -185,6 +182,16 @@ class QuizShortAnswerFragment : BaseFragment<FragmentQuizShortAnswerBinding>(),
                 }
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        (requireActivity() as? HomeActivity)?.setBottomNavigationVisibility(false)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        (requireActivity() as? HomeActivity)?.setBottomNavigationVisibility(true)
     }
 
 }

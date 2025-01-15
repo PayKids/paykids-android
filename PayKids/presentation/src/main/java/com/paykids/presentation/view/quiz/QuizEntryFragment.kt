@@ -1,5 +1,6 @@
 package com.paykids.presentation.view.quiz
 
+import android.annotation.SuppressLint
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -19,8 +20,8 @@ class QuizEntryFragment : BaseFragment<FragmentQuizEntryBinding>(), ConfirmDialo
     private val incorrectQuiz = 0
     private var clear = false
 
+    @SuppressLint("SetTextI18n")
     override fun initView() {
-        // 전달받은 스테이지 번호와 이름 사용
         val stageNumber = args.stageNumber
         val stageName = args.stageName
 
@@ -96,39 +97,49 @@ class QuizEntryFragment : BaseFragment<FragmentQuizEntryBinding>(), ConfirmDialo
             val stageNumber = quiz.stage
             val quizNumber = quiz.number
 
-            // 각 퀴즈 유형에 따라 프래그먼트로 전달
             when (quiz.quizType) {
                 "IMAGE_CHOICE" -> {
                     val action = QuizEntryFragmentDirections
                         .actionQuizEntryFragmentToQuizImageFragment(stageNumber, quizNumber)
                     findNavController().navigate(action)
                 }
+
                 "TEXT_CHOICE" -> {
                     val action = if (quiz.imageURL.isNullOrEmpty()) {
                         QuizEntryFragmentDirections
-                            .actionQuizEntryFragmentToQuizMultipleChoiceFragment(stageNumber, quizNumber)
+                            .actionQuizEntryFragmentToQuizMultipleChoiceFragment(
+                                stageNumber,
+                                quizNumber
+                            )
                     } else {
                         QuizEntryFragmentDirections
-                            .actionQuizEntryFragmentToQuizMultipleChoiceImgFragment(stageNumber, quizNumber)
+                            .actionQuizEntryFragmentToQuizMultipleChoiceImgFragment(
+                                stageNumber,
+                                quizNumber
+                            )
                     }
                     findNavController().navigate(action)
                 }
+
                 "SHORT_ANSWER" -> {
                     val action = if (quiz.imageURL.isNullOrEmpty()) {
                         QuizEntryFragmentDirections
-                            .actionQuizEntryFragmentToQuizShortAnswerFragment(stageNumber, quizNumber)
+                            .actionQuizEntryFragmentToQuizShortAnswerFragment(
+                                stageNumber,
+                                quizNumber
+                            )
                     } else {
                         QuizEntryFragmentDirections
-                            .actionQuizEntryFragmentToQuizShortAnswerImgFragment(stageNumber, quizNumber)
+                            .actionQuizEntryFragmentToQuizShortAnswerImgFragment(
+                                stageNumber,
+                                quizNumber
+                            )
                     }
                     findNavController().navigate(action)
                 }
             }
         }
     }
-
-
-
 
     override fun onYesButtonClick() {
         // 퀴즈 풀기 페이지로 이동
