@@ -8,6 +8,7 @@ import com.paykids.domain.enums.AuthProvider
 import com.paykids.domain.model.auth.SignInInfo
 import com.paykids.util.LoggerUtils
 import javax.inject.Inject
+import kotlin.coroutines.Continuation
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
@@ -15,12 +16,6 @@ import kotlin.coroutines.suspendCoroutine
 class KakaoAuthService @Inject constructor(
     private val client: UserApiClient,
 ) {
-
-    companion object {
-        const val KAKAO_TALK = "카카오톡"
-        const val KAKAO_ACCOUNT = "카카오계정"
-        const val KAKAO_ID_TOKEN = "카카오 ID 토큰"
-    }
 
     private fun Context.isKakaoTalkLoginAvailable(): Boolean =
         client.isKakaoTalkLoginAvailable(this)
@@ -33,38 +28,54 @@ class KakaoAuthService @Inject constructor(
     +     */
     suspend fun signInWithKakao(context: Context): SignInInfo {
         return suspendCoroutine { continuation ->
-            val callback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
-                if (error != null) {
-                    LoggerUtils.e("로그인 실패 $error")
-                    continuation.resumeWithException(error)
-                } else if (token != null) {
-                    val idToken = token.idToken!!
-                    val provider = AuthProvider.KAKAO
-                    continuation.resume(SignInInfo(idToken, provider))
-                } else {
-                    continuation.resumeWithException(IllegalStateException("토큰 발급 실패"))
-                }
-            }
+            val callback = createLoginCallback(context, continuation)
 
             if (context.isKakaoTalkLoginAvailable()) {
-                client.loginWithKakaoTalk(context, callback = callback)
+                loginWithKakaoTalk(context, callback)
             } else {
-                client.loginWithKakaoAccount(context, callback = callback)
+                loginWithKakaoAccount(context, callback)
             }
         }
     }
 
-    private fun signInSuccess(
-        token: OAuthToken,
-        signInListener: (String, AuthProvider) -> Unit
-    ) {
-        val idToken = token.accessToken
-        val provider = AuthProvider.KAKAO
-        signInListener.invoke(idToken, provider)
+    private fun createLoginCallback(
+        context: Context,
+        continuation: Continuation<SignInInfo>
+    ): (OAuthToken?, Throwable?) -> Unit {
+        return { token, error ->
+            if (error != null) {
+                handleLoginError(context, error, continuation)
+            } else if (token != null) {
+                val idToken = token.idToken!!
+                val provider = AuthProvider.KAKAO
+                continuation.resume(SignInInfo(idToken, provider))
+            } else {
+                continuation.resumeWithException(IllegalStateException("토큰 발급 실패"))
+            }
+        }
     }
 
-    private fun signInError(error: Throwable) {
-        Log.e("KakaoAuthService", "카카오 로그인 실패: ${error.message}")
+    private fun handleLoginError(
+        context: Context,
+        error: Throwable, continuation: Continuation<SignInInfo>
+    ) {
+        LoggerUtils.e("로그인 실패 $error")
+        if (error.toString().contains("statusCode=302")) {
+            LoggerUtils.e("카카오 계정 로그인 시도")
+            loginWithKakaoAccount(context, createLoginCallback(context, continuation))
+        }
+        continuation.resumeWithException(error)
+    }
+
+    private fun loginWithKakaoTalk(context: Context, callback: (OAuthToken?, Throwable?) -> Unit) {
+        client.loginWithKakaoTalk(context, callback = callback)
+    }
+
+    private fun loginWithKakaoAccount(
+        context: Context,
+        callback: (OAuthToken?, Throwable?) -> Unit
+    ) {
+        UserApiClient.instance.loginWithKakaoAccount(context, callback = callback)
     }
 
     fun signOut(signOutListener: ((Throwable?) -> Unit)? = null) {
