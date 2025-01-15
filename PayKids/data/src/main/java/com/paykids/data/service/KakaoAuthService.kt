@@ -1,6 +1,5 @@
 package com.paykids.data.service
 
-import android.app.Activity
 import android.content.Context
 import android.util.Log
 import com.kakao.sdk.auth.model.OAuthToken
@@ -8,8 +7,6 @@ import com.kakao.sdk.user.UserApiClient
 import com.paykids.domain.enums.AuthProvider
 import com.paykids.domain.model.auth.SignInInfo
 import com.paykids.util.LoggerUtils
-import dagger.hilt.android.qualifiers.ActivityContext
-import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException

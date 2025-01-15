@@ -5,7 +5,6 @@ import com.paykids.data.service.KakaoAuthService
 import com.paykids.domain.model.auth.SignInInfo
 import com.paykids.domain.repository.KakaoAuthRepository
 import javax.inject.Inject
-import javax.inject.Provider
 
 class KakaoAuthRepositoryImpl @Inject constructor(
     private val kakaoAuthService: KakaoAuthService

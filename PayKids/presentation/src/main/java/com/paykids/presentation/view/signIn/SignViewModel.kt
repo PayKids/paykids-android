@@ -1,6 +1,5 @@
 package com.paykids.presentation.view.signIn
 
-import android.app.Activity
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
