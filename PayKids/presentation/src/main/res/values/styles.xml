@@ -6,6 +6,16 @@
         <item name="android:textSize">12sp</item>
     </style>
 
+    <!-- 바텀 내비게이션 활성화된 아이템의 텍스트 스타일 -->
+    <style name="BottomNavTextActive">
+        <item name="fontFamily">@font/nanumsquare_extra_bold</item>
+    </style>
+
+    <!-- 바텀 내비게이션 비활성화된 아이템의 텍스트 스타일 -->
+    <style name="BottomNavTextInactive">
+        <item name="fontFamily">@font/nanumsquare_extra_bold</item>
+    </style>
+
     <style name="CircleImageView">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">50%</item>
