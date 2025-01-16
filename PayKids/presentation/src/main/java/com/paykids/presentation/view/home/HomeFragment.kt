@@ -1,14 +1,18 @@
 package com.paykids.presentation.view.home
 
 import android.graphics.drawable.GradientDrawable
+import android.os.Build
 import android.view.Gravity
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.ImageView
 import androidx.activity.addCallback
+import androidx.annotation.RequiresApi
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.ContextCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.paykids.presentation.R
@@ -39,6 +43,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
             onBackPressed()
         }
+        hideStatusBar()
     }
 
     override fun initListener() {
@@ -157,17 +162,16 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
     private fun createStages(stages: List<Stage>) {
         val stageOffsets = listOf(62, 35, 90, 154, 206, 233) // 각 Stage의 수평 오프셋
-        val imageViewSize = 90.dp // ImageView 크기
+        val imageViewSize = 90.dp
         val verticalSpacing = 60.dp // Stage 간의 세로 간격
-        val initialTopMargin = 163.dp // 첫 번째 스테이지의 top 마진
+        val initialTopMargin = 163.dp
 
-        var previousViewId: Int? = null // 이전 View의 ID 저장
+        var previousViewId: Int? = null
 
-        // 데이터 리스트 기반으로 스테이지 생성
         stages.forEachIndexed { index, stage ->
             val isUnlocked = stage.number <= unlockedStageNumber
-            val frameLayout = createStageFrame(imageViewSize, stage, isUnlocked) // FrameLayout 생성
-            val horizontalOffset = calculateHorizontalOffset(index, stageOffsets) // 수평 오프셋 계산
+            val frameLayout = createStageFrame(imageViewSize, stage, isUnlocked)
+            val horizontalOffset = calculateHorizontalOffset(index, stageOffsets)
 
             addStageToLayout(
                 frameLayout,
@@ -178,7 +182,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                 index
             )
 
-            previousViewId = frameLayout.id // 이전 View ID 업데이트
+            previousViewId = frameLayout.id
         }
     }
 
@@ -197,7 +201,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         frameLayout.addView(borderView)
         frameLayout.addView(imageView)
 
-        setupStageClickListener(frameLayout, stage) // 클릭 리스너 추가
+        setupStageClickListener(frameLayout, stage)
         return frameLayout
     }
 
@@ -252,7 +256,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         constraintSet.clone(constraintLayout)
 
         if (index == 0) {
-            // 첫 번째 Stage는 부모에 고정
             constraintSet.connect(
                 frameLayout.id,
                 ConstraintSet.TOP,
@@ -268,7 +271,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                 horizontalOffset
             )
         } else {
-            // 나머지 Stage는 이전 Stage와 연결
             constraintSet.connect(
                 frameLayout.id,
                 ConstraintSet.TOP,
@@ -299,8 +301,19 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         }.dp
     }
 
-    val Int.dp: Int
+    private val Int.dp: Int
         get() = (this * resources.displayMetrics.density).toInt()
+
+    @RequiresApi(Build.VERSION_CODES.R)
+    private fun hideStatusBar() {
+        val window = requireActivity().window
+        val decorView = window.decorView
+
+        WindowInsetsControllerCompat(window, decorView).apply {
+            systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+            hide(WindowInsetsCompat.Type.systemBars())
+        }
+    }
 
     override fun onResume() {
         super.onResume()
