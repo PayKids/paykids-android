@@ -90,4 +90,22 @@ class UserRemoteDatasourceImpl @Inject constructor(
             Result.failure(e)
         }
     }
+
+    override suspend fun deleteUser(accessToken: String): Result<BaseResponse<String>> {
+        return try {
+            val response = userService.deleteUser(accessToken)
+            if (response.isSuccessful) {
+                val res = response.body()
+                if (res != null) {
+                    Result.success(res)
+                } else {
+                    Result.failure(Exception("delete User failed: response body is null"))
+                }
+            } else {
+                Result.failure(Exception("delete User failed: ${response.message()}"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
 }

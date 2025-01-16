@@ -10,6 +10,7 @@ import com.paykids.domain.usecase.auth.WithdrawalUseCase
 import com.paykids.domain.usecase.datastore.ClearUserDataUseCase
 import com.paykids.domain.usecase.datastore.GetAccessTokenUseCase
 import com.paykids.domain.usecase.user.ChangeNicknameUseCase
+import com.paykids.domain.usecase.user.DeleteUserUseCase
 import com.paykids.domain.usecase.user.GetUserInfoUseCase
 import com.paykids.domain.usecase.user.UpdateProfileImageUseCase
 import com.paykids.presentation.utils.UiState
@@ -26,6 +27,7 @@ class MyPageViewModel @Inject constructor(
     private val updateProfileImageUseCase: UpdateProfileImageUseCase,
     private val signOutUseCase: SignOutUseCase,
     private val withdrawalUseCase: WithdrawalUseCase,
+    private val deleteUserUseCase: DeleteUserUseCase,
     private val clearUserDataUseCase: ClearUserDataUseCase,
     private val getAccessTokenUseCase: GetAccessTokenUseCase
 ) : ViewModel() {
@@ -106,21 +108,40 @@ class MyPageViewModel @Inject constructor(
         }
     }
 
-    private val _withdrawState = MutableLiveData<UiState<Unit>>(UiState.Loading)
-    val withdrawState: LiveData<UiState<Unit>> get() = _withdrawState
+    private val _socialWithdrawState = MutableLiveData<UiState<Unit>>(UiState.Loading)
+    val socialWithdrawState: LiveData<UiState<Unit>> get() = _socialWithdrawState
 
-    fun withdraw() {
-        _withdrawState.value = UiState.Loading
+    fun socialWithdraw() {
+        _socialWithdrawState.value = UiState.Loading
 
         viewModelScope.launch {
             withdrawalUseCase.invoke(getAccessTokenUseCase.invoke().getOrNull().toString())
                 .onSuccess {
-                    _withdrawState.value = UiState.Success(Unit)
-                    LoggerUtils.d("회원 탈퇴 성공")
+                    _socialWithdrawState.value = UiState.Success(Unit)
+                    LoggerUtils.d("소셜 회원 탈퇴 성공")
                 }
                 .onFailure {
-                    _withdrawState.value = UiState.Failure(message = "회원 탈퇴 실패")
-                    LoggerUtils.e("회원 탈퇴 실패")
+                    _socialWithdrawState.value = UiState.Failure(message = "소셜 회원 탈퇴 실패")
+                    LoggerUtils.e("소셜 회원 탈퇴 실패")
+                }
+        }
+    }
+
+    private val _serverWithdrawState = MutableLiveData<UiState<Unit>>(UiState.Loading)
+    val serverWithdrawState: LiveData<UiState<Unit>> get() = _serverWithdrawState
+
+    fun serverWithdraw() {
+        _serverWithdrawState.value = UiState.Loading
+
+        viewModelScope.launch {
+            deleteUserUseCase.invoke(getAccessTokenUseCase.invoke().getOrNull().toString())
+                .onSuccess {
+                    _serverWithdrawState.value = UiState.Success(Unit)
+                    LoggerUtils.d("서버 회원 탈퇴 성공")
+                }
+                .onFailure {
+                    _serverWithdrawState.value = UiState.Failure(message = "서버 회원 탈퇴 실패")
+                    LoggerUtils.e("서버 회원 탈퇴 실패")
                 }
         }
     }

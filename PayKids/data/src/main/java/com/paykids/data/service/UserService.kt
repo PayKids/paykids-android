@@ -4,6 +4,7 @@ import com.paykids.data.model.BaseResponse
 import com.paykids.data.model.UserInfoResponseDTO
 import okhttp3.MultipartBody
 import retrofit2.Response
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.Multipart
@@ -36,4 +37,10 @@ interface UserService {
         @Header("Authorization") accessToken: String,
         @Query("newNickname") newNickname: String
     ): Response<BaseResponse<String>>
+
+    @DELETE("/user/delete")
+    suspend fun deleteUser(
+        @Header("Authorization") accessToken: String
+    ): Response<BaseResponse<String>>
+
 }
