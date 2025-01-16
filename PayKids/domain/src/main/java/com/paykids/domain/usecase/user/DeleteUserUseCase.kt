@@ -1,7 +1,6 @@
 package com.paykids.domain.usecase.user
 
 import com.paykids.domain.repository.UserRepository
-import java.io.File
 import javax.inject.Inject
 
 class DeleteUserUseCase @Inject constructor(
