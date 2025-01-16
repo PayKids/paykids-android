@@ -82,6 +82,7 @@ class QuizImageFragment : BaseFragment<FragmentQuizImageBinding>(), ConfirmDialo
                     binding.tvQuestion.text = quiz.question
                     binding.tvQuizProgress.text = "${quiz.number}/${quiz.count}"
                     quiz.imageURL?.let { it1 -> loadChoiceImages(it1) }
+                    quiz.choices?.let { it2 -> loadChoiceTexts(it2) }
                     correctAnswer = quiz.answer
                 }
             }
@@ -128,6 +129,13 @@ class QuizImageFragment : BaseFragment<FragmentQuizImageBinding>(), ConfirmDialo
             .load(imageURLMap["image4"])
             .into(binding.answerFourth.ivAnswerImage)
 
+    }
+
+    private fun loadChoiceTexts(textChoices: Map<String, String>) {
+        binding.answerFirst.tvAnswerText.text = textChoices["A"]
+        binding.answerSecond.tvAnswerText.text = textChoices["B"]
+        binding.answerThird.tvAnswerText.text = textChoices["C"]
+        binding.answerFourth.tvAnswerText.text = textChoices["D"]
     }
 
     private fun onAnswerClicked(answerNumber: Int) {
