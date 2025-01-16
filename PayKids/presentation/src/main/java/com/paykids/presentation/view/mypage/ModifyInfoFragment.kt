@@ -107,15 +107,29 @@ class ModifyInfoFragment : BaseFragment<FragmentModifyInfoBinding>(), ConfirmDia
             }
         }
 
-        myPageViewModel.withdrawState.observe(viewLifecycleOwner) {
+        myPageViewModel.socialWithdrawState.observe(viewLifecycleOwner) {
             when (it) {
                 is UiState.Loading -> {}
                 is UiState.Failure -> {
-                    showToast("회원 탈퇴 실패")
+                    showToast("소셜 회원 탈퇴 실패")
                 }
 
                 is UiState.Success -> {
-                    showToast("회원 탈퇴 성공")
+                    showToast("소셜 회원 탈퇴 성공")
+                    myPageViewModel.serverWithdraw()
+                }
+            }
+        }
+
+        myPageViewModel.serverWithdrawState.observe(viewLifecycleOwner) {
+            when (it) {
+                is UiState.Loading -> {}
+                is UiState.Failure -> {
+                    showToast("서버 회원 탈퇴 실패")
+                }
+
+                is UiState.Success -> {
+                    showToast("서버 회원 탈퇴 성공")
                     myPageViewModel.clearData()
                 }
             }
@@ -170,7 +184,7 @@ class ModifyInfoFragment : BaseFragment<FragmentModifyInfoBinding>(), ConfirmDia
     }
 
     override fun onYesButtonClick() {
-        myPageViewModel.withdraw()
+        myPageViewModel.socialWithdraw()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

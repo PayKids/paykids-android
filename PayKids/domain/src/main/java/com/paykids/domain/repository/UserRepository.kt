@@ -15,4 +15,6 @@ interface UserRepository {
     suspend fun saveNickname(accessToken: String, nickname: String): Result<String>
 
     suspend fun changeNickname(accessToken: String, newNickname: String): Result<String>
+
+    suspend fun deleteUser(accessToken: String): Result<String>
 }

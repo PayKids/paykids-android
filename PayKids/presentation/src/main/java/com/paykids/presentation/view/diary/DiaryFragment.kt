@@ -11,7 +11,6 @@ import android.text.style.ForegroundColorSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.Window
-import android.view.WindowManager
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
@@ -316,7 +315,6 @@ class DiaryFragment : BaseFragment<FragmentDiaryBinding>(), ConfirmDialogInterfa
         } else {
             viewModel.getIncomeCategory()
         }
-        binding.spinnerCategory.visibility = View.GONE
     }
 
     @SuppressLint("SetTextI18n")
@@ -327,8 +325,10 @@ class DiaryFragment : BaseFragment<FragmentDiaryBinding>(), ConfirmDialogInterfa
         val binding = DialogDiaryBinding.inflate(LayoutInflater.from(requireContext()))
         dialog.setContentView(binding.root)
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
         val width = (resources.displayMetrics.widthPixels * 0.9).toInt()
-        dialog.window?.setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT)
+        val height = (resources.displayMetrics.heightPixels * 0.8).toInt()
+        dialog.window?.setLayout(width, height)
 
         val dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
         var selectedDate = LocalDate.parse(date, dateFormatter)
@@ -345,7 +345,6 @@ class DiaryFragment : BaseFragment<FragmentDiaryBinding>(), ConfirmDialogInterfa
         fun handleCategoryState(uiState: UiState<List<CategoryInfo>>) {
             when (uiState) {
                 is UiState.Loading -> {
-                    binding.spinnerCategory.visibility = View.GONE
                 }
 
                 is UiState.Success -> {

@@ -85,4 +85,19 @@ class UserRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun deleteUser(accessToken: String): Result<String> {
+        val result = userDatasource.deleteUser(accessToken)
+
+        return if (result.isSuccess) {
+            val res = result.getOrNull()
+            if (res != null) {
+                Result.success(res.data)
+            } else {
+                Result.failure(Exception("delete User Failed: response body is null"))
+            }
+        } else {
+            Result.failure(result.exceptionOrNull() ?: Exception("Unknown error"))
+        }
+    }
+
 }

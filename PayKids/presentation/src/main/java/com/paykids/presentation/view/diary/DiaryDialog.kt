@@ -181,17 +181,15 @@ class DiaryDialog : DialogFragment(), ConfirmDialogInterface {
         viewModel.getExpenseCategoryState.observe(viewLifecycleOwner) { uiState ->
             when (uiState) {
                 is UiState.Loading -> {
-                    categorySpinner.visibility = View.GONE
                 }
-                is UiState.Success -> {
-                    categorySpinner.visibility = View.VISIBLE
 
+                is UiState.Success -> {
                     val categories = uiState.data.map { it.category }
                     val adapter = CustomSpinnerAdapter(requireContext(), categories.toTypedArray())
                     categorySpinner.adapter = adapter
                 }
+
                 is UiState.Failure -> {
-                    categorySpinner.visibility = View.GONE
                     Toast.makeText(
                         requireContext(),
                         "카테고리 로드 실패: ${uiState.message}",
@@ -202,7 +200,6 @@ class DiaryDialog : DialogFragment(), ConfirmDialogInterface {
         }
     }
 
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
@@ -211,5 +208,4 @@ class DiaryDialog : DialogFragment(), ConfirmDialogInterface {
     override fun onYesButtonClick() {
         LoggerUtils.d("Button Click")
     }
-
 }

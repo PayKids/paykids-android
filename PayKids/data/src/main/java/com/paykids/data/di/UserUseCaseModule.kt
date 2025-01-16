@@ -2,6 +2,7 @@ package com.paykids.data.di
 
 import com.paykids.domain.repository.UserRepository
 import com.paykids.domain.usecase.user.ChangeNicknameUseCase
+import com.paykids.domain.usecase.user.DeleteUserUseCase
 import com.paykids.domain.usecase.user.GetUserInfoUseCase
 import com.paykids.domain.usecase.user.SaveNicknameUseCase
 import com.paykids.domain.usecase.user.UpdateProfileImageUseCase
@@ -45,6 +46,14 @@ object UserUseCaseModule {
         repository: UserRepository
     ): UpdateProfileImageUseCase {
         return UpdateProfileImageUseCase(repository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideDeleteUserUseCase(
+        repository: UserRepository
+    ): DeleteUserUseCase {
+        return DeleteUserUseCase(repository)
     }
 }
 
