@@ -51,16 +51,15 @@
         android:ellipsize="end"
 
         android:fontFamily="@font/nanumsquare_extra_bold"
-        android:maxWidth="160dp"
-        android:maxLength="14"
+        android:maxLength="12"
         android:maxLines="1"
         android:textColor="@color/gray1"
-        android:textSize="16sp"
+        android:textSize="14sp"
         android:visibility="visible"
 
         app:layout_constraintBottom_toBottomOf="@id/tv_allowance_date"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/tv_allowance_date"
-        tools:text="메모메모" />
+        tools:text="메모메모메모메모" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
