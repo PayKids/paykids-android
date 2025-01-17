@@ -480,7 +480,7 @@ class DiaryFragment : BaseFragment<FragmentDiaryBinding>(), ConfirmDialogInterfa
         dialog.show()
     }
 
-    @SuppressLint("SetTextI18n")
+    @SuppressLint("SetTextI18n", "DefaultLocale")
     fun showModifyDiaryDialog(
         id: Int,
         date: String,
@@ -489,33 +489,177 @@ class DiaryFragment : BaseFragment<FragmentDiaryBinding>(), ConfirmDialogInterfa
         amount: Int,
         memo: String
     ) {
-        val dialog = DiaryDialog().apply {
-            arguments = Bundle().apply {
-                putInt("id", id)
-                putString("date", date)
-                putString("category", category)
-                putInt("amount", amount)
-                putString("memo", memo)
-                putBoolean("isEditMode", true)
-                putBoolean("isConsumeSelected", true)
-            }
-        }
+        val dialog = Dialog(requireContext())
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
 
-        dialog.setOnModifyDiaryListener(object : DiaryDialog.OnModifyDiaryListener {
-            override fun onModify(
-                id: Int,
-                date: String,
-                allowanceType: String,
-                category: String,
-                amount: Int,
-                memo: String
-            ) {
-                viewModel.updateExpense(id, date, allowanceType, category, amount, memo)
+        val binding = DialogDiaryBinding.inflate(LayoutInflater.from(requireContext()))
+        dialog.setContentView(binding.root)
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        val width = (resources.displayMetrics.widthPixels * 0.9).toInt()
+        val height = (resources.displayMetrics.heightPixels * 0.8).toInt()
+        dialog.window?.setLayout(width, height)
+
+        val dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+        var selectedDate = LocalDate.parse(date, dateFormatter)
+//        var isExpenseSelected = allowanceType == "EXPENSE"
+        val currentYear = selectedDate.year
+        val currentMonth = selectedDate.monthValue
+        val currentDay = selectedDate.dayOfMonth
+
+        binding.tvTitle.text = "용돈 수정하기"
+        binding.tvYear.text = "${currentYear}년"
+        binding.tvMonth.text = "${currentMonth}월"
+        binding.tvDay.text = "${currentDay}일"
+
+        binding.etAmount.setText(String.format("%,d", amount))
+        binding.etAmount.addTextChangedListener(object : TextWatcher {
+            private var currentText: String = ""
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+
+            @SuppressLint("DefaultLocale")
+            override fun afterTextChanged(editable: Editable?) {
+                val inputText = editable.toString()
+
+                if (inputText == currentText) return
+
+                val cleanString = inputText.replace(",", "")
+
+                val formattedString = try {
+                    val value = cleanString.toLong()
+                    String.format("%,d", value)
+                } catch (e: NumberFormatException) {
+                    ""
+                }
+
+                currentText = formattedString
+                binding.etAmount.apply {
+                    setText(formattedString)
+                    setSelection(formattedString.length)
+                }
             }
         })
 
-        dialog.isCancelable = true
-        dialog.show(childFragmentManager, "ModifyDiaryDialog")
+        binding.etMemo.setText(memo)
+
+        setupCategorySpinner(true, binding)
+
+        fun handleCategoryState(uiState: UiState<List<CategoryInfo>>) {
+            when (uiState) {
+                is UiState.Loading -> {
+                }
+
+                is UiState.Success -> {
+                    binding.spinnerCategory.visibility = View.VISIBLE
+                    val categories = uiState.data
+                    val customAdapter = CustomSpinnerAdapter(
+                        requireContext(),
+                        categories.map { it.category }.toTypedArray()
+                    )
+                    binding.spinnerCategory.adapter = customAdapter
+                }
+
+                is UiState.Failure -> {
+                    binding.spinnerCategory.visibility = View.GONE
+                    Toast.makeText(
+                        requireContext(),
+                        "카테고리 조회 실패: ${uiState.message}",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+        }
+
+        viewModel.getExpenseCategoryState.observe(viewLifecycleOwner) { uiState ->
+            handleCategoryState(uiState)
+        }
+
+//        if (isExpenseSelected) {
+////            binding.tvConsume.setBackgroundResource(R.drawable.switch_bg_select)
+////            binding.tvConsume.setTextColor(requireContext().getColor(R.color.black))
+////
+////            binding.tvIncome.setBackgroundResource(R.color.transparent)
+////            binding.tvIncome.setTextColor(requireContext().getColor(R.color.gray7))
+////        } else {
+////            binding.tvIncome.setBackgroundResource(R.drawable.switch_bg_select)
+////            binding.tvIncome.setTextColor(requireContext().getColor(R.color.black))
+////
+////            binding.tvConsume.setBackgroundResource(R.color.transparent)
+////            binding.tvConsume.setTextColor(requireContext().getColor(R.color.gray7))
+//        }
+//
+//        binding.clSwitch.setOnClickListener {
+////            isExpenseSelected = !isExpenseSelected
+////            if (isExpenseSelected) {
+////                binding.tvConsume.setBackgroundResource(R.drawable.switch_bg_select)
+////                binding.tvConsume.setTextColor(requireContext().getColor(R.color.black))
+////
+////                binding.tvIncome.setBackgroundResource(R.color.transparent)
+////                binding.tvIncome.setTextColor(requireContext().getColor(R.color.gray7))
+////            } else {
+////                binding.tvIncome.setBackgroundResource(R.drawable.switch_bg_select)
+////                binding.tvIncome.setTextColor(requireContext().getColor(R.color.black))
+////
+////                binding.tvConsume.setBackgroundResource(R.color.transparent)
+////                binding.tvConsume.setTextColor(requireContext().getColor(R.color.gray7))
+////            }
+//        }
+
+        binding.ivYearUp.setOnClickListener {
+            selectedDate = selectedDate.plusYears(1)
+            binding.tvYear.text = "${selectedDate.year}년"
+        }
+
+        binding.ivYearDown.setOnClickListener {
+            selectedDate = selectedDate.minusYears(1)
+            binding.tvYear.text = "${selectedDate.year}년"
+        }
+
+        binding.ivMonthUp.setOnClickListener {
+            selectedDate = selectedDate.plusMonths(1)
+            binding.tvMonth.text = "${selectedDate.monthValue}월"
+        }
+
+        binding.ivMonthDown.setOnClickListener {
+            selectedDate = selectedDate.minusMonths(1)
+            binding.tvMonth.text = "${selectedDate.monthValue}월"
+        }
+
+        binding.ivDayUp.setOnClickListener {
+            selectedDate = selectedDate.plusDays(1)
+            binding.tvDay.text = "${selectedDate.dayOfMonth}일"
+        }
+
+        binding.ivDayDown.setOnClickListener {
+            selectedDate = selectedDate.minusDays(1)
+            binding.tvDay.text = "${selectedDate.dayOfMonth}일"
+        }
+
+        binding.btnSubmit.setOnClickListener {
+            val updateAmount = binding.etAmount.text.toString().replace(",", "").toIntOrNull() ?: 0
+            val updatedMemo = binding.etMemo.text.toString()
+            val updatedCategory = binding.spinnerCategory.selectedItem.toString()
+            val formattedDate = selectedDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+
+            if (updateAmount <= 0) {
+                showToast("금액을 입력해주세요")
+            } else {
+                viewModel.updateExpense(
+                    id,
+                    formattedDate,
+                    "EXPENSE",
+                    updatedCategory,
+                    updateAmount,
+                    updatedMemo
+                )
+                dialog.dismiss()
+            }
+        }
+
+        dialog.show()
     }
 
 }
