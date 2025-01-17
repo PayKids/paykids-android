@@ -5,8 +5,10 @@ import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.text.Editable
 import android.text.Spannable
 import android.text.SpannableString
+import android.text.TextWatcher
 import android.text.style.ForegroundColorSpan
 import android.view.LayoutInflater
 import android.view.View
@@ -339,6 +341,36 @@ class DiaryFragment : BaseFragment<FragmentDiaryBinding>(), ConfirmDialogInterfa
         binding.tvYear.text = "${currentYear}년"
         binding.tvMonth.text = "${currentMonth}월"
         binding.tvDay.text = "${currentDay}일"
+
+        binding.etAmount.addTextChangedListener(object : TextWatcher {
+            private var currentText: String = ""
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+
+            @SuppressLint("DefaultLocale")
+            override fun afterTextChanged(editable: Editable?) {
+                val inputText = editable.toString()
+
+                if (inputText == currentText) return
+
+                val cleanString = inputText.replace(",", "")
+
+                val formattedString = try {
+                    val value = cleanString.toLong()
+                    String.format("%,d", value)
+                } catch (e: NumberFormatException) {
+                    ""
+                }
+
+                currentText = formattedString
+                binding.etAmount.apply {
+                    setText(formattedString)
+                    setSelection(formattedString.length)
+                }
+            }
+        })
 
         setupCategorySpinner(isExpenseSelected, binding)
 
