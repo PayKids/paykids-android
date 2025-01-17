@@ -216,6 +216,26 @@ class DiaryFragment : BaseFragment<FragmentDiaryBinding>(), ConfirmDialogInterfa
                 }
             }
         }
+
+        viewModel.updateExpenseState.observe(viewLifecycleOwner) {
+            when (it) {
+                is UiState.Failure -> {
+                    showToast(it.message)
+                }
+
+                is UiState.Loading -> {}
+
+                is UiState.Success -> {
+                    LoggerUtils.d("용돈 수정 성공: ${it.data}")
+                    if (!it.data) {
+                        // 이미 저장된 데이터로 인한 중복 호출 방지
+                        return@observe
+                    }
+                    fetchData(currentYear, currentMonth)
+                    showToast("용돈 수정 성공")
+                }
+            }
+        }
     }
 
     override fun onYesButtonClick() {
@@ -460,7 +480,7 @@ class DiaryFragment : BaseFragment<FragmentDiaryBinding>(), ConfirmDialogInterfa
         binding.etMemo.setText("")
 
         binding.btnSubmit.setOnClickListener {
-            val amount = binding.etAmount.text.toString().toIntOrNull() ?: 0
+            val amount = binding.etAmount.text.toString().replace(",", "").toIntOrNull() ?: 0
             val memo = binding.etMemo.text.toString()
             val category = binding.spinnerCategory.selectedItem.toString()
             val formattedDate = selectedDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
