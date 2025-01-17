@@ -91,15 +91,14 @@
         app:layout_constraintEnd_toEndOf="@id/view_my_info"
         app:layout_constraintTop_toTopOf="@id/view_my_info" />
 
-    <ImageView
+    <ImageButton
         android:id="@+id/iv_modify"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_marginEnd="20dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="8dp"
 
-        android:clickable="true"
+        android:background="@color/transparent"
         android:contentDescription="@null"
-        android:focusable="true"
         android:src="@drawable/ic_right"
 
         app:layout_constraintBottom_toBottomOf="@id/view_my_info"
@@ -129,15 +128,14 @@
         app:layout_constraintStart_toStartOf="@id/view_policy"
         app:layout_constraintTop_toTopOf="@id/view_policy" />
 
-    <ImageView
+    <ImageButton
         android:id="@+id/iv_policy"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_marginEnd="20dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="8dp"
 
-        android:clickable="true"
+        android:background="@color/transparent"
         android:contentDescription="@null"
-        android:focusable="true"
         android:src="@drawable/ic_right"
 
         app:layout_constraintBottom_toBottomOf="@id/view_policy"
