@@ -2,6 +2,7 @@ package com.paykids.presentation.view.signIn
 
 import android.text.Editable
 import android.text.InputFilter
+import android.text.InputType
 import android.text.TextWatcher
 import android.view.View
 import androidx.appcompat.content.res.AppCompatResources
@@ -15,7 +16,7 @@ import com.paykids.util.LoggerUtils
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class SignNicknameFragment: BaseFragment<FragmentSignNicknameBinding>() {
+class SignNicknameFragment : BaseFragment<FragmentSignNicknameBinding>() {
     private val viewModel: SignViewModel by viewModels()
 
     override fun initView() {
@@ -29,7 +30,13 @@ class SignNicknameFragment: BaseFragment<FragmentSignNicknameBinding>() {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
             override fun afterTextChanged(s: Editable?) {
-                val length = s.toString().length
+                val filtered = s.toString().replace(Regex("[^a-zA-Z0-9ㄱ-ㅎㅏ-ㅣ가-힣]"), "")
+                if (s.toString() != filtered) {
+                    binding.etNick.setText(filtered)
+                    binding.etNick.setSelection(filtered.length) // 커서를 마지막으로 이동
+                }
+
+                val length = filtered.length
 
                 binding.ibClear.apply {
                     visibility = if (length != 0) View.VISIBLE else View.GONE

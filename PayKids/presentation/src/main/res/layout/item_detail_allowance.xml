@@ -3,16 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="68dp"
+    android:layout_height="76dp"
     android:layout_marginBottom="8dp"
     android:background="@drawable/shape_consumption_status"
-    android:padding="14dp">
+    android:padding="12dp">
 
     <TextView
         android:id="@+id/tv_consumption_category"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
 
         android:fontFamily="@font/nanumsquare_bold"
         android:textColor="@color/blue1"
@@ -26,14 +27,14 @@
         android:id="@+id/tv_consume_amount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginBottom="4dp"
 
         android:fontFamily="@font/nanumsquare_extra_bold"
         android:textColor="@color/black"
         android:textSize="16sp"
 
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@id/tv_consumption_category"
-        app:layout_constraintTop_toBottomOf="@id/tv_consumption_category"
         tools:text="-1,800" />
 
     <TextView
@@ -42,9 +43,12 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="4dp"
 
+        android:ellipsize="end"
         android:fontFamily="@font/nanumsquare_bold"
+        android:maxLength="15"
+        android:maxLines="1"
         android:textColor="@color/gray1"
-        android:textSize="13sp"
+        android:textSize="12sp"
 
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

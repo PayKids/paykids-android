@@ -3,6 +3,8 @@ package com.paykids.presentation.view.mypage
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
@@ -35,6 +37,18 @@ class ModifyInfoFragment : BaseFragment<FragmentModifyInfoBinding>(), ConfirmDia
         binding.ibBack.setOnClickListener {
             parentFragmentManager.popBackStack()
         }
+
+        binding.etModifyNickname.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: Editable?) {
+                val filtered = s.toString().replace(Regex("[^a-zA-Z0-9ㄱ-ㅎㅏ-ㅣ가-힣]"), "")
+                if (s.toString() != filtered) {
+                    binding.etModifyNickname.setText(filtered)
+                    binding.etModifyNickname.setSelection(filtered.length)
+                }
+            }
+        })
 
         binding.btnConfirm.setOnClickListener {
             myPageViewModel.changeNickname(binding.etModifyNickname.text.toString())

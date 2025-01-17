@@ -66,6 +66,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:fontFamily="@font/nanumsquare_bold"
+        android:includeFontPadding="false"
         android:text="@string/text_terms_of_use"
         android:textColor="@color/black"
         android:textSize="18sp"
@@ -74,15 +75,14 @@
         app:layout_constraintStart_toStartOf="@id/view_terms_of_use"
         app:layout_constraintTop_toTopOf="@id/view_terms_of_use" />
 
-    <ImageView
+    <ImageButton
         android:id="@+id/iv_terms_of_use"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_marginEnd="20dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="8dp"
 
-        android:clickable="true"
+        android:background="@color/transparent"
         android:contentDescription="@null"
-        android:focusable="true"
         android:src="@drawable/ic_right"
 
         app:layout_constraintBottom_toBottomOf="@id/view_terms_of_use"
@@ -104,6 +104,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:fontFamily="@font/nanumsquare_bold"
+        android:includeFontPadding="false"
         android:text="@string/text_policy"
         android:textColor="@color/black"
         android:textSize="18sp"
@@ -112,15 +113,14 @@
         app:layout_constraintStart_toStartOf="@id/view_policy"
         app:layout_constraintTop_toTopOf="@id/view_policy" />
 
-    <ImageView
+    <ImageButton
         android:id="@+id/iv_policy"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_marginEnd="20dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="8dp"
 
-        android:clickable="true"
+        android:background="@color/transparent"
         android:contentDescription="@null"
-        android:focusable="true"
         android:src="@drawable/ic_right"
 
         app:layout_constraintBottom_toBottomOf="@id/view_policy"
@@ -142,6 +142,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:fontFamily="@font/nanumsquare_bold"
+        android:includeFontPadding="false"
         android:text="@string/text_license"
         android:textColor="@color/black"
         android:textSize="18sp"
@@ -150,15 +151,14 @@
         app:layout_constraintStart_toStartOf="@id/view_license"
         app:layout_constraintTop_toTopOf="@id/view_license" />
 
-    <ImageView
+    <ImageButton
         android:id="@+id/iv_license"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_marginEnd="20dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="8dp"
 
-        android:clickable="true"
+        android:background="@color/transparent"
         android:contentDescription="@null"
-        android:focusable="true"
         android:src="@drawable/ic_right"
 
         app:layout_constraintBottom_toBottomOf="@id/view_license"
