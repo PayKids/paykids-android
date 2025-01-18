@@ -12,11 +12,12 @@ android {
     compileSdk = 34
 
     defaultConfig {
+        manifestPlaceholders += mapOf()
         applicationId = "com.paykids.paykids"
         minSdk = 26
         targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 10001
+        versionName = "1.00.01"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
