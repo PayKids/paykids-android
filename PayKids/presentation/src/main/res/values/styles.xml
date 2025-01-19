@@ -40,6 +40,7 @@
         <!-- 탭 배경 -->
         <item name="tabBackground">@color/white</item>
 
+        <item name="fontWeight">800</item>
         <item name="fontFamily">@font/nanumsquare_extra_bold</item>
         <item name="android:textSize">18sp</item>
     </style>
