@@ -107,4 +107,22 @@ class QuizRepositoryImpl @Inject constructor(
             Result.failure(result.exceptionOrNull() ?: Exception("Unknown error"))
         }
     }
+
+    override suspend fun getIncorrectQuizNumbers(
+        accessToken: String,
+        stage: Int
+    ): Result<List<Int>> {
+        val result = quizDatasource.getIncorrectQuizNumbers(accessToken, stage)
+
+        return if (result.isSuccess) {
+            val res = result.getOrNull()
+            if (res != null) {
+                Result.success(res.data)
+            } else {
+                Result.failure(Exception("get IncorrectQuizNumbers Failed: response body is null"))
+            }
+        } else {
+            Result.failure(result.exceptionOrNull() ?: Exception("Unknown error"))
+        }
+    }
 }

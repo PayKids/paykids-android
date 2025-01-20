@@ -15,4 +15,6 @@ interface QuizRepository {
     suspend fun checkAnswer(accessToken: String, stage: Int, number: Int, answer: String) : Result<Boolean>
 
     suspend fun checkClear(accessToken: String, stage: Int) : Result<QuizClear>
+
+    suspend fun getIncorrectQuizNumbers(accessToken: String, stage: Int) : Result<List<Int>>
 }
