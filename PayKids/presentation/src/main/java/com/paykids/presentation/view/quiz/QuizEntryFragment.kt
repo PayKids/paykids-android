@@ -59,7 +59,7 @@ class QuizEntryFragment : BaseFragment<FragmentQuizEntryBinding>(), ConfirmDialo
                 // 첫 번째 오답 문제 불러오기
                 navigateToIncorrectQuiz()
             } else {
-                val dialog = IncorrectDialog(this, R.string.dialog_incorrect_nothing)
+                val dialog = IncorrectDialog(this, R.string.dialog_incorrect_nothing, args.stageNumber)
                 dialog.isCancelable = false
                 dialog.show(parentFragmentManager, "IncorrectNothingDialog")
             }
@@ -153,7 +153,7 @@ class QuizEntryFragment : BaseFragment<FragmentQuizEntryBinding>(), ConfirmDialo
     private fun navigateToIncorrectQuiz() {
         if (incorrectQuizzes.isEmpty()) {
             // 모든 오답을 푼 경우, 완료 다이얼로그 표시
-            val dialog = IncorrectDialog(this, R.string.dialog_all_correct)
+            val dialog = IncorrectDialog(this, R.string.dialog_all_correct, args.stageNumber)
             dialog.isCancelable = false
             dialog.show(parentFragmentManager, "ReviewCompleteDialog")
             return
@@ -195,6 +195,12 @@ class QuizEntryFragment : BaseFragment<FragmentQuizEntryBinding>(), ConfirmDialo
 
     override fun onYesButtonClick() {
         // 퀴즈 풀기 페이지로 이동
+    }
+
+    override fun onQuizEntryButtonClick(stageNumber: Int) {
+        val action = QuizEntryFragmentDirections
+            .actionQuizEntryFragmentToQuizImageFragment(stageNumber, 1) // 1번 문제로 이동
+        findNavController().navigate(action)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
