@@ -41,4 +41,10 @@ interface QuizService {
         @Header("Authorization") accessToken: String,
         @Query("stage") stage: Int
     ): Response<BaseResponse<QuizClearResponseDTO>>
+
+    @GET("/quiz/incorrect-list")
+    suspend fun getIncorrectQuizNumbers(
+        @Header("Authorization") accessToken: String,
+        @Query("stage") stage: Int
+    ): Response<BaseResponse<List<Int>>>
 }
