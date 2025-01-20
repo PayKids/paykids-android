@@ -1,10 +1,12 @@
 package com.paykids.presentation.view.quest
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.paykids.domain.model.quest.QuestItem
+import com.paykids.presentation.R
 import com.paykids.presentation.databinding.ItemQuestBinding
 
 class QuestAdapter(
@@ -16,14 +18,11 @@ class QuestAdapter(
 
         fun bind(item: QuestItem) {
             binding.tvQuestName.text = item.name
-            updateProgress(binding.llProgressBar, item.progress)
+            setProgressBarStatus(item.progress)
         }
 
-        private fun updateProgress(progressContainer: LinearLayout, progress: Float) {
-            val progressView = progressContainer.getChildAt(0)
-            val layoutParams = progressView.layoutParams as LinearLayout.LayoutParams
-            layoutParams.weight = progress
-            progressView.layoutParams = layoutParams
+        private fun setProgressBarStatus(progress: Float) {
+            binding.progressBarQuest.progress = (progress * 100).toInt()
         }
     }
 
