@@ -29,12 +29,16 @@ class QuizShortAnswerFragment : BaseFragment<FragmentQuizShortAnswerBinding>(),
     private var quizNumber: Int = 0
     private var correctAnswer: String? = null
     private var userAnswer: String = ""
+    private var incorrectQuizIndex: Int = -1
+    private var incorrectQuizzes = mutableListOf<Int>()
 
 
     override fun initView() {
         stageNumber = args.stageNumber
         quizNumber = args.quizNumber
+        incorrectQuizIndex = args.incorrectQuizIndex
 
+        quizEntryViewModel.getIncorrectQuizNumbers(stageNumber)
         quizEntryViewModel.getQuiz(stageNumber, quizNumber)
     }
 
@@ -66,14 +70,29 @@ class QuizShortAnswerFragment : BaseFragment<FragmentQuizShortAnswerBinding>(),
                     val quiz = quizState.data
                     if (quizNumber == quiz.count) {
                         val action =
-                            QuizMultipleChoiceFragmentDirections.actionQuizMultipleChoiceFragmentToQuizClearFragment(
+                            QuizShortAnswerFragmentDirections.actionQuizShortAnswerFragmentToQuizClearFragment(
                                 stageNumber
                             )
                         findNavController().navigate(action)
                     }
                 }
+                if (incorrectQuizIndex != -1) { // 오답 노트 풀기(오답 퀴즈 진행 중)일 경우
+                    if (incorrectQuizIndex >= incorrectQuizzes.size) { // 마지막 오답 퀴즈인 경우
+                        val action =
+                            QuizShortAnswerFragmentDirections.actionQuizShortAnswerFragmentToQuizClearFragment(
+                                stageNumber
+                            )
+                        findNavController().navigate(action)
+                    } else {
+                        quizEntryViewModel.getQuiz(
+                            stageNumber,
+                            incorrectQuizzes[incorrectQuizIndex]
+                        )
+                    }
 
-                quizEntryViewModel.getQuiz(stageNumber, quizNumber + 1)
+                } else { // 다음 퀴즈 조회
+                    quizEntryViewModel.getQuiz(stageNumber, quizNumber + 1)
+                }
             }
         }
     }
@@ -93,6 +112,10 @@ class QuizShortAnswerFragment : BaseFragment<FragmentQuizShortAnswerBinding>(),
                 is UiState.Success -> {
                     val quiz = it.data
                     if (quiz.number > quizNumber) { // 퀴즈를 풀어 다음 퀴즈 번호를 관찰한 경우
+                        if (incorrectQuizIndex > 0) {
+                            navigateToIncorrectQuiz(incorrectQuizIndex)
+                            return@observe
+                        }
                         navigateToNextQuiz()
                         return@observe
                     }
@@ -118,6 +141,20 @@ class QuizShortAnswerFragment : BaseFragment<FragmentQuizShortAnswerBinding>(),
                         return@observe
                     }
                     updateUIForAnswer()
+                }
+            }
+        }
+
+        quizEntryViewModel.incorrectQuizState.observe(viewLifecycleOwner) {
+            when (it) {
+                is UiState.Failure -> {
+                    showToast(it.message)
+                }
+
+                is UiState.Loading -> {}
+
+                is UiState.Success -> {
+                    incorrectQuizzes = it.data.toMutableList()
                 }
             }
         }
@@ -184,6 +221,59 @@ class QuizShortAnswerFragment : BaseFragment<FragmentQuizShortAnswerBinding>(),
                     findNavController().navigate(action)
                 }
             }
+        }
+    }
+
+    private fun navigateToIncorrectQuiz(index: Int) {
+        val incorrectQuizNumber = incorrectQuizzes[index]
+
+        val quizState = quizEntryViewModel.quizState.value
+        if (quizState is UiState.Success) {
+            val quiz = quizState.data
+            val action = when (quiz.quizType) {
+                "IMAGE_CHOICE" -> QuizShortAnswerFragmentDirections
+                    .actionQuizShortAnswerFragmentToQuizImageFragment(
+                        stageNumber,
+                        incorrectQuizNumber,
+                        index + 1
+                    )
+
+                "TEXT_CHOICE" -> if (quiz.imageURL.isNullOrEmpty()) {
+                    QuizShortAnswerFragmentDirections
+                        .actionQuizShortAnswerFragmentToQuizMultipleChoiceFragment(
+                            stageNumber,
+                            incorrectQuizNumber,
+                            index + 1
+                        )
+                } else {
+                    QuizShortAnswerFragmentDirections
+                        .actionQuizShortAnswerFragmentToQuizMultipleChoiceImgFragment(
+                            stageNumber,
+                            incorrectQuizNumber,
+                            index + 1
+                        )
+                }
+
+                "SHORT_ANSWER" -> if (quiz.imageURL.isNullOrEmpty()) {
+                    QuizShortAnswerFragmentDirections
+                        .actionQuizShortAnswerFragmentToQuizShortAnswerFragment(
+                            stageNumber,
+                            incorrectQuizNumber,
+                            index + 1
+                        )
+                } else {
+                    QuizShortAnswerFragmentDirections
+                        .actionQuizShortAnswerFragmentToQuizShortAnswerImgFragment(
+                            stageNumber,
+                            incorrectQuizNumber,
+                            index + 1
+                        )
+                }
+
+                else -> null
+            }
+
+            action?.let { findNavController().navigate(it) }
         }
     }
 
