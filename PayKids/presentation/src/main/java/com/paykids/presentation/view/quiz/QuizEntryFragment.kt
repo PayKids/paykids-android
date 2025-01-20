@@ -21,8 +21,7 @@ class QuizEntryFragment : BaseFragment<FragmentQuizEntryBinding>(), ConfirmDialo
     private lateinit var backPressedCallback: OnBackPressedCallback
     private val quizEntryViewModel: QuizEntryViewModel by viewModels()
     private val args: QuizEntryFragmentArgs by navArgs()
-    private val incorrectQuiz = 0
-    private var clear = false
+    private var incorrectQuizzes = mutableListOf<Int>()
 
     @SuppressLint("SetTextI18n")
     override fun initView() {
@@ -33,6 +32,7 @@ class QuizEntryFragment : BaseFragment<FragmentQuizEntryBinding>(), ConfirmDialo
         binding.tvStageName.text = stageName
 
         quizEntryViewModel.getQuiz(stageNumber, 1)
+        quizEntryViewModel.getIncorrectQuizNumbers(stageNumber)
     }
 
     override fun initListener() {
@@ -55,25 +55,13 @@ class QuizEntryFragment : BaseFragment<FragmentQuizEntryBinding>(), ConfirmDialo
         }
 
         binding.btnReview.setOnClickListener {
-            if (!clear && incorrectQuiz == 0) {
-                val dialog =
-                    IncorrectDialog(
-                        this,
-                        R.string.dialog_incorrect_nothing,
-                    )
+            if (incorrectQuizzes.isNotEmpty()) {
+                // 첫 번째 오답 문제 불러오기
+                navigateToIncorrectQuiz()
+            } else {
+                val dialog = IncorrectDialog(this, R.string.dialog_incorrect_nothing)
                 dialog.isCancelable = false
                 dialog.show(parentFragmentManager, "IncorrectNothingDialog")
-            } else if (clear && incorrectQuiz == 0) {
-                val dialog =
-                    IncorrectDialog(
-                        this,
-                        R.string.dialog_all_correct,
-                    )
-                dialog.isCancelable = false
-                dialog.show(parentFragmentManager, "AllClearDialog")
-            } else {
-                // 문제를 한번이라도 풀고 틀린 문제가 하나라도 있는 경우 오답노트 페이지로 이동
-
             }
         }
 
@@ -92,6 +80,20 @@ class QuizEntryFragment : BaseFragment<FragmentQuizEntryBinding>(), ConfirmDialo
 
                 is UiState.Success -> {
 
+                }
+            }
+        }
+
+        quizEntryViewModel.incorrectQuizState.observe(viewLifecycleOwner) {
+            when (it) {
+                is UiState.Failure -> {
+                    showToast(it.message)
+                }
+
+                is UiState.Loading -> {}
+
+                is UiState.Success -> {
+                    incorrectQuizzes = it.data.toMutableList()
                 }
             }
         }
@@ -147,6 +149,49 @@ class QuizEntryFragment : BaseFragment<FragmentQuizEntryBinding>(), ConfirmDialo
             }
         }
     }
+
+    private fun navigateToIncorrectQuiz() {
+        if (incorrectQuizzes.isEmpty()) {
+            // 모든 오답을 푼 경우, 완료 다이얼로그 표시
+            val dialog = IncorrectDialog(this, R.string.dialog_all_correct)
+            dialog.isCancelable = false
+            dialog.show(parentFragmentManager, "ReviewCompleteDialog")
+            return
+        }
+
+        val quizNumber = incorrectQuizzes[0]
+        val stageNumber = args.stageNumber
+
+        quizEntryViewModel.getQuiz(stageNumber, quizNumber) // 오답 퀴즈 가져오기
+
+        quizEntryViewModel.quizState.observe(viewLifecycleOwner) { quizState ->
+            if (quizState is UiState.Success) {
+                val quiz = quizState.data
+                val action = when (quiz.quizType) {
+                    "IMAGE_CHOICE" -> QuizEntryFragmentDirections
+                        .actionQuizEntryFragmentToQuizImageFragment(stageNumber, quizNumber, 1)
+                    "TEXT_CHOICE" -> if (quiz.imageURL.isNullOrEmpty()) {
+                        QuizEntryFragmentDirections
+                            .actionQuizEntryFragmentToQuizMultipleChoiceFragment(stageNumber, quizNumber, 1)
+                    } else {
+                        QuizEntryFragmentDirections
+                            .actionQuizEntryFragmentToQuizMultipleChoiceImgFragment(stageNumber, quizNumber, 1)
+                    }
+                    "SHORT_ANSWER" -> if (quiz.imageURL.isNullOrEmpty()) {
+                        QuizEntryFragmentDirections
+                            .actionQuizEntryFragmentToQuizShortAnswerFragment(stageNumber, quizNumber, 1)
+                    } else {
+                        QuizEntryFragmentDirections
+                            .actionQuizEntryFragmentToQuizShortAnswerImgFragment(stageNumber, quizNumber, 1)
+                    }
+                    else -> null
+                }
+
+                action?.let { findNavController().navigate(it) }
+            }
+        }
+    }
+
 
     override fun onYesButtonClick() {
         // 퀴즈 풀기 페이지로 이동
