@@ -18,6 +18,7 @@ class QuestAdapter(
 
         fun bind(item: QuestItem) {
             binding.tvQuestName.text = item.name
+            binding.tvQuestProgress.text = "1/2"
             setProgressBarStatus(item.progress)
         }
 
