@@ -163,6 +163,10 @@
         <argument
             android:name="quizNumber"
             app:argType="integer" />
+        <argument
+            android:name="incorrectQuizIndex"
+            app:argType="integer"
+            android:defaultValue="-1" />
     </fragment>
 
     <fragment
@@ -206,6 +210,10 @@
         <argument
             android:name="quizNumber"
             app:argType="integer" />
+        <argument
+            android:name="incorrectQuizIndex"
+            app:argType="integer"
+            android:defaultValue="-1" />
     </fragment>
 
     <fragment
@@ -249,6 +257,10 @@
         <argument
             android:name="quizNumber"
             app:argType="integer" />
+        <argument
+            android:name="incorrectQuizIndex"
+            app:argType="integer"
+            android:defaultValue="-1" />
     </fragment>
 
     <fragment
@@ -292,6 +304,10 @@
         <argument
             android:name="quizNumber"
             app:argType="integer" />
+        <argument
+            android:name="incorrectQuizIndex"
+            app:argType="integer"
+            android:defaultValue="-1" />
     </fragment>
 
     <fragment
@@ -335,6 +351,10 @@
         <argument
             android:name="quizNumber"
             app:argType="integer" />
+        <argument
+            android:name="incorrectQuizIndex"
+            app:argType="integer"
+            android:defaultValue="-1" />
     </fragment>
 
     <fragment
