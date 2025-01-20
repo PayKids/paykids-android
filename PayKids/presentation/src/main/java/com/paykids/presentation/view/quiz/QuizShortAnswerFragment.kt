@@ -164,6 +164,10 @@ class QuizShortAnswerFragment : BaseFragment<FragmentQuizShortAnswerBinding>(),
 
     }
 
+    override fun onQuizEntryButtonClick(stageNumber: Int) {
+
+    }
+
     private fun updateUIForAnswer() {
         // 사용자가 입력한 답과 정답 비교
         if (userAnswer.isNotEmpty()) {

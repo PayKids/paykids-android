@@ -208,4 +208,8 @@ class DiaryDialog : DialogFragment(), ConfirmDialogInterface {
     override fun onYesButtonClick() {
         LoggerUtils.d("Button Click")
     }
+
+    override fun onQuizEntryButtonClick(stageNumber: Int) {
+
+    }
 }

@@ -87,4 +87,8 @@ class MyPageFragment : BaseFragment<FragmentMypageBinding>(), ConfirmDialogInter
     override fun onYesButtonClick() {
         myPageViewModel.signOut()
     }
+
+    override fun onQuizEntryButtonClick(stageNumber: Int) {
+        TODO("Not yet implemented")
+    }
 }

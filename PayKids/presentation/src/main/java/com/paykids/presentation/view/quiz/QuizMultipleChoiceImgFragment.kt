@@ -143,6 +143,10 @@ class QuizMultipleChoiceImgFragment : BaseFragment<FragmentQuizMultipleChoiceImg
 
     }
 
+    override fun onQuizEntryButtonClick(stageNumber: Int) {
+        TODO("Not yet implemented")
+    }
+
     private fun onAnswerClicked(answerLetter: String) {
         // 답변 클릭 시 처리
         LoggerUtils.d("Answer clicked: $answerLetter")

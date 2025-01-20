@@ -140,6 +140,10 @@ class QuizMultipleChoiceFragment : BaseFragment<FragmentQuizMultipleChoiceBindin
 
     }
 
+    override fun onQuizEntryButtonClick(stageNumber: Int) {
+        TODO("Not yet implemented")
+    }
+
     private fun onAnswerClicked(answerLetter: String) {
         userAnswer = answerLetter
         quizEntryViewModel.checkAnswer(stageNumber, quizNumber, answerLetter)

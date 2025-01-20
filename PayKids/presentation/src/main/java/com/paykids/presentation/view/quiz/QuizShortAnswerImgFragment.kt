@@ -163,6 +163,10 @@ class QuizShortAnswerImgFragment : BaseFragment<FragmentQuizShortAnswerImgBindin
 
     }
 
+    override fun onQuizEntryButtonClick(stageNumber: Int) {
+        TODO("Not yet implemented")
+    }
+
     private fun updateUIForAnswer() {
         if (userAnswer.isNotEmpty()) {
             if (userAnswer == correctAnswer) {

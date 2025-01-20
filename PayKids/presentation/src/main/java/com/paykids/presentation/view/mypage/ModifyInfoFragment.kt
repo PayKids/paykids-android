@@ -201,6 +201,10 @@ class ModifyInfoFragment : BaseFragment<FragmentModifyInfoBinding>(), ConfirmDia
         myPageViewModel.socialWithdraw()
     }
 
+    override fun onQuizEntryButtonClick(stageNumber: Int) {
+        TODO("Not yet implemented")
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 

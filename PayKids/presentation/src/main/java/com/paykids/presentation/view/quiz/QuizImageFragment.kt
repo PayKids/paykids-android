@@ -134,6 +134,10 @@ class QuizImageFragment : BaseFragment<FragmentQuizImageBinding>(), ConfirmDialo
 
     }
 
+    override fun onQuizEntryButtonClick(stageNumber: Int) {
+
+    }
+
     private fun loadChoiceImages(imageURLMap: Map<String, String>) {
         Glide.with(this)
             .load(imageURLMap["image1"])

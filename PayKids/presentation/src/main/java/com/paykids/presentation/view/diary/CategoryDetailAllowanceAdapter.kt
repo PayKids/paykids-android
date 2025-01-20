@@ -72,4 +72,8 @@ class CategoryDetailAllowanceAdapter(
     override fun onYesButtonClick() {
         TODO("Not yet implemented")
     }
+
+    override fun onQuizEntryButtonClick(stageNumber: Int) {
+        TODO("Not yet implemented")
+    }
 }

@@ -242,6 +242,10 @@ class DiaryFragment : BaseFragment<FragmentDiaryBinding>(), ConfirmDialogInterfa
 
     }
 
+    override fun onQuizEntryButtonClick(stageNumber: Int) {
+        TODO("Not yet implemented")
+    }
+
     @SuppressLint("ClickableViewAccessibility")
     private fun fetchData(year: Int, month: Int) {
 
