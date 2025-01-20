@@ -16,4 +16,6 @@ interface QuizRemoteDatasource {
     suspend fun checkAnswer(accessToken: String, stage: Int, number: Int, answer: String): Result<BaseResponse<Boolean>>
 
     suspend fun checkClear(accessToken: String, stage: Int): Result<BaseResponse<QuizClearResponseDTO>>
+
+    suspend fun getIncorrectQuizNumbers(accessToken: String, stage: Int): Result<BaseResponse<List<Int>>>
 }
