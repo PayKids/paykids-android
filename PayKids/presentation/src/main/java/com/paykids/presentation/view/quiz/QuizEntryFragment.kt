@@ -194,13 +194,11 @@ class QuizEntryFragment : BaseFragment<FragmentQuizEntryBinding>(), ConfirmDialo
 
 
     override fun onYesButtonClick() {
-        // 퀴즈 풀기 페이지로 이동
+
     }
 
     override fun onQuizEntryButtonClick(stageNumber: Int) {
-        val action = QuizEntryFragmentDirections
-            .actionQuizEntryFragmentToQuizImageFragment(stageNumber, 1) // 1번 문제로 이동
-        findNavController().navigate(action)
+        navigateToNextQuiz()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
