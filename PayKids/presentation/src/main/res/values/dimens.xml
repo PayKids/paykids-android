@@ -5,4 +5,6 @@
     
     <dimen name="header_height">60dp</dimen>
     <dimen name="text_size_header">20sp</dimen>
+
+    <dimen name="grid_spacing">8dp</dimen>
 </resources>
