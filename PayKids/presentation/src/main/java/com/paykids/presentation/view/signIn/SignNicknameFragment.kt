@@ -2,7 +2,6 @@ package com.paykids.presentation.view.signIn
 
 import android.text.Editable
 import android.text.InputFilter
-import android.text.InputType
 import android.text.TextWatcher
 import android.view.View
 import androidx.appcompat.content.res.AppCompatResources

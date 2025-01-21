@@ -1,0 +1,38 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="192dp"
+    android:background="@drawable/shape_quiz_box_default"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/iv_achieve_image"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:contentDescription="@null"
+        android:src="@drawable/ic_achieve1" />
+
+    <TextView
+        android:id="@+id/tv_achieve_name"
+        style="@style/body1_EB"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:fontFamily="@font/nanumsquare_extra_bold"
+        android:gravity="center"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        tools:text="끝없는 탐구자" />
+
+    <TextView
+        android:id="@+id/tv_achieve_desc"
+        style="@style/body3_EB"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/nanumsquare_bold"
+        android:textColor="@color/gray8"
+        tools:text="지치치 않는 학구열!" />
+
+</LinearLayout>
