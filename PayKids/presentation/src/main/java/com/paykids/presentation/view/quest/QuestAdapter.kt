@@ -1,12 +1,9 @@
 package com.paykids.presentation.view.quest
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.paykids.domain.model.quest.QuestItem
-import com.paykids.presentation.R
 import com.paykids.presentation.databinding.ItemQuestBinding
 
 class QuestAdapter(
