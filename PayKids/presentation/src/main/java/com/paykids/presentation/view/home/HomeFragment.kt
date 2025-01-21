@@ -1,5 +1,6 @@
 package com.paykids.presentation.view.home
 
+import android.annotation.SuppressLint
 import android.graphics.drawable.GradientDrawable
 import android.os.Build
 import android.view.Gravity
@@ -38,6 +39,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     private lateinit var stageName: String
     private var unlockedStageNumber: Int = 0
 
+    @SuppressLint("NewApi")
     override fun initView() {
         homeViewModel.getStageToGo()
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {

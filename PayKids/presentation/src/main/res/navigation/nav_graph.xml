@@ -364,4 +364,11 @@
         android:name="com.paykids.presentation.view.mypage.PolicyFragment"
         android:label="fragment_policy"
         tools:layout="@layout/fragment_policy" />
+
+    <fragment
+        android:id="@+id/questFragment"
+        android:name="com.paykids.presentation.view.quest.QuestFragment"
+        android:label="fragment_quest"
+        tools:layout="@layout/fragment_quest" />
+
 </navigation>
