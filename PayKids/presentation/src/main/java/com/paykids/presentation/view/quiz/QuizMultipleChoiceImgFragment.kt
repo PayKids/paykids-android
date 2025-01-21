@@ -31,6 +31,8 @@ class QuizMultipleChoiceImgFragment : BaseFragment<FragmentQuizMultipleChoiceImg
     private var quizNumber: Int = 0
     private var isCorrect: Boolean? = null
     private var userAnswer: String = ""
+    private var incorrectQuizIndex: Int = -1
+    private var incorrectQuizzes = mutableListOf<Int>()
 
     private val adapter by lazy {
         QuizMultipleChoiceRvAdapter { answer -> onAnswerClicked(answer) }
@@ -39,6 +41,7 @@ class QuizMultipleChoiceImgFragment : BaseFragment<FragmentQuizMultipleChoiceImg
     override fun initView() {
         stageNumber = args.stageNumber
         quizNumber = args.quizNumber
+        incorrectQuizIndex = args.incorrectQuizIndex
 
         binding.rvAnswers.apply {
             layoutManager = LinearLayoutManager(requireContext())
@@ -46,6 +49,7 @@ class QuizMultipleChoiceImgFragment : BaseFragment<FragmentQuizMultipleChoiceImg
             adapter = this@QuizMultipleChoiceImgFragment.adapter
         }
 
+        quizEntryViewModel.getIncorrectQuizNumbers(stageNumber)
         // 퀴즈 데이터 로드
         quizEntryViewModel.getQuiz(stageNumber, quizNumber)
     }
@@ -81,6 +85,10 @@ class QuizMultipleChoiceImgFragment : BaseFragment<FragmentQuizMultipleChoiceImg
                 is UiState.Success -> {
                     val quiz = it.data
                     if (quiz.number > quizNumber) { // 퀴즈를 풀어 다음 퀴즈 번호를 관찰한 경우
+                        if (incorrectQuizIndex > 0) {
+                            navigateToIncorrectQuiz(incorrectQuizIndex)
+                            return@observe
+                        }
                         navigateToNextQuiz()
                         return@observe
                     }
@@ -115,10 +123,28 @@ class QuizMultipleChoiceImgFragment : BaseFragment<FragmentQuizMultipleChoiceImg
                 }
             }
         }
+
+        quizEntryViewModel.incorrectQuizState.observe(viewLifecycleOwner) {
+            when (it) {
+                is UiState.Failure -> {
+                    showToast(it.message)
+                }
+
+                is UiState.Loading -> {}
+
+                is UiState.Success -> {
+                    incorrectQuizzes = it.data.toMutableList()
+                }
+            }
+        }
     }
 
     override fun onYesButtonClick() {
 
+    }
+
+    override fun onQuizEntryButtonClick(stageNumber: Int) {
+        TODO("Not yet implemented")
     }
 
     private fun onAnswerClicked(answerLetter: String) {
@@ -139,14 +165,27 @@ class QuizMultipleChoiceImgFragment : BaseFragment<FragmentQuizMultipleChoiceImg
                 val quiz = quizState.data
                 if (quizNumber == quiz.count) {
                     val action =
-                        QuizMultipleChoiceFragmentDirections.actionQuizMultipleChoiceFragmentToQuizClearFragment(
+                        QuizMultipleChoiceImgFragmentDirections.actionQuizMultipleChoiceImgFragmentToQuizClearFragment(
                             stageNumber
                         )
                     findNavController().navigate(action)
                 }
             }
 
-            quizEntryViewModel.getQuiz(stageNumber, quizNumber + 1)
+            if (incorrectQuizIndex != 0) { // 오답 노트 풀기(오답 퀴즈 진행 중)일 경우
+                if (incorrectQuizIndex >= incorrectQuizzes.size) { // 마지막 오답 퀴즈인 경우
+                    val action =
+                        QuizMultipleChoiceImgFragmentDirections.actionQuizMultipleChoiceImgFragmentToQuizClearFragment(
+                            stageNumber
+                        )
+                    findNavController().navigate(action)
+                } else {
+                    quizEntryViewModel.getQuiz(stageNumber, incorrectQuizzes[incorrectQuizIndex])
+                }
+
+            } else { // 다음 퀴즈 조회
+                quizEntryViewModel.getQuiz(stageNumber, quizNumber + 1)
+            }
         }
     }
 
@@ -213,6 +252,59 @@ class QuizMultipleChoiceImgFragment : BaseFragment<FragmentQuizMultipleChoiceImg
                     findNavController().navigate(action)
                 }
             }
+        }
+    }
+
+    private fun navigateToIncorrectQuiz(index: Int) {
+        val incorrectQuizNumber = incorrectQuizzes[incorrectQuizIndex]
+
+        val quizState = quizEntryViewModel.quizState.value
+        if (quizState is UiState.Success) {
+            val quiz = quizState.data
+            val action = when (quiz.quizType) {
+                "IMAGE_CHOICE" -> QuizMultipleChoiceImgFragmentDirections
+                    .actionQuizMultipleChoiceImgFragmentToQuizImageFragment(
+                        stageNumber,
+                        incorrectQuizNumber,
+                        index + 1
+                    )
+
+                "TEXT_CHOICE" -> if (quiz.imageURL.isNullOrEmpty()) {
+                    QuizMultipleChoiceImgFragmentDirections
+                        .actionQuizMultipleChoiceImgFragmentToQuizMultipleChoiceFragment(
+                            stageNumber,
+                            incorrectQuizNumber,
+                            index + 1
+                        )
+                } else {
+                    QuizMultipleChoiceImgFragmentDirections
+                        .actionQuizMultipleChoiceImgFragmentToQuizMultipleChoiceImgFragment(
+                            stageNumber,
+                            incorrectQuizNumber,
+                            index + 1
+                        )
+                }
+
+                "SHORT_ANSWER" -> if (quiz.imageURL.isNullOrEmpty()) {
+                    QuizMultipleChoiceImgFragmentDirections
+                        .actionQuizMultipleChoiceImgFragmentToQuizShortAnswerFragment(
+                            stageNumber,
+                            incorrectQuizNumber,
+                            index + 1
+                        )
+                } else {
+                    QuizMultipleChoiceImgFragmentDirections
+                        .actionQuizMultipleChoiceImgFragmentToQuizShortAnswerImgFragment(
+                            stageNumber,
+                            incorrectQuizNumber,
+                            index + 1
+                        )
+                }
+
+                else -> null
+            }
+
+            action?.let { findNavController().navigate(it) }
         }
     }
 

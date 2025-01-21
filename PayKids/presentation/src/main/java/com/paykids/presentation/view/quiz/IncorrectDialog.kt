@@ -13,6 +13,7 @@ import com.paykids.presentation.databinding.DialogQuizIncorrectBinding
 class IncorrectDialog(
     confirmDialogInterface: ConfirmDialogInterface,
     private var message: Int,
+    private val stageNumber: Int
 ) : DialogFragment() {
 
     private var _binding: DialogQuizIncorrectBinding? = null
@@ -41,7 +42,7 @@ class IncorrectDialog(
         }
 
         binding.btnEnterQuiz.setOnClickListener {
-            this.confirmDialogInterface?.onYesButtonClick()
+            this.confirmDialogInterface?.onQuizEntryButtonClick(stageNumber)
             dismiss()
         }
 

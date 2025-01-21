@@ -1,5 +1,6 @@
 package com.paykids.presentation.view.quiz
 
+import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -15,10 +16,12 @@ class QuizClearFragment : BaseFragment<FragmentQuizClearBinding>() {
     private val quizEntryViewModel: QuizEntryViewModel by activityViewModels()
     private val args: QuizClearFragmentArgs by navArgs()
     private var stageNumber: Int = 0
+    private var incorrectQuizzes = mutableListOf<Int>()
 
     override fun initView() {
         stageNumber = args.stageNumber
         quizEntryViewModel.checkClear(stageNumber)
+        quizEntryViewModel.getIncorrectQuizNumbers(stageNumber)
     }
 
     override fun initListener() {
@@ -43,17 +46,47 @@ class QuizClearFragment : BaseFragment<FragmentQuizClearBinding>() {
                 }
 
                 is UiState.Success -> {
-                    updateClearMessage(it.data)
+                    updateClearPage(it.data)
+                }
+            }
+        }
+
+        quizEntryViewModel.incorrectQuizState.observe(viewLifecycleOwner) {
+            when (it) {
+                is UiState.Failure -> {
+                    showToast(it.message)
+                }
+
+                is UiState.Loading -> {}
+
+                is UiState.Success -> {
+                    incorrectQuizzes = it.data.toMutableList()
+                }
+            }
+        }
+
+        quizEntryViewModel.quizState.observe(viewLifecycleOwner) {
+            when (it) {
+                is UiState.Failure -> {
+                    showToast(it.message)
+                }
+
+                is UiState.Loading -> {}
+
+                is UiState.Success -> {
+
                 }
             }
         }
     }
 
-    private fun updateClearMessage(response: QuizClear) {
-        val message = response.message
-        val isCleared = response.isCleared
+    private fun updateClearPage(response: QuizClear) {
+        binding.tvClearMessage.text = getClearMessage(response.message, response.isCleared)
+        updateClearUI(response.message, response.isCleared)
+    }
 
-        binding.tvClearMessage.text = when {
+    private fun getClearMessage(message: String, isCleared: Boolean): String {
+        return when {
             message == "All Clear" && isCleared -> getString(R.string.text_box_all_clear)
             message == "First" && isCleared -> getString(R.string.text_box_first_clear)
             message == "First" && !isCleared -> getString(R.string.text_box_failed)
@@ -62,17 +95,54 @@ class QuizClearFragment : BaseFragment<FragmentQuizClearBinding>() {
             message == "복습" && isCleared -> getString(R.string.text_box_review)
             else -> getString(R.string.text_box_error)
         }
+    }
 
-        // 배경 업데이트
-        when {
-            (message == "First" && !isCleared) || (message == "오답 노트" && !isCleared) || (message == "복습" && !isCleared) -> {
-                binding.ivBackground.setImageResource(R.drawable.bg_quiz_fail)
-                binding.tvClearMessage.setBackgroundResource(R.drawable.shape_quiz_failed_box)
-            }
+    private fun updateClearUI(message: String, isCleared: Boolean) {
+        val (backgroundRes, textBoxRes) = when { // 배경 업데이트
+            (message == "First" && !isCleared) || (message == "오답 노트" && !isCleared) || (message == "복습" && !isCleared) ->
+                R.drawable.bg_quiz_fail to R.drawable.shape_quiz_failed_box
+            else -> R.drawable.bg_quiz_clear to R.drawable.shape_quiz_clear_box
+        }
 
-            else -> {
-                binding.ivBackground.setImageResource(R.drawable.bg_quiz_clear)
-                binding.tvClearMessage.setBackgroundResource(R.drawable.shape_quiz_clear_box)
+        binding.ivBackground.setImageResource(backgroundRes)
+        binding.tvClearMessage.setBackgroundResource(textBoxRes)
+
+        if (message == "First") { // 첫 스테이지 완료 시 오답 노트 풀기 버튼 활성화
+            binding.tvWrongAnswerNote.visibility = View.VISIBLE
+            binding.tvWrongAnswerNote.setOnClickListener { navigateToIncorrectQuiz() }
+        }
+    }
+
+    private fun navigateToIncorrectQuiz() {
+        val quizNumber = incorrectQuizzes[0]
+        val stageNumber = args.stageNumber
+
+        quizEntryViewModel.getQuiz(stageNumber, quizNumber) // 오답 퀴즈 가져오기
+
+        quizEntryViewModel.quizState.observe(viewLifecycleOwner) { quizState ->
+            if (quizState is UiState.Success) {
+                val quiz = quizState.data
+                val action = when (quiz.quizType) {
+                    "IMAGE_CHOICE" -> QuizClearFragmentDirections
+                        .actionQuizClearFragmentToQuizImageFragment(stageNumber, quizNumber, 1)
+                    "TEXT_CHOICE" -> if (quiz.imageURL.isNullOrEmpty()) {
+                        QuizClearFragmentDirections
+                            .actionQuizClearFragmentToQuizMultipleChoiceFragment(stageNumber, quizNumber, 1)
+                    } else {
+                        QuizClearFragmentDirections
+                            .actionQuizClearFragmentToQuizMultipleChoiceImgFragment(stageNumber, quizNumber, 1)
+                    }
+                    "SHORT_ANSWER" -> if (quiz.imageURL.isNullOrEmpty()) {
+                        QuizClearFragmentDirections
+                            .actionQuizClearFragmentToQuizShortAnswerFragment(stageNumber, quizNumber, 1)
+                    } else {
+                        QuizClearFragmentDirections
+                            .actionQuizClearFragmentToQuizShortAnswerImgFragment(stageNumber, quizNumber, 1)
+                    }
+                    else -> null
+                }
+
+                action?.let { findNavController().navigate(it) }
             }
         }
     }

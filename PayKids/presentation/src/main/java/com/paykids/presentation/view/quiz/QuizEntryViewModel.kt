@@ -9,6 +9,7 @@ import com.paykids.domain.model.quiz.QuizClear
 import com.paykids.domain.usecase.datastore.GetAccessTokenUseCase
 import com.paykids.domain.usecase.quiz.CheckAnswerUseCase
 import com.paykids.domain.usecase.quiz.CheckClearUseCase
+import com.paykids.domain.usecase.quiz.GetIncorrectQuizNumbersUseCase
 import com.paykids.domain.usecase.quiz.GetQuizUseCase
 import com.paykids.presentation.utils.UiState
 import com.paykids.util.LoggerUtils
@@ -21,7 +22,8 @@ class QuizEntryViewModel @Inject constructor(
     private val getAccessTokenUseCase: GetAccessTokenUseCase,
     private val getQuizUseCase: GetQuizUseCase,
     private val checkAnswerUseCase: CheckAnswerUseCase,
-    private val checkClearUseCase: CheckClearUseCase
+    private val checkClearUseCase: CheckClearUseCase,
+    private val getIncorrectQuizNumbersUseCase: GetIncorrectQuizNumbersUseCase
 ) : ViewModel() {
     private val _quizState = MutableLiveData<UiState<Quiz>>(UiState.Loading)
     val quizState: LiveData<UiState<Quiz>> get() = _quizState
@@ -96,6 +98,26 @@ class QuizEntryViewModel @Inject constructor(
                 }.onFailure {
                     _checkClearState.value = UiState.Failure(message = "클리어 확인 실패")
                     LoggerUtils.e("클리어 확인 실패")
+                }
+        }
+    }
+
+    private val _incorrectQuizState = MutableLiveData<UiState<List<Int>>>(UiState.Loading)
+    val incorrectQuizState: LiveData<UiState<List<Int>>> get() = _incorrectQuizState
+
+    fun getIncorrectQuizNumbers(stage: Int) {
+        _incorrectQuizState.value = UiState.Loading
+
+        viewModelScope.launch {
+            getIncorrectQuizNumbersUseCase.invoke(
+                getAccessTokenUseCase.invoke().getOrNull().toString(), stage
+            )
+                .onSuccess {
+                    _incorrectQuizState.value = UiState.Success(it)
+                    LoggerUtils.d("오답 퀴즈 번호 조회 성공: $it")
+                }.onFailure {
+                    _incorrectQuizState.value = UiState.Failure(message = "오답 퀴즈 번호 조회 실패")
+                    LoggerUtils.e("오답 퀴즈 번호 조회 실패")
                 }
         }
     }

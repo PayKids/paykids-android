@@ -47,13 +47,13 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
-        android:layout_marginBottom="80dp"
+        android:layout_marginTop="102dp"
         android:fontFamily="@font/nanumsquare_extra_bold"
         android:gravity="center_horizontal"
         android:textColor="@color/black"
         android:textSize="24sp"
 
-        app:layout_constraintBottom_toTopOf="@id/gl_answer"
+        app:layout_constraintTop_toBottomOf="@id/tb_quiz"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         tools:text="10,000원 권 지폐에는\n어떤 인물이 그려져 있을까요?" />
@@ -63,13 +63,13 @@
         android:layout_width="0dp"
         android:layout_height="44dp"
         android:layout_marginHorizontal="4.5dp"
-        android:layout_marginBottom="13.5dp"
+        android:layout_marginTop="18dp"
         android:background="@drawable/shape_quiz_correct_answer_box"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:visibility="invisible"
 
-        app:layout_constraintBottom_toTopOf="@id/gl_answer"
+        app:layout_constraintTop_toBottomOf="@id/tv_question"
         app:layout_constraintEnd_toEndOf="@id/gl_answer"
         app:layout_constraintStart_toStartOf="@id/gl_answer">
 
@@ -98,13 +98,13 @@
         android:layout_width="0dp"
         android:layout_height="44dp"
         android:layout_marginHorizontal="4.5dp"
-        android:layout_marginBottom="13.5dp"
+        android:layout_marginTop="18dp"
         android:background="@drawable/shape_quiz_wrong_answer_box"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:visibility="invisible"
 
-        app:layout_constraintBottom_toTopOf="@id/gl_answer"
+        app:layout_constraintTop_toBottomOf="@id/tv_question"
         app:layout_constraintEnd_toEndOf="@id/gl_answer"
         app:layout_constraintStart_toStartOf="@id/gl_answer">
 
@@ -133,10 +133,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginBottom="81.5dp"
+        android:layout_marginTop="13.5dp"
         android:columnCount="2"
         android:rowCount="2"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ll_correct_answer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 

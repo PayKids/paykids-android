@@ -163,6 +163,10 @@
         <argument
             android:name="quizNumber"
             app:argType="integer" />
+        <argument
+            android:name="incorrectQuizIndex"
+            app:argType="integer"
+            android:defaultValue="-1" />
     </fragment>
 
     <fragment
@@ -206,6 +210,10 @@
         <argument
             android:name="quizNumber"
             app:argType="integer" />
+        <argument
+            android:name="incorrectQuizIndex"
+            app:argType="integer"
+            android:defaultValue="-1" />
     </fragment>
 
     <fragment
@@ -249,6 +257,10 @@
         <argument
             android:name="quizNumber"
             app:argType="integer" />
+        <argument
+            android:name="incorrectQuizIndex"
+            app:argType="integer"
+            android:defaultValue="-1" />
     </fragment>
 
     <fragment
@@ -292,6 +304,10 @@
         <argument
             android:name="quizNumber"
             app:argType="integer" />
+        <argument
+            android:name="incorrectQuizIndex"
+            app:argType="integer"
+            android:defaultValue="-1" />
     </fragment>
 
     <fragment
@@ -335,6 +351,10 @@
         <argument
             android:name="quizNumber"
             app:argType="integer" />
+        <argument
+            android:name="incorrectQuizIndex"
+            app:argType="integer"
+            android:defaultValue="-1" />
     </fragment>
 
     <fragment
@@ -342,6 +362,31 @@
         android:name="com.paykids.presentation.view.quiz.QuizClearFragment"
         android:label="fragment_quizClear"
         tools:layout="@layout/fragment_quiz_clear">
+        <action
+            android:id="@+id/action_quizClearFragment_to_quizImageFragment"
+            app:destination="@id/quizImageFragment"
+            app:popUpTo="@id/quizClearFragment"
+            app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_quizClearFragment_to_quizMultipleChoiceFragment"
+            app:destination="@id/quizMultipleChoiceFragment"
+            app:popUpTo="@id/quizClearFragment"
+            app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_quizClearFragment_to_quizMultipleChoiceImgFragment"
+            app:destination="@id/quizMultipleChoiceImgFragment"
+            app:popUpTo="@id/quizClearFragment"
+            app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_quizClearFragment_to_quizShortAnswerFragment"
+            app:destination="@id/quizShortAnswerFragment"
+            app:popUpTo="@id/quizClearFragment"
+            app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_quizClearFragment_to_quizShortAnswerImgFragment"
+            app:destination="@id/quizShortAnswerImgFragment"
+            app:popUpTo="@id/quizClearFragment"
+            app:popUpToInclusive="false" />
         <argument
             android:name="stageNumber"
             app:argType="integer" />

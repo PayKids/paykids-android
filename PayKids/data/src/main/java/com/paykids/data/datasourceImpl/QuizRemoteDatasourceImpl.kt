@@ -126,4 +126,25 @@ class QuizRemoteDatasourceImpl @Inject constructor(
         }
     }
 
+    override suspend fun getIncorrectQuizNumbers(
+        accessToken: String,
+        stage: Int
+    ): Result<BaseResponse<List<Int>>> {
+        return try {
+            val response = quizService.getIncorrectQuizNumbers(accessToken, stage)
+            if (response.isSuccessful) {
+                val res = response.body()
+                if (res != null) {
+                    Result.success(res)
+                } else {
+                    Result.failure(Exception("get IncorrectQuizNumbers failed: response body is null"))
+                }
+            } else {
+                Result.failure(Exception("get IncorrectQuizNumbers failed: ${response.message()}"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
 }
