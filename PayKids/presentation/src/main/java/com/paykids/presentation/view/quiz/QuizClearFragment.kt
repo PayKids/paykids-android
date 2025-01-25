@@ -8,7 +8,7 @@ import com.paykids.domain.model.quiz.QuizClear
 import com.paykids.presentation.R
 import com.paykids.presentation.base.BaseFragment
 import com.paykids.presentation.databinding.FragmentQuizClearBinding
-import com.paykids.presentation.utils.QuizBgmManager
+import com.paykids.presentation.utils.QuizSoundManager
 import com.paykids.presentation.utils.UiState
 import com.paykids.presentation.view.home.HomeActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -153,7 +153,7 @@ class QuizClearFragment : BaseFragment<FragmentQuizClearBinding>() {
         super.onResume()
         (requireActivity() as? HomeActivity)?.setBottomNavigationVisibility(false)
 
-        QuizBgmManager.stopBgm()
+        QuizSoundManager.stopBGM()
     }
 
     override fun onPause() {
