@@ -25,6 +25,9 @@ object QuizSoundManager {
 
             soundMap["correct"] = soundPool?.load(context, R.raw.coin1, 1) ?: 0
             soundMap["wrong"] = soundPool?.load(context, R.raw.error5, 1) ?: 0
+
+            soundMap["game_level_complete"] = soundPool?.load(context, R.raw.game_level_complete, 1) ?: 0
+            soundMap["cartoon_fail_trumpet"] = soundPool?.load(context, R.raw.cartoon_fail_trumpet, 1) ?: 0
         }
 
         if (bgmPlayer == null) {
@@ -46,6 +49,16 @@ object QuizSoundManager {
         soundMap[effect]?.let { soundId ->
             soundPool?.play(soundId, 1f, 1f, 0, 0, 1f)
         }
+    }
+
+    // 게임 레벨 완료 시 효과음 재생
+    fun playStageComplete() {
+        playEffect("game_level_complete")
+    }
+
+    // 게임 실패 시 효과음 재생
+    fun playStageFail() {
+        playEffect("cartoon_fail_trumpet")
     }
 
     fun release() {
