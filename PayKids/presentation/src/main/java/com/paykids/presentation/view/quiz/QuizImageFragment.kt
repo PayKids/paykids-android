@@ -13,6 +13,7 @@ import com.paykids.presentation.R
 import com.paykids.presentation.base.BaseFragment
 import com.paykids.presentation.custom.ConfirmDialogInterface
 import com.paykids.presentation.databinding.FragmentQuizImageBinding
+import com.paykids.presentation.utils.QuizSoundManager
 import com.paykids.presentation.utils.UiState
 import com.paykids.presentation.view.home.HomeActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -111,6 +112,7 @@ class QuizImageFragment : BaseFragment<FragmentQuizImageBinding>(), ConfirmDialo
                     }
                     isCorrect = it.data
                     updateUIForAnswer()
+                    playEffect()
                 }
             }
         }
@@ -239,6 +241,14 @@ class QuizImageFragment : BaseFragment<FragmentQuizImageBinding>(), ConfirmDialo
             "C" -> binding.answerThird.root
             "D" -> binding.answerFourth.root
             else -> null
+        }
+    }
+
+    private fun playEffect() {
+        if (isCorrect == true) {
+            QuizSoundManager.playEffect("correct")
+        } else {
+            QuizSoundManager.playEffect("wrong")
         }
     }
 

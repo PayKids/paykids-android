@@ -14,6 +14,7 @@ import com.paykids.presentation.R
 import com.paykids.presentation.base.BaseFragment
 import com.paykids.presentation.custom.ConfirmDialogInterface
 import com.paykids.presentation.databinding.FragmentQuizMultipleChoiceImgBinding
+import com.paykids.presentation.utils.QuizSoundManager
 import com.paykids.presentation.utils.UiState
 import com.paykids.presentation.view.home.HomeActivity
 import com.paykids.util.LoggerUtils
@@ -120,6 +121,7 @@ class QuizMultipleChoiceImgFragment : BaseFragment<FragmentQuizMultipleChoiceImg
                     }
                     isCorrect = it.data
                     updateUIForAnswer()
+                    playEffect()
                 }
             }
         }
@@ -197,6 +199,14 @@ class QuizMultipleChoiceImgFragment : BaseFragment<FragmentQuizMultipleChoiceImg
             // 오답일 때
             binding.ivBackground.setImageResource(R.drawable.bg_quiz_wrong)
             binding.llWrongAnswer.visibility = View.VISIBLE
+        }
+    }
+
+    private fun playEffect() {
+        if (isCorrect == true) {
+            QuizSoundManager.playEffect("correct")
+        } else {
+            QuizSoundManager.playEffect("wrong")
         }
     }
 
