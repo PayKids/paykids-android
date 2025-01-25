@@ -31,6 +31,7 @@ class QuizMultipleChoiceImgFragment : BaseFragment<FragmentQuizMultipleChoiceImg
     private var stageNumber: Int = 0
     private var quizNumber: Int = 0
     private var isCorrect: Boolean? = null
+    private var correctAnswerLetter: String? = null
     private var userAnswer: String = ""
     private var incorrectQuizIndex: Int = -1
     private var incorrectQuizzes = mutableListOf<Int>()
@@ -102,6 +103,8 @@ class QuizMultipleChoiceImgFragment : BaseFragment<FragmentQuizMultipleChoiceImg
                         entry.key to entry.value // "A" to "Answer 1"
                     } ?: emptyList()
                     adapter.submitList(answers)
+                    correctAnswerLetter = quiz.answer
+                    adapter.setCorrectAnswer(correctAnswerLetter!!)
                 }
             }
         }
@@ -174,7 +177,7 @@ class QuizMultipleChoiceImgFragment : BaseFragment<FragmentQuizMultipleChoiceImg
                 }
             }
 
-            if (incorrectQuizIndex != 0) { // 오답 노트 풀기(오답 퀴즈 진행 중)일 경우
+            if (incorrectQuizIndex != -1) { // 오답 노트 풀기(오답 퀴즈 진행 중)일 경우
                 if (incorrectQuizIndex >= incorrectQuizzes.size) { // 마지막 오답 퀴즈인 경우
                     val action =
                         QuizMultipleChoiceImgFragmentDirections.actionQuizMultipleChoiceImgFragmentToQuizClearFragment(
