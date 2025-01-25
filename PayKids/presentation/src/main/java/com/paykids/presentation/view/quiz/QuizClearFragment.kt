@@ -85,6 +85,7 @@ class QuizClearFragment : BaseFragment<FragmentQuizClearBinding>() {
     private fun updateClearPage(response: QuizClear) {
         binding.tvClearMessage.text = getClearMessage(response.message, response.isCleared)
         updateClearUI(response.message, response.isCleared)
+        playStageClear(response.isCleared)
     }
 
     private fun getClearMessage(message: String, isCleared: Boolean): String {
@@ -111,7 +112,18 @@ class QuizClearFragment : BaseFragment<FragmentQuizClearBinding>() {
 
         if (message == "First") { // 첫 스테이지 완료 시 오답 노트 풀기 버튼 활성화
             binding.tvWrongAnswerNote.visibility = View.VISIBLE
-            binding.tvWrongAnswerNote.setOnClickListener { navigateToIncorrectQuiz() }
+            binding.tvWrongAnswerNote.setOnClickListener {
+                navigateToIncorrectQuiz()
+                QuizSoundManager.playBGM()
+            }
+        }
+    }
+
+    private fun playStageClear(isCleared: Boolean) {
+        if (!isCleared) {
+            QuizSoundManager.playStageFail()
+        } else {
+            QuizSoundManager.playStageComplete()
         }
     }
 
@@ -127,20 +139,39 @@ class QuizClearFragment : BaseFragment<FragmentQuizClearBinding>() {
                 val action = when (quiz.quizType) {
                     "IMAGE_CHOICE" -> QuizClearFragmentDirections
                         .actionQuizClearFragmentToQuizImageFragment(stageNumber, quizNumber, 1)
+
                     "TEXT_CHOICE" -> if (quiz.imageURL.isNullOrEmpty()) {
                         QuizClearFragmentDirections
-                            .actionQuizClearFragmentToQuizMultipleChoiceFragment(stageNumber, quizNumber, 1)
+                            .actionQuizClearFragmentToQuizMultipleChoiceFragment(
+                                stageNumber,
+                                quizNumber,
+                                1
+                            )
                     } else {
                         QuizClearFragmentDirections
-                            .actionQuizClearFragmentToQuizMultipleChoiceImgFragment(stageNumber, quizNumber, 1)
+                            .actionQuizClearFragmentToQuizMultipleChoiceImgFragment(
+                                stageNumber,
+                                quizNumber,
+                                1
+                            )
                     }
+
                     "SHORT_ANSWER" -> if (quiz.imageURL.isNullOrEmpty()) {
                         QuizClearFragmentDirections
-                            .actionQuizClearFragmentToQuizShortAnswerFragment(stageNumber, quizNumber, 1)
+                            .actionQuizClearFragmentToQuizShortAnswerFragment(
+                                stageNumber,
+                                quizNumber,
+                                1
+                            )
                     } else {
                         QuizClearFragmentDirections
-                            .actionQuizClearFragmentToQuizShortAnswerImgFragment(stageNumber, quizNumber, 1)
+                            .actionQuizClearFragmentToQuizShortAnswerImgFragment(
+                                stageNumber,
+                                quizNumber,
+                                1
+                            )
                     }
+
                     else -> null
                 }
 
