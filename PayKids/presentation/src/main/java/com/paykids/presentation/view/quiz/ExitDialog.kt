@@ -11,7 +11,7 @@ import androidx.navigation.fragment.findNavController
 import com.paykids.presentation.R
 import com.paykids.presentation.custom.ConfirmDialogInterface
 import com.paykids.presentation.databinding.DialogQuizExitBinding
-import com.paykids.presentation.utils.QuizBgmManager
+import com.paykids.presentation.utils.QuizSoundManager
 
 class ExitDialog(
     confirmDialogInterface: ConfirmDialogInterface,
@@ -43,7 +43,7 @@ class ExitDialog(
             this.confirmDialogInterface?.onYesButtonClick()
             dismiss()
             // 퀴즈 bgm 종료
-            QuizBgmManager.stopBgm()
+            QuizSoundManager.stopBGM()
             // 홈 프래그먼트로 돌아가기
             findNavController().navigate(R.id.homeFragment)
         }
