@@ -12,6 +12,7 @@ import com.paykids.presentation.R
 import com.paykids.presentation.base.BaseFragment
 import com.paykids.presentation.custom.ConfirmDialogInterface
 import com.paykids.presentation.databinding.FragmentQuizShortAnswerBinding
+import com.paykids.presentation.utils.QuizSoundManager
 import com.paykids.presentation.utils.UiState
 import com.paykids.presentation.view.home.HomeActivity
 import com.paykids.util.LoggerUtils
@@ -141,6 +142,7 @@ class QuizShortAnswerFragment : BaseFragment<FragmentQuizShortAnswerBinding>(),
                         return@observe
                     }
                     updateUIForAnswer()
+                    playEffect()
                 }
             }
         }
@@ -177,6 +179,16 @@ class QuizShortAnswerFragment : BaseFragment<FragmentQuizShortAnswerBinding>(),
             } else {
                 binding.ivBackground.setImageResource(R.drawable.bg_quiz_wrong)
                 binding.llWrongAnswer.visibility = View.VISIBLE
+            }
+        }
+    }
+
+    private fun playEffect() {
+        if (userAnswer.isNotEmpty()) {
+            if (userAnswer == correctAnswer) {
+                QuizSoundManager.playEffect("correct")
+            } else {
+                QuizSoundManager.playEffect("wrong")
             }
         }
     }

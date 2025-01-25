@@ -11,6 +11,7 @@ import com.paykids.presentation.R
 import com.paykids.presentation.base.BaseFragment
 import com.paykids.presentation.custom.ConfirmDialogInterface
 import com.paykids.presentation.databinding.FragmentQuizEntryBinding
+import com.paykids.presentation.utils.QuizSoundManager
 import com.paykids.presentation.utils.UiState
 import com.paykids.presentation.view.home.HomeActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -27,6 +28,7 @@ class QuizEntryFragment : BaseFragment<FragmentQuizEntryBinding>(), ConfirmDialo
     override fun initView() {
         val stageNumber = args.stageNumber
         val stageName = args.stageName
+        QuizSoundManager.init(requireContext())
 
         binding.tvStage.text = "스테이지 $stageNumber"
         binding.tvStageName.text = stageName
@@ -51,6 +53,7 @@ class QuizEntryFragment : BaseFragment<FragmentQuizEntryBinding>(), ConfirmDialo
         }
 
         binding.btnQuiz.setOnClickListener {
+            QuizSoundManager.playBGM()
             navigateToNextQuiz()
         }
 
@@ -58,6 +61,7 @@ class QuizEntryFragment : BaseFragment<FragmentQuizEntryBinding>(), ConfirmDialo
             if (incorrectQuizzes.isNotEmpty()) {
                 // 첫 번째 오답 문제 불러오기
                 navigateToIncorrectQuiz()
+                QuizSoundManager.playBGM()
             } else {
                 val dialog = IncorrectDialog(this, R.string.dialog_incorrect_nothing, args.stageNumber)
                 dialog.isCancelable = false

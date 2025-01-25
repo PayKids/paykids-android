@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import com.paykids.presentation.custom.ConfirmDialogInterface
 import com.paykids.presentation.databinding.DialogQuizIncorrectBinding
+import com.paykids.presentation.utils.QuizSoundManager
 
 class IncorrectDialog(
     confirmDialogInterface: ConfirmDialogInterface,
@@ -30,6 +31,7 @@ class IncorrectDialog(
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        QuizSoundManager.init(requireContext())
         _binding = DialogQuizIncorrectBinding.inflate(inflater, container, false)
         val view = binding.root
 
@@ -44,6 +46,8 @@ class IncorrectDialog(
         binding.btnEnterQuiz.setOnClickListener {
             this.confirmDialogInterface?.onQuizEntryButtonClick(stageNumber)
             dismiss()
+            // 퀴즈 bgm 재생
+            QuizSoundManager.playBGM()
         }
 
         return view
