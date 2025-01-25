@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import com.paykids.presentation.custom.ConfirmDialogInterface
 import com.paykids.presentation.databinding.DialogQuizIncorrectBinding
+import com.paykids.presentation.utils.QuizBgmManager
 
 class IncorrectDialog(
     confirmDialogInterface: ConfirmDialogInterface,
@@ -44,6 +45,8 @@ class IncorrectDialog(
         binding.btnEnterQuiz.setOnClickListener {
             this.confirmDialogInterface?.onQuizEntryButtonClick(stageNumber)
             dismiss()
+            // 퀴즈 bgm 시작
+            QuizBgmManager.startBgm(requireContext())
         }
 
         return view
