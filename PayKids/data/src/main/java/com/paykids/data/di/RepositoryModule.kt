@@ -1,5 +1,6 @@
 package com.paykids.data.di
 
+import com.paykids.data.repository.AchievementRepositoryImpl
 import com.paykids.data.repository.AuthRepositoryImpl
 import com.paykids.data.repository.ChatRepositoryImpl
 import com.paykids.data.repository.ExpenseCategoryRepositoryImpl
@@ -9,6 +10,7 @@ import com.paykids.data.repository.IncomeRepositoryImpl
 import com.paykids.data.repository.KakaoAuthRepositoryImpl
 import com.paykids.data.repository.QuizRepositoryImpl
 import com.paykids.data.repository.UserRepositoryImpl
+import com.paykids.domain.repository.AchievementRepository
 import com.paykids.domain.repository.AuthRepository
 import com.paykids.domain.repository.ChatRepository
 import com.paykids.domain.repository.ExpenseCategoryRepository
@@ -63,4 +65,8 @@ abstract class RepositoryModule {
     @Binds
     @Singleton
     abstract fun bindsIncomeCategoryRepository(impl: IncomeCategoryRepositoryImpl): IncomeCategoryRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindsAchievementRepository(impl: AchievementRepositoryImpl): AchievementRepository
 }
