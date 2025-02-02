@@ -1,11 +1,9 @@
 package com.paykids.data.repository
 
 import com.paykids.data.datasource.AchievementRemoteDatasource
-import com.paykids.data.datasource.ChatRemoteDatasource
 import com.paykids.data.mapper.toAchievementInfo
 import com.paykids.domain.model.achievement.AchievementInfo
 import com.paykids.domain.repository.AchievementRepository
-import com.paykids.domain.repository.ChatRepository
 import javax.inject.Inject
 
 class AchievementRepositoryImpl @Inject constructor(

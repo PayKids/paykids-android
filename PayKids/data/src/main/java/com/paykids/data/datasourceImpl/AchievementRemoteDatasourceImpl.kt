@@ -1,11 +1,8 @@
 package com.paykids.data.datasourceImpl
 
 import com.paykids.data.datasource.AchievementRemoteDatasource
-import com.paykids.data.datasource.ChatRemoteDatasource
-import com.paykids.data.model.ChatResponseDTO
 import com.paykids.data.model.achievement.AchieveResponseDTO
 import com.paykids.data.service.AchievementService
-import com.paykids.data.service.ChatService
 import javax.inject.Inject
 
 class AchievementRemoteDatasourceImpl @Inject constructor(
