@@ -1,7 +1,10 @@
 package com.paykids.presentation.view.home
 
 import android.content.Intent
+import android.graphics.Color
+import android.os.Build
 import android.view.View
+import androidx.annotation.RequiresApi
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment

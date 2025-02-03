@@ -1,7 +1,9 @@
 package com.paykids.presentation.base
 
 import android.content.Context
+import android.graphics.Color
 import android.graphics.Rect
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +11,7 @@ import android.view.ViewGroup
 import android.view.ViewTreeObserver
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
 import com.paykids.presentation.custom.CustomToast
@@ -112,6 +115,26 @@ abstract class BaseFragment<VB : ViewBinding> : Fragment() {
         } else {
             showToast("한 번 더 누르면 종료됩니다.")
             backPressedTime = currentTime
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.R)
+    fun hideStatusBar() {
+        val window = requireActivity().window
+
+        window.apply {
+            this.statusBarColor = Color.TRANSPARENT
+            decorView.systemUiVisibility =
+                View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.R)
+    fun showStatusBar() {
+        val window = requireActivity().window
+
+        window.apply {
+            decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_VISIBLE
         }
     }
 

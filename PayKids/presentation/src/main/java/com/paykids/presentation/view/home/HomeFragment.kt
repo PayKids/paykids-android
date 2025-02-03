@@ -46,12 +46,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     private lateinit var stageName: String
     private var unlockedStageNumber: Int = 0
 
-    @SuppressLint("NewApi")
+    @RequiresApi(Build.VERSION_CODES.R)
     override fun initView() {
         homeViewModel.getStageToGo()
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
             onBackPressed()
         }
+
         hideStatusBar()
     }
 
@@ -314,18 +315,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         get() = (this * resources.displayMetrics.density).toInt()
 
     @RequiresApi(Build.VERSION_CODES.R)
-    private fun hideStatusBar() {
-        val window = requireActivity().window
-
-        window.apply {
-            this.statusBarColor = Color.TRANSPARENT
-            decorView.systemUiVisibility =
-                View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-
-        }
-    }
-
     override fun onResume() {
         super.onResume()
+        hideStatusBar()
+    }
+
+    @RequiresApi(Build.VERSION_CODES.R)
+    override fun onPause() {
+        super.onPause()
+        showStatusBar()
     }
 }
