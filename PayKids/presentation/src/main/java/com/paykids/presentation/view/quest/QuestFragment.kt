@@ -1,26 +1,24 @@
 package com.paykids.presentation.view.quest
 
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import com.google.android.material.tabs.TabLayoutMediator
 import com.paykids.presentation.R
+import com.paykids.presentation.base.BaseFragment
 import com.paykids.presentation.databinding.FragmentQuestBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class QuestFragment : Fragment() {
-    private var _binding: FragmentQuestBinding? = null
-    private val binding get() = _binding!!
+class QuestFragment : BaseFragment<FragmentQuestBinding>() {
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentQuestBinding.inflate(inflater, container, false)
-        return binding.root
+    @RequiresApi(Build.VERSION_CODES.R)
+    override fun initView() {
+        setStatusBarColorDark()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -38,8 +36,8 @@ class QuestFragment : Fragment() {
         }.attach()
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+    override fun onResume() {
+        super.onResume()
+        setStatusBarColorLight()
     }
 }

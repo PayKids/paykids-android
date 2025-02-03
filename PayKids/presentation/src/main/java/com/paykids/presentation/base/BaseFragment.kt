@@ -12,6 +12,9 @@ import android.view.ViewTreeObserver
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
 import com.paykids.presentation.custom.CustomToast
@@ -138,4 +141,21 @@ abstract class BaseFragment<VB : ViewBinding> : Fragment() {
         }
     }
 
+    fun setStatusBarColorLight() {
+        val window = requireActivity().window
+        WindowCompat.setDecorFitsSystemWindows(window, true)
+
+        val controller = WindowInsetsControllerCompat(window, window.decorView)
+        controller.show(WindowInsetsCompat.Type.statusBars())
+        controller.isAppearanceLightStatusBars = true
+    }
+
+    fun setStatusBarColorDark() {
+        val window = requireActivity().window
+        WindowCompat.setDecorFitsSystemWindows(window, true)
+
+        val controller = WindowInsetsControllerCompat(window, window.decorView)
+        controller.show(WindowInsetsCompat.Type.statusBars())
+        controller.isAppearanceLightStatusBars = false
+    }
 }

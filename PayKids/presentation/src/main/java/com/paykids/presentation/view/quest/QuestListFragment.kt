@@ -28,4 +28,9 @@ class QuestListFragment : BaseFragment<FragmentQuestListBinding>() {
             layoutManager = LinearLayoutManager(requireContext())
         }
     }
+
+    override fun onResume() {
+        super.onResume()
+        setStatusBarColorDark()
+    }
 }

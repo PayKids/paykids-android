@@ -2,12 +2,14 @@ package com.paykids.presentation.view.mypage
 
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
@@ -27,7 +29,10 @@ class ModifyInfoFragment : BaseFragment<FragmentModifyInfoBinding>(), ConfirmDia
     private lateinit var backPressedCallback: OnBackPressedCallback
     private val myPageViewModel: MyPageViewModel by viewModels()
 
+    @RequiresApi(Build.VERSION_CODES.R)
     override fun initView() {
+        hideStatusBar()
+        setStatusBarColorLight()
         myPageViewModel.getUserInfo()
     }
 

@@ -48,4 +48,9 @@ class AchievementFragment : BaseFragment<FragmentAchievementBinding>() {
             }
         }
     }
+
+    override fun onResume() {
+        super.onResume()
+        setStatusBarColorDark()
+    }
 }

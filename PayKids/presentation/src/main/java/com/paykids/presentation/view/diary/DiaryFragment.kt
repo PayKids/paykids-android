@@ -53,7 +53,7 @@ class DiaryFragment : BaseFragment<FragmentDiaryBinding>(), ConfirmDialogInterfa
     @RequiresApi(Build.VERSION_CODES.R)
     override fun initView() {
         hideStatusBar()
-        setStatusBarColor()
+        setStatusBarColorLight()
 
         today = getToday()
         currentYear = today.split("-")[0].toInt()
@@ -691,15 +691,6 @@ class DiaryFragment : BaseFragment<FragmentDiaryBinding>(), ConfirmDialogInterfa
         }
 
         dialog.show()
-    }
-
-    private fun setStatusBarColor() {
-        val window = requireActivity().window
-        WindowCompat.setDecorFitsSystemWindows(window, true)
-
-        val controller = WindowInsetsControllerCompat(window, window.decorView)
-        controller.show(WindowInsetsCompat.Type.statusBars())
-        controller.isAppearanceLightStatusBars = true
     }
 
 }

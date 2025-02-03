@@ -54,6 +54,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         }
 
         hideStatusBar()
+        setStatusBarColorLight()
     }
 
     override fun initListener() {
