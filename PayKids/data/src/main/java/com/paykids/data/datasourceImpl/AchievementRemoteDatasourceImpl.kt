@@ -12,10 +12,10 @@ class AchievementRemoteDatasourceImpl @Inject constructor(
         return try {
             val response = achievementService.getAchievements(accessToken)
             if (response.isSuccessful) {
-                val chatResponse = response.body()
+                val res = response.body()
 
-                if (chatResponse != null) {
-                    Result.success(chatResponse)
+                if (res != null) {
+                    Result.success(res)
                 } else {
                     Result.failure(Exception("get Achievements failed: response body is null"))
                 }
