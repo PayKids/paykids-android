@@ -1,5 +1,7 @@
 package com.paykids.presentation.view.signIn
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.viewModels
 import com.paykids.presentation.R
 import com.paykids.presentation.base.BaseFragment
@@ -12,7 +14,10 @@ import dagger.hilt.android.AndroidEntryPoint
 class SignInProviderFragment : BaseFragment<FragmentSignProviderBinding>() {
     private val signViewModel: SignViewModel by viewModels()
 
+    @RequiresApi(Build.VERSION_CODES.R)
     override fun initView() {
+        hideStatusBar()
+        setStatusBarColorLight()
     }
 
     override fun initListener() {

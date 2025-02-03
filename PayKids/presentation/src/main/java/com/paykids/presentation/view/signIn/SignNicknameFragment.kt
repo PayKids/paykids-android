@@ -1,9 +1,11 @@
 package com.paykids.presentation.view.signIn
 
+import android.os.Build
 import android.text.Editable
 import android.text.InputFilter
 import android.text.TextWatcher
 import android.view.View
+import androidx.annotation.RequiresApi
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
@@ -18,7 +20,10 @@ import dagger.hilt.android.AndroidEntryPoint
 class SignNicknameFragment : BaseFragment<FragmentSignNicknameBinding>() {
     private val viewModel: SignViewModel by viewModels()
 
+    @RequiresApi(Build.VERSION_CODES.R)
     override fun initView() {
+        hideStatusBar()
+        setStatusBarColorLight()
         binding.etNick.filters = arrayOf(InputFilter.LengthFilter(8))
     }
 
