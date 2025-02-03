@@ -6,9 +6,10 @@ import com.paykids.domain.model.achievement.AchievementInfo
 fun AchieveResponseDTO.toAchievementInfo(): List<AchievementInfo> {
     return this.map { item ->
         AchievementInfo(
-            name = item.name,
             isCompleted = item.isCompleted,
-            image = item.imageUrl
+            name = item.name,
+            desc = item.description,
+            imageUrl = item.imageURL
         )
     }
 }
