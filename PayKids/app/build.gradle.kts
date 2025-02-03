@@ -16,8 +16,8 @@ android {
         applicationId = "com.paykids.paykids"
         minSdk = 26
         targetSdk = 34
-        versionCode = 10001
-        versionName = "1.00.01"
+        versionCode = 10002
+        versionName = "1.00.02"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
