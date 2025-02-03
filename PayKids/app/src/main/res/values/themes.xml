@@ -12,5 +12,7 @@
         <item name="windowSplashScreenAnimatedIcon">@drawable/ic_logo</item>
         <item name="windowSplashScreenAnimationDuration">1000</item>
         <item name="postSplashScreenTheme">@style/Theme.PayKids</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
 </resources>

@@ -1,10 +1,13 @@
 package com.paykids.presentation.view.home
 
 import android.annotation.SuppressLint
+import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.os.Build
 import android.view.Gravity
 import android.view.View
+import android.view.WindowInsets
+import android.view.WindowInsetsController
 import android.widget.FrameLayout
 import android.widget.ImageView
 import androidx.activity.addCallback
@@ -12,8 +15,12 @@ import androidx.annotation.RequiresApi
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.Insets
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
+import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.paykids.presentation.R
@@ -309,11 +316,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     @RequiresApi(Build.VERSION_CODES.R)
     private fun hideStatusBar() {
         val window = requireActivity().window
-        val decorView = window.decorView
 
-        WindowInsetsControllerCompat(window, decorView).apply {
-            systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
-            hide(WindowInsetsCompat.Type.systemBars())
+        window.apply {
+            this.statusBarColor = Color.TRANSPARENT
+            decorView.systemUiVisibility =
+                View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+
         }
     }
 
