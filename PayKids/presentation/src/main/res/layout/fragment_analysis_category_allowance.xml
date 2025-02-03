@@ -5,12 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/gray5"
-    android:padding="8dp">
+    android:padding="12dp">
 
     <ImageButton
         android:id="@+id/ib_back"
         android:layout_width="48dp"
         android:layout_height="48dp"
+        android:layout_marginTop="28dp"
         android:background="@color/transparent"
         android:src="@drawable/ic_left_blue"
         app:layout_constraintStart_toStartOf="parent"
