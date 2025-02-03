@@ -8,8 +8,8 @@ fun AchieveResponseDTO.toAchievementInfo(): List<AchievementInfo> {
         AchievementInfo(
             isCompleted = item.isCompleted,
             name = item.name,
-            desc = item.description,
-            imageUrl = item.imageURL
+            description = item.description,
+            imageURL = item.imageURL
         )
     }
 }

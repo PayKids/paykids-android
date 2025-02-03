@@ -18,12 +18,12 @@ class AchievementsAdapter(
 
         fun bind(item: AchievementInfo) {
             Glide.with(binding.root.context)
-                .load(item.imageUrl)
+                .load(item.imageURL)
                 .transform(CircleCrop())
                 .into(binding.ivAchieveImage)
 
             binding.tvAchieveName.text = item.name
-            binding.tvAchieveDesc.text = item.desc
+            binding.tvAchieveDesc.text = item.description
         }
     }
 

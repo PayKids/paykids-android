@@ -9,6 +9,7 @@ import com.paykids.domain.model.user.UserInfo
 import com.paykids.domain.usecase.acievement.GetAchievementUseCase
 import com.paykids.domain.usecase.datastore.GetAccessTokenUseCase
 import com.paykids.presentation.utils.UiState
+import com.paykids.util.LoggerUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -43,13 +44,20 @@ class QuestViewModel @Inject constructor(
         _achievementState.value = UiState.Loading
 
         viewModelScope.launch {
-            getAchievementUseCase.invoke(getAccessTokenUseCase.invoke().getOrNull().toString())
-                .onSuccess {
+            try {
+                getAchievementUseCase(
+                    getAccessTokenUseCase.invoke().getOrNull().orEmpty()
+                ).onSuccess {
                     _achievementState.value = UiState.Success(it)
+                }.onFailure { e ->
+                    LoggerUtils.e(e.message.toString())
+                    _achievementState.value =
+                        UiState.Failure(message = e.message.toString())
                 }
-                .onFailure {
-                    _achievementState.value = UiState.Failure(message = "업적 정보 불러오기 실패")
-                }
+            } catch (e: Exception) {
+                LoggerUtils.e("get Achievements exception: ${e.message}")
+                _achievementState.value = UiState.Failure(message = e.message.toString())
+            }
         }
     }
 

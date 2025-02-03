@@ -1,13 +1,13 @@
 package com.paykids.data.mapper
 
+import com.paykids.data.model.quest.QuestResponseDTO
 import com.paykids.domain.model.quest.QuestInfo
-import com.paykids.domain.model.quest.QuestItem
 
 fun QuestResponseDTO.toQuestInfo(): List<QuestInfo> {
     return this.map { item ->
-        QuestItem(
+        QuestInfo(
             name = item.name,
-            isCompleted = item.isCompleted,
+            isCompleted = item.isComplete,
             count = item.count,
             maxCount = item.maxCount
         )
