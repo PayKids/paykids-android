@@ -40,7 +40,9 @@ class AchievementFragment : BaseFragment<FragmentAchievementBinding>() {
                 is UiState.Loading -> {}
 
                 is UiState.Success -> {
-                    adapter.updateAchievements(it.data)
+                    val completedAchievements =
+                        it.data.filter { achievement -> achievement.isCompleted }
+                    adapter.updateAchievements(completedAchievements)
                 }
             }
         }
