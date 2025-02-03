@@ -1,9 +1,11 @@
 package com.paykids.presentation.view.quiz
 
 import android.annotation.SuppressLint
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.activity.OnBackPressedCallback
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -22,8 +24,12 @@ class StudyFragment : BaseFragment<FragmentStudyBinding>() {
     private val viewModel: StudyViewModel by viewModels()
     private lateinit var studyAdapter: StudyRvAdapter
 
+    @RequiresApi(Build.VERSION_CODES.R)
     @SuppressLint("SetTextI18n")
     override fun initView() {
+        setStatusBarColorLight()
+        hideStatusBar()
+
         val stageNumber = args.stageNumber
         binding.tvStage.text = "스테이지 $stageNumber"
         setRvAdapter()
