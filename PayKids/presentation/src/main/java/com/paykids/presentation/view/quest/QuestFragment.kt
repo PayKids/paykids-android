@@ -18,7 +18,8 @@ class QuestFragment : BaseFragment<FragmentQuestBinding>() {
 
     @RequiresApi(Build.VERSION_CODES.R)
     override fun initView() {
-        setStatusBarColorDark()
+        hideStatusBar()
+        setStatusBarColorLight()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
