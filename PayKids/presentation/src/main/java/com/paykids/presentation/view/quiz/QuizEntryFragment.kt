@@ -1,9 +1,11 @@
 package com.paykids.presentation.view.quiz
 
 import android.annotation.SuppressLint
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.activity.OnBackPressedCallback
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -24,8 +26,12 @@ class QuizEntryFragment : BaseFragment<FragmentQuizEntryBinding>(), ConfirmDialo
     private val args: QuizEntryFragmentArgs by navArgs()
     private var incorrectQuizzes = mutableListOf<Int>()
 
+    @RequiresApi(Build.VERSION_CODES.R)
     @SuppressLint("SetTextI18n")
     override fun initView() {
+        setStatusBarColorDark()
+        hideStatusBar()
+
         val stageNumber = args.stageNumber
         val stageName = args.stageName
         QuizSoundManager.init(requireContext())

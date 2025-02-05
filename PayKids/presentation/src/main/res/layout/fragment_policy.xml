@@ -14,6 +14,7 @@
         android:fontFamily="@font/nanumsquare_extra_bold"
         android:gravity="center"
         android:includeFontPadding="false"
+        android:paddingTop="40dp"
 
         android:text="@string/text_policy"
         android:textColor="@color/black"
@@ -29,6 +30,7 @@
         android:layout_height="48dp"
         android:background="@color/transparent"
         android:contentDescription="@null"
+        android:layout_marginTop="32dp"
         android:src="@drawable/ic_left_blue"
 
         app:layout_constraintBottom_toBottomOf="@id/tv_policy"

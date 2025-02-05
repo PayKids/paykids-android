@@ -1,9 +1,11 @@
 package com.paykids.presentation.view.quiz
 
 import android.annotation.SuppressLint
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.activity.OnBackPressedCallback
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -34,7 +36,11 @@ class QuizImageFragment : BaseFragment<FragmentQuizImageBinding>(), ConfirmDialo
     private var incorrectQuizIndex: Int = -1
     private var incorrectQuizzes = mutableListOf<Int>()
 
+    @RequiresApi(Build.VERSION_CODES.R)
     override fun initView() {
+        hideStatusBar()
+        setStatusBarColorLight()
+
         stageNumber = args.stageNumber
         quizNumber = args.quizNumber
         incorrectQuizIndex = args.incorrectQuizIndex

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.os.Build
 import android.text.Editable
 import android.text.Spannable
 import android.text.SpannableString
@@ -13,7 +14,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.Window
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -45,7 +50,10 @@ class DiaryFragment : BaseFragment<FragmentDiaryBinding>(), ConfirmDialogInterfa
     private var currentMonth: Int = 0
     private var currentDay: Int = 0
 
+    @RequiresApi(Build.VERSION_CODES.R)
     override fun initView() {
+        hideStatusBar()
+        setStatusBarColorLight()
 
         today = getToday()
         currentYear = today.split("-")[0].toInt()

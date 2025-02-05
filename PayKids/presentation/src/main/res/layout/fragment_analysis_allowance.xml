@@ -11,8 +11,7 @@
         android:id="@+id/ib_back"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="28dp"
         android:background="@color/transparent"
         android:src="@drawable/ic_left_blue"
 

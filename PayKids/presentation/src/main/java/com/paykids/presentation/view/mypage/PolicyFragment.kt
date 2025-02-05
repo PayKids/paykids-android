@@ -2,9 +2,11 @@ package com.paykids.presentation.view.mypage
 
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.activity.OnBackPressedCallback
+import androidx.annotation.RequiresApi
 import com.paykids.presentation.base.BaseFragment
 import com.paykids.presentation.databinding.FragmentPolicyBinding
 import com.paykids.presentation.view.home.HomeActivity
@@ -14,8 +16,10 @@ import dagger.hilt.android.AndroidEntryPoint
 class PolicyFragment : BaseFragment<FragmentPolicyBinding>() {
     private lateinit var backPressedCallback: OnBackPressedCallback
 
+    @RequiresApi(Build.VERSION_CODES.R)
     override fun initView() {
-
+        hideStatusBar()
+        setStatusBarColorLight()
     }
 
     override fun initListener() {

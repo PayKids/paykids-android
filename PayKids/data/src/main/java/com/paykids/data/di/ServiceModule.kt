@@ -1,5 +1,6 @@
 package com.paykids.data.di
 
+import com.paykids.data.service.AchievementService
 import com.paykids.data.service.AuthService
 import com.paykids.data.service.ChatService
 import com.paykids.data.service.ExpenseCategoryService
@@ -59,4 +60,8 @@ object ServiceModule {
     fun providesIncomeCategoryService(retrofit: Retrofit): IncomeCategoryService =
         retrofit.create(IncomeCategoryService::class.java)
 
+    @Provides
+    @Singleton
+    fun providesAchievementService(retrofit: Retrofit): AchievementService =
+        retrofit.create(AchievementService::class.java)
 }

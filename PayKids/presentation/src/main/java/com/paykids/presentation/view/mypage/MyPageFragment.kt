@@ -1,5 +1,7 @@
 package com.paykids.presentation.view.mypage
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
@@ -16,7 +18,10 @@ import dagger.hilt.android.AndroidEntryPoint
 class MyPageFragment : BaseFragment<FragmentMypageBinding>(), ConfirmDialogInterface {
     private val myPageViewModel: MyPageViewModel by viewModels()
 
+    @RequiresApi(Build.VERSION_CODES.R)
     override fun initView() {
+        hideStatusBar()
+        setStatusBarColorLight()
         myPageViewModel.getUserInfo()
     }
 
