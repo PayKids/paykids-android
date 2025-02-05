@@ -8,6 +8,7 @@ import com.paykids.data.repository.ExpenseRepositoryImpl
 import com.paykids.data.repository.IncomeCategoryRepositoryImpl
 import com.paykids.data.repository.IncomeRepositoryImpl
 import com.paykids.data.repository.KakaoAuthRepositoryImpl
+import com.paykids.data.repository.QuestRepositoryImpl
 import com.paykids.data.repository.QuizRepositoryImpl
 import com.paykids.data.repository.UserRepositoryImpl
 import com.paykids.domain.repository.AchievementRepository
@@ -18,6 +19,7 @@ import com.paykids.domain.repository.ExpenseRepository
 import com.paykids.domain.repository.IncomeCategoryRepository
 import com.paykids.domain.repository.IncomeRepository
 import com.paykids.domain.repository.KakaoAuthRepository
+import com.paykids.domain.repository.QuestRepository
 import com.paykids.domain.repository.QuizRepository
 import com.paykids.domain.repository.UserRepository
 import dagger.Binds
@@ -65,6 +67,10 @@ abstract class RepositoryModule {
     @Binds
     @Singleton
     abstract fun bindsIncomeCategoryRepository(impl: IncomeCategoryRepositoryImpl): IncomeCategoryRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindsQuestRepository(impl: QuestRepositoryImpl): QuestRepository
 
     @Binds
     @Singleton
