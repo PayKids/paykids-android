@@ -1,22 +1,23 @@
 package com.paykids.presentation.view.quest
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.paykids.domain.model.quest.QuestItem
+import com.paykids.domain.model.quest.QuestInfo
 import com.paykids.presentation.databinding.ItemQuestBinding
 
-class QuestAdapter(
-    private val questItems: List<QuestItem>
-) : RecyclerView.Adapter<QuestAdapter.QuestViewHolder>() {
+class QuestAdapter : RecyclerView.Adapter<QuestAdapter.QuestViewHolder>() {
+    private var questItems = mutableListOf<QuestInfo>()
 
     inner class QuestViewHolder(private val binding: ItemQuestBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: QuestItem) {
+        @SuppressLint("SetTextI18n")
+        fun bind(item: QuestInfo) {
             binding.tvQuestName.text = item.name
-            binding.tvQuestProgress.text = "1/2"
-            setProgressBarStatus(item.progress)
+            binding.tvQuestProgress.text = "${item.count} / ${item.maxCount}"
+            setProgressBarStatus(item.count.toFloat() / item.maxCount)
         }
 
         private fun setProgressBarStatus(progress: Float) {
@@ -38,4 +39,11 @@ class QuestAdapter(
     }
 
     override fun getItemCount(): Int = questItems.size
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun updateQuests(newQuests: List<QuestInfo>) {
+        questItems.clear()
+        questItems.addAll(newQuests)
+        notifyDataSetChanged()
+    }
 }

@@ -39,6 +39,5 @@ class QuestFragment : BaseFragment<FragmentQuestBinding>() {
 
     override fun onResume() {
         super.onResume()
-        setStatusBarColorLight()
     }
 }

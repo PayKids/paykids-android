@@ -6,6 +6,7 @@ import com.paykids.data.mapper.toAchievementInfo
 import com.paykids.data.mapper.toQuestInfo
 import com.paykids.domain.model.achievement.AchievementInfo
 import com.paykids.domain.model.quest.QuestInfo
+import com.paykids.domain.model.quest.QuestResponse
 import com.paykids.domain.repository.AchievementRepository
 import com.paykids.domain.repository.QuestRepository
 import javax.inject.Inject
