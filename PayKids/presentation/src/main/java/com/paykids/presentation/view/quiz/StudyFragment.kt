@@ -63,7 +63,8 @@ class StudyFragment : BaseFragment<FragmentStudyBinding>() {
         studyAdapter = StudyRvAdapter()
         binding.rvChat.adapter = studyAdapter
         binding.rvChat.layoutManager = LinearLayoutManager(requireContext()).apply {
-            stackFromEnd = true
+            stackFromEnd = false  // 아이템을 리스트 상단부터 채우도록 설정
+            reverseLayout = false
         }
     }
 
