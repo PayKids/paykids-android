@@ -83,10 +83,25 @@ class MyPageFragment : BaseFragment<FragmentMypageBinding>(), ConfirmDialogInter
                 is UiState.Loading -> {}
 
                 is UiState.Success -> {
+                    myPageViewModel.clearData()
+                }
+            }
+        }
+
+        myPageViewModel.clearState.observe(viewLifecycleOwner) {
+            when (it) {
+                is UiState.Failure -> {
+                    showToast(it.message)
+                }
+
+                is UiState.Loading -> {}
+
+                is UiState.Success -> {
                     (activity as HomeActivity).moveSign()
                 }
             }
         }
+
     }
 
     override fun onYesButtonClick() {
@@ -94,6 +109,6 @@ class MyPageFragment : BaseFragment<FragmentMypageBinding>(), ConfirmDialogInter
     }
 
     override fun onQuizEntryButtonClick(stageNumber: Int) {
-        TODO("Not yet implemented")
+
     }
 }

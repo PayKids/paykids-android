@@ -17,7 +17,6 @@ class DataStoreRepositoryImpl @Inject constructor(
     private companion object {
         private val ACCESS_TOKEN_KEY = stringPreferencesKey("access_token")
         private val REFRESH_TOKEN_KEY = stringPreferencesKey("refresh_token")
-        private val LOGIN_PROVIDER_KEY = stringPreferencesKey("login_provider")
     }
 
     override suspend fun clearData(): Result<Boolean> {
@@ -36,7 +35,7 @@ class DataStoreRepositoryImpl @Inject constructor(
     override suspend fun clearUserData(): Result<Boolean> {
         return try {
             dataStorePreferences.edit { preferences ->
-                val keys = listOf(ACCESS_TOKEN_KEY, REFRESH_TOKEN_KEY, LOGIN_PROVIDER_KEY)
+                val keys = listOf(ACCESS_TOKEN_KEY, REFRESH_TOKEN_KEY)
 
                 keys.forEach { key ->
                     preferences.remove(key)
@@ -89,27 +88,4 @@ class DataStoreRepositoryImpl @Inject constructor(
             Result.failure(e)
         }
     }
-
-    override suspend fun setAuthProvider(provider: AuthProvider): Result<Boolean> {
-        return try {
-            dataStorePreferences.edit { preferences ->
-                preferences[LOGIN_PROVIDER_KEY] = provider.name
-            }
-            Result.success(true)
-        } catch (e: Exception) {
-            Result.failure(e)
-        }
-    }
-
-    override suspend fun getAuthProvider(): Result<AuthProvider> {
-        return try {
-            val preferences = dataStorePreferences.data.first()
-            val providerName = preferences[LOGIN_PROVIDER_KEY] ?: ""
-            val provider = AuthProvider.valueOf(providerName)
-            Result.success(provider)
-        } catch (e: Exception) {
-            Result.failure(e)
-        }
-    }
-
 }

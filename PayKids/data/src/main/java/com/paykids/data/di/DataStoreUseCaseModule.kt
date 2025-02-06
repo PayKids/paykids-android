@@ -3,7 +3,6 @@ package com.paykids.data.di
 import com.paykids.domain.repository.DataStoreRepository
 import com.paykids.domain.usecase.datastore.ClearUserDataUseCase
 import com.paykids.domain.usecase.datastore.GetAccessTokenUseCase
-import com.paykids.domain.usecase.datastore.GetAuthProviderUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -20,14 +19,6 @@ object DataStoreUseCaseModule {
         dataStoreRepository: DataStoreRepository
     ): GetAccessTokenUseCase {
         return GetAccessTokenUseCase(dataStoreRepository)
-    }
-
-    @Provides
-    @Singleton
-    fun provideGetAuthProviderUseCase(
-        dataStoreRepository: DataStoreRepository
-    ): GetAuthProviderUseCase {
-        return GetAuthProviderUseCase(dataStoreRepository)
     }
 
     @Provides

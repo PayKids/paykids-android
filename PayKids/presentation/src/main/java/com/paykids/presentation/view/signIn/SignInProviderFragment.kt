@@ -24,12 +24,31 @@ class SignInProviderFragment : BaseFragment<FragmentSignProviderBinding>() {
         super.initListener()
 
         binding.btnKakao.setOnClickListener {
-            signViewModel.signInWithKakao(requireActivity())
+            signViewModel.checkToken()
         }
     }
 
     override fun setObserver() {
         super.setObserver()
+
+        signViewModel.checkTokenState.observe(viewLifecycleOwner) {
+            when (it) {
+                is UiState.Failure -> {
+                    showToast(it.message)
+                }
+
+                is UiState.Loading -> {}
+
+                is UiState.Success -> {
+                    LoggerUtils.d("저장된 토큰 확인 성공: ${it.data}")
+                    if (it.data == "") {
+                        signViewModel.signInWithKakao(requireActivity())
+                    } else {
+                        navigateToHome()
+                    }
+                }
+            }
+        }
 
         signViewModel.kakaoLoginState.observe(viewLifecycleOwner) {
             when (it) {
@@ -41,7 +60,6 @@ class SignInProviderFragment : BaseFragment<FragmentSignProviderBinding>() {
 
                 is UiState.Success -> {
                     LoggerUtils.d("카카오 로그인 성공: ${it.data}")
-                    signViewModel.signIn(it.data.idToken)
                 }
             }
         }

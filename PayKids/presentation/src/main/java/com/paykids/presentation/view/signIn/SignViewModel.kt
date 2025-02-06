@@ -27,6 +27,26 @@ class SignViewModel @Inject constructor(
     private val getAccessTokenUseCase: GetAccessTokenUseCase
 ) : ViewModel() {
 
+    private val _checkTokenState = MutableLiveData<UiState<String>>()
+    val checkTokenState: LiveData<UiState<String>> get() = _checkTokenState
+
+    fun checkToken() {
+        _checkTokenState.value = UiState.Loading
+        viewModelScope.launch {
+            try {
+                getAccessTokenUseCase.invoke()
+                    .onSuccess {
+                        _checkTokenState.value = UiState.Success(it)
+                    }.onFailure { e ->
+                        _checkTokenState.value =
+                            UiState.Failure(message = e.message ?: "저장된 토큰 확인 실패")
+                    }
+            } catch (e: Exception) {
+                _checkTokenState.value = UiState.Failure(message = e.message ?: "저장된 토큰 확인 중 예외 발생")
+            }
+        }
+    }
+
     private val _kakaoLoginState = MutableLiveData<UiState<SignInInfo>>()
     val kakaoLoginState: LiveData<UiState<SignInInfo>> get() = _kakaoLoginState
 
@@ -37,6 +57,7 @@ class SignViewModel @Inject constructor(
                 kakaoAuthUseCase.invoke(context)
                     .onSuccess { signInInfo ->
                         _kakaoLoginState.value = UiState.Success(signInInfo)
+                        signIn(signInInfo.idToken)
                     }.onFailure { e ->
                         _kakaoLoginState.value =
                             UiState.Failure(message = e.message ?: "카카오 로그인 실패")
@@ -79,11 +100,11 @@ class SignViewModel @Inject constructor(
                         _saveState.value = UiState.Success(info.isRegistered)
                     }
                     .onFailure { e ->
-                        LoggerUtils.e("Sign-in failed: ${e.message}")
+                        LoggerUtils.e("save Sign-in Info failed: ${e.message}")
                         _saveState.value = UiState.Failure(message = e.message.toString())
                     }
             } catch (e: Exception) {
-                LoggerUtils.e("Sign-in exception: ${e.message}")
+                LoggerUtils.e("save Sign-in Info exception: ${e.message}")
                 _saveState.value = UiState.Failure(message = e.message.toString())
             }
         }

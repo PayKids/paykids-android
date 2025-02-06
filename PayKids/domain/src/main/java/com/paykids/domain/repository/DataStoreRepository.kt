@@ -19,11 +19,4 @@ interface DataStoreRepository {
     ): Result<Boolean>
 
     suspend fun getRefreshToken(): Result<String>
-
-    suspend fun setAuthProvider(
-        provider: AuthProvider
-    ): Result<Boolean>
-
-    suspend fun getAuthProvider(): Result<AuthProvider>
-
 }
