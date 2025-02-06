@@ -1,7 +1,5 @@
 package com.paykids.domain.repository
 
-import com.paykids.domain.enums.AuthProvider
-
 interface DataStoreRepository {
 
     suspend fun clearData(): Result<Boolean>

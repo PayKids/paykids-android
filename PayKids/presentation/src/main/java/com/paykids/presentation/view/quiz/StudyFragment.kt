@@ -1,13 +1,11 @@
 package com.paykids.presentation.view.quiz
 
 import android.annotation.SuppressLint
-import android.content.Context.INPUT_METHOD_SERVICE
 import android.graphics.Rect
 import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.view.ViewTreeObserver
-import android.view.inputmethod.InputMethodManager
 import androidx.activity.OnBackPressedCallback
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.viewModels
