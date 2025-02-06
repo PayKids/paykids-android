@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.paykids.domain.model.achievement.AchievementInfo
 import com.paykids.domain.model.quest.QuestInfo
-import com.paykids.domain.model.user.UserInfo
 import com.paykids.domain.usecase.acievement.GetAchievementUseCase
 import com.paykids.domain.usecase.datastore.GetAccessTokenUseCase
 import com.paykids.domain.usecase.quest.GetQuestUseCase

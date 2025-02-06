@@ -20,7 +20,6 @@ import com.paykids.data.datasourceImpl.IncomeRemoteDatasourceImpl
 import com.paykids.data.datasourceImpl.QuestRemoteDatasourceImpl
 import com.paykids.data.datasourceImpl.QuizRemoteDatasourceImpl
 import com.paykids.data.datasourceImpl.UserRemoteDatasourceImpl
-import com.paykids.data.repository.QuestRepositoryImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

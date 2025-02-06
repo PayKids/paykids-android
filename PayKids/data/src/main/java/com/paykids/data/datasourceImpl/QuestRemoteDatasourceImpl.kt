@@ -1,11 +1,8 @@
 package com.paykids.data.datasourceImpl
 
-import com.paykids.data.datasource.AchievementRemoteDatasource
 import com.paykids.data.datasource.QuestRemoteDatasource
 import com.paykids.data.model.BaseResponse
-import com.paykids.data.model.achievement.AchieveResponseDTO
 import com.paykids.data.model.quest.QuestResponseDTO
-import com.paykids.data.service.AchievementService
 import com.paykids.data.service.QuestService
 import com.paykids.util.LoggerUtils
 import javax.inject.Inject

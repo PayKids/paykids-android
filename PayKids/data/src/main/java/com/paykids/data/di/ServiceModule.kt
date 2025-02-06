@@ -10,7 +10,6 @@ import com.paykids.data.service.IncomeService
 import com.paykids.data.service.QuestService
 import com.paykids.data.service.QuizService
 import com.paykids.data.service.UserService
-import com.paykids.domain.repository.QuestRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
