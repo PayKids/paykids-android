@@ -1,5 +1,6 @@
 package com.paykids.data.service
 
+import com.paykids.data.model.BaseResponse
 import com.paykids.data.model.achievement.AchieveResponseDTO
 import com.paykids.data.model.quest.QuestResponseDTO
 import retrofit2.Response
@@ -10,5 +11,5 @@ interface QuestService {
     @GET("/Quest/list")
     suspend fun getQuests(
         @Header("Authorization") accessToken: String,
-    ): Response<QuestResponseDTO>
+    ): Response<BaseResponse<QuestResponseDTO>>
 }

@@ -9,6 +9,7 @@ import com.paykids.domain.model.quest.QuestInfo
 import com.paykids.domain.model.quest.QuestResponse
 import com.paykids.domain.repository.AchievementRepository
 import com.paykids.domain.repository.QuestRepository
+import com.paykids.util.LoggerUtils
 import javax.inject.Inject
 
 class QuestRepositoryImpl @Inject constructor(
@@ -20,7 +21,7 @@ class QuestRepositoryImpl @Inject constructor(
         return if (result.isSuccess) {
             val res = result.getOrNull()
             if (res != null) {
-                val data = res.toQuestInfo()
+                val data = res.data.toQuestInfo()
                 Result.success(data)
             } else {
                 Result.failure(Exception("get Quests Failed: response body is null"))
