@@ -29,7 +29,7 @@ class MyPageViewModel @Inject constructor(
     private val withdrawalUseCase: WithdrawalUseCase,
     private val deleteUserUseCase: DeleteUserUseCase,
     private val clearUserDataUseCase: ClearUserDataUseCase,
-    private val getAccessTokenUseCase: GetAccessTokenUseCase
+    private val getAccessTokenUseCase: GetAccessTokenUseCase,
 ) : ViewModel() {
 
     private val _userInfoState = MutableLiveData<UiState<UserInfo>>(UiState.Loading)

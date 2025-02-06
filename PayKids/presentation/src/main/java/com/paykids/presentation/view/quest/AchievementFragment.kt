@@ -1,12 +1,12 @@
 package com.paykids.presentation.view.quest
 
+import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import com.paykids.presentation.R
 import com.paykids.presentation.base.BaseFragment
 import com.paykids.presentation.databinding.FragmentAchievementBinding
 import com.paykids.presentation.utils.UiState
-import com.paykids.util.LoggerUtils
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -32,18 +32,21 @@ class AchievementFragment : BaseFragment<FragmentAchievementBinding>() {
     override fun setObserver() {
         super.setObserver()
 
-        viewModel.achievementState.observe(viewLifecycleOwner) {
-            when (it) {
+        viewModel.achievementState.observe(viewLifecycleOwner) { state ->
+            when (state) {
                 is UiState.Failure -> {
-                    showToast(it.message)
+                    showToast(state.message)
                 }
 
                 is UiState.Loading -> {}
 
                 is UiState.Success -> {
-                    val completedAchievements =
-                        it.data.filter { achievement -> achievement.isCompleted }
+                    val completedAchievements = state.data.filter { it.isCompleted }
                     adapter.updateAchievements(completedAchievements)
+
+                    val allIncomplete = state.data.all { !it.isCompleted }
+                    binding.tvNoBadge1.visibility = if (allIncomplete) View.VISIBLE else View.GONE
+                    binding.tvNoBadge2.visibility = if (allIncomplete) View.VISIBLE else View.GONE
                 }
             }
         }

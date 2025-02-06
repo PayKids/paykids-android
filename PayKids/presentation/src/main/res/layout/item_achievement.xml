@@ -8,8 +8,8 @@
 
     <ImageView
         android:id="@+id/iv_achieve_image"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="96dp"
+        android:layout_height="88dp"
         android:contentDescription="@null"
         android:src="@drawable/ic_achieve1" />
 
@@ -32,6 +32,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:fontFamily="@font/nanumsquare_bold"
+        android:paddingHorizontal="8dp"
         android:textColor="@color/gray8"
         tools:text="지치치 않는 학구열!" />
 

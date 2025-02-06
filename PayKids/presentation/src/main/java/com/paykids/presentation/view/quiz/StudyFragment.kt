@@ -1,12 +1,16 @@
 package com.paykids.presentation.view.quiz
 
 import android.annotation.SuppressLint
+import android.graphics.Rect
 import android.os.Build
 import android.os.Bundle
 import android.view.View
+import android.view.ViewTreeObserver
 import androidx.activity.OnBackPressedCallback
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.LifecycleOwner
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.paykids.domain.model.ChatItem
@@ -34,10 +38,16 @@ class StudyFragment : BaseFragment<FragmentStudyBinding>() {
         binding.tvStage.text = "스테이지 $stageNumber"
         setRvAdapter()
         viewModel.getUserInfo()
+
+        setupKeyboardVisibilityListener()
     }
 
     override fun initListener() {
         super.initListener()
+
+        binding.etSendChat.setOnFocusChangeListener { v, hasFocus ->
+            if (hasFocus) showKeyboardAndFocus(v)
+        }
 
         binding.ibBack.setOnClickListener {
             parentFragmentManager.popBackStack()
@@ -53,7 +63,8 @@ class StudyFragment : BaseFragment<FragmentStudyBinding>() {
         studyAdapter = StudyRvAdapter()
         binding.rvChat.adapter = studyAdapter
         binding.rvChat.layoutManager = LinearLayoutManager(requireContext()).apply {
-            stackFromEnd = true
+            stackFromEnd = false  // 아이템을 리스트 상단부터 채우도록 설정
+            reverseLayout = false
         }
     }
 
@@ -124,6 +135,8 @@ class StudyFragment : BaseFragment<FragmentStudyBinding>() {
 
         viewModel.sendQuestion(messageContent)
         binding.etSendChat.text.clear()
+
+        hideKeyboard()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -138,6 +151,39 @@ class StudyFragment : BaseFragment<FragmentStudyBinding>() {
             viewLifecycleOwner,
             backPressedCallback
         )
+    }
+
+    private fun setupKeyboardVisibilityListener() {
+        val rootView = requireView()
+        val viewTreeObserver = rootView.viewTreeObserver
+
+        val listener = ViewTreeObserver.OnGlobalLayoutListener {
+            if (!isAdded) return@OnGlobalLayoutListener
+
+            val rect = Rect()
+            rootView.getWindowVisibleDisplayFrame(rect)
+            val screenHeight = rootView.height
+            val keyboardHeight = screenHeight - rect.bottom
+
+            binding.apply {
+                if (keyboardHeight > screenHeight * 0.15) {
+                    flChatInput.translationY = -keyboardHeight.toFloat()
+                    rvChat.post { rvChat.scrollToPosition(studyAdapter.itemCount - 1) }
+                } else {
+                    flChatInput.translationY = 0f
+                }
+            }
+        }
+
+        viewTreeObserver.addOnGlobalLayoutListener(listener)
+
+        viewLifecycleOwner.lifecycle.addObserver(object : DefaultLifecycleObserver {
+            override fun onDestroy(owner: LifecycleOwner) {
+                if (viewTreeObserver.isAlive) {
+                    viewTreeObserver.removeOnGlobalLayoutListener(listener)
+                }
+            }
+        })
     }
 
     override fun onResume() {

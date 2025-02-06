@@ -7,6 +7,7 @@ import com.paykids.data.datasource.ExpenseCategoryRemoteDatasource
 import com.paykids.data.datasource.ExpenseRemoteDatasource
 import com.paykids.data.datasource.IncomeCategoryRemoteDatasource
 import com.paykids.data.datasource.IncomeRemoteDatasource
+import com.paykids.data.datasource.QuestRemoteDatasource
 import com.paykids.data.datasource.QuizRemoteDatasource
 import com.paykids.data.datasource.UserRemoteDatasource
 import com.paykids.data.datasourceImpl.AchievementRemoteDatasourceImpl
@@ -16,6 +17,7 @@ import com.paykids.data.datasourceImpl.ExpenseCategoryRemoteDatasourceImpl
 import com.paykids.data.datasourceImpl.ExpenseRemoteDatasourceImpl
 import com.paykids.data.datasourceImpl.IncomeCategoryRemoteDatasourceImpl
 import com.paykids.data.datasourceImpl.IncomeRemoteDatasourceImpl
+import com.paykids.data.datasourceImpl.QuestRemoteDatasourceImpl
 import com.paykids.data.datasourceImpl.QuizRemoteDatasourceImpl
 import com.paykids.data.datasourceImpl.UserRemoteDatasourceImpl
 import dagger.Binds
@@ -66,6 +68,11 @@ abstract class DatasourceModule {
     abstract fun bindIncomeCategoryRemoteDatasource(
         impl: IncomeCategoryRemoteDatasourceImpl
     ): IncomeCategoryRemoteDatasource
+
+    @Binds
+    abstract fun bindQuestRemoteDatasource(
+        impl: QuestRemoteDatasourceImpl
+    ): QuestRemoteDatasource
 
     @Binds
     abstract fun bindAchievementRemoteDatasource(

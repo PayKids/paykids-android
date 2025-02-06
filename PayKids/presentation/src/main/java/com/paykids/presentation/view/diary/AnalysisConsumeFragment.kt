@@ -245,49 +245,24 @@ class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisAllowanceBinding>()
         updateDeleteButtonVisibility(categories)
     }
 
-    private fun deleteExpenseItems(): List<String> {
-        val selectedItems = adapter.getSelectedCategories()
-        val selectedNames = selectedItems.map { it.name }
-
-        selectedNames.forEach { categoryName ->
-            categoryViewModel.deleteExpenseCategory(categoryName)
-        }
-
-        currentList!!.removeAll(selectedItems)
-        adapter.submitList(currentList)
-        return selectedNames
-    }
-
-    private fun deleteIncomeItems(): List<String> {
-        val selectedItems = adapter.getSelectedCategories()
-        val selectedNames = selectedItems.map { it.name }
-
-        selectedNames.forEach { categoryName ->
-            categoryViewModel.deleteIncomeCategory(categoryName)
-        }
-
-        currentList!!.removeAll(selectedItems)
-        adapter.submitList(currentList)
-        return selectedNames
-    }
-
     private fun toggleDeleteMode() {
+        if (isDeleteMode) {
+            val selectedCategories = adapter.getSelectedCategories()
+            if (selectedCategories.isNotEmpty()) {
+                selectedCategories.forEach { category ->
+                    if (category.name == "기타") {
+                        showToast("기타 카테고리는 삭제할 수 없습니다.")
+                    } else {
+                        categoryViewModel.deleteExpenseCategory(category.name)
+                    }
+                }
+                fetchData(currentYear, currentMonth)
+            }
+        }
+
         isDeleteMode = !isDeleteMode
         adapter.toggleDeleteMode(isDeleteMode)
-
-        if (isDeleteMode) {
-            binding.tvDelete.text = "삭제"
-            binding.btnAddCategory.isEnabled = false
-
-//            if (isConsumeSelected) {
-//                deleteExpenseItems()
-//            } else {
-//                deleteIncomeItems()
-//            }
-        } else {
-            binding.tvDelete.text = "카테고리 삭제"
-            binding.btnAddCategory.isEnabled = true
-        }
+        binding.tvDelete.text = if (isDeleteMode) "삭제" else "카테고리 삭제"
     }
 
     @SuppressLint("SetTextI18n")
@@ -318,7 +293,6 @@ class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisAllowanceBinding>()
         isConsumeSelected = !isConsumeSelected
 
         if (isConsumeSelected) {
-            // 소비가 선택된 경우
             binding.tvConsume.setBackgroundResource(R.drawable.switch_bg_select)
             binding.tvConsume.setTextColor(requireContext().getColor(R.color.black))
 
@@ -327,7 +301,6 @@ class AnalysisConsumeFragment : BaseFragment<FragmentAnalysisAllowanceBinding>()
 
             fetchData(currentYear, currentMonth)
         } else {
-            // 수입이 선택된 경우
             binding.tvIncome.setBackgroundResource(R.drawable.switch_bg_select)
             binding.tvIncome.setTextColor(requireContext().getColor(R.color.black))
 

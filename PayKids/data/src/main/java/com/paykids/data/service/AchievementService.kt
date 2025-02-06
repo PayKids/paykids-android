@@ -1,5 +1,6 @@
 package com.paykids.data.service
 
+import com.paykids.data.model.BaseResponse
 import com.paykids.data.model.achievement.AchieveResponseDTO
 import retrofit2.Response
 import retrofit2.http.GET
@@ -9,5 +10,5 @@ interface AchievementService {
     @GET("/Achievement/list")
     suspend fun getAchievements(
         @Header("Authorization") accessToken: String,
-    ): Response<AchieveResponseDTO>
+    ): Response<BaseResponse<AchieveResponseDTO>>
 }

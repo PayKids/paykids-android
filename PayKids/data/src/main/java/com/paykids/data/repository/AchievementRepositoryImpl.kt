@@ -15,7 +15,7 @@ class AchievementRepositoryImpl @Inject constructor(
         return if (result.isSuccess) {
             val res = result.getOrNull()
             if (res != null) {
-                val data = res.toAchievementInfo()
+                val data = res.data.toAchievementInfo()
                 Result.success(data)
             } else {
                 Result.failure(Exception("get Achievements Failed: response body is null"))
