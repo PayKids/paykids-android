@@ -11,6 +11,8 @@ import android.view.inputmethod.InputMethodManager
 import androidx.activity.OnBackPressedCallback
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.LifecycleOwner
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.paykids.domain.model.ChatItem
@@ -155,21 +157,35 @@ class StudyFragment : BaseFragment<FragmentStudyBinding>() {
 
     private fun setupKeyboardVisibilityListener() {
         val rootView = requireView()
-        rootView.viewTreeObserver.addOnGlobalLayoutListener {
+        val viewTreeObserver = rootView.viewTreeObserver
+
+        val listener = ViewTreeObserver.OnGlobalLayoutListener {
+            if (!isAdded) return@OnGlobalLayoutListener
+
             val rect = Rect()
             rootView.getWindowVisibleDisplayFrame(rect)
             val screenHeight = rootView.height
             val keyboardHeight = screenHeight - rect.bottom
 
-            if (keyboardHeight > screenHeight * 0.15) {
-                binding.flChatInput.translationY = -keyboardHeight.toFloat()
-                binding.rvChat.post {
-                    binding.rvChat.scrollToPosition(studyAdapter.itemCount - 1)
+            binding.apply {
+                if (keyboardHeight > screenHeight * 0.15) {
+                    flChatInput.translationY = -keyboardHeight.toFloat()
+                    rvChat.post { rvChat.scrollToPosition(studyAdapter.itemCount - 1) }
+                } else {
+                    flChatInput.translationY = 0f
                 }
-            } else {
-                binding.flChatInput.translationY = 0f
             }
         }
+
+        viewTreeObserver.addOnGlobalLayoutListener(listener)
+
+        viewLifecycleOwner.lifecycle.addObserver(object : DefaultLifecycleObserver {
+            override fun onDestroy(owner: LifecycleOwner) {
+                if (viewTreeObserver.isAlive) {
+                    viewTreeObserver.removeOnGlobalLayoutListener(listener)
+                }
+            }
+        })
     }
 
     override fun onResume() {
