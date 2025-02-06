@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="84dp"
+    android:layout_height="wrap_content"
     android:layout_marginBottom="12dp"
     android:background="@drawable/shape_quest"
     android:padding="16dp">
@@ -13,6 +13,7 @@
         style="@style/body2_B"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+
         android:fontFamily="@font/nanumsquare_extra_bold"
         android:textColor="@color/blue1"
 
@@ -25,21 +26,23 @@
         style="@style/Widget.AppCompat.ProgressBar.Horizontal"
         android:layout_width="0dp"
         android:layout_height="16dp"
+        android:layout_marginTop="12dp"
         android:layout_marginBottom="4dp"
         android:max="100"
         android:progressDrawable="@drawable/layer_list_quest_progressbar"
 
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@id/tv_quest_name" />
+        app:layout_constraintStart_toStartOf="@id/tv_quest_name"
+        app:layout_constraintTop_toBottomOf="@id/tv_quest_name" />
 
     <TextView
         android:id="@+id/tv_quest_progress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/nanumsquare_extra_bold"
         android:text="0 / 2"
         android:textColor="@color/gray6"
-        android:fontFamily="@font/nanumsquare_extra_bold"
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="@id/progress_bar_quest"
         app:layout_constraintEnd_toEndOf="@id/progress_bar_quest"
