@@ -6,6 +6,6 @@ import javax.inject.Inject
 
 class CheckClearUseCase @Inject constructor(private val repository: QuizRepository) {
     suspend operator fun invoke(accessToken: String, stage: Int): Result<QuizClear> {
-        return repository.checkClear(accessToken, stage)
+        return repository.checkClear("Bearer $accessToken", stage)
     }
 }
