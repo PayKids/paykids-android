@@ -1,9 +1,13 @@
 package com.paykids.presentation.view.quiz
 
 import android.annotation.SuppressLint
+import android.content.Context.INPUT_METHOD_SERVICE
+import android.graphics.Rect
 import android.os.Build
 import android.os.Bundle
 import android.view.View
+import android.view.ViewTreeObserver
+import android.view.inputmethod.InputMethodManager
 import androidx.activity.OnBackPressedCallback
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.viewModels
@@ -34,10 +38,16 @@ class StudyFragment : BaseFragment<FragmentStudyBinding>() {
         binding.tvStage.text = "스테이지 $stageNumber"
         setRvAdapter()
         viewModel.getUserInfo()
+
+        setupKeyboardVisibilityListener()
     }
 
     override fun initListener() {
         super.initListener()
+
+        binding.etSendChat.setOnFocusChangeListener { v, hasFocus ->
+            if (hasFocus) showKeyboardAndFocus(v)
+        }
 
         binding.ibBack.setOnClickListener {
             parentFragmentManager.popBackStack()
@@ -124,6 +134,8 @@ class StudyFragment : BaseFragment<FragmentStudyBinding>() {
 
         viewModel.sendQuestion(messageContent)
         binding.etSendChat.text.clear()
+
+        hideKeyboard()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -138,6 +150,25 @@ class StudyFragment : BaseFragment<FragmentStudyBinding>() {
             viewLifecycleOwner,
             backPressedCallback
         )
+    }
+
+    private fun setupKeyboardVisibilityListener() {
+        val rootView = requireView()
+        rootView.viewTreeObserver.addOnGlobalLayoutListener {
+            val rect = Rect()
+            rootView.getWindowVisibleDisplayFrame(rect)
+            val screenHeight = rootView.height
+            val keyboardHeight = screenHeight - rect.bottom
+
+            if (keyboardHeight > screenHeight * 0.15) {
+                binding.flChatInput.translationY = -keyboardHeight.toFloat()
+                binding.rvChat.post {
+                    binding.rvChat.scrollToPosition(studyAdapter.itemCount - 1)
+                }
+            } else {
+                binding.flChatInput.translationY = 0f
+            }
+        }
     }
 
     override fun onResume() {
